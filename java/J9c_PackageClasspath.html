@@ -1,0 +1,293 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Packages &amp; CLASSPATH in Java</title>
+<link href="../css/programming_notes.css" rel="stylesheet" type="text/css" />
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<!-- Begin the outermost container division -->
+<div id="container">
+
+<!-- print header -->
+<script type="text/javascript" src="../scripts/header.js"></script>
+
+<!-- begin main content division -->
+<div id="content">
+
+<h1>Java Programming</h1>
+<h2>Package and Classpath</h2>
+
+<p>This article is applicable to pre-Java 9. Java 9 introduces a higher level of structure called &quot;module&quot; on top of &quot;package&quot;. Read &quot;<a href="JDK9_NewFeatures.html">Java 9 New Features</a>&quot;.</p>
+
+<h3>Package</h3>
+<p>A <em>package</em> is <em>a collection of related Java entities</em> (such as classes, interfaces, exceptions, errors and enums).  Packages are used for:</p>
+
+<ol>
+<li>Resolving naming conflict of classes by prefixing the class name with a package name.  For example, <code>com.zzz.Circle</code> and <code>com.yyy.Circle</code> are two distinct classes.  Although they share the same class name <code>Circle</code>, but they belong to two different packages: <code>com.zzz</code> and <code>com.yyy</code>.  These two classes can be used in the same program and distinguished using the <em>fully-qualified class name</em> - package name plus class name.  This mechanism is called <em>Namespace Management</em>.</li>
+<li>Access Control: Besides <code>public</code> and <code>private</code>, Java has two access control modifiers – <code>protected</code> and default – that are related to package.  A protected entity is accessible by classes in the same package and its subclasses.  An entity without access control modifier (i.e., default) is accessible by classes in the same package only.</li>
+<li>For distributing a collection of reusable classes, usually in a format known as Java Archive (JAR) file.</li>
+</ol>
+
+<h4>Package Naming Convention</h4>
+<p>A package name is made up of the <em>reverse</em> of the Internet Domain Name (to ensure uniqueness) plus your own organization's internal project name, separated by dots <code>'.'</code>.  Package names are in lowercase.  For example, suppose that your Internet Domain Name is &quot;<code>zzz.com</code>&quot;, you can name your package as &quot;<code>com.zzz.project1.subproject2</code>&quot;.</p>
+<p> The prefix &quot;<code>java</code>&quot; and &quot;<code>javax</code>&quot; are <em>reserved</em> for core Java packages and Java extensions, respectively.</p>
+<h4>Package Name &amp; the Directory Structure</h4>
+<p>The package name is closely associated with the directory structure used to store the classes.  For example, the class <code>Circle</code> of package <code>com.zzz.project1.subproject2</code> is stored as &quot;<code>$BASE_DIR\com\zzz\project1\subproject2\Circle.class</code>&quot;, where <code>$BASE_DIR</code> denotes the base directory of the package. Clearly, the &quot;dot&quot; in the package name corresponds to a sub-directory of the file system.</p>
+
+<p>The base directory (<code>$BASE_DIR</code>) could be located anywhere in the file system. Hence, the Java compiler and runtime must be informed about the location of the <code>$BASE_DIR</code> so as to locate the classes.  This is accomplished by an environment variable called <code>CLASSPATH</code>. (<code>CLASSPATH</code> is similar to another environment variable <code>PATH</code>, which is used by the command shell to search for the executable programs.)</p>
+<p>In writing GUI programs, we are often confused by two packages: <code>java.awt</code> and <code>java.awt.event</code>.  They are two distinct packages sharing some common directory structures. The classes belonging to the package <code>java.awt</code> are stored in directory &quot;<code>$BASE_DIR\java\awt\</code>&quot; while the classes of package <code>java.awt.event</code> are stored in directory &quot;<code>$BASE_DIR\java\awt\event\</code>&quot;.  <code>java.awt</code> and <code>java.awt.event</code> are two distinct packages with common prefix and directory structure.  There is no such concept of <em>sub-package</em> in Java (i.e., <code>java.awt.event</code> is not a sub-package of <code>java.awt</code>).</p>
+
+<h4>Creating Packages</h4>
+<p>To make a class as part of a package, you have to include the <code>package</code> statement as the first statement in the source file.</p>
+
+<h5>Example 1</h5>
+<p>We shall write a class called <code>Circle</code> in package <code>com.yyy</code>. It is a good practice to store the source files and the classes in separate directories, typically called &quot;<code>src</code>&quot; and &quot;<code>classes</code>&quot;. This is to facilitate the distribution of classes without the source files.</p>
+<p> Suppose that our base directory (<code>$BASE_DIR</code>) is <code>d:\myProject</code>. Create two sub-directories &quot;<code>src</code>&quot; and &quot;<code>classes</code>&quot;.</p>
+<p>Write the <code>Circle.java</code> and save under &quot;<code>src\com\yyy</code>&quot;, as follows:</p>
+
+<pre class="code-listing">
+<span class="code-comment">// src\com\yyy\Circle.java</span>
+package com.yyy;
+
+public class Circle {
+   private double radius;
+   public Circle(double radius) { this.radius = radius; }
+   public double getRadius() { return radius; }
+   public void setRadius(double radius) { this.radius = radius; }
+   public String toString() { return &quot;Circle[radius=&quot; + radius + &quot;]&quot;; }
+}</pre>
+
+<p>To compile the source using JDK, we need to use the <code>-d</code> option to specify the base directory of the compiled class, i.e., &quot;<code>classes</code>&quot;, as follows::</p>
+<pre class="code-command">
+<span class="code-comment">// Change directory to the package base directory</span>
+&gt; <strong>d:</strong>
+&gt; <strong>cd myProject</strong>
+
+<span class="code-comment">// Compile</span>
+&gt; <strong>javac -d classes src/com/yyy/Circle.java</strong>
+    <span class="code-comment">// NOTE: you can use either forward slash or backward slash as directory separator in javac</span>
+
+<span class="code-comment">// Show the directories/files</span>
+> <strong>tree /f /a</strong>
+Folder PATH listing for volume winSystem
+Volume serial number is 6A19-E18C
+C:.
++---classes
+|   \---com
+|       \---yyy
+|               Circle.class
+|
+\---src
+    \---com
+        \---yyy
+                Circle.java</pre>
+
+<p>The generated class will be stored as &quot;<code>classes\com\yyy\Circle.class</code>&quot;. Sub-directories &quot;<code>com</code>&quot; and &quot;<code>yyy</code>&quot; were created automatically with the <code>-d</code> option.</p>
+
+<p>Let's write a test program to use this <code>Circle</code> class. Suppose that <code>TestCircle.java</code> (in default package) is saved in <code>d:\myTest</code>.</p>
+<pre class="code-listing">
+<span class="code-comment">// d:\myTest\TestCircle.java</span>
+import com.yyy.Circle;
+
+public class TestCircle {
+   public static void main(String[] args) {
+      Circle c1 = new Circle(1.23);
+      System.out.println(c1);
+   }
+}</pre>
+
+ If we compile <code>TestCircle.java</code> from the directory <code>d:\myTest</code>,
+we will get a error message, as the compiler cannot find the <code>com.yyy.Circle.class</code>.
+<pre class="code-command">d:&gt; <strong>cd \myTest</strong>
+
+d:\myTest&gt; <strong>javac TestCircle.java</strong>
+TestCircle.java:2: <span class="code-new">error: package com.yyy does not exist</span>
+import com.yyy.Circle;
+              ^</pre>
+
+<p>We need to use the <code>-cp</code> (or <code>-classpath</code>) option to specify the <em>base directory</em> of the package <code>com.yyy</code>, in order to locate <code>com.yyy.Circle.class</code>.</p>
+
+<pre class="code-command">d:\myTest&gt; <strong>javac -cp d:\myProject\classes TestCircle.java</strong>
+</pre>
+
+<p>To run the <code>TestCircle</code>, we again get a error, as JRE cannot find the <code>com.yyy.Circle</code>.</p>
+<pre class="code-command">
+d:\myTest&gt; <strong>java TestCircle</strong>
+Exception in thread &quot;main&quot; <span class="code-new">java.lang.NoClassDefFoundError: com/yyy/Circle</span></pre>
+
+<p>Let include the base directory of the package <code>com.yyy</code> in the classpath (to locate <code>com.yyy.Circle</code>):</p>
+<pre class="code-command">
+d:\myTest&gt; <strong>java -cp d:\myProject\classes TestCircle</strong>
+<span class="code-new">Error: Could not find or load main class TestCircle</span>
+Caused by: java.lang.ClassNotFoundException: TestCircle</pre>
+
+<p>But now, the JRE can't even find the <code>TestCircle</code> class, which is located in the current directory. This is because if <code>CLASSPATH</code> is not explicitly set, it is defaulted to the current directory. However, if <code>CLASSPATH</code> is explicitly set, it does not include the current directory unless the current directory is included. Hence, we need to include current directory (denoted as <code>'.'</code>) in the <code>CLASSPATH</code>, together with the base directory of package <code>com.yyy</code>, separated by <code>';'</code>, as follows:</p>
+
+<pre class="code-command">
+<span class="code-comment">// For Windows</span>
+d:\myTest&gt; <strong>java -cp .;d:\myProject\classes TestCircle</strong>
+Circle[radius=1.23]
+
+<span class="code-comment">// For Unixes and MacOS X - Use ':' as path separator</span>
+$ <strong>java -cp .:$BASE_DIR TestCircle</strong>
+</pre>
+
+<h5>Example 2</h5>
+<p>Suppose that the <code>TestCircle</code> class in Example 1 in defined in a package <code>com.abc</code>, and save as <code>d:\myTest\src\com\abc\TestCircle.java</code>.</p>
+<pre class="code-listing">
+<span class="code-comment">// d:\myTest\src\com\abc\TestCircle.java</span>
+package com.abc;
+
+import com.yyy.Circle;
+
+public class TestCircle {
+   public static void main(String[] args) {
+      Circle c1 = new Circle(1.23);
+      System.out.println(c1);
+   }
+}</pre>
+
+<p>Suppose the compiled class is to be kept as <code>d:\myTest\classes\com\abc\TestCircle.class</code>.</p>
+
+<pre class="code-command">
+<span class="code-comment">// To compile TestCircle.java, set the current directory and use relative paths for TestCircle.</span>
+&gt; <strong>d:</strong>
+&gt; <strong>cd \myTest</strong>
+d:\myTest&gt; <strong>javac -d classes -cp d:\myProject\classes src\com\abc\TestCircle.java</strong>
+
+<span class="code-comment">// To run TestCircle, need to include the base directory of TestCircle and Circle in classpath.
+// Also need to use the fully-qualified name (package name plus class name) for TestCircle</span>
+d:\myTest&gt; <strong>java -cp classes;d:\myProject\classes com.abc.TestCircle</strong>
+Circle[radius=1.23]</pre>
+
+<p>Take note that you need to use fully-qualified name <code>com.abc.TestCircle</code> when running the program.</p>
+
+<h5> Example 3</h5>
+
+<p> In this example, we shall define two classes <code>MyClass3</code> and <code>MyClass4</code> in the same package <code>com.zzz.project1.subproject2</code>. The source file and the classes are kept in separate directories &quot;<code>src</code>&quot; and &quot;<code>classes</code>&quot; respectively. Suppose the base directory is &quot;<code>d:\myProject</code>&quot;.</p>
+
+<pre class="code-listing">
+<span class="code-comment">// d:\myProject\src\com\zzz\project1\subproject2\MyClass3.java</span>
+<strong>package com.zzz.project1.subproject2;</strong>
+
+public class MyClass3 {
+   private MyClass4 myClass4;
+
+   public MyClass3 () {   <span class="code-comment">// constructor</span>
+      System.out.println(&quot;MyClass3 constructed&quot;);
+      <strong>myClass4 = new MyClass4();</strong>   <span class="code-comment">// use MyClass4 in the same package</span>
+   }
+
+   <span class="code-comment">// main() included here for testing</span>
+   public static void main(String[] args) {
+      new MyClass3();
+   }
+}</pre>
+
+<pre class="code-listing">
+<span class="code-comment">// d:\myProject\src\com\zzz\project1\subproject2\MyClass4.java</span>
+<strong>package com.zzz.project1.subproject2;</strong>
+
+public class MyClass4 {   <span class="code-comment">// constructor</span>
+   public MyClass4() {
+      System.out.println(&quot;MyClass4 constructed&quot;);
+   }
+}</pre>
+
+<pre class="code-command">
+<span class="code-comment">// Change directory to the project base directory</span>
+&gt; <strong>d:</strong>
+&gt; <strong>cd \myProject</strong>
+
+<span class="code-comment">// Compile all classes</span>
+&gt; <strong>javac -d classes src\com\zzz\project1\subproject2\MyClass3.java</strong> <strong>src\com\zzz\project1\subproject2\MyClass4.java</strong>
+   <span class="code-comment">// NOTE: wildcard * does not work!</span>
+
+<span class="code-comment">// Check the directory tree</span>
+&gt; <strong>tree /f /a</strong><br />+---classes<br />|   \---com<br />|       \---zzz<br />|           \---project1<br />|               \---subproject2<br />|                       MyClass3.class<br />|                       MyClass4.class<br />|<br />\---src<br />    \---com<br />        \---zzz<br />            \---project1<br />                \---subproject2<br />                        MyClass3.java<br />                        MyClass4.java
+
+<span class="code-comment">// Run MyClass3</span>
+&gt; <strong>java -cp classes com.zzz.project1.subproject2.MyClass3</strong>
+MyClass3 constructed<br />MyClass4 constructed</pre>
+
+<h5>Using IDE</h5>
+<p>Managing packages and <code>CLASSPATH</code> yourself with only JDK is troublesome. IDE such as Eclipses and NetBeans could manage the packages and <code>CLASSPATH </code>for you!!</p>
+
+<h4>The Default Package</h4>
+<p>Every Java class must belong to a package.  You can explicitly name the package by providing a <code>package</code> statement in the beginning of the source file.  If the <code>package</code> statement is omitted, the class belongs to the so-called <em>default package</em>, with no sub-directory structure.  Use of default package is not recommended other than writing toy program and for quick testing.</p>
+
+<h3>CLASSPATH - For Locating Classes</h3>
+<p><code>CLASSPATH</code> is an environment variable (i.e., global variables of the operating system available to all the processes) needed for the Java compiler and runtime to locate the Java packages/classes used in a Java program. (Why not call <code>PACKAGEPATH</code>?) This is similar to another environment variable <code>PATH</code>, which is used by the Command shell to find the executable programs.</p>
+
+<p><code>CLASSPATH</code> can be set in one of the following ways:</p>
+<ol>
+<li><code>CLASSPATH</code> can be set permanently in the environment: In Windows, choose control panel &rArr; System &rArr; Advanced &rArr; Environment Variables &rArr; choose &quot;System Variables&quot; (for all the users) or &quot;User Variables&quot; (only the currently login user) &rArr; choose &quot;Edit&quot; (if <code>CLASSPATH</code> already exists) or &quot;New&quot; &rArr; Enter &quot;<code>CLASSPATH</code>&quot; as the variable name &rArr; Enter the required  directories and JAR files (separated by semicolons) as the value (e.g., &quot;<code>.;c:\myProject\classes;d:\tomcat\lib\servlet-api.jar</code>&quot;). Take note that you need to include the current working directory (denoted by <code>'.'</code>) in the <code>CLASSPATH</code>.
+
+  <p>To check the current setting of the <code>CLASSPATH</code>, issue the following command:</p>
+<pre class="code-command">
+&gt; SET CLASSPATH
+</pre>
+NOTE: For Unixes and Mac OS X: Use forward slash '<code>/</code>' as the directory separator and '<code>:</code>' as the path separator, e.g., &quot;<code>.:/usr/local/myproject/classes:/usr/local/tomcat/lib/servlet-api.jar</code>&quot;.</li>
+
+<li><code>CLASSPATH</code> can be set temporarily for that particular CMD shell session by issuing the following command:
+<pre class="code-command">
+&gt; SET CLASSPATH=.;c:\myProject\classes;d:\tomcat\lib\servlet-api.jar
+</pre>
+</li>
+
+<li>Instead of using the <code>CLASSPATH</code> environment variable, you can also use the command-line option <code>-classpath</code> (or <code>-cp</code>) of the <code>javac</code> and <code>java</code> commands, for example,
+  <pre class="code-command">
+&gt; java –classpath c:\myProject\classes com.abc.project1.subproject2.MyClass3
+</pre>
+</li>
+</ol>
+
+<h3>How Classes are Found?</h3>
+(Read &quot;<em>How classes are found</em>&quot; at the JDK documentation's main page.)
+
+<p>The Java Virtual Machine (JVM) searches for and loads classes in this order:</p>
+<ol>
+<li><em>Bootstrap Classes</em>:  include <code>rt.jar</code> (runtime), and other classes specified in the <code>sun.boot.class.path</code> system property, which could include <code>i18n.jar</code> (internationalization), <code>sunrsasign.jar</code>, <code>jsse.jar</code>, <code>jce.jar</code>, <code>charsets.jar</code>, and <code>jre/classes</code>.</li>
+
+<li><em>Extension Classes</em> via <em>Java Extension mechanism</em>:  classes bundled as JAR file and kept in the &quot;<code>$JAVA_HOME/jre/lib/ext</code>&quot; directory.</li>
+
+<li><em>User Classes</em>:  located via <code>–classpath</code> or <code>–cp</code> command-line option or CLASSPATH environment variable.</li>
+</ol>
+
+
+<p>Normal users need not concern about bootstrap and extension classes. User classes are found though the so-called <em>user class path</em> - a list of directories and JAR files which contain class files.  The directories and JAR files in the user class path are separated with a semi-colon <code>';'</code> for Windows systems, or colon <code>':'</code> for UNIX systems.  The user class path is kept in the System Property <code>java.class.path</code>.  The value is obtained from:</p>
+<ol>
+<li>The default value <code>'.'</code> or current working directory.</li>
+<li>The value of the <code>CLASSPATH</code> environment variable, which overrides the default value.</li>
+<li>The value of <code>–classpath</code> or <code>-cp</code> command-line option, which overrides both the default value and the CLASSPATH value.</li>
+<li>The JAR files in the <code>-jar</code> command line option, which overrides all other values.</li>
+</ol>
+
+<p>[How about java.lang, and classes in the same package? What is the order?]</p>
+
+<h3>Java 9 Modules</h3>
+<p>Java 9 introduces a higher level of structure called &quot;module&quot; on top of &quot;package&quot;. Read &quot;<a href="JDK9_NewFeatures.html">Java 9 New Features</a>&quot;.</p>
+
+
+<p>&nbsp;</p>
+<h4>REFERENCES &amp; RESOURCES</h4>
+<ul>
+  <li>TODO</li>
+</ul>
+
+<p class="p-last-modified">Latest version tested: JDK 10.0.1<br />
+Last modified: April 2018</p>
+
+</div>  
+<!-- End the content division -->
+
+<!-- print footer -->
+<script type="text/javascript" src="../scripts/footer.js"></script>
+
+</div>  <!-- End the container division -->
+
+</body>
+</html>

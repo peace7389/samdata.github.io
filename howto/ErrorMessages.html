@@ -1,0 +1,191 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Common Error Messages in Java Programming - JDK, MySQL, Tomcat, JDBC, Servlet and others</title>
+<link href="../css/programming_notes_v1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts/programming_notes_v1.js"></script>
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="ErrorMessages.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>Common Error Messages</h1>
+<h2>JDK, MySQL, Tomcat, JDBC, Servlet ...</h2>
+</div>
+
+<div id="content-main">
+
+<p>Murphy's Law states that:</p>
+<ul>
+<li>&quot;Anything that can possibly go wrong, does.&quot;</li>
+<li>&quot;Everything that can possibly go wrong will go wrong.&quot;</li>
+<li>&quot;If anything can go wrong, it will.&quot;</li>
+<li>&quot;If there is any way to do it wrong, he will.&quot;</li>
+</ul>
+
+<p>When software goes wrong, the MOST IMPORTANT thing to do is to FIND the ERROR MESSAGE, which can give you clues of what went wrong. If things were running fine until the lightning strikes, ask yourself what have you CHANGED!</p>
+<p><strong>Search</strong> this document with your <strong>Error Message</strong>; or simple google your error message.</p>
+
+<h5>Stack Trace</h5>
+
+<p>Most of the times, the error message consists of tens of lines of so-called <em>stack trace</em> of method invocation. That is, method A called method B, which called method C, and so on, until method Z encountered an error and threw an <code>Exception</code> or an <code>Error</code>. It is important to:</p>
+
+<ol>
+<li>Get to the <em>first line</em> of the error message to read the <em>description</em>, and</li>
+<li>Look for the <em>line number</em> of YOUR PROGRAM that triggered the error.</li>
+</ol>
+
+<p>For example, this error message (stack trace) has 40 over lines:</p>
+
+<pre class="color-example">
+com.mysql.jdbc.exceptions.jdbc4.<strong><span class="color-error">CommunicationsException: Communications link failure</span></strong>  <span class="color-comment">&lt;== First line with error description</span>
+The last packet sent successfully to the server was 0 milliseconds ago.
+The driver has not received any packets from the server.
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+        at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+        at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:1116)
+        at com.mysql.jdbc.MysqlIO.&lt;init&gt;(MysqlIO.java:344)
+        at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2333)
+        at com.mysql.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:2370)
+        at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2154)
+        at com.mysql.jdbc.ConnectionImpl.&lt;init&gt;(ConnectionImpl.java:792)
+        at com.mysql.jdbc.JDBC4Connection.&lt;init&gt;(JDBC4Connection.java:47)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+        at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+        at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:381)
+        at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:305)
+        at java.sql.DriverManager.getConnection(DriverManager.java:579)
+        at java.sql.DriverManager.getConnection(DriverManager.java:221)
+        at <strong><span class="color-error">MySQLJdbcTestJDK7.main(MySQLJdbcTestJDK7.java:7)</span></strong>   <span class="color-comment">      &lt;== Your program's line number here (line 7)</span>
+Caused by: java.net.<strong><span class="color-error">ConnectException: Connection refused: connect</span></strong>   <span class="color-comment">&lt;== First line of another related error</span>
+        at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+        at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:69)
+        at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:337)
+        at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:198)
+        at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:180)
+        at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:157)
+        at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:391)
+        at java.net.Socket.connect(Socket.java:579)
+        at java.net.Socket.connect(Socket.java:528)
+        at java.net.Socket.&lt;init&gt;(Socket.java:425)
+        at java.net.Socket.&lt;init&gt;(Socket.java:241)
+        at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:257)
+        at com.mysql.jdbc.MysqlIO.&lt;init&gt;(MysqlIO.java:294)
+        ... 15 more</pre>
+
+<h3 id="JDBCErrors">JDBC Programming Common Errors</h3>
+<h4 id="JDBCErrorsAccess">JDBC on MS Access</h4>
+
+<pre class="output">
+<strong>SYMPTOM (Access 2007):</strong> Can compile the JDBC program but Runtime Error
+<strong>ERROR MESSAGE</strong>: java.sql.SQLException: [Microsoft][ODBC Driver Manager] <span class="color-error"><strong>
+   </strong>Data source name not found</span> and no default driver specified.
+<strong>PROBABLE CAUSES</strong>: No such Data Source (ODBC) name in method 
+   DriverManager.getConnection(&quot;jdbc:odbc:<span class="underline"><em>ODBCName</em></span>&quot;);
+<strong>POSSIBLE SOLUTION</strong>: Check your ODBC configuration (under control panel &rArr; ODBC).</pre>
+
+<br />
+<pre class="output"><strong>SYMPTOM (Access 2007):</strong> Can compile the JDBC program but Runtime Error
+<strong>ERROR MESSAGE</strong>: java.sql.SQLException: [Microsoft][ODBC Driver Manager] <span class="color-error">No data found</span>
+<strong>PROBABLE CAUSES</strong>: The <em>ODBCName</em> in method DriverManager.getConnection(&quot;jdbc:odbc:<span class="underline"><em>ODBCName</em></span>&quot;) 
+   does not SELECT a database.
+<strong>POSSIBLE SOLUTION</strong>: Check your ODBC configuration (under control panel &rArr; ODBC).</pre>
+
+<br />
+<pre class="output"><strong>SYMPTOM (Access 2007):</strong> Can compile the JDBC program but Runtime Error
+<strong>ERROR MESSAGE</strong>: java.sql.SQLException: [Microsoft][ODBC Microsoft Access Driver] 
+   <span class="color-error">The Microsoft Office Access database engine cannot find the input table or query 'xxx'.</span>  
+   Make sure it exists and that its name is spelled correctly.
+<strong>PROBABLE CAUSES</strong>: The SQL statement references a non-existence table.
+<strong>POSSIBLE SOLUTION</strong>: Check your SQL statement and the database tables.</pre>
+
+<br />
+<pre class="output"><strong>SYMPTOM (Access 2007):</strong> Can compile the JDBC program but Runtime Error
+<strong>ERROR MESSAGE</strong>: java.sql.SQLException: <span class="color-error">Column not found.</span>
+<strong>PROBABLE CAUSES</strong>: The method ResultSet.getXxx(<em>columnName</em>) cannot locate 
+   the requested <em>columnName</em> in the ResultSet.
+<strong>POSSIBLE SOLUTION</strong>: Make sure that the column is included in the SELECT statement, 
+   so that it is included in the ResultSet.</pre>
+
+<br />
+<pre class="output"><strong>SYMPTOM (Access 2007):</strong> Can compile the JDBC program but Runtime Error
+<strong>ERROR MESSAGE</strong>: 
+  [Microsoft][ODBC Microsoft Access Driver] <span class="color-error">Syntax error</span> in FROM clause.
+  [Microsoft][ODBC Microsoft Access Driver] <span class="color-error">Too few parameters</span>.
+  ....
+<strong>PROBABLE CAUSES</strong>: Syntax error in the SQL statement.
+<strong>POSSIBLE SOLUTION</strong>: Obvious!</pre>
+
+<br />
+<pre class="output"><strong>SYMPTOM (Access 2007):</strong> Can compile the JDBC program but Runtime Error
+<strong>ERROR MESSAGE</strong>: 
+  [Microsoft][ODBC Microsoft Access Driver] <span class="color-error">SQL General Error</span>.
+<strong>PROBABLE CAUSES</strong>: This message is not clear, but most likely caused by inserting a record
+  with duplicate primary key.</pre>
+
+<br />
+<pre class="output"><strong>SYMPTOM (Access 2007):</strong> Can compile the JDBC program but Runtime Error
+<strong>ERROR MESSAGE</strong>: 
+  [Microsoft][ODBC Microsoft Access Driver] <span class="color-error">The number of fields are not the same as the ....</span>
+<strong>PROBABLE CAUSES</strong>: In the INSERT INTO <em>tableName</em> VALUES (...), you should have the same number
+  of values as the number of columns.</pre>
+
+<h3 id="NetBeansErrors">NetBeans Common Errors</h3>
+
+<pre class="output">
+<strong>SYMPTOM:</strong> Cannot display chinese characters and other Unicode characters in the NetBeans editor
+<strong>ERROR MESSAGE</strong>: Chinese characters displayed as boxes or question marks in the NetBeans editor
+<strong>CAUSES/SOLUTION</strong>:
+  1. Check the character set. Right-click on the project &rArr; Property &rArr; &quot;Source&quot; node 
+     &rArr; &quot;Encoding&quot; &rArr; Choose &quot;UTF-8&quot; or the desired Unicode character sets.
+  2. You also need to choose a font type that displays chinese or Unicode characters,
+     such as &quot;Monospace&quot;.
+     In &quot;Tools&quot; menu ⇒ Options ⇒ Fonts &amp; Colors ⇒ Syntax ⇒ default.
+     If one font does not work, try another.</pre>
+     
+<h3>C++ with GCC Compiler</h3>
+
+<pre class="output">
+<strong>SYMPTOM:</strong> Cannot compile
+<strong>ERROR MESSAGE</strong>: error: 'string' does not name a type
+<strong>CAUSES/SOLUTION</strong>: missing &quot;using namespace std;&quot;
+ 
+<strong>SYMPTOM:</strong> Cannot compile
+<strong>ERROR MESSAGE</strong>: error: iostream: No such file or directory
+<strong>CAUSES/SOLUTION</strong>: The file is incorrectly saved as &quot;.c&quot; instead of &quot;.cpp&quot;</pre>
+
+    
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 1.7.0_17, MySQL 5.6.10, Tomcat 7.0.39, JDBC 4.0<br />
+Last modified: April, 2013</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<a href="https://www3.ntu.edu.sg/f61217a453d065015090cd27fd6fb2c2"> </a></body>
+</html>

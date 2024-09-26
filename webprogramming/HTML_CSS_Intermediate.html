@@ -1,0 +1,1940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- for responsive web design -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- for SEO -->
+<meta name="description" content="Basic HTML and CSS Tutorial">
+<meta name="keywords" content="HTML, CSS, Tutorial, Basic">
+<title>HTML and CSS Tutorial: The Intermediates</title>
+	
+<!-- @@ v3 header changes starts here after <title> -->
+<!-- My custom CSS v3 -->
+<link rel="stylesheet" href="../css/programming_notes_v3.css">
+<!-- Prism Syntax Highlighter -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.css" rel="stylesheet" />
+<!-- favicon -->
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>Table of Contents <a id="show-toc" href="HTML_CSS_Intermediate.html#show-toc">(Hide)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>HTML/CSS</h1>
+<h2>Intermediates</h2>
+</div>
+
+<div id="content-main">
+<!-- @@ v3 header changes ends here before <h3> -->
+
+<h3>HTML Form &amp; HTTP Request</h3>
+
+<p>An HTML Form (Web Form) allows a web user to interact with the server. An HTML form contains  input elements (or fields, controls, widgets), such as text fields, checkboxes, and buttons. These input fields allow web users to supply data (called request parameters or query string) to the web server. Over at the web server, a server-side program collects these data and returns a dynamic response based on the inputs submitted.</p>
+
+<h4 id="HTML_Examples">HTML Form By Examples</h4>
+
+<h5>EXAMPLE 1: Basic <code>&lt;form&gt;</code> Structure</h5>
+
+<pre data-line="9-16"><code class="language-html line-numbers">&lt;!DOCTYPE html&gt;
+&lt;!-- HtmlFormEx1.html --&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Basic HTML Form Structure&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;form action="submit.php" method="get"&gt;
+  &lt;label for="username"&gt;Username&lt;/label&gt;&lt;br&gt; &lt;!-- &quot;for&quot; targets &quot;id&quot; --&gt;
+  &lt;input type="text" id="username" name="username"&gt;&lt;br&gt; &lt;!-- &quot;name&quot; for &quot;name=value&quot; pair --&gt;
+  &lt;label&gt;Password&lt;br&gt;
+  &lt;input type="password" name="password"&gt;&lt;/label&gt;&lt;br&gt;
+  &lt;input type="submit" value="SEND"&gt;
+  &lt;input type="reset" value="RESET"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<img src="images/HtmlFormEx1.png" alt="Output of Example 1" class="image-float-right">
+
+<ol>
+<li>An HTML form is enclosed within <code>&lt;form&gt;...&lt;/form&gt;</code> tags. The attribute <code>action</code> provides the URL for which this form is to be submitted. The attribute <code>method</code> specifies the HTTP method (GET or POST) to be used for submission.</li>
+<li>There are 2 input elements in this form:
+  <ol>
+<li><code>&lt;input type=&quot;text&quot;&gt;</code>: a text field for users to enter data.</li>
+<li><code>&lt;input type=&quot;password&quot;&gt;</code>: for password entry - displayed as * on the screen.</li>
+</ol>
+We use a <code>&lt;label&gt;</code> to label each of the <code>&lt;input&gt;</code>. You can either match the <code>for</code> attribute of the <code>&lt;label&gt;</code> to the <code>id</code> attribute of the <code>&lt;input&gt;</code> element to be labeled (as in the first <code>&lt;input&gt;</code><code></code>); or wrap the <code>&lt;input&gt;</code> inside the <code>&lt;label&gt;</code> (as in the second <code>&lt;input&gt;</code>). The <code>&lt;label&gt;</code> improves the usability for the mouse-user. When you click on the <code>&lt;label&gt;</code>, the labeled <code>&lt;input&gt;</code> element is selected.</li>
+
+<li>There are 2 buttons in this form:
+<ol>
+<li><code>&lt;input type=&quot;submit&quot;&gt;</code>: The so-called Submit button. Clicking the submit button sends the data to the <code>action</code> URL.</li>
+<li><code>&lt;input type=&quot;reset&quot;&gt;</code>: The reset button, which clear all the input fields.</li></ol>
+The <code>value</code> attribute of the button appears as the label of the button.</li>
+
+<li>When the user submit the form, the browser collects the request parameters from the input elements, in the form of <code>name=value</code> pairs. The <code>name</code> corresponds to the <code>name</code> attribute of the <code>&lt;input&gt;</code> elements; the <code>value</code> corresponds to the text entered. In this example, there are two sets of <code>name=value</code> pairs - <code>username=xxx</code> and <code>password=yyy</code>. The request parameters are joined together via a <code>&amp;</code> sign, i.e., <code>username=xxx&amp;password=yyy</code>, to form a so-called query string. The query string is then append behind the action URL via a <code>?</code> sign, i.e., <code>submit.php?username=xxx&amp;password=yyy</code>. As URL does not accept special characters, they are encoded in the form of <code>%hh</code>  (called URL encode), where hh is the ASCII code in hexadecimal, e.g., <code>~</code> is encoded as <code>%7e</code>; <code>^</code> as <code>%5e</code>. Space can be encoded in <code>%20</code> or <code>+</code> for simplicity.</li>
+<li>Try submitting the form. Observe the request parameters in the submitted URL. You are expect to get an error 404, as you have yet to write the server-side processing program &quot;<code>submit.php</code>&quot;.</li>
+
+<li>The server-side program receives the query string; URL decodes the special characters; and performs operations based on these parameters (e.g., query the database). It then returns an appropriate response to the client. I will not cover server side programming in this article. Read the respective server-side programming techniques such as PHP, Java Servlet, JSP, and etc.</li>
+</ol>
+
+<br>
+<h5>EXAMPLE 2: More   Controls and Input Validation</h5>
+<pre data-line="10-46"><code class="language-html line-numbers">&lt;!DOCTYPE html&gt;
+&lt;!-- HtmlFormEx2.html --&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Input Validation&lt;/title&gt;
+&lt;/head&gt;
+ 
+&lt;body&gt;
+&lt;form action="submit.php" method="get"&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Login&lt;/legend&gt;
+    &lt;label for="username"&gt;Username*&lt;/label&gt;&lt;br&gt; &lt;!-- &quot;for&quot; targets &quot;id&quot; --&gt;
+    &lt;input type="text" id="username" name="username" required&gt;&lt;br&gt;
+    &lt;label for="password"&gt;Password*&lt;/label&gt;&lt;br&gt;
+    &lt;input type="password" id="password" name="password" required pattern=".{4,}"&gt;
+  &lt;/fieldset&gt;
+ 
+  &lt;fieldset&gt;
+    &lt;legend&gt;Gender*&lt;/legend&gt;
+    &lt;label&gt;&lt;input type="radio" name="gender" value="m" required&gt; Male&lt;/label&gt;
+    &lt;label&gt;&lt;input type="radio" name="gender" value="f"&gt; Female&lt;/label&gt;
+  &lt;/fieldset&gt;
+ 
+  &lt;fieldset&gt;
+    &lt;legend&gt;Programming Skill&lt;/legend&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="programming" value="java"&gt; Java&lt;/label&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="programming" value="cpp" checked&gt; C++&lt;/label&gt;
+    &lt;label&gt;&lt;input type="checkbox" name="programming" value="csharp"&gt; C#&lt;/label&gt;
+  &lt;/fieldset&gt;
+ 
+  &lt;fieldset&gt;
+    &lt;legend&gt;Fruit&lt;/legend&gt;
+    Choose a fruit:
+    &lt;select name="fruit"&gt;
+      &lt;option value="apple"&gt;Apple&lt;/option&gt;
+      &lt;option value="banana" selected&gt;Banana&lt;/option&gt;
+      &lt;option value="orange"&gt;Orange&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/fieldset&gt;
+ 
+  &lt;textarea name="comment" placeholder="Enter your comment here" rows="5" cols="40" maxlength="180"&gt;&lt;/textarea&gt;&lt;br&gt;
+ 
+  &lt;input type="submit" value="SEND"&gt;
+  &lt;input type="reset" value="RESET"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<img src="images/HtmlFormEx2.png" alt="Output of Example 2" class="image-float-right">
+
+<ol>
+<li>We can group a set of related input fields into <code>&lt;fieldset&gt;</code> and provide a descriptive <code>&lt;legend&gt;</code>. The input fields will be enclosed in a box, with the legend shown on the top border.</li>
+<li>In <code>&lt;input type=&quot;text&quot;&gt;</code> (Line 14), attribute <code>required</code> is added to request browser to validate that this field is not empty. Browser will display an error message and will not submit the form if this field is empty.This attribute <code>required</code> is known as <em>boolean attribute</em>, as it does not have a value.</li>
+<li>In <code>&lt;input type=&quot;password&quot;&gt;</code> (Line 16), besides the attribute <code>required</code>, attribute <code>pattern=&quot;.{4,}&quot;</code> requests browser to perform &quot;Regular Expression Pattern Matching&quot;, in this case, 4 or more characters.</li>
+<li>Radio buttons (can check at most one button) are marked by <code>&lt;input type=&quot;radio&quot;&gt;</code>'s. Each <code>&lt;input&gt;</code> has its associated <code>&lt;label&gt;</code>. We typically use the same <code>name</code> attribute for all the buttons, and assign different <code>value</code> for each button. You can place the <code>required</code> on any one of the button to request the browser to validate that one is checked.</li>
+<li>Checkboxes (can check zero or more boxes) are marked by <code>&lt;input type=&quot;checkbox&quot;&gt;</code>. We added <code>checked</code> attribute on one of the box, to set its initial state. Attribute <code>checked</code> is applicable to checkboxes, as well as radio buttons.</li>
+<li>Pull-Down menu is defined via a <code>&lt;select&gt;</code> element, with each item marked by an <code>&lt;option&gt;</code>. We set the common name in the <code>name</code> attribute of the <code>&lt;select&gt;</code>, and different <code>value</code> in <code>&lt;option&gt;</code>. We can also mark the selected element via attribute <code>selected</code> in the <code>&lt;option&gt;</code>.</li>
+<li>Textarea (multi-line input text field) is marked via <code>&lt;textarea&gt;...&lt;/textarea&gt;</code>. The attribute <code>placeholder</code> is applicable to all input text fields, which shows a hint in the input field before the user enters a   value. The attribute <code>maxlength</code> request browser to limit the length of the input.</li>
+<li>Try submitting the form. Observe the request parameters in the submitted URL.</li>
+</ol>
+
+<br>
+<h5>EXAMPLE 3: HTML5 Input Controls and Validation</h5>
+<p>See examples below.</p>
+<p>[TODO] comprehensive example.</p>
+
+<h4>The HTML Form's Syntax</h4>
+
+<h5>The <code>&lt;form&gt;</code> Element and its <code>action</code> Attribute</h5>
+<p>An HTML form is enclosed by a <code>&lt;form&gt;</code> element. The attribute <code>action</code> specifies the URL for which this web form is to be submitted, which default to the current page. The attribute <code>method</code> specifies the HTTP method used for submission, i.e., <code>GET</code> or <code>POST</code> (with default of <code>GET</code>).</p>
+
+<pre class="syntax">
+<span class="new">&lt;form method=&quot;<span class="underline">get</span>|post&quot; action=&quot;<em>url</em>&quot;&gt;</span>
+  ... Input elements ...
+  ... Submit/Reset buttons ...
+<span class="new">&lt;/form&gt;</span></pre>
+
+<p>The input fields (or controls, widgets) are placed Inside the <code>&lt;form&gt;</code>.</p>
+
+<h5>Grouping Input Fields: The <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code> Elements</h5>
+<p>A well-designed web form uses <code>&lt;fieldset&gt;</code> to group the input fields into sets, with a <code>&lt;legend&gt;</code> to provide a descriptive legend for the fieldset. For example,</p>
+<pre class="example"><span class="new">&lt;fieldset&gt;</span>
+  <span class="new">&lt;legend&gt;Contact Details&lt;/legend&gt;</span>
+  &lt;label for=&quot;name&quot;&gt;Name&lt;/label&gt;
+  &lt;input id=&quot;name&quot;&gt;&lt;br&gt;
+  &lt;label for=&quot;telephone&quot;&gt;Telephone&lt;/label&gt;
+  &lt;input id=&quot;telephone&quot;&gt;&lt;br&gt;
+  &lt;label for=&quot;email&quot;&gt;Email&lt;/label&gt;
+  &lt;input id=&quot;email&quot;&gt;&lt;br&gt;
+<span class="new">&lt;/fieldset&gt;</span></pre>
+
+<h5>Labeling <code>&lt;input&gt;</code> Fields: The <code>&lt;label&gt;</code> Element</h5>
+
+<p>Each <code>&lt;input&gt;</code> field is typically associated with a <code>&lt;label&gt;</code> to label the input field. You can bind an <code>&lt;input&gt;</code> element to a label by either:</p>
+<ol>
+<li><code>&lt;label&gt;</code> as wrapper: place the <code>&lt;input&gt;</code> element within the <code>&lt;label&gt;...&lt;/label&gt;</code> tags.</li>
+<li><code>&lt;label&gt;</code> as reference: matching the "<code>for</code>" attribute of the <code>&lt;label&gt;</code> element with the "<code>id</code>" attribute of the input element.</li>
+</ol>	
+
+<pre class="example">
+<span class="comment">&lt;!-- Enclose &lt;input&gt; inside &lt;label&gt; --&gt;
+&lt;!-- Label text can be in front or behind the &lt;input&gt; --&gt;</span>
+<span class="new">&lt;label&gt;</span>Name: &lt;<span class="new">input</span> type="text" name="username"&gt;<span class="new">&lt;/label&gt;</span>
+<span class="new">&lt;label&gt;</span>&lt;<span class="new">input</span> type="radio" name="gender" value="m"&gt;Male<span class="new">&lt;/label&gt;</span>
+<span class="new">&lt;label&gt;</span>&lt;<span class="new">input</span> type="radio" name="gender" value="f"&gt;Female<span class="new">&lt;/label&gt;</span>
+
+<span class="comment">&lt;!-- Matching &quot;for&quot; with &quot;id&quot; --&gt;</span>
+&lt;label <span class="new">for=&quot;username&quot;</span>&gt;Name&lt;/label&gt;
+&lt;input type="text" <span class="new">id=&quot;username&quot;</span> name="username"&gt;</pre>
+
+<p>Label does not have any visual effect. But if you click on the label, the associated input field will be selected.</p>
+
+<h5>Input Controls</h5>
+
+<p>Input fields are marked by  <code>&lt;input&gt;</code>, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code> and  <code>&lt;button&gt;</code>. The <code>&lt;input&gt;</code> is a standalone element, with attribute <code>type</code> to specify its sub-types (e.g., <code>type=&quot;text&quot;</code> and <code>type=&quot;checkbox&quot;</code>). On the other hand, <code>&lt;textarea&gt;</code>, <code>&lt;select&gt;</code>,  <code>&lt;button&gt;</code> are container elements.</p>
+
+<table class="table-zebra">
+<tr>
+  <th>Element</th>
+  <th>Control</th>
+  <th>Description</th>
+  <th>Example</th>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;<span class="underline">text</span>&quot;&gt;</span> (default)</td>
+  <td>Single-line Text Input Field</td>
+  <td>For text input. The default type for <code>&lt;input&gt;.</code></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;password&quot;&gt;</span></td>
+  <td>Single-line Password Input Field</td>
+  <td>Password shown in asterisk (<code>*</code>).</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;textarea&gt;...&lt;/textarea&gt;</span></td>
+  <td>Multi-line Text Input Field</td>
+  <td>For text input.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;checkbox&quot;&gt;</span></td>
+  <td>Checkbox</td>
+  <td>Can check zero or more boxes</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;radio&quot;&gt;</span></td>
+  <td>Radio Button</td>
+  <td>Can check at most 1 button</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;select&gt;...&lt;/select&gt;<br>    &lt;optgroup&gt;...&lt;/optgroup&gt;<br>    &lt;option&gt;...&lt;/option&gt;</span></td>
+  <td>Drop-down List</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;submit&quot;&gt;</span></td>
+  <td>Submit Button</td>
+  <td>Click to submit the form to the server</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;reset&quot;&gt;</span></td>
+  <td>Reset Button</td>
+  <td>Reset all fields to their default value</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;image&quot;&gt;</span></td>
+  <td>Image Button</td>
+  <td>Use an image as submit button</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;button&quot;&gt;</span></td>
+  <td>Generic Button</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;file&quot;&gt;</span></td>
+  <td>File Chooser</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;hidden&quot;&gt;</span></td>
+  <td>Hidden Field</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;button&gt;...&lt;/button&gt;</span></td>
+  <td>Button</td>
+  <td>Same as <code>&lt;input type=&quot;button&quot;&gt;</code></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;email&quot;&gt;</span> (HTML5)</td>
+  <td>Email Address</td>
+  <td>Can be validated.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;url&quot;&gt;</span> (HTML5)</td>
+  <td>URL</td>
+  <td> Can be Validated.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;number&quot;&gt;</span> (HTML5)</td>
+  <td>Numeric value</td>
+  <td>You can use attributes <code>min|max</code> to specify the min and max values; and <code>step</code> to specify the step size (default of 1).<br>
+Many browsers add a spin button (with up/down arrow) to the right corner of the box</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;range&quot;&gt;</span> (HTML5)</td>
+  <td>Numeric value</td>
+  <td>You can use attribute <code>min|max</code> to specify the min and max values.<br>
+Many browsers use a <em>slider</em> for <code>range</code>.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;color&quot;&gt;</span> (HTML5)</td>
+  <td>Color Chooser</td>
+  <td>Browser may pop-up a color chooser.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;datetime_local&quot;&gt;<br>
+    &lt;input type=&quot;datetime&quot;&gt;<br>
+    &lt;input type=&quot;date|time|month|week&quot;&gt;</span> (HTML5)</td>
+  <td>Date and Time</td>
+  <td>Browser may provide a drop-down calendar. Poorly supported now.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;tel&quot;&gt;</span> (HTML5)</td>
+  <td>Phone number</td>
+  <td>No validation as phone numbers vary across countries.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;input type=&quot;search&quot;&gt;</span> (HTML5)</td>
+  <td>Search keywords</td>
+  <td>Search Box for entering search keywords. No validation.</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;datalist&gt;..&lt;/datalist&gt;<br>
+	  &lt;option&gt;</span> (HTML5)</td>
+  <td>Suggested List for input</td>
+  <td>Define a list of &quot;suggested&quot; options for <code>&lt;input type=&quot;text&quot;&gt;</code></td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;output&gt;..&lt;/output&gt;</span> (HTML5)</td>
+  <td>Generated Output</td>
+  <td>Define the result of a computation (by JavaScript)</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td><span class="lead-code">&lt;keygen&gt;</span> (HTML5)</td>
+  <td>&nbsp;</td>
+  <td>Define a public-private key pair field for authentication of the form</td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<h4>Input Control Attributes</h4>
+	
+<p>Besides the common attributes such as <span class="lead-code">id</span>, <span class="lead-code">class</span>, <span class="lead-code">name</span>, <span class="lead-code">value</span>, <span class="lead-code">alt</span>, the following attributes are applicable to input elements:</p>
+<ul>
+<li><span class="lead-code">type</span>: as above</li>
+<li><span class="lead-code">autofocus</span>: this input control shall receive the focus when the page is loaded.</li>
+<li><span class="lead-code">disabled</span>: disable the input control. Disabled controls are not sent on submission, and cannot receive focus.</li>
+<li><span class="lead-code">checked</span> (for <code>radio</code>, <code>checkbox</code>):  indicates that this value is selected by default.</li>
+<li><span class="lead-code">readonly</span> (for <code>text</code><code></code>):  indicates that this input is not editable.</li>
+<li><span class="lead-code">size</span> (for <code>text</code><code></code>):  specifies the number of characters to display.</li>
+<li><span class="lead-code">multiple</span> (for <code>file</code>, <code>email</code>) (HTML5): indicates multiple values can be passed.</li>
+<li><span class="lead-code">placeholder</span> (for <code>text</code>) (HTML5): provides hints on what should be entered.</li>
+<li><span class="lead-code">autocomplete</span> (for <code>text</code><code></code>) (HTML5): indicates whether browser shall auto-complete this field.</li>
+<li><span class="lead-code">required, minlength, maxlength</span> (HTML5): indicates that the value must be present, or element must be checked.</li>
+<li><span class="lead-code">min|max|step</span> (for <code>number</code>, <code>range</code>) (HTML5)</li>
+<li>more</li>
+</ul>
+	
+<p>Many of the above attributes (such as <code>disabled</code>, <code>checked</code>, <code>readonly</code>) are so called <em>boolean attributes</em>. That is, you do not have to specify its value in the HTML start tag. The presence of a boolean attribute on an element represents the true value.</p>
+	
+<h4>HTML Events</h4>
+
+<table class="table-zebra">
+<tr>
+<th>Event</th>
+<th>Description</th>
+</tr>
+<tr>
+<td class="lead-code">onsubmit, onreset</td>
+<td>Fires when the form is submitted/reset (typically via the submit/reset buttons)</td>
+</tr>
+
+	
+<tr>
+<td class="lead-code">onblue, onfocus</td>
+<td>Fires when the element loses/gain focus</td>
+</tr>
+<tr>
+  <td class="lead-code">oninput</td>
+  <td>An element gets user input</td>
+</tr>
+<tr>
+  <td class="lead-code">onchange</td>
+  <td>The value of the element is changed</td>
+</tr>
+<tr>
+  <td class="lead-code">oncontextmenu</td>
+  <td>When a context menu is triggered</td>
+</tr>
+<tr>
+  <td class="lead-code">oninvalid</td>
+  <td>When an element is invalid</td>
+</tr>
+<tr>
+  <td class="lead-code">onselect</td>
+  <td>When some text has been selected</td>
+</tr>
+<tr>
+  <td class="lead-code">onsearch</td>
+  <td>for <code>&lt;input type=&quot;search&quot;&gt;</code>, when user enters a search term.</td>
+</tr>
+<tr>
+  <td class="lead-code">onkeyup, onkeydown, onkeypress</td>
+  <td>When a key is up, down, or pressed (up + down)</td>
+</tr>
+</table>	
+
+	
+<h4>HTML5 Web-Form New Features</h4>
+
+<h5>Adding Hints for Input Text Fields via Attribute <code>placeholder</code></h5>
+
+<p>You can use the <code>placeholder</code> attribute to provide hints for the input, which will be shown in light-grey watermark and disappears when the user clicks on the field. For example,</p>
+
+<pre class="example">&lt;label&gt;Login: &lt;input type=&quot;text&quot; <span class="new">placeholder=&quot;Enter your username or email&quot;</span>&gt;&lt;/label&gt;</pre>
+
+<p>Placeholders should be used to clear up the ambiguity by providing examples, instead of another label.</p>
+
+<h5>Set the Initially-Focus Element via Attribute <code>autofocus</code></h5>
+
+<p>You can add the attribute <code>autofocus</code> (with no value) to the element that is supposed to receive the focus when the page is loaded.</p>
+
+<h5>HTML5 Input Validation</h5>
+
+<p>HTML5 implemented client-side validation on input fields.</p>
+
+<ul>
+<li><span class="lead-code">required, minlength, maxlength</span>: You can add attribute <code>required</code> (with no value) to signal to the browser that non-empty input is required for that field. The browser will pop-up an error message if empty value is submitted for that field. Similarly, you can use <code>minlength</code> and/or <code>maxlength</code> to specify the minimum and/or maximum number of characters to be input.</li>
+
+<li><span class="lead-code">novalidate, formnovalidate</span>: To turn off the validation (e.g., to test the server-side validation), add attribute <code>novalidate</code> to the <code>&lt;form&gt;</code> element; or attribute <code>formnovalidate</code> to the submit button.</li>
+
+<li><span class="lead-code">pattern=&quot;<em>regex</em>&quot;</span>: You can also match the input value against a regular expression (regex) via attribute <code>pattern=&quot;<em>regex</em>&quot;</code>. See &quot;Regular Expression&quot; article on how to use regex for matching.</li>
+<li><span class="lead-code">type=&quot;email|url&quot;</span> are validated. If <code>required</code> is not set, empty input is accepted.</li>
+</ul>
+
+<p>Example: Try out the following input controls.</p>
+<pre class="example">&lt;form action="submit.php" method="get"&gt;
+Name (type="text"): &lt;input <span class="new">type=&quot;text&quot;</span> name="username" placeholder="Your username"
+    <span class="new">required</span>&gt;&lt;br&gt;&lt;br&gt;
+Password (type="password"): &lt;input <span class="new">type=&quot;password&quot;</span> name="passwd" placeholder="password"
+    <span class="new">required minlength=&quot;4&quot; maxlength=&quot;8&quot;</span>&gt;&lt;br&gt;&lt;br&gt;
+Email (type="email"): &lt;input <span class="new">type=&quot;email&quot;</span> name="email" size="30" <span class="new">required</span>&gt;&lt;br&gt;&lt;br&gt;
+URL (type="url"): &lt;input type="url" <span class="new">name=&quot;url&quot;</span> size="30"&gt;&lt;br&gt;&lt;br&gt; <span class="comment">&lt;!--optional--&gt;</span>
+&lt;input <span class="new">type=&quot;submit&quot;</span>&gt;
+&lt;/form&gt;</pre>
+	
+<img src="images/HTML_input_validation.png" alt="Input Validation" width="403" height="214" class="image-left">
+
+<h5><code>&lt;select&gt;</code> with <code>&lt;optgroup&gt;</code> and <code>&lt;option&gt;</code></h5>
+<p>Try the following codes:</p>
+<pre class="example">&lt;<span class="new">select</span> name="choice"&gt;
+  &lt;option value="milk"&gt;Milk&lt;/option&gt;
+  &lt;<span class="new">optgroup label=&quot;Fruits&quot;</span>&gt;
+    &lt;option value="apple"&gt;Apple&lt;/option&gt;
+    &lt;option value="orange"&gt;Orange&lt;/option&gt;
+  &lt;/optgroup&gt;
+  &lt;<span class="new">optgroup label=&quot;Vegetables&quot;</span> disabled&gt;
+    &lt;option value="potatoes"&gt;Potatoes&lt;/option&gt;
+    &lt;option value="tomatoes"&gt;Tomatoes&lt;/option&gt;
+  &lt;/optgroup&gt;
+&lt;/select&gt;
+</pre>
+
+	
+
+<h5>Suggested Inputs (with Auto-complete) <code>&lt;datalist&gt;</code> (vs. <code>&lt;select&gt;</code>)</h5>
+
+<p>For example,</p>
+<pre class="example"><span class="comment">&lt;!-- Must select one of the options --&gt;</span>
+Choose a Color (select): &lt;<span class="new">select</span> name="color"&gt;
+  &lt;option value="red"&gt;Red&lt;/option&gt;
+  &lt;option value="green"&gt;Green&lt;/option&gt;
+  &lt;option value="blue"&gt;Blue&lt;/option&gt;
+&lt;/select&gt;&lt;br&gt;&lt;br&gt;
+
+<span class="comment">&lt;!-- Provide a list of suggestions for auto-complete. You can enter your own value --&gt;</span>
+Choose another Color (datalist): &lt;input type="text" name="morecolor" <span class="new">list=&quot;colorlist&quot;</span>&gt;
+&lt;<span class="new">datalist id="colorlist"&gt;</span>
+  &lt;option value="Red"&gt;
+  &lt;option value="Green"&gt;
+  &lt;option value="Blue"&gt;
+&lt;/datalist&gt;&lt;br&gt;&lt;br&gt;
+</pre>
+<img src="images/HTML_input_datalist.png" alt="Input datalist" width="411" height="83" class="image-left">
+<p><code>&lt;datalist&gt;</code> merely provides a list of suggestions (and supports auto-complete on these suggestions) on a input text field. You can enter your own value.</p>
+
+<h5>Progress Bar <code>&lt;progress&gt;</code> and Meter <code>&lt;meter&gt;</code></h5>
+
+<p>The progress bar <code>&lt;progress&gt;</code> shows how far a task has progressed. Meter <code>&lt;meter&gt;</code> show the current value (in a known range) or percentage.</p>
+<pre class="example">&lt;label for="progress"&gt;Progress (&amp;lt;progress&amp;gt;):&lt;/label&gt;
+&lt;<span class="new">progress</span> id="progress" <span class="new">value=&quot;48&quot; max=&quot;100&quot;</span>&gt;48% (fallback)&lt;/progress&gt;&lt;br&gt;&lt;br&gt;
+
+&lt;label for="meter"&gt;Usage (&amp;lt;meter&amp;gt;)&lt;/label&gt;
+&lt;<span class="new">meter</span> id="meter" <span class="new">value=&quot;4&quot; min=&quot;0&quot; max=&quot;10&quot;</span>&gt;4 out of 10&lt;/meter&gt;&lt;br&gt;&lt;br&gt;
+</pre>
+<img src="images/HTML_input_progress_meter.png" alt="input progress and meter" width="360" height="77" class="image-left">
+					
+	
+<h5>Numeric Inputs: <code>&lt;input type=&quot;number&quot;&gt;</code> and <code>&lt;input type=&quot;range&quot;&gt;</code></h5>
+	
+<p>To be used for inputting number or number range, having different UI (See below). For example,</p>
+<pre class="example">Marks (type=&quot;number&quot;): &lt;input <span class="new">type=&quot;number&quot;</span> size="6" name="marks" <span class="new">min=&quot;0&quot; max=&quot;100&quot;</span>&gt;&lt;br&gt;
+Feedback (type=&quot;range&quot;): &lt;input <span class="new">type=&quot;range&quot;</span> size="2" name="feedback" <span class="new">min=&quot;1&quot; max=&quot;5&quot;</span>&gt;
+</pre>
+<img src="images/HTML_input_number_range.png" alt="input controls - number and range" width="375" height="93" class="image-left">
+
+<h5>Generated Output: <code>&lt;output&gt;..&lt;/output&gt;</code></h5>
+	
+<p>Used to hold the output of JavaScript computation result (JavaScript is required). For example,</p>
+<pre class="example">&lt;form <span class="new">oninput=&quot;out.value=hello.value+username.value&quot;</span>&gt;
+  &lt;input type="text" <span class="new">id=&quot;hello&quot;</span> value="hello,"&gt; <span class="comment">&lt;!--use &quot;id&quot;--&gt;</span>
+  &lt;input type="text" <span class="new">id=&quot;username&quot;</span> value=""&gt;
+  &lt;<span class="new">output</span> <span class="new">name=&quot;out&quot;</span> for="hello username"&gt;enter something&lt;/output&gt; <span class="comment">&lt;!--use &quot;name&quot;--&gt;</span>
+&lt;/form&gt;</pre>
+	
+<p>Prior to HTML5, we typically use <code>&lt;div&gt;</code> or <code>&lt;span&gt;</code>.</p>
+
+<h5>File Upload <code>&lt;input type=&quot;file&quot;&gt;</code> and File Types <code>accept</code> Attribute</h5>
+<p>For <code>&lt;input type=&quot;file&quot;&gt;</code>, it is possible to accept only certain types of files, such as videos, images, audios,
+specific file extensions, or certain media MIME types. For example,</p>
+
+<pre class="example">&lt;form action="file_upload.php" method="post" <span class="new">enctype=&quot;multipart/form-data&quot;</span>&gt;
+<span class="comment">  &lt;!-- image file only via MIME type --&gt;</span>
+  Image file: &lt;input <span class="new">type=&quot;file&quot;</span> <span class="new">accept=&quot;image/*&quot;</span> title="Only images are allowed"&gt;&lt;br&gt;&lt;br&gt;
+  <span class="comment">&lt;!-- .rar or .zip --&gt;</span>
+  Zipped Codes: &lt;input <span class="new">type=&quot;file&quot;</span> <span class="new">accept=&quot;.rar,application/zip&quot;</span>&gt;&lt;br&gt;&lt;br&gt;
+  &lt;input type="submit" value="Upload your file"&gt;
+&lt;/form&gt;</pre>
+<img src="images/HTML_input_file_accept.png" alt="Input control for file" width="302" height="92" class="image-left">
+
+<p>Notes:</p>
+<ul>
+<li>You need to set <code>enctype="multipart/form-data"</code> in the <code>&lt;form&gt;</code> tag for file upload, which specifies how form data would be encoded while submitting to the server.</li>
+<li>You can specify "<code>multiple</code>" for multiple files upload.</li>
+</ul>
+
+<h5>Color Chooser via <code>&lt;input type=&quot;color&quot;&gt;</code></h5>
+<p>Input control <code>&lt;input type=&quot;color&quot;&gt;</code> creates a button-like control, with a color equal to the value attribute. Clicking this button opens up the color chooser. For example,</p>
+<pre class="example">&lt;input <span class="new">type=&quot;color&quot;</span> name="color" value="#ffff00"&gt;</pre>
+
+<h5>Data/Time Picker via <code>&lt;input type=&quot;datetime_local|datetime|date|time|month|week&quot;&gt;</code></h5>
+<p>On a supported browser, it will pop up an appropriate date/Time picker. For example,</p>
+<pre class="example">Select Date/Time Local: &lt;input <span class="new">type=&quot;datetime-local&quot;</span> name="dt_local"&gt;&lt;br&gt;&lt;br&gt;
+Select Date/Time Global with time zone: &lt;input <span class="new">type=&quot;datetime&quot;</span> name="dt"&gt;&lt;br&gt;&lt;br&gt;
+Select Date: &lt;input <span class="new">type=&quot;date&quot;</span> name="date"&gt;&lt;br&gt;&lt;br&gt;
+Select Time: &lt;input <span class="new">type=&quot;time&quot;</span> name="time"&gt;&lt;br&gt;&lt;br&gt;
+Select Month: &lt;input <span class="new">type=&quot;month&quot;</span> name="month"&gt;&lt;br&gt;&lt;br&gt;
+Select Week: &lt;input <span class="new">type=&quot;week&quot;</span> name="week"&gt;&lt;br&gt;&lt;br&gt;</pre>
+<img src="images/HTML_input_datetime.png" alt="input of datetime" width="454" height="256" class="image-left">
+
+<h5>Attribute <code>contenteditable</code></h5>
+<p>The boolean attribute <code>contenteditable</code> marks the element editable, for example,</p>
+	
+<pre class="example">&lt;p <span class="new">contenteditable</span>&gt;This is an editable paragraph.&lt;/p&gt;
+&lt;p <span class="new">contenteditable</span>&gt;
+  This sentence is editable.
+  &lt;span <span class="new">contenteditable=&quot;false&quot;</span>&gt;But this sentence is NOT.&lt;/span&gt;
+&lt;/p&gt;</pre>
+	
+<h4>HTTP GET/POST Request</h4>
+
+<h5>The Request Parameter (Name-Value Pair)</h5>
+
+<p>Each input field is associated with a <code>name-value</code> pair, which will be submitted to the server, as part of the HTTP request. The name is identified by the <code>name</code> attribute of the input field; while the value could be the user input (for text fields), or identified by the <code>value</code> attribute (for checkboxes, radio buttons and list options).</p>
+<p>For example,</p>
+<pre class="example">&lt;label&gt;FirstName: &lt;input type="text" <span class="new">name=&quot;firstname&quot;</span>&gt;&lt;/label&gt;
+   <span class="comment">&lt;!-- name=value pair is firstname=dataEnter --&gt;</span>
+ 
+&lt;label&gt;&lt;input type="radio" <span class="new">name=&quot;gender&quot; value=&quot;m&quot;</span>&gt;Male&lt;/label&gt;
+&lt;label&gt;&lt;input type="radio" <span class="new">name=&quot;gender&quot; value=&quot;f&quot;</span>&gt;Female&lt;/label&gt;
+<span class="comment">&lt;!-- name=value pair is gender=m or gender=f, depending on which button is checked --&gt;</span></pre>
+
+<p>When the form is submitted, the <em>name-value pair</em> will be sent to the server, as a so-called <em>request parameter</em>.</p>
+
+
+<h5>The Query String (All Name-Value Pairs)</h5>
+
+<p>When a user fills in the form and click the submit button, the request parameter from all the input fields, in the form of <code>name=value</code> pair, will be send to the server as part of the request. The processing URL is specified in the <code>action</code> attribute of the <code>&lt;form&gt;</code>. For a GET request, the request parameters are append behind the URL separated by a <code>'?'</code>. The <code>name=value</code> pairs are separated by an <code>'&amp;'</code>. Since the URL cannot accept special characters (such as blank and <code>'~'</code>), they will be encoded in the form of <code>%hh</code>, where <code>hh</code> is the ASCII code of the special character. e.g.,  <code>'~'</code> as <code>%7E</code>; blank as <code>%20</code> or <code>'+'</code>. This is  known as URL encoding. </p>
+<p>For example, suppose that the action URL is <code>http://www.example.com/test/submit.php</code>, with request parameters <code>username=peter</code>, <code>password=1234</code>, <code>gender=m</code>, and <code>comment=testing 1 2 3</code>, the resultant GET request URL is:</p>
+
+<pre class="syntax">
+http://www.example.com/test/submit.php<span class="new">?</span>username=peter<span class="new">&amp;</span>password=1234<span class="new">&amp;</span>gender=m<span class="new">&amp;</span>comment=testing+1+2+3</pre>
+
+<p>Take note that the password  are not encrypted, although it does not appear on the screen.</p>
+
+<h5>GET vs. POST Request Methods</h5>
+
+<p>For GET, the query string is appended behind the <code>action</code> URL. For POST, the query string is sent in the request body, and does not show up in the URL. POST is generally preferred as it can send more data, and does not mess up the URL.</p>
+
+<h5>How the Server Processes the Request Parameters?</h5>
+<p>The server-side program receives the query string; URL decodes the special characters; and performs operations based on these parameters (e.g., query the database). It then returns an appropriate response to the client. I will not cover server side programming in this article. Read the respective server-side programming techniques such as PHP, Java Servlet, JSP, and etc.</p>
+<p>[TODO] Simple example on PHP</p>
+
+<h3>Color</h3>
+<p>Color theme is the most important factor affecting the appearance of your web pages. I am NOT an expert on colors, but these are what I understood.</p>
+
+<h4>216 Browser-Safe Colors?</h4>
+
+<p>Not too long ago, the computer monitors can display only 256 colors (aka palettes). Hence, web designers created the so-called 216 browser-safe colors, which can be shown correctly and quite consistently on all the computer displays. Today, most of the computer monitor can display 24-bit true colors, is it still relevant?</p>
+
+<p>The 216 browser-safe colors are obtained mathematically (and not artistically or psychologically, and hence really really ugly), by putting values of <code>#00</code>, <code>#33 (51)</code>, <code>#66 (102)</code>, <code>#99 (153)</code>, <code>#CC (204)</code>, <code>#FF (255)</code> on each of the RGB triplets (6&times;6&times;6=216).</p>
+
+<p>Most computer monitors today are at least capable of display 16K (or 16384) colors. You could put values of <code>#00</code>, <code>#08</code>, <code>#10</code>, <code>#18</code>,..., <code>#F0</code>, <code>#F8</code>, <code>#FF</code> on each of the RGB triplets.</p>
+
+<h4>HTML/CSS Color Names</h4>
+
+<p>Again, the HTML/CSS provides many color names, such as <code>red</code>, <code>green</code>, <code>blue</code>, <code>grey</code>, and etc. Again, the color value for these color names are obtained numerically. As a result, these colors are really really ugly. Don't use them!</p>
+<p>Furthermore, you can't form a color theme by picking these names (lightblue+lightgreen+...??).</p>
+
+<h4>Designing Color Themes</h4>
+
+<p>Some online sties such as  ColorHexa (@ https://www.colorhexa.com) can help you setup a color scheme. You need to pick your &quot;Primary&quot; color. It could generates  the &quot;Complementary&quot;, &quot;Analogous&quot;, &quot;Split Complementary&quot; &quot;Triade&quot;, &quot;Tetrade&quot; and &quot;Monochromatic&quot; Colors.</p>
+<p>You can also try WebFX (https://www.webfx.com/web-design/color-picker/), and many more.</p>
+<p>You also need to design a set of traffic-light color (red, amber, green) for your states and buttons.</p>
+
+<h4>Rules-of-Thumb of Using Colors</h4>
+
+<ul>
+<li>Nothing beats black text on white background for reading text on a computer monitor!!!</li>
+<li>Stay monochrome (black on white). Use an additional color for highlighting headings, links, and etc.</li>
+<li>Use color with restraint. There is no reasons to use more than 4 colors.</li>
+<li>Use a lightly shaded background.</li>
+<li>Use color in a box.</li>
+
+</ul>
+
+<h3>Fonts &amp; Typography</h3>
+	
+<h4>Font Types</h4>
+<p>The choice font faces are probably the one of the most important factor affecting the appearance of your web pages. These are the main categories of fonts:</p>
+<ol>
+<li><span class="lead">Serif:</span> Serif fonts come with little horizontal tails, to guide you in reading a long (horizontal) line of texts. Serif fonts are used in printed materials such as newspaper for easy reading. For example,
+<div class="output" style="font-family:'Times New Roman',Serif">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+</li>
+
+<li><span class="lead">San-serif:</span> without the little tails, used for computer display and short heading in printed materials. [I don't know why? Probably you are not suppose to read long lines from the computer screen.] 
+<div class="output" style="font-family:'Segoe UI',San-serif">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+</li>
+
+<li><span class="lead">Monospace (Fixed-width Font):</span> the old typewriter fonts, used today for displaying program code, where spacing and alignment is crucial.
+  <div class="output" style="font-family:'Lucida Console',Monospace">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+</li>
+
+<li><span class="lead">Cursive:</span></li>
+<li><span class="lead">Artistic:</span></li>
+</ol>
+
+<p>Fonts look good in prints may not look good on screen. You are recommended to use sans-serif fonts for the web pages, which are displayed on computer screen.</p>
+
+<h5>Typographic Terminologies</h5>
+<ul>
+<li>Font Style: bold, italic, underline, strike through, double-strike through, double-underline.</li>
+<li>Kerning:  Space between characters</li>
+<li>Leading:  Space between lines</li>
+<li>emboss, engrave, outline, shadow</li>
+<li>em-space: a space equals to the width of letter 'm'</li>
+<li>em-dash: a dash equals to two hyphens, for indicating break in a sentence</li>
+</ul>
+
+<h5>Font Testing Paragraph</h5>
+<p>This is the famous standard &quot;Lorem Ipsum&quot; passage, used since the 1500s, for testing the typesetting:</p>
+<div class="output">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+
+
+<h4>Google Fonts</h4>
+<p>Today, the most frequently used font for web design is certainly the Google Fonts, which is free, open-source, and available on all platforms (Windows, macOS, mobiles, etc.).</p>
+	
+<p>See Google Font mother site and my "HTML/CSS Basics" article on how to use Google Fonts.</p>
+	
+<p>The popular google fonts are: "Open Sans", "Roboto",  &quot;Roboto Mono&quot; (monospace), ...</p>
+
+<h4>Other Non-Google Common Fonts</h4>
+
+<p>This table shows you some of the common fonts.</p>
+
+<table class="table-zebra">
+<col span="4" style="width:25%">
+<tr>
+  <th>Serif</th>
+  <th>San-serif (Body)</th>
+  <th>San-serif (Heading)</th>
+  <th>Monospace</th>
+</tr>
+<tr>
+<td colspan="4" class="text-center">(We use Google Fonts for web these days. The fonts below are outdated for web.)</td>
+</tr>
+<tr>
+  <td style="font-family:'Times New Roman',Serif">Times New Roman</td>
+  <td style="font-family:'Segoe UI',Segoe,San-serif">Segoe UI (Segoe)</td>
+  <td style="font-family:'Trebuchet MS',San-serif;text-transform:uppercase">Trebuchet MS (uc)</td>
+  <td style="font-family:'Lucida Console',Monospace">Lucida Console</td>
+</tr>
+<tr>
+  <td style="font-family:Georgia,Serif">Georgia</td>
+  <td style="font-family:Tahoma,San-serif">Tahoma</td>
+  <td style="font-family:'Trebuchet MS',San-serif">Trebuchet MS (lc)</td>
+  <td style="font-family:'Courier New',Monospace">Courier New</td>
+</tr>
+<tr>
+  <td style="font-family:'Palatino Linotype',Palatino,Serif">Palatino</td>
+  <td style="font-family:Helvetica,San-serif">Helvetica</td>
+  <td style="font-family:'Segoe UI',Segoe,San-serif">Segoe UI</td>
+  <td style="font-family:Consolas,Monospace">Consolas</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td style="font-family:Arial,San-serif">Arial</td>
+  <td style="font-family:Verdana,San-serif">Verdana</td>
+  <td style="font-family:Courier,Monospace">Courier</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td style="font-family:'Lucida Sans Unicode',San-serif">Lucida Sans Unicode</td>
+  <td style="font-family:'Century Gothic',San-serif">Century Gothic</td>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+  <td style="font-family:Calibri,San-serif">Calibri</td>
+  <td>&nbsp;</td>
+  <td>&nbsp;</td>
+</tr>
+</table>
+
+<p>In CSS, fonts are specified in property <code>font-family</code>. You can use <em>generic family names</em> such as &quot;<code>serif</code>&quot;, &quot;<code>sans-serif</code>&quot;, &quot;<code>monospace</code>&quot;, and &quot;<code>cursive</code>&quot;. The actual font used depends on the individual browser's settings.</p>
+
+<h4>Which Font Should I Use?</h4>
+<p>This is a million-dollar question. Some sans-serif font is nice when use in body text (normal weight, small font size, may need italics), others are suitable for use in heading (bold, bigger font size, uppercase). Some fonts are nice in lowercase, but not too nice in uppercase. Some nice fonts are not available in all the browsers (Windows 2000/XP/Vista/7, macOS, Linux?). For web publishing, you need to select one that most of your readers can enjoy.</p>
+
+<p>You probably want to use different fonts for <em>body texts </em>and <em>headings</em>:</p>
+<ol>
+<li><span class="lead">Headings:</span> use bigger font-size (and most probably in bold face) to draw readers' attention, and help to organize the ideas. There are usually a few levels of headings. Set the letter-spacing for headings.</li>
+<li><span class="lead">Body Texts:</span> comprises the main bulk of your writing. Use smaller but legible font-size. Use italics or bold to emphasize certain terms or phrases.</li>
+</ol>
+
+<p>These are my choices of fonts for web publishing (i.e., screen fonts, NOT printing fonts).</p>
+
+<h5>For Program Codes - Use Monospace or Fixed-width Font</h5>
+
+<p style="font-family:consolas, monospace"><span class="new"><strong>Consolas</strong></span> (Windows - designed for Visual Studio 2005) is my first choice, but may not be generally available. Zero(0)/oh(O), one(1)/eye(I)/else(l) are clearly differentiated. <em>It has a nice good italic style 1234567890</em>.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em></div>
+
+<p style="font-family:'Lucida Console', monospace"><span class="new"><strong>Courier New</strong></span> (Windows &amp; macOS) or <strong>Courier</strong> (macOS) is the most common choice. Zero(0)/oh(O) are not clearly differentiated, One(1)/eye(I)/else(l) are better. <em>This is the italics style 1234567890</em>.</p>
+
+<div class="output">
+  A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<h5>For Body Texts</h5>
+
+<p>Use sans-serif fonts which look good in normal weight, smaller-size, italics style.</p>
+
+<p style="font-family:'Segoe UI',San-serif"><span class="new"><strong>Segoe UI</strong></span> (Window, macOS(?)): My choice for these pages.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:Tahoma,San-serif"><span class="new"><strong>Tahoma</strong></span> (Windows): designed for legibility on the screen. It is narrower and more condensed than Verdana, but broader than Arial.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:Arial,San-serif"><span class="new"><strong>Arial</strong></span> (Windows &amp; macOS) <span class="new"><strong>Helvetica</strong></span> (macOS): although not specially created for screen, it looks good on screen, but a bit too common.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:Verdana,San-serif"><span class="new"><strong>Verdana</strong></span> (Window &amp; macOS): the most commonly used font for web publishing. The normal weight is broader for legibility. However, <strong>the bold fact is too broad</strong>.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:'Lucida Sans Unicode',San-serif"><span class="new"><strong>Lucida Sans Unicode/Lucida Sans</strong></span> (Windows): although not specially designed for screen, but it look on screen.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:Calibri,San-serif"><span class="new"><strong>Calibri</strong></span> (Windows): it is a new font in Windows Vista which looks good on screen and print, but may not be available in most of the non-vista browsers.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<h5>For Headings</h5>
+
+<p>Use sans-serif fonts which look good in bold, bigger-size, and uppercase.</p>
+
+<p style="font-family:'Trebuchet MS',San-serif"><span class="new"><strong>Trebuchet MS</strong></span> (Windows &amp; macOS): created for the screen, especially nice looking in UPPERCASE 'M' '&amp;' 'W'. Good for larger-font size, but not smaller-font size for body texts.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:Verdana,San-serif"><span class="new"><strong>Verdana</strong></span> (Window &amp; macOS): the most commonly used font for web publishing. However, <strong>the bold fact is too broad</strong>.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<h5>Serif Fonts</h5>
+
+<p>If you need one...</p>
+
+<p style="font-family:Georgia,Serif"><span class="new"><strong>Georgia</strong></span> (Windows &amp; macOS): specially created for screen. Nice looking but I seldom use serif font for web pages.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:'Times New Roman',Serif"><span class="new"><strong>Times New Roman</strong></span> (Windows) and <span class="new"><strong>Times</strong></span> (macOS): The most commonly used serif font.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:'Palatino Linotype',Serif"><span class="new"><strong>Palatino Linotype</strong></span> (Windows) and <span class="new"><strong>Palatino</strong></span> (macOS): another good choice for serif font.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<h5>Others (Cursive, Artistic)</h5>
+
+<p style="font-family:'Century Gothic', San-serif"><span class="new"><strong>Century Gothic</strong></span> (Window, macOS(?)): This is quite a very interesting and artistic font. The font width of each letter varies tremendously. <strong>The bold face seems to be more regular</strong>. <em>How are the italics?</em>. unusual question mark?!</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<p style="font-family:'Comic Sans MS',San-serif"><span class="new"><strong>Comic Sans MS</strong></span> (Window, macOS(?)): Over-used nowadays.</p>
+
+<div class="output">
+A quick brown fox jumps over a lazy dog 1234567890<br>
+<strong>A quick brown fox jumps over a lazy dog 1234567890</strong><br>
+<em>A quick brown fox jumps over a lazy dog 1234567890</em><br></div>
+
+<h4>Font Files</h4>
+<h5>Font File Types</h5>
+
+<ul>
+<li><code>.eot</code> (Embedded Open Type): work only in IE.</li>
+<li><code>.ttf</code> (True Type) and <code>.otf</code> (Open Type): used by the system, word processor and most of the browsers.</li>
+<li><code>.woff</code> (Web Open Font Format): new font format design specifically for the web. They are basically compressed version of <code>.ttf</code> or <code>.otf</code>. They are smaller in file size and hence, can be downloaded faster.</li>
+<li><code>.svg</code> (Scalable Vector Graphic): not commonly used for web.</li>
+
+</ul>
+
+<p>Besides the font types, up to 4  font-variant files can be associated with a particular font - for regular (normal), bold, italic, bold-italic, respectively. The font-family names are: <code>xxx</code>, <code>xxxBold</code>, <code>xxxItalic</code>, <code>xxxBoldItalic</code>, respectively.</p>
+
+
+<h5>Embedded Web Fonts via <code>@font-face</code></h5>
+
+<p>CSS 3 introduces a feature called <code>@font-face</code>, which instructs the browser to download a font on the fly.</p>
+
+<ol>
+<li>Firstly, save your font files, e.g., under <code>font</code> sub-directory of the CSS directory.</li>
+<li>Declare the font-family name and specify the font path via <code>@font-face</code> directive:
+<pre class="example"><span class="new">@font-face</span> {
+   font-family: xxx;                    <span class="comment">/* declare the font name */</span>
+   src: url("font/font-filename.ttf");  <span class="comment">/* location of font file */</span>
+}</pre>
+Notes:
+<ul>
+<li>One <code>@font-face</code> directive is needed for each font family.</li>
+<li>You can use multiple <code>src</code> to load different font files (e.g., one each for <code>.ttf</code>, <code>.otf</code>, <code>.woff</code>).</li>
+</ul> 
+</li>
+
+<li>You can now use the font in your style as usual, via the <code>font-family</code> property:
+<pre class="example">body {
+  <span class="new">font-family</span>: xxx, ....;
+}</pre>
+</li>
+</ol>
+
+<h4>Suggestions</h4>
+<p>&quot;Don't use too many fonts.  It looks ugly. It is distracting.  It makes you reader work too hard.  Give them a break!&quot;... I read this paragraph somewhere.</p>
+<p>Use a font for the body. Use another font for heading. Use a monospace font for program codes and listing.</p>
+	
+<p>Use Google Fonts for webapp.</p>
+
+<p>These are the conservative fonts, available on most systems (Windows, macOS), that won't go wrong:</p>
+<ul>
+<li>Times (Serif)</li>
+<li>Arial, Helvetica (Sans-Serif)</li>
+<li>Courier (monospace)</li>
+</ul>
+
+
+<h3>Images</h3>
+
+<h4>Graphics File Formats</h4>
+
+<h5>BMP (Windows BitMaP)</h5>
+<ul>
+  <li>Uncompressed, large but fast (no need to decompress).</li>
+  <li>Small images used for wallpaper, background, and Windows objects.</li>
+</ul>
+<h5>GIF (Graphic Interchange Format)</h5>
+<ul>
+  <li>GIF has two versions: GIF87a, GIF89a.</li>
+  <li>Lossless compressed using LZW (as in PKZip, WinZip), but supports only 256 colors.</li>
+  <li>Palette-based, limited to 256 color palettes. No good for full-color 24-bit real photo, best used for line art, logo, cartoon and so on.</li>
+  <li>Progressive GIFs to get a sense of the image.</li>
+  <li>Transparent GIFs (with see-thru background): Of the 256 colors palettes, one of palette can be chosen as the background. The background palette can be set to &quot;transparent&quot; for a see-thru effect.</li>
+  <li>Animated GIFs: Sequence of GIF images shown repeatedly.  Much simpler and faster than server-push or other animation technology.</li>
+  <li>There was a patent issues on using GIF, resulted in a new PNG (Portable Network Graphic) format and the burn-all-gif campaign. The original LZW patent already lapsed in 2003-2004, and the GIF can be used freely now (??).</li>
+</ul>
+
+<h5>PNG (Portable Network Graphics)</h5>
+<ul>
+  <li>Lossless.</li>
+  <li>More efficient compression algorithm than GIF (using LZW).</li>
+  <li>No animation.</li>
+  <li>Support transparency.</li>
+  <li>Can be used for computer-generated image, as well as photos (but not as good as JPEG).</li>
+  <li>How many colors? PNG8 supports 256 color palettes with 1-color transparency (replacement for GIF); PNG24 supports 24-bit true color; PNG32 supports 24-bit color plus 8-bit alpha channel (with 256-level of transparency). (JPEG and GIF do not support alpha channel.)</li>
+</ul>
+
+
+<h5>JPEG (Joint Photographic Expert Group)</h5>
+<ul>
+  <li>Lossy compressed using DCT with quantization. </li>
+  <li>Support 24-bit true color for real-life photo.</li>
+  <li>Progressive JPEGs similar to interlaced GIFs, to get a sense of the image.</li>
+  <li>No transparency support.</li>
+  <li>No animation.</li>
+</ul>
+
+<h5>SVG (Scalable Vector Graphics)</h5>
+
+<ul>
+<li>Uses vector drawing, hence, small size, lossless, and flexibility in resizing without losing details.</li>
+<li>Not widely supported yet (especially older versions of IE).</li>
+</ul>
+
+<h5>Why Can't JPEG Support Transparency?</h5>
+
+<p>The primary reason is that JPEG compression is lossy.  That is, a image pixel of a certain RGB value, may not recover its original RGB value exactly (but close) after compression and decompression. Suppose a certain (Rx,Gx,Bx) triplet of the original uncompressed image is picked to be transparent. This triplet is compressed into JPEG format for storage and transmission. It has to be decompressed for display.  However, due to the lossy compression algorithm, you may not get back the original (Rx,Gx,Bx) value (but somewhere very close). Thus, the pixel will not be shown as transparent. On the other hand, other pixels with triplet of nearby value such as (Ry,Gy,By) must be decompressed into (Rx,Gx,Bx), and be shown as transparent.</p>
+  
+<h4>Rule of thumb</h4>
+<ol>
+  <li>Your primary objective shall be having the <em>smallest image size</em> (shortest download time) with <em>acceptable image quality</em> on the <em>display console</em>.</li>
+  <li>Use JPEG for 24-bit color photos. Use GIF/PNG for 256-color line arts, cartoons, and drawing (all the drawings in my website are saved in GIF/PNG).</li>
+  <li>Use GIF for animation.</li>
+  <li>Use GIF/PNG for transparency.</li>
+  <li>72 dpi (or possibly 120 dpi) for web images is sufficient for screen display. This is because a typical display console supports about 60-96 dpi. Take not that quality printing (e.g., printing photos) requires a much higher dpi.</li>
+</ol>
+
+<h4>Using Images</h4>
+<ol>
+<li>Make it &quot;light&quot;! Do not embed a 5MB image. You don't need 600-dpi resolution for displaying image on the computer screen [you need 300dpi for good printing and 600dpi for high-quality printing]. 72 to 96 dpi, or in extreme case - 120 dpi, is good enough for screen display. Use a image editing software to scale down the image resolution before putting on your web page.</li>
+<li>Don't let the browser resize your image, even worst, ask the browser to reduce the size of your image (this is a waster of the precious network bandwidth, computer processing power, and generates more heats). Do it yourself!</li>
+<li>[This is difficult!] Tune your images' color tone (via the alpha channel), to bend in with the color theme of your website.</li>
+</ol>
+
+<h3>Responsive Web Design (RWD)</h3>
+<p>Responsive Web Design (RWD) lets you change the layout of a page based on the browser's window width, so as to present the page in a readable manner on all devices (from smartphones to tablets to desktops) without creating multiple versions for your website.</p>
+
+<p>The strategies are:</p>
+<ul>
+<li>Stack columns on small devices for multi-column design: Multi-column design looks good on desktops (or possibly tablets in landscape), but not on smartphones. You can stack on columns on top of each other on small devices, by conditionally removing the <code>float</code> property of the columns.</li>
+<li>Flexible (Relative) page width: Set the width of your content divisions to <code>auto</code> or <code>100%</code>, instead of using absolute pixel numbers.</li>
+<li>Shrink margin, padding, and white spaces for small devices.</li>
+<li>Shrink the font size, especially for headings on small devices.</li>
+<li>Collapse the navigation menu-bar items for small devices into a pull-down menu.</li>
+<li>Hide or Collapse less important contents for small devices.</li>
+<li>Use smaller resolution images and videos for small devices.</li>
+</ul>
+
+<p>It is common to create 3 (or more) sets of media queries for different devices - smartphone (width &lt;= 480), tablets (481 &lt;= width &lt;= 768), and desktop (width &gt;= 769). Some designers choose to use 1024 instead of 768.</p>
+
+
+<h4>Viewport</h4>
+
+<p>&quot;Mobile&quot; browsers render web pages in a virtual window called <em>viewport</em>, which is usually wider than the screen width, so that they do not need to squeeze the page into the screen. Users can pan or zoom to see the different parts of the web page.</p>
+
+<p>Modern mobile browsers support a <code>&lt;meta&gt;</code> tag to control the viewport, which is typically set as follows for responsive web design:</p>
+
+<pre class="example">&lt;meta <span class="new">name=&quot;viewport&quot;</span> content=&quot;width=device-width, initial-scale=1&quot;&gt;</pre>
+
+<p>The <code>viewport</code>'s <code>width</code> is set to the <code>device-width</code>. If you screen resolution is 1920x1080, your viewport width is 1920. Many devices allocate many physical pixels to display one logical pixel. If this is not set correctly, the browser will show your webpage with its native resolution, which is often a zoom-out view with small texts and images.</p>
+<p>The <code>initial-scale</code> sets the zoom level when the page is first loaded (to no zoom in the above example).</p>
+
+<p>Alternatively, you can also use the CSS <code>@viewport</code> at-rule (instead of the HTML <code>&lt;meta&gt;</code> element) to set the viewport, as follows:</p>
+<pre class="example"><span class="new">@viewport</span> { 
+  width: device-width;
+  initial-scale: 1;
+}</pre>
+
+<h4>CSS Media Queries</h4>
+
+<p>CSS3 media queries let you conditionally apply styles based on the <em>media type</em> (type of device/media, e.g., <code>screen</code>, <code>print</code> or <code>handheld</code>) and <em>media features</em> (such as the availability of color or viewport dimensions <code>min-width</code> <code>max-width</code>). In other words, you can use media queries to conditionally assign different styles for smartphones, tablets and desktops. The syntax is:</p>
+	
+<pre class="syntax">
+<span class="comment">// General structure</span>
+<span class="new">@media</span> <em>media-type</em> <span class="new">and</span> <em>media-feature</em> { css-rules }
+
+<span class="comment">// On media type</span>
+<span class="new">@media print</span> { css-rules }
+
+<span class="comment">// On media type and media feature</span>
+<span class="new">@media screen and (max-width: 800px)</span> { css-rules }
+
+<span class="comment">// On media feature, with media tpe of 'all'</span>
+<span class="new">@media (orientation: landscape)</span> { css-rules }</pre>
+	
+<p>The available <code>media-type</code>s are:</p>
+<ul>
+<li><span class="lead-code">all</span>: all deveices</li>
+<li><span class="lead-code">screen</span>:</li>
+<li><span class="lead-code">print</span>:</li>
+<li><span class="lead-code">handheld</span>:</li>
+<li><span class="lead-code">projection</span>:</li>
+<li><span class="lead-code">aural</span>: speech systems</li>
+<li><span class="lead-code">embossed</span>:</li>
+<li><span class="lead-code">braille</span>:</li>
+<li><span class="lead-code">tv</span>:</li>
+<li><span class="lead-code">tty</span>: terminals, portables.</li>
+<li><span class="lead-code">embossed</span>:</li>
+</ul>
+	
+
+<p>Examples of media type:</p>
+<pre class="example">
+@media print {    <span class="comment">/* for printed document */</span>
+   html { background-color: white }
+}
+
+@media not print {   <span class="comment">/* except printed document */</span>
+   html { background-color: light-gray }
+}
+
+@media only screen {   <span class="comment">/* for screen only */</span>
+   html { background-color: green }
+}</pre>
+
+
+<h5>Media Queries in HTML <code>&lt;link&gt;</code> Element via Attribute <code>media</code></h5>
+
+<p>You can apply media query in HTML <code>&lt;link&gt;</code> element to load different style sheets for different window width, e.g.,</p>
+<pre class="example">
+&lt;link href=&quot;css/<span class="new">small.css</span>&quot;  rel=&quot;stylesheet&quot; <span class="new">media=&quot;(max-width:480px)&quot;</span> &gt;
+      <span class="comment">&lt;!-- User small.css if window width &lt;= 480px --&gt;</span>
+&lt;link href=&quot;css/<span class="new">medium.css</span>&quot; rel=&quot;stylesheet&quot; <span class="new">media=&quot;(min-width:481px) and (max-width:768px)&quot;</span> &gt;
+      <span class="comment">&lt;!-- Use medium.css if 481px &lt;= width &lt;= 768px --&gt;</span>
+&lt;link href=&quot;css/<span class="new">large.css</span>&quot;  rel=&quot;stylesheet&quot; <span class="new">media=&quot;(min-width:769px)&quot;</span> &gt;
+      <span class="comment">&lt;!-- Use large.css if window width &gt;= 769px --&gt;</span></pre>
+
+<p>Media query is performed via the additional attribute <code>media</code> in the <code>&lt;link&gt;</code> element.</p>
+
+<h5>Media Queries in CSS</h5>
+
+<p>You can also use media queries in CSS to load difference style sheets via the CSS <code>@import</code> directive, e.g.,</p>
+
+<pre class="example">
+@import url(&quot;css/<span class="new">base.css</span>&quot;);  <span class="comment">/* no media query, default style for all window width */</span>
+@import url(&quot;css/<span class="new">medium.css</span>&quot;) <span class="new">(min-width:481px) and (max-width:768px)</span>;
+@import url(&quot;css/<span class="new">small.css</span>&quot;)  <span class="new">(max-width:480px)</span>;
+</pre>
+
+<p>The above is known as Desktop-First design, where default styles are design based on the desktops, and customized styles for smaller devices.</p>
+
+<h5>Embedded Media Query in Styles</h5>
+<p>You can apply media query in style rules to condition style rules via CSS <code>@media</code> directive, e.g.,</p>
+
+<pre class="example">
+<span class="comment">/* No media query, default styles for desktop */</span>
+body { ...... }
+h1, h2, h3, h4, h5, h6 { ...... }
+
+<span class="comment">/* Styles for medium devices - override the default */</span>
+<span class="new">@media (min-width:481px) and (max-width:768px)</span> {
+   body { ...... }
+   h1, h2, h3, h4, h5, h6 { ...... }
+}
+
+<span class="comment">/* Style for small devices - override the default */</span>
+<span class="new">@media (max-width:480px)</span> {
+   body { ...... }
+   h1, h2, h3, h4, h5, h6 { ...... }
+}</pre>
+
+<p>Again, this is a Desktop-First design, where you design the styles for desktops (as defaults), and customized styles for smaller devices (that override the defaults).</p>
+
+<h4>CSS Flexible Box Layout (Flexbox)</h4>
+<p>Flexbox is a box model designed for user interface, to accommodate different, unknown screen sizes.  A flex container expands items to fill available space and shrinks them to prevent overflow.</p>
+<p>Bootstrap uses flexbox to support responsive web design</p>
+
+<h5>Example 1: Arrange items in a container</h5>
+<pre class="example">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Flexbox Test&lt;/title&gt;
+&lt;style&gt;
+<span class="new">div#container</span> {
+  <span class="new">display: flex;</span>
+  <span class="new">flex-direction: row;</span>      <span class="comment">/* try column */</span>
+  align-items: center;      <span class="comment">/* vertical alignment */</span>
+  justify-content: center;  <span class="comment">/* horizontal alignment */</span>
+  width: 80%;
+  height: 400px;
+  background-color: lightgray;
+}
+<span class="new">div.item</span> {
+  width: 250px;
+  height: 100px;
+  margin: 10px;
+  background-color: lightblue;
+}
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+<span class="new">&lt;div id=&quot;container&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;A Flexbox Item&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;A Flexbox Item&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;A Flexbox Item&lt;/div&gt;
+&lt;/div&gt;</span>
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>Try:</p>
+<ul>
+<li>running the above code</li>
+<li>changing the screen size, and observe how the UI changes.</li>
+<li>changing <code>flex-direction</code> from <code>row</code> to <code>column</code>.</li>
+<li>removing the <code>align-items</code> (items align from top vertically) and <code>justify-content</code> (items align from left horizontally).</li>
+</ul>
+
+<h5>Example 2: Optimally fitting items to container</h5>
+<pre class="example">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Flexbox Test&lt;/title&gt;
+&lt;style&gt;
+<span class="new">div#container</span> {
+  <span class="new">display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-content: stretch;
+  align-items: stretch;</span>
+  height: 100%;
+  background-color:lightgray ;
+}
+<span class="new">div.item</span> {
+  <span class="new">flex-grow: 1;
+  flex-shrink: 0;
+  flex-basis: 200px;</span>
+  height: 100px;
+  margin: 10px;
+  background-color: lightblue;
+}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;p&gt;Try resizing your screen and observe how the items stack on top of the others&lt;/p&gt;
+<span class="new">&lt;div id=&quot;container&quot;&gt;
+  &lt;div class=&quot;item&quot;&gt;Flexbox Item 1&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;Flexbox Item 2&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;Flexbox Item 3&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;Flexbox Item 4&lt;/div&gt;
+  &lt;div class=&quot;item&quot;&gt;Flexbox Item 5&lt;/div&gt;
+&lt;/div&gt;</span>
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+	
+<p>Try:</p>
+<ul>
+<li>Resize your screen and observe how the items stack on top of the others</li>
+</ul>
+	
+
+	
+<h4>Responsive Image using <code>&lt;img&gt;</code>'s <code>srcset</code> and <code>sizes</code> Attributes</h4>
+<h5><code>srcset</code> with <code>sizes</code></h5>
+<p>For example,</p>
+<pre class="example">&lt;img <span class="new">sizes</span>="(min-width: 1600px) 600px,
+            (min-width: 900px) 50vw,
+            40vw"
+     <span class="new">srcset</span>="img/test-300.jpg 300w,
+             img/test-600.jpg 600w,
+             img/test-900.jpg 900w,
+             img/test-1200.jpg 1200w"
+     src="img/test-600.jpg" alt="test image"&gt;</pre>
+
+<p>The attribute <code>sizes</code> is similar to media queries, with a list of media condition and its size</p>
+<ul>
+<li>If the viewport is larger than 1600px, display in 600px.</li>
+<li>Else if the viewport is larger than 900px, display in 50% width.</li>
+<li>Else display in 40% width. Media condition shall be omitted for last item.</li>
+</ul>
+
+<p>The attribute <code>srcset</code> provides a list of available image URLs with a width.</p>
+<p>The <code>src</code> is a mandatory attribute. In case of <code>srcset</code>, <code>src</code> will serve as the fallback image if the browser does not support <code>srcset</code>.</p>
+
+<h5><code>srcset</code> without <code>sizes</code></h5>
+<p>You can use <code>srcset</code> without the <code>sizes</code>, e.g.,</p>
+<pre class="example">&lt;img src="img/test-600.jpg" alt="test image"
+     <span class="new">srcset</span>="img/test-300.jpg 1x,
+             img/test-600.jpg 2x,
+             img/test-900.jpg 3x"&gt;</pre>
+
+<p>The <code>srcset</code> provides the list of available images, with a device-pixel ratio <code>x</code> descriptor. If the device-pixel ratio is 1, use the first image  and so on.</p>
+	
+<h4>Responsive Image using <code>&lt;picture&gt;</code> and <code>&lt;source&gt;</code> elements</h4>
+	
+<p>For example,</p>
+<pre class="example"><span class="new">&lt;picture&gt;</span>
+  <span class="new">&lt;source</span> media="(min-width: 900px)" srcset="test_big.jpg"&gt;
+  <span class="new">&lt;source</span> media="(min-width: 600px)" srcset="test_medium.jpg"&gt;
+  <span class="new">&lt;img</span> src="test_small.jpg" style="width:auto" alt="test image"&gt;
+<span class="new">&lt;/picture&gt;</span>
+</pre>
+<p>If the screen width is more than 900px, use &quot;test_big.jpg&quot;. Else if the screen width is more than 600px, use &quot;test_medium.jpg&quot;. Else use &quot;test_small.jpg&quot;.</p>
+	
+	
+<h3>LESS - CSS Preprocessor</h3>
+
+<p>A CSS preprocessor (or Stylesheet Language) lets you write styles using programming constructs and then compile into the final CSS. <code>src</code>, which is mandatroy, is meant as fallback.</p>
+
+<p>It allows you to:</p>
+<ul>
+<li>Use programming constructs such as variables, mixins and functions.</li>
+<li>Automatically include vender prefixes.</li>
+<li>Combine style sheets and minify them to reduce download times.</li>
+</ul>
+
+<p>It makes CSS more maintainable, themable and extendable.</p>
+
+<p>The two most common CSS preprocessors are LESS and SASS . I will cover LESS in this article.</p>
+
+<h4>Getting Started</h4>
+
+<h5>Running LESS under Node.js</h5>
+
+<ol>
+<li>Install Node.js (@ <a href="https://nodejs.org/">https://nodejs.org/</a>), which is a standalone JavaScript Engine.</li>
+
+<li>Install LESS under Node.js via npm (Node Package Manager):
+  <pre class="command">
+$ npm install -g less
+</pre></li>
+
+<li>To run the Less Compiler (lessc):
+<pre class="command">
+$ lessc styles.less &gt; styles.css
+      <span class="comment">// To output minified CSS, add -x option.</span> 
+</pre></li>
+</ol>
+
+
+<h5>Running Less under Browsers</h5>
+
+<p>You can also run the LESS compiler under a browser via the client-side JavaScript <code>less.js</code> (without installing Node.js):</p>
+
+<ol>
+<li>Download <code>less.js</code> (@ <a href="https://github.com/less/less.js/archive/master.zip">https://github.com/less/less.js/archive/master.zip</a>).</li>
+<li>Place your less script in a <code>&lt;link&gt;</code> tag as <code>href</code>, with <code>rel=&quot;stylesheet/less&quot;</code>, in the <code>&lt;head&gt;</code> section in your page. We typically keep our less scripts under the sub-directory <code>less</code>.</li>
+<li>Include <code>less.js</code> in a <code>&lt;script&gt;&lt;/script&gt;</code> tag, after the <code>&lt;link&gt;</code> tag.</li>
+<li>For testing, you can optionally use script <code>less.watch()</code>, which activates the &quot;watch&quot; mode, to automatically recompile the CSS and refresh the web page, whenever the less file changes.</li>
+</ol>
+
+<pre data-line="6-11"><code class="language-html line-numbers">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Less Template&lt;/title&gt;
+&lt;link rel="stylesheet/less" href="less/myStyle.less" &gt;
+&lt;script src="js/less-2.5.0.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// Activates the "watch" mode, to refresh the CSS whenever the less file changes.
+less.watch();
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Testing Less&lt;/h1&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h4>Less by Examples</h4>
+
+<p>I extracted codes from Bootstrap's less files (@ <a href="http://getbootstrap.com/">http://getbootstrap.com/</a>) to show you some <em>production</em> examples.</p>
+
+<h5>Example 1: Using Variables</h5>
+
+<p>Create the following less script called &quot;<code>LessExVar.less</code>&quot; and save under sub-directory &quot;<code>less</code>&quot;.</p>
+
+<p>In your text editor, associate the &quot;<code>.less</code>&quot; file type with CSS, for syntax highlighting. Less syntax is not identical with CSS but close enough.</p>
+
+<pre><code class="language-less line-numbers">// less/LessExVar.less: Using variables
+ 
+// Define the variables
+@gray-base:  #000;       // Declare a variable with a value
+@gray-dark:  lighten(@gray-base, 20%);  // Apply less built-in color function lighten()
+@text-color: @gray-dark;  // Declare a variable with a value from another variable
+@body-bg:    #fff;
+ 
+@font-family-sans-serif: "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-serif:      Georgia, "Times New Roman", Times, serif;
+@font-family-monospace:  Menlo, Monaco, Consolas, "Courier New", monospace;
+@font-family-base:       @font-family-sans-serif;
+@font-size-base:         14px;
+@line-height-base:       1.428571429; // 20/14
+ 
+@headings-color:         #337ab7;
+@headings-font-family:   inherit;
+@headings-font-weight:   500;
+@headings-line-height:   1.1;
+@font-size-h1:           floor((@font-size-base * 2.6)); // ~36px
+                            // Apply arithmetic multiplication on variable
+                            // and less built-in function
+@font-size-h2:           floor((@font-size-base * 2.15)); // ~30px
+ 
+// Using the variables
+body {
+  font-family:      @font-family-base;
+  font-size:        @font-size-base;
+  line-height:      @line-height-base;
+  color:            @text-color;
+  background-color: @body-bg;
+}
+ 
+h1,
+h2 {
+  font-family: @headings-font-family;
+  font-weight: @headings-font-weight;
+  line-height: @headings-line-height;
+  color:       @headings-color;
+}
+ 
+h1 { font-size: @font-size-h1; }
+h2 { font-size: @font-size-h2; }</code></pre>
+
+<p>The generated CSS is:</p>
+<pre class="output">body {
+    background-color: #ffffff;
+    color: #333333;
+    font-family: &quot;Helvetica Neue&quot;,Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857;
+}
+h1, h2 {
+    color: #337ab7;
+    font-family: inherit;
+    font-weight: 500;
+    line-height: 1.1;
+}
+h1 {
+    font-size: 36px;
+}
+h2 {
+    font-size: 30px;
+}</pre>
+
+<p>Create the following HTML page (&quot;<code>LessExVar.html</code>&quot;) to test the tags defined in less script (<code>&lt;body&gt;</code>, <code>&lt;h1&gt;</code> and <code>&lt;h2&gt;</code>):</p>
+<pre data-line="6,13-15"><code class="language-html line-numbers">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Less Template&lt;/title&gt;
+&lt;link rel="stylesheet/less" href="less/LessExVar.less" &gt;
+&lt;script src="js/less-2.5.0.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// Activates the "watch" mode, to refresh the CSS whenever the less file changes.
+less.watch();
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Testing Less&lt;/h1&gt;
+&lt;h2&gt;Less is a CSS Preprocessor&lt;/h2&gt;
+&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua.&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h5>How It Works?</h5>
+
+<ol>
+<li>A less variable is prefixed with a <code>@</code> sign, in the form of <code>@<em>var-name</em></code>.</li>
+<li>You can apply less built-in functions (such as <code>lighten()</code> and <code>floor()</code>) and arithmetic operations (such as <code>+</code>, <code>-</code>, <code>*</code> and <code>/</code>) to variables.</li>
+</ol>
+
+<p>On chrome, you need to run you web page through a web server, as <code>less.js</code> makes Ajax call to server. But, you can run on Firefox without a web server and see the generated CSS output via Firebug or Developer Tools.</p>
+
+<p>We typically keep all the variables in another less file (say &quot;<code>variables.less</code>&quot;); and include the file via &quot;<code>@import variables.less;</code>&quot;.</p>
+
+
+<h5>Example 2: Using Mixins</h5>
+
+<p>Mixins are similar to variables, but it can include a list of properties. It could take arguments too.</p>
+
+<p>Create the following less script called &quot;<code>LessExMixin.less</code>&quot;, under the &quot;<code>less</code>&quot; sub-directory:</p>
+<pre><code class="language-less line-numbers">// less/LessExMixin.less: Using Mixins
+ 
+// Define the mixins
+.center-block() {   // Center a block element
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+ 
+.size(@width; @height) {  // Set the width and height of a block, via argumets
+  width: @width;
+  height: @height;
+}
+ 
+// Using the mixins
+#my-block {
+  .center-block();    // parentheses are optional here
+  .size(70%; 100px);  // passing in argument
+}</code></pre>
+
+<p>The generated CSS are:</p>
+
+<pre class="output">#my-block {
+    display: block;
+    height: 100px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}</pre>
+
+<p>The test HTML page is:</p>
+<pre data-line="6,16"><code class="language-html line-numbers">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+&lt;meta charset="utf-8"&gt;
+&lt;title&gt;Less Template&lt;/title&gt;
+&lt;link rel="stylesheet/less" href="less/LessExMixin.less" &gt;
+&lt;script src="js/less-2.5.0.min.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+// Activates the "watch" mode, to refresh the CSS whenever the less file changes.
+less.watch();
+&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Testing Less&lt;/h1&gt;
+&lt;h2&gt;Less is a CSS Preprocessor&lt;/h2&gt;
+&lt;div id="my-block"&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua.&lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h5>How It Works?</h5>
+<p>[TODO]</p>
+
+
+<h4>Less Basics</h4>
+
+<h5><code>@import</code></h5>
+<p>You can use the <code>@import</code> directive to include other less scripts or CSS files.</p>
+
+<p>For example, the Bootstrap's main less file &quot;<code>bootstrap.less</code>&quot; consists of only <code>@import</code> statements, which can be easily customized to select the desired components.</p>
+
+<pre class="example"><span class="comment">// Core variables and mixins</span>
+@import "variables.less";
+@import "mixins.less";
+......
+ 
+<span class="comment">// Core CSS</span>
+@import "scaffolding.less";
+......</pre>
+	
+<h5>Comments: <code>/* ... */</code> and <code>//</code></h5>
+<p>Less supports both multi-line comments <code>/* ... */</code> and end-of-line comment <code>//</code>. (CSS supports only multi-line comments <code>/* ... */</code>, but NOT end-of-line comment <code>//</code>.)</p>
+
+<p>The multi-line comment <code>/* ... */</code> shows up in the compiled CSS; while the end-of-line comment <code>//</code> does not.</p>
+
+<h5>Variables: <code>@<em>var-name</em></code></h5>
+
+<p>A less variable is prefixed with an <code>@</code> sign, in the form of <code>@<em>var-name</em></code>.</p>
+
+<p>For examples, in Bootstrap's &quot;<code>variable.less</code>&quot; and &quot;<code>scaffolding.less</code>&quot;:</p>
+
+<pre class="example">@gray-base:   #000;       <span class="comment">// Declare a variable with a value</span>
+@gray-dark:   lighten(@gray-base, 20%);  <span class="comment">// Invoke a less color function (#333)</span>
+@body-bg:     #fff;
+@text-color:  @gray-dark;  <span class="comment">// Declare a variable with a value from another variable</span>
+  
+@font-family-sans-serif:  "Helvetica Neue", Helvetica, Arial, sans-serif;
+@font-family-serif:       Georgia, "Times New Roman", Times, serif;
+@font-family-monospace:   Menlo, Monaco, Consolas, "Courier New", monospace;
+@font-family-base:        @font-family-sans-serif;
+@font-size-base:          14px;
+@line-height-base:        1.428571429; <span class="comment">// 20/14</span>
+ 
+body {
+  font-family:      @font-family-base;
+  font-size:        @font-size-base;
+  line-height:      @line-height-base;
+  color:            @text-color;
+  background-color: @body-bg;
+}</pre>
+
+<p>Notes:</p>
+<ul>
+<li>You cannot re-assign a value to a less variable. A variable is actually a <em>constant</em> in less and can only be defined once.</li>
+<li>Variables are lazy loaded. That is, you can place a variable declaration after it is referenced.</li>
+<li>You can use <code>@@var</code>, where <code>@var</code> holds a variable name.</li>
+</ul>
+
+<h5>Types</h5>
+
+<p>You can use the built-in type functions to check the type of a variable. There are: </p>
+<ul>
+<li><span class="lead-code">isnumber(<em>value</em>)</span>: Return boolean <code>true</code> or <code>false</code>.</li>
+<li><span class="lead-code">ispercentage(<em>value</em>)</span></li>
+<li><span class="lead-code">isstring(<em>value</em>)</span></li>
+<li><span class="lead-code">iscolor(<em>value</em>)</span></li>
+<li><span class="lead-code">isunit(<em>value</em>, <em>unit</em>)</span></li>
+<li><span class="lead-code">ispixel(<em>value</em>)</span></li>
+<li><span class="lead-code">isem(<em>value</em>)</span></li>
+<li><span class="lead-code">isurl(<em>value</em>)</span></li>
+<li><span class="lead-code">isruleset(<em>value</em>)</span></li>
+<li><span class="lead-code">iskeyword(<em>value</em>)</span></li>
+</ul>
+
+<p>For examples,</p>
+
+<pre class="example">iscolor(#ff0);      <span class="output">//true</span>
+iscolor(blue);      <span class="output">//true</span>
+isstring("string"); <span class="output">//true</span>
+isnumber(1234);     <span class="output">//true</span>
+ispixel(56px);      <span class="output">//true</span>
+ispercentage(7.8%); <span class="output">//true</span>
+isunit(56px, px);   <span class="output">//true</span></pre>
+
+<p>A variable can also takes on a ruleset. For example,</p>
+<pre class="example">@color-ruleset: {
+  color: #fff;
+  background-color: #000;  
+}</pre>
+
+<h5>Variable Interpolation <code>@{<em>var-name</em>}</code></h5>
+
+<p>To use a variable in selector or property name (on the LHS), URL or @import filename (within a quoted string on the RHS), you need to interpolate the variable in the form of <code>@{<em>var-name</em>}</code>. For example,</p>
+
+<pre class="example"><span class="comment">// Variable for selector name</span>
+@logo-selector: logo;
+
+#@{logo-selector} {
+  ......
+}
+
+<span class="comment">// Variable as part of URL in quoted string</span>
+@image-path: "../img";
+
+body {
+  color: #888;
+  background: url("@{image-path}/background.png");
+}</pre>
+
+<p>Clearly, the braces <code>{...}</code> are needed as delimiters for interpolation inside a quoted string.</p>
+
+<h5>Mixins</h5>
+
+<p>Mixins are a way of including (&quot;mixing in&quot;) a set of properties from one rule into another rule.</p>
+
+<p>For example, in Bootstrap's &quot;<code>mixins/center-block.less</code>&quot; and &quot;<code>mixins/size.less</code>&quot;:</p>
+
+<pre class="example"><span class="comment">// Center-align a block level element</span>
+.center-block() {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+ 
+<span class="comment">// Set the width and height
+// Mixins can take arguments and behave like functions.
+// Arguments can take a default value.</span>
+.size(@width; @height: 100px) {
+  width: @width;
+  height: @height;
+}
+.square(@size) {
+  .size(@size; @size);  <span class="comment">// define via the above mixin</span>
+}
+
+<span class="comment">// Using the mixins</span>
+#my-block {
+  .center-block();   <span class="comment">// parentheses are optional</span>
+  .size(70%; 100px); <span class="comment">// passing in arguments</span>
+}</pre>
+
+<ul>
+<li>Mixins are similar to variables. But instead of holding a value, it holds a set of properties.</li>
+<li>Mixins can take arguments and behave like functions. Multiple arguments are separated by semicolon or comma, but semicolon is recommended as comma has other meaning (CSS list separator).</li>
+<li>Mixin's argument can take a default value, in the form of <code>@arg: default-value</code>.</li>
+<li>Mixins that ends with parentheses (e.g., <code>.center-block()</code>) will not be output in the CSS.</li>
+<li>In calling the mixins, the parentheses are optional if there no argument is required.</li>
+
+<li>In calling the mixins, you can also pass parameters by <em>name</em>, instead of via <em>position</em>. For example,
+<pre class="example">#my-block {
+  .size(@height: 100px; @width: 70%); <span class="comment">// passing parameters by names instead of positions</span>
+}</pre>
+</li>
+</ul>
+
+<p>You can also mix the ordinary class selector and ID selector. For example,</p>
+<pre class="example">.center-block {  <span class="comment">// This is an ordinary class selector</span>
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#header {  <span class="comment">// This is an ordinary ID selector</span>
+  color: red;
+}
+
+<span class="comment">// Mix-in class selector and ID selector</span>
+.foo {
+  .center-block;  <span class="comment">// Optional trailing parentheses</span>
+  #header;
+}</pre>
+
+<h5>Nested Selectors</h5>
+
+<p>Less's rule can be nested; while CSS cannot and supports only one-level of rules.</p>
+
+<p>For examples, the following less rules:</p>
+<pre class="example">@link-color:            #337ab7;
+@link-hover-color:      darken(@link-color, 15%);
+@link-hover-decoration: underline;
+
+a {
+  color: @link-color;
+  text-decoration: none;
+
+  <span class="comment">// Nested selectors, where &amp; refers to the parent</span>
+  &amp;:hover,
+  &amp;:focus {
+    color: @link-hover-color;
+    text-decoration: @link-hover-decoration;
+  }
+}</pre>
+
+<p>will be unwrapped into the following CSS rules:</p>
+<pre class="example">a {
+  color: #337ab7;
+  text-decoration: none;
+}
+ 
+<span class="comment">// Nested selectors are unwrapped in CSS</span>
+a:hover,
+a:focus {
+  color: #22527b;
+  text-decoration: underline;
+}</pre>
+
+<p>Inside the nested less rule, you can use <code>&amp;</code> to refer to the parent. The parent selector <code>&amp;</code> is commonly used with pseudo class, such as <code>:hover</code> and <code>:focus</code>, as in the above example.</p>
+
+<p>Nested selectors better reflect the hierarchy of the HTML document, hence, they are recommended.</p>
+
+<h5>Mixins with Selectors</h5>
+
+<p>Mixins can contain CSS properties (as in the above examples). They can also contain nested selectors. For examples,</p>
+	
+<pre class="example"><span class="comment">// Mixin for Contextual backgrounds (with nested selector)</span>
+.bg-variant(@color) {
+  <span class="comment">// Mixin can contain CSS properties</span> 
+  background-color: @color;
+  <span class="comment">// Mixin can contain nested selector too</span> 
+  a&amp;:hover {   <span class="comment">// &amp; refers to the parent</span> 
+    background-color: darken(@color, 10%);
+  }
+}
+ 
+<span class="comment">// Using the above mixin</span>
+.foo {
+  color: #fff;
+  .bg-variant(red);
+}</pre>
+
+
+<p>will be compiled into CSS:</p>
+	
+<pre class="output">.foo {
+  color: #fff;
+  background-color: red;
+}
+ 
+a.foo:hover {
+  background-color: #cc0000;
+}</pre>
+
+<h5>Namespace</h5>
+<pre class="example"><span class="comment">// Define a nested rule for mixin</span>
+#my-namespace {
+  .foo {  <span class="comment">// nested selector</span>
+    color: red;
+  }
+}
+ 
+<span class="comment">// Use the nested rule</span>
+.bar {
+  #my-namespace &gt; .foo;  <span class="comment">// '&gt;' denotes accessor for accessing nested selector</span>
+}</pre>
+	
+
+<p>will be compiled into:</p>
+<pre class="output">#my-namespace .foo {
+  color: red;
+}
+.bar {
+  color: red;
+}</pre>
+
+<p>You can use the above technique to create namespaces.</p>
+
+<h5>Nested Directives</h5>
+
+<p>Directive such as <code>@media</code> can also be nested like selector. Unlike normal selector, there will be <em>bubbling up</em> to the top-level in the generated CSS.</p>
+
+<p>For example:</p>
+
+<pre class="example">
+.bg-color {
+  <span class="new">@media screen</span> {
+    background-color: white;
+    <span class="new">@media (min-width: 768px)</span> {
+      background-color: lightgrey;
+    }
+  }
+  <span class="new">@media tv</span> {
+    background-color: black;
+  }
+}</pre>
+
+<p>will be compiled into the following CSS, where the directive <code>@media</code> is <em>bubbling up</em> to the top level:</p>
+
+<pre class="output">
+<span class="new">@media screen</span> {
+  .bg-color { background-color: white; }
+}
+<span class="new">@media screen and (min-width: 768px)</span> {
+  .bg-color { background-color: lightgrey; }
+}
+<span class="new">@media tv</span> {
+  .bg-color { background-color: black; }
+}</pre>
+
+
+<h5>Arithmetic Operations</h5>
+
+<p>You can apply arithmetic operators, such as <code>+</code>, <code>-</code>, <code>*</code> and <code>/</code> to numbers and numeric measurements.</p>
+
+<p>Take note that less can handle measurement units automatically. For examples,</p>
+<ol>
+<li><code>10px + 5px &rArr; 15px</code>;</li>
+<li><code>10px + 5 &rArr; 15px</code>;</li>
+<li><code>10px + 20pt &rArr; 36.6667px</code>;</li>
+</ol>
+
+<h4>Built-in Functions</h4>
+
+<p>Less provides a set of built-in functions, which operate on the variables. For example,</p>
+
+<pre class="example">@gray-base:       #000;
+<span class="comment">// Invoke less color function lighten() to increase the brightness</span>
+@gray-darker:     lighten(@gray-base, 13.5%); <span class="comment">// #222</span>
+@gray-dark:       lighten(@gray-base, 20%);   <span class="comment">// #333</span>
+@gray:            lighten(@gray-base, 33.5%); <span class="comment">// #555</span>
+@gray-light:      lighten(@gray-base, 46.7%); <span class="comment">// #777</span>
+@gray-lighter:    lighten(@gray-base, 93.5%); <span class="comment">// #eee</span></pre>
+
+<p>Refer to <cite>Less Function References</cite> @ <a href="http://lesscss.org/functions/">http://lesscss.org/functions/</a>.</p>
+
+<h5>Math Functions</h5>
+
+<ul>
+<li><span class="lead-code">floor(<em>number</em>)</span> and <span class="lead-code">ceil(<em>number</em>)</span>: Return the floor or ceiling integer.</li>
+
+<li><span class="lead-code">round(<em>number</em>[, <em>decimalPlaces</em>])</span>: Return the number rounded to the optional <code>decimalPlaces</code> (default of 0).</li>
+
+<li><span class="lead-code">percentage(<em>number</em>)</span>: Return the percentage in string of &quot;xxx%&quot;.</li>
+
+<li><span class="lead-code">pow(<em>base</em>, <em>exp</em>)</span> and <span class="lead-code">sqrt(<em>number</em>)</span></li>
+
+<li><span class="lead-code">mod(<em>number</em>, <em>base</em>)</span>: Return number modulus base.</li>
+
+<li><span class="lead-code">min(<em>value1</em>, ..., <em>valueN</em>)</span> and <span class="lead-code">max(<em>value1</em>, ..., <em>valueN</em>)</span>: Return the minimum or maximum among the values.</li>
+
+<li><span class="lead-code">pi()</span>: Return the value of pi.</li>
+
+<li><span class="lead-code">sin(<em>angle</em>)</span>, <span class="lead-code">cos(<em>angle</em>)</span>, <span class="lead-code">tan(<em>angle</em>)</span>: angle can be 2 (default of radians), 2deg (in degrees), 2grad (in gradians, 1 gradian is 1/400 turns).</li>
+
+<li><span class="lead-code">asin(<em>number</em>)</span>, <span class="lead-code">acos(<em>number</em>)</span>, <span class="lead-code">atan(<em>number</em>)</span>: return the angle in radians.</li>
+</ul>
+
+
+<h5>Color Operation Functions</h5>
+
+<p>Color Operation Functions typical takes 3 arguments:</p>
+<ol>
+<li><span class="lead-code">color</span>: A color object.</li>
+<li><span class="lead-code">percent</span>: in percent of 0-100%.</li>
+<li><span class="lead-code">method</span>: optional with default of absolute. Set to <code>relative</code> for the adjustment to be relative to the current value.</li>
+</ol>
+
+<p>The commonly-used color Operation Functions are:</p>
+<ul>
+<li><span class="lead-code">saturate(color, percent[, method])</span> and <span class="lead-code">desaturate(color, percent[, method])</span>: Increase/Decrease the saturation value of the color in the HSL color space, by the absolute/relative amount in percent of 0-100%.</li>
+
+<li><span class="lead-code">lighten(color, percent[, method])</span> and <span class="lead-code">darken(color, percent[, method])</span>: Increase/Decrease the brightness (lightness) value of the color in the HSL color space, by the absolute/relative amount in percent of (0-100%).</li>
+
+<li><span class="lead-code">fadeout(color, percent[, method])</span> and <span class="lead-code">fadein(color, percent[, method])</span>: Increase/Decrease the transparency (alpha channel) of a color, by the absolute/relative amount in percent of 0-100%.</li>
+
+<li><span class="lead-code">fade(color, percent)</span>: Set the absolute transparency (alpha channel) of a color, in percent of 0-100%.</li>
+
+<li><span class="lead-code">greyscale(color)</span>: Convert to grey scale, same as desaturate(color, 100%).</li>
+
+<li><span class="lead-code">spin(color, angle)</span>: Rotate the hue by the given angle (a positive or negative value in degree).</li>
+</ul>
+
+<h4>Conditionals or Guards</h4>
+
+<p>You can apply conditionals (or guards) using keyword <code>when</code>. For examples,</p>
+<pre class="example"><span class="comment">// with comparison operators: &gt;, &gt;=, =, =&lt;, &lt;</span>
+.foo (@a) when (@a = 88) { ... }
+.foo (@a) when (@media = mobile) { ... }
+.foo (@a; @b) when (@a &gt; @b) { width: @a }
+ 
+<span class="comment">// with logical operators: and ,(or)</span>
+.foo (@a) when (isnumber(@a)) and (@a &gt; 0) { ... }
+.foo (@a) when (@a &gt; 10), (@a &lt; -10) { ... }</pre>
+
+	
+<h3>Search Engine Optimization (SEO)</h3>
+
+<p>To make your webpages search-engine friendly:</p>
+<ul>
+<li>Provide a  meaning title in <code>&lt;title&gt;</code> element. Don't give all your webpages the same title.</li>
+<li>Add a description via the <code>&lt;meta&gt;</code> element.</li>
+<li>Provide keywords via the &lt;meta&gt; element. However, most of the search engines today ignore keywords, due to abuses.</li>
+<li>Provide a meaningful alternative texts to your images (via &quot;<code>alt</code>&quot; attribute), or <code>&lt;figcaption&gt;</code> in HMTL5.</li>
+<li>Use descriptive link text. Don't simply say &quot;Click Me!&quot;.</li>
+</ul>
+<p>For example,</p>
+<pre class="example">&lt;head&gt;
+  &lt;title&gt;HTML/CSS Tutorial: The Basics&lt;/title&gt;
+  &lt;<span class="new">meta name=&quot;description&quot;</span> content=&quot;Basic HTML/CSS Tutorial for the beginners&quot;&gt;
+  &lt;<span class="new">meta name=&quot;keywords&quot;</span> content=&quot;HTML, CSS, Tutorial, Basics, beginners&quot;&gt;
+  ......
+&lt;/head&gt;</pre>
+
+
+<p>SEO is the art of making your webpages more visible for the search engine.</p>
+<p>[TODO]</p>
+
+
+<!-- @@ v3 footer changes starts here, before references, to end of document -->
+
+<p>&nbsp;</p>
+<a class="references" href="../howto/References.html#HTML-CSS">Link To HTML/CSS References &amp; Resources</a>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Last modified: June 2022</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- My custom JavaScript v3 -->
+<script src="../scripts/programming_notes_v3.js"></script>
+<!-- Prism Syntax Highlighter -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JDK 10 New Features</title>
+
+<!-- @@ start change in v1 -->
+<link rel="stylesheet" href="../css/programming_notes_v1.css">
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+<script src="../scripts/programming_notes_v1.js"></script>
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="JDK10_NewFeatures.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>JDK 10 (18.3) New Features</h1>
+</div>
+
+<div id="content-main">
+
+<!-- @@ end change in v1 -->
+
+<h5>References:</h5>
+<ol>
+<li>&quot;JDK 10 Release Notes&quot; @ <a href="https://www.oracle.com/technetwork/java/javase/10-relnote-issues-4108729.html">https://www.oracle.com/technetwork/java/javase/10-relnote-issues-4108729.html</a>.</li>
+<li>OpenJDK's JDK 10 @ <a href="https://openjdk.java.net/projects/jdk/12/">https://openjdk.java.net/projects/jdk/10/</a>.</li>
+<li>&quot;109 New Features In JDK 10&quot; @ <a href="https://www.azul.com/109-new-features-in-jdk-10/">https://www.azul.com/109-new-features-in-jdk-10/</a>.</li>
+</ol>
+
+
+<p>&nbsp;</p>
+<p>In 2017, Oracle and the Java community announced its intentions to shift to a new six-month release cycle. JDK 10, released in March 2018, is the first time-bound release. JDK 10 is more than a simple stability and performance fix over Java 9, it introduced twelve new enhancements defined through the Java Enhancement Proposals (JEPs), and some changes to the Java Standard Class Libraries.</p>
+
+<h3>JDK 10 New Language Features</h3>
+
+<h4><span class="font-code">var</span>: Type Inference for Local-Variables with Initializers (JEP 286)</h4>
+
+<p><span class="line-heading">Reference</span>: JEP 286: Local-Variable Type Inference @ <a href="http://openjdk.java.net/jeps/286">http://openjdk.java.net/jeps/286</a>.</p>
+<p>The most notable change in the Java language specification in JDK 10 is the introduction of &quot;<code>var</code>&quot; to extend type inference for declarations of local variables with initializers, while maintaining Java's commitment to static type safety.</p>
+
+
+<p>For example,</p>
+
+<pre class="color-example">
+public class TestVar {
+   public static void main(String[] anything) {
+      <span class="color-comment">// Primitives</span>
+      <strong>var</strong> i = 123;  <span class="color-comment">// &quot;int&quot; inferred</span>
+      System.out.println(i);
+      System.out.println(((Object)i).getClass().getName());
+         <span class="color-comment">// autobox to Integer, upcast to Object
+         // java.lang.Integer</span>
+
+      <strong>var</strong> d = 12.34;  <span class="color-comment">// &quot;double&quot; inferred</span>
+      System.out.println(d);
+      System.out.println(((Object)d).getClass().getName());
+         <span class="color-comment">// autobox to Double, upcast to Object
+         // java.lang.Double</span>
+
+      <span class="color-comment">// Objects</span>
+      <strong>var</strong> str = "hello";  <span class="color-comment">// &quot;String&quot; inferred</span>
+      System.out.println(str);
+      System.out.println(str.getClass().getName());  <span class="color-comment">// java.lang.String</span>
+      System.out.println(str instanceof String); <span class="color-comment">// true</span>
+
+
+      <strong>var</strong> lst = new java.util.ArrayList&lt;String&gt;();  <span class="color-comment">// &quot;ArrayList&quot; inferred</span>
+      System.out.println(lst);
+      System.out.println(lst.getClass().getName());  <span class="color-comment">// java.util.ArrayList</span>
+      System.out.println(lst instanceof java.util.ArrayList);  <span class="color-comment">// true</span>
+      System.out.println(lst instanceof java.util.Collection); <span class="color-comment">// true</span>
+   }
+}</pre>
+
+<p>This feature is introduced in response to developers frequent complain about the degree of boilerplate codes required in Java. Type declarations for locals are often perceived to be unnecessary or even in the way; given good variable naming, it is often perfectly clear what is going on.</p>
+
+<p>&quot;<code>var</code>&quot; is applicable to local variables with initializers, indexes in the enhanced for-loop, and locals declared in a traditional for-loop, for example,</p>
+
+<pre class="color-example">
+public class TestVarLoop {
+   public static void main(String[] anything) {
+
+      <span class="color-comment">// Traditional for-loop's int index</span>
+      for (<strong>var</strong> i = 0; i < 5; ++i) {   <span class="color-comment">// &quot;int&quot; inferred</span>
+         System.out.println(i);
+         System.out.println(((Object)i).getClass().getName());  <span class="color-comment">// java.lang.Integer</span>
+      }
+
+      <span class="color-comment">// for-each loop</span>
+      <strong>var</strong> lst = new java.util.ArrayList&lt;String&gt;();  <span class="color-comment">// &quot;ArrayList&quot; inferred</span>
+      lst.add("apple");
+      lst.add("orange");
+      lst.add("pear");
+      for (<strong>var</strong> item : lst) {  <span class="color-comment">// &quot;String&quot; inferred</span>
+         System.out.println(item);
+         System.out.println(item.getClass().getName()); <span class="color-comment">// java.lang.String</span>
+      }
+   }
+}</pre>
+
+<p>&quot;<code>var</code>' is NOT applicable for method formals, constructor formals, method return types, fields, catch formals, or any other kind of variable declaration, for example,</p>
+
+<pre class="color-example">
+var v1;
+<span class="color-comment">// error: cannot infer type for local variable v1
+// (cannot use 'var' on variable without initializer)</span>
+
+var v2 = null;
+<span class="color-comment">// error: cannot infer type for local variable v2
+// (variable initializer is 'null')</span>
+
+var v3 = {1, 2, 3};
+<span class="color-comment">// error: cannot infer type for local variable v3
+// (array initializer needs an explicit target-type)</span></pre>
+
+<p>Java's <code>var</code> is similar to C++'s <code>auto</code>, but unlike JavaScript's <code>var</code> (because JavaScript is NOT static-type).</p>
+
+<p><code>var</code> is NOT a keyword, but a reserved type.</p>
+
+<h3>JDK 10 Library Changes</h3>
+
+<h4>Collection Framework</h4>
+<h5><span class="font-code">java.util.List, java.util.Map, java.util.Set</span></h5>
+<p>Each of these interfaces gains a new <code>static</code> method, <strong><code>copyOf(aCollection)</code></strong>. They return an unmodifiable <code>List</code>, <code>Map</code> or <code>Set</code> containing the elements of the given <code>Collection</code>, in its iteration order.</p>
+<p>For example: see &quot;<a href="JDK8_Lambda.html#ofandcopyOf"><span class="font-code">static</span> Methods <span class="font-code">.of()</span> and <span class="font-code">.copyOf()</span> for Constructing a Unmodifiable Collection</a>&quot;.</p>
+
+<h4>Others</h4>
+<h5><span class="font-code">java.util.Formatter, java.util.Scanner</span></h5>
+<p>Both these classes have three new constructors, all of which take a charset in addition to other arguments.</p>
+
+
+<h3>JDK 10 Other New Features</h3>
+
+<h5>Consolidate the JDK Forest into a Single Repository (<a href="http://openjdk.java.net/jeps/296">JEP 296</a>)</h5>
+
+<p>Combine the numerous repositories of the JDK forest into a single repository in order to simplify and streamline development.</p>
+
+<h5>Garbage-Collector Interface (<a href="http://openjdk.java.net/jeps/304">JEP 304</a>)</h5>
+<p>Improve the source code isolation of different garbage collectors by introducing a clean garbage collector (GC) interface.</p>
+
+<h5>Parallel Full GC for G1 (<a href="http://openjdk.java.net/jeps/307">JEP 307</a>)</h5>
+<p>Improve G1 worst-case latencies by making the full GC parallel.</p>
+
+<h5>Application Class-Data Sharing (<a href="http://openjdk.java.net/jeps/310">JEP 310</a>)</h5>
+
+<p>Class-Data Sharing (CDS) was introduced in Java 5 to improve the performance of the JVM startup and reduce the resource footprint when multiple JVMs are running on the same physical or virtual machine.</p>
+
+<p>JDK 10 will extend CDS to allow the built-in system class loader, the built-in platform class loader, and custom class loaders to load archived classes. Previously, use of CDS had been restricted to the bootstrap class loader only.</p>
+
+<h5>Thread-Local Handshakes (<a href="http://openjdk.java.net/jeps/312">JEP 312</a>)</h5>
+<p>Introduce a way to execute a callback on threads without performing a global VM safe point. Make it both possible and cheap to stop individual threads and not just all threads or none.</p>
+
+<h5>Remove the Native-Header Generation Tool (javah) (<a href="http://openjdk.java.net/jeps/313">JEP 313</a>)</h5>
+<p>Remove the <code>javah</code> tool from the JDK.</p>
+<p>The <code>javah</code> tool was used to generate C/C++ header files for JNI (Java Native Interface) prior to Java 8.  It is replaced by &quot;<code>javac -h</code>&quot;.</p>
+
+<h5>Additional Unicode Language-Tag Extensions (<a href="http://openjdk.java.net/jeps/314">JEP 314</a>)</h5>
+<p>Enhance <code>java.util.Locale</code> and related APIs to implement additional Unicode extensions of BCP 47 language tags. </p>
+<p>The following additional extensions are supported:</p>
+<ul>
+<li><code>cu</code> (currency type)</li>
+<li><code>fw</code> (first day of week)</li>
+<li><code>rg</code> (region override)</li>
+<li><code>tz</code> (time zone)</li>
+</ul>
+
+<h5>Heap Allocation on Alternative Memory Devices (<a href="http://openjdk.java.net/jeps/316">JEP 316</a>)</h5>
+<p>Enable the HotSpot VM to allocate the Java object heap on an alternative memory device, such as an NV-DIMM, specified by the user.</p>
+
+<h5>Experimental Java-Based JIT Compiler (<a href="http://openjdk.java.net/jeps/317">JEP 317</a>)</h5>
+<p>Enable the Java-based JIT compiler, Graal, to be used as an experimental JIT compiler on the Linux/x64 platform.</p>
+
+<h5>Root Certificates (<a href="http://openjdk.java.net/jeps/319">JEP 319</a>)</h5>
+<p>Provide a default set of root Certification Authority (CA) certificates in the JDK.</p>
+
+<h5>Time-Based Release Versioning (<a href="http://openjdk.java.net/jeps/322">JEP 322</a>)</h5>
+<p>Revise the version-string scheme of the Java SE Platform and the JDK, and related versioning information, for present and future time-based release models.</p>
+<p>The version number (<code>$VNUM</code>) consists of <code>$FEATURE.$INTERIM.$UPDATE</code>, e.g., <code>10.0.1</code>. It is targeted for six-month release every March and September.</p>
+
+
+<!-- @@ start change in v1 -->
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 10.0.1<br>
+Last modified: April, 2018</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+</body>
+</html>

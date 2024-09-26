@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<!--
+<div id="wrap-outer">
+  <header id="header">
+  <div id="wrap-inner">
+     <aside id="wrap-toc">
+        <section id="toc">
+     <header id="content-header">
+     <main id="content-main">
+     <footer id="content-footer">
+  <footer id="footer">
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- for responsive web design -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- for SEO -->
+<meta name="description" content="Jakarta(Java) Servlets - A Tutorial">
+<meta name="keywords" content="Jakarta Servlet, Java Servlet, Tutorial">
+<title>Jakarta(Java) Servlets - A Tutorial</title>
+<!-- ========== @@@@@@ v3 header changes starts here after <title> ========== -->
+
+<!-- My custom CSS -->
+<link rel="stylesheet" href="../css/programming_notes_v3.css">
+<!-- Prism Syntax Highlighter -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.css" rel="stylesheet">
+<!-- favicon -->
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+
+
+<body>
+
+<div id="wrap-outer"> <!-- outer container -->
+
+<!-- header filled by JavaScript -->
+<header id="header" class="header"><p>&nbsp;</p></header>
+
+<div id="wrap-inner"> <!-- inner container -->
+
+<aside id="wrap-toc">
+<h5>Table of Contents <a id="show-toc" href="JavaServlets.html#show-toc">(Hide)</a></h5>
+<section id="toc"></section>  <!-- for showing the "Table of Content" -->
+</aside>
+
+	
+<!-- ====== @@@ v3 header changes ends b4 "content-header", h1, h2 ======= -->
+<div id="content-header">
+<h1>Jakarta(Java) Servlets</h1>
+</div>
+
+<div id="content-main">
+
+
+<h5>Java EE vs. Jakarta EE</h5>
+<p>History:</p>
+<ol>
+<li>In  May 23, 1995, Sun Microsystem launched Java JDK (Beta), followed by JDK 1.0 in 1996.</li>
+<li>In 1998, Sun launched JDK 1.2 but renamed it "Java 2 Platform, Standard Edition (J2SE)". Sun also launched "Java 2 Platform, Enterprise Edition (J2SE)", which includes Servlet and EJB for enterprise webapps.</li>
+<li>In 2004, JDK 1.5 was again renamed to &quot;Java Platform Standard Edition (Java SE) and &quot;Java Platform, Enterprise Edition (Java EE)&quot;.</li>
+<li>In 2017, Oracle submitted &quot;Java EE&quot; to Eclipse Foundation (an open source software foundation). Eclipse renamed &quot;Java EE&quot; to &quot;Jakarta EE&quot;, because Oracle owns the trademark &quot;Java&quot;. Eclipse also moves the API namespace from <code>javax.*</code> to <code>jakarta.*</code>.</li>
+</ol>
+
+<p>The Java/Jakarta EE versions are:</p>
+<ul>
+<li>(Under Sun Microsystem/Oracle) J2EE 1.2, J2EE 1.3, J2EE 1.4, Java EE 5, Java EE 6, Java EE 7, Java EE 8. Move to Eclipse Foundation.</li>
+<li>Jakarta EE 8, first Jakarta version (Sept 2019) is fully compatible with Java EE 8 (which is the last version of Java EE).</li>
+<li>Jakarta EE 9 (Dec 2020): API namespace moved from <code>javax.*</code> to <code>jakarta.*</code></li>
+<li>Jakarta EE 10 (Sept 2022): Removal of deprecated items in Servlet, Faces, CDI and EJB (Entity Beans and Embedable Container).</li>
+<li>Jakarta EE 11 (July 2024): ??</li>
+</ul>
+
+<p>&quot;Java Servlet&quot; is now called &quot;Jakarta Servlet&quot;. &quot;Java Server Pages (JSP)&quot; is now called &quot;Jakarta Server pages&quot;.</p>
+
+<h3>Introduction to Jakarta/Java Servlets</h3>
+<p>In the early days, web servers deliver <em>static</em> contents that are indifferent to users' requests. Java servlets are <em>server-side programs</em> (running inside a web server's servlet container) that handle clients' requests  and return a <em>customized</em> or <em>dynamic response</em> for each request. The dynamic response could be based on user's input (e.g., search) with data retrieved from databases or other applications, or time-sensitive data (such as news and stock prices).</p>
+
+<p>Java servlets typically run on the HTTP protocol. HTTP is an <em>asymmetrical request-response protocol</em>. The client sends a <em>request message</em> to the server, and the server returns a <em>response message</em> as illustrated.</p>
+
+<img src="../howto/images/HTTP_ClientServerSystem.png" alt="HTTP_ClientServerSystem.png" width="790" height="486" class="image-center image-border" />
+
+<h5>Server-Side Technologies</h5>
+
+<p>There are many  competing server-side technologies which can generate dynamic contents: Java-based (servlet, JSP, JSF, Struts, Spring, Hibernate), ASP, PHP, Python (Flask, Django), Node.js (JavaScript), (old) CGI Script, and many others.</p>
+
+<p>Java servlet is the <em>foundation</em> of the Java server-side technology, JSP (JavaServer Pages), JSF (JavaServer Faces), Struts, Spring, Hibernate, and others, are extensions of the servlet technology.</p>
+
+<h5>Pre-requisites</h5>
+
+<ul>
+<li>HTTP and Apache Tomcat Server</li>
+<li>HTML/CSS/JavaScript for client-side programming</li>
+<li>Java Programming Language (for Servlet/JSP/JSF programming)</li>
+<li>SQL, MySQL Database System, JDBC (Java Database Connectivity)</li>
+<li>Others.</li>
+</ul>
+
+<h5>Apache Tomcat Server</h5>
+<p>Servlets are server-side programs run inside a <em>Java-capable</em> HTTP server.  Apache Tomcat Server (@ <a href="https://tomcat.apache.org">https://tomcat.apache.org</a>) is the official Reference Implementation (RI) for Java servlet and JSP, provided free by open-source foundation Apache (@ <a href="https://www.apache.org">https://www.apache.org</a>).</p>
+<p>You need to install Tomcat to run Java servlets. Read &quot;<a href="../howto/Tomcat_HowTo.html">How to Install Tomcat and Get Started Java Servlet Programming</a>&quot;.</p>
+<p>I shall denote Tomcat's installed directory as <code>&lt;CATALINA_HOME&gt;</code>, and assume that Tomcat server is running in port 8080.</p>
+<p>Tomcat provides many excellent servlet examples in &quot;<code>&lt;CATALINA_HOME&gt;\webapps\examples\servlets</code>&quot;. You can run these examples by launching Tomcat and issuing URL <code>http://localhost:8080/examples</code>.</p>
+
+<h5>Jakarta/Java Servlet Versions</h5>
+
+<p>Java Servlet has these versions: [TODO features and what is new]</p>
+<ul>
+  <li>J2EE 1.2 (1999-12-17) <strong>Java Servlet 2.2</strong>, JSP 1.1, EJB 1.1, JDBC 2.0</li>
+  <li>J2EE 1.3 (2001-09-24) <strong>Java Servlet 2.3</strong>, JSP 1.2, EJB 2.0, JDBC 2.1</li>
+  <li>J2EE 1.4 (2003-11-11) <strong>Java Servlet 2.4</strong>, JSP 2.0, EJB 2.1, JDBC 3.0</li>
+  <li>Java EE 5 (2006-05-11) <strong>Java Servlet 2.5</strong>, JSP 2.1, JSTL 1.2, JSF 1.2, EJB 3.0, JDBC 3.0</li>
+  <li>Java EE 6 (2009-12-10) <strong>Java Servlet 3.0</strong>, JSP 2.2/EL 2.2, JSTL 1.2, JSF 2.0, EJB 3.1, JDBC 4.0</li>
+  <li>Java EE 7 (2013-05-28): <strong>Java Servlet 3.1</strong>, ...</li>
+<li>Java EE 8 (2017-08-31) / Jakarta EE 8 (2019-09-10): <strong>Jakarta Servlet 4.0</strong>, ...</li>
+<li>Jakarta EE 9 (2020-12-08): <strong>Jakarta Servlet 5.0</strong>, ...</li>
+<li>Jakarta EE 10 (2022-09-13): <strong>Jakarta Servlet 6.0</strong>, ...</li>
+<li>Jakarta EE 11 (2024?):</li>
+</ul>
+
+<p>The Jakarta Servlets (under the Eclipse Foundation) Home Page is @ <a href="https://jakarta.ee/specifications/servlet/">https://jakarta.ee/specifications/servlet/</a>. The API documentation is @ <a href="https://javadoc.io/doc/jakarta.servlet">https://javadoc.io/doc/jakarta.servlet</a>. The source code is @ <a href="https://github.com/jakartaee/servlet">https://github.com/jakartaee/servlet</a>.</p>
+<p>Java Servlet is the <em>foundation</em> technology for Java server-side programming. You need to understand Servlet thoroughly before you could proceed to other Java server-side technologies such as JavaServer Pages (JSP), JavaServer Faces (JSF), Spring.</p>
+
+<h3>Review of HTTP</h3>
+
+<p>A HTTP Servlet runs under the HTTP protocol. It is important to understanding the HTTP protocol in order to understand server-side programs (servlet, JSP, ASP, PHP, Python, Node.js, etc) running over the HTTP. Read &quot;<a href="../webprogramming/HTTP_Basics.html">HTTP Basics</a>&quot;, if needed.</p>
+
+<p>In brief, HTTP is a request-response protocol. The client sends a request message to the server. The server, in turn, returns a response message. The messages consists of two parts: header (information about the message) and body (contents). Header provides information about the messages. The data in header is organized in name-value pairs.</p>
+
+<p>Read &quot;<a href="../webprogramming/HTTP_Basics.html#http_mesages">HTTP Request and Response Messages</a>&quot; for the format, syntax of request and response messages, and examples.</p>
+
+
+<h3>First &quot;Hello-world&quot; Servlet</h3>
+<p>Let us begin by writing a servlet that says hello in response to a client's request. We shall use JDK and Tomcat to understand the basics, instead of IDE such as Eclipse/NetBeans. Once you understand the basics, you should use Eclipse/NetBeans to develop your webapp for better productivity.</p>
+
+<h4 id="helloapp">Create a new Webapp &quot;<code>helloapp</code>&quot;</h4>
+<p>We shall begin by defining a new webapp (web application) called &quot;<code>helloapp</code>&quot; in Tomcat. A webapp, known as a <em>web context</em> in Tomcat, comprises a set of resources, such as HTML files, CSS, JavaScripts, images, programs and libraries.</p>
+
+<img src="images/Servlet_HelloServletDirectory.png" alt="Servlet_HelloServletDirectory.png" width="368" height="544" class="image-float-right" />
+
+<p> A Java webapp has a <em>standardized directory structure</em> for storing various types of resources.</p>
+
+<p>Create a directory &quot;<code>helloapp</code>&quot; under Tomcat's &quot;<code>webapps</code>&quot; directory (i.e., &quot;<code>&lt;CATALINA_HOME&gt;\webapps\helloapp</code>&quot;, where <code>&lt;CATALINA_HOME&gt;</code> denotes Tomcat's installed directory)<code></code>. Create sub-directories &quot;<code>WEB-INF</code>&quot; and &quot;<code>META-INF</code>&quot; under &quot;<code>helloapp</code>&quot;. Create sub-sub-directories &quot;<code>classes</code>&quot;, &quot;<code>lib</code>&quot; and &quot;<code>src</code>&quot; under &quot;<code>WEB-INF</code>&quot;. Take note that the directory names are case-sensitive.</p>
+
+
+<p>The resources must be kept in the respective directories:</p>
+
+<ul>
+<li><span class="lead-code">&lt;CATALINA_HOME&gt;\webapps\helloapp</span>: This directory is known as <em>context root</em> for the web context (webapp) &quot;<code>helloapp</code>&quot;.  It contains the resources that are <em>accessible by the clients</em>, such as HTML, CSS, Scripts and images. These resources will be delivered to the clients <em>as it is</em>. You could create sub-directories such as <code>images</code>, <code>css</code> and <code>scripts</code>, to further categories the resources.</li>
+
+<li><span class="lead-code">&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF</span>: This directory is NOT accessible by the clients directly. This is where you keep your application-specific configuration files (such as &quot;<code>web.xml</code>&quot;), and its sub-directories contain program classes, source files, and libraries.
+
+<ul>
+<li><span class="lead-code">&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\src</span>: Keep the Java program source files.  It is a good practice to separate the source files and classes to facilitate deployment.  Source defined in package must be kept according to the package directory structure. E.g., <code>com.nowhere.HelloServlet.java</code> must be kept in directory <code>com\nowhere\HelloServlet.java</code>.</li>
+
+<li><span class="lead-code">&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\classes</span>: Keep the Java classes (compiled from the source codes). </li>
+
+<li><span class="lead-code">&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\lib</span>: keep the JAR files provided by external packages, available to this webapp only.</li>
+</ul>
+</li>
+
+<li><span class="lead-code">&lt;CATALINA_HOME&gt;\webapps\helloapp\META-INF</span>: This directory is also NOT accessible by the clients. It keeps resources and configurations (e.g., &quot;<code>context.xml</code>&quot;) related to the particular SERVER (e.g., Tomcat, Glassfish). In contrast, &quot;<code>WEB-INF</code>&quot; is for resources related to this WEBAPP, independent of the server.</li>
+</ul>
+
+<h4>Write a Hello-world Java Servlet &quot;<code>HelloServlet.java</code>&quot;</h4>
+<p>Servlets are Java programs that runs inside a Java-capable HTTP server. A user can invoke a servlet by issuing a specific URL from the browser (HTTP client). In this example, we shall write a servlet called &quot;<code>HelloServlet.java</code>&quot; and compiled into &quot;<code>HelloServlet.class</code>&quot;. We shall configure such that a client can invoke &quot;<code>HelloServlet.class</code>&quot; by issuing URL <code>http://hostname:port/helloapp/<span class="new">sayhello</span></code>.</p>
+<p>A servlet shall be kept inside a Java package (instead of the default <em>no-name</em> package) for proper deployment. Let's call our package &quot;<code>com.nowhere</code>&quot;. Create a sub-directories called &quot;<code>com\nowhere</code>&quot; under &quot;<code>WEB-INF\src</code>&quot;. Use a programming text editor to enter the following source codes, and save as &quot;<code>HelloServlet.java</code>&quot; in &quot;<code>&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\src\com\nowhere</code>&quot;.</p>
+
+<pre><code class="language-java line-numbers drop-tokens">// To save as &lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\src\com\nowhere\HelloServlet.java
+package com.nowhere;
+
+import java.io.*;
+import jakarta.servlet.*;             // Tomcat 10
+import jakarta.servlet.http.*;        // Tomcat 10
+import jakarta.servlet.annotation.*;  // Tomcat 10
+//import jakarta.servlet.*;             // Tomcat 9
+//import jakarta.servlet.http.*;        // Tomcat 9
+//import jakarta.servlet.annotation.*;  // Tomcat 9
+ 
+<mark>@WebServlet(&quot;/sayhello&quot;)</mark>   // Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)
+public class HelloServlet extends HttpServlet {
+
+   // The doGet() runs once per HTTP GET request to this HTTP servlet.
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response)
+         throws IOException, ServletException {
+ 
+      // Set the response's MIME type of the response message
+      response.setContentType("text/html; charset=UTF-8");
+      // Allocate an output writer to write the response message into the network socket
+      PrintWriter out = response.getWriter();  // throw IOException
+      
+      // Write the response message, in an HTML page
+      // Using triple-quoted multi-line string (Text Block) (JDK 15)
+      // The beginning triple-quote must be in its own line (i.e., ends with a newline)
+      out.println("""
+            &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            &lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+            &lt;body&gt;
+              &lt;h1&gt;Hello, world!&lt;/h1&gt;
+              &lt;p&gt;Request URI: %s&lt;/p&gt;
+              &lt;p&gt;Protocol: %s&lt;/p&gt;
+              &lt;p&gt;PathInfo: %s&lt;/p&gt;
+              &lt;p&gt;Remote Address: %s&lt;/p&gt;
+              &lt;p&gt;A Random Number: &lt;strong&gt;%f&lt;/strong&gt;&lt;/p&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            """.formatted(request.getRequestURI(), request.getProtocol(),
+                          request.getPathInfo(), request.getRemoteAddr(),
+                          Math.random()));   // Multi-line text block (JDK 15) 
+      out.close();  // Always close the output writer
+      
+      // For testing and debugging - Print a message to Tomcat's console
+      System.out.println("hello world, to Tomcat!");   // Check Tomcat's console for this message
+   }
+}</code></pre>
+
+<h5>How It Works?</h5>
+<ol>
+<li>We define a Java class called <code>HelloServlet</code> (in Line 13). Line 2 places this class in a package called <code>com.nowhere</code>. Hence, we save the source file under &quot;<code>com\nowhere</code>&quot; of the &quot;<code>helloapp\WEB-INF\src</code>&quot; directory, following the Java's standard package directory structure.</li>
+<li>We need the Servlet API library to compile this program. Servlet API is not part of JDK or Java SE (but belongs to Java EE, now Jakarta EE). Tomcat provides a copy of servlet API called <code>&quot;servlet-api.jar</code>&quot; in &quot;<code>&lt;CATALINA_HOME&gt;\lib</code>&quot;. You need to include the Servlet JAR file in your <code>CLASSPATH</code> for compilation.</li>
+
+<li>To compile the program under JDK, we need to use the <code>-d</code> option to specify the output <em>destination</em> directory to place the compiled class in &quot;<code>helloapp\WEB-INF\class\com\nowhere</code>&quot; directory.
+<pre class="command"><span class="comment">// Change directory to &lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF</span>
+<strong>cd &lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF</strong>
+<span class="comment">  
+// Compile the source file and place the class in the specified destination directory</span>
+<strong>javac -cp ..\..\..\lib\servlet-api.jar -d classes src\com\nowhere\HelloServlet.java</strong></pre>
+<ul>
+<li>The option &quot;<code>-d classes</code>&quot; specifies the  output destination directory, relative to the current directory. The output is <code>&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\<strong>classes\com\nowhere\HelloServlet.class</strong></code>. The compiler creates the package directory &quot;<code>com\nowhere</code>&quot; automatically.</li>
+<li>The option &quot;<code>-cp</code>&quot; specifies the Servlet API, located at <code>&lt;CATALINA_HOME&gt;\lib\servlet-api.jar</code>.</li>
+</ul>  
+</li>
+
+<li>We don't write a servlet from scratch. Instead, we create a servlet by sub-classing <code>jakarta.servlet.http.HttpServlet</code> (for Tomcat 10+) (in Line 13).</li>
+<li>As mentioned, a servlet is invoked in response to a request URL issued by a client. Specifically, a client issues an HTTP request, the server routes the request message to the servlet for processing. The servlet returns a response message to the client. </li>
+<li>An HTTP request could use either GET or POST request methods, which will be processed by the servlet's <code>doGet()</code> or <code>doPost()</code> method, respectively.</li>
+<li>In the <code>HelloServlet</code>, we override the <code>doGet()</code> method (as denoted by the annotation <code>@Override</code>). The <code>doGet()</code> runs  in response to an HTTP GET request issued by a user via an URL. <code>doGet()</code> takes two arguments, an <code>HttpServletRequest</code> object and an <code>HttpServletResponse</code> object, corresponding to the request and response messages.</li>
+<li>The <code>HttpServletRequest</code> object can be used to retrieve incoming HTTP <em>request headers</em> and <em>form data</em>. The <code>HttpServletResponse</code> object can be used to set the HTTP <em>response headers</em> (e.g., content-type) and the <em>response message body</em>.</li>
+<li>In Line 21, we set the &quot;MIME&quot; type of the response message to &quot;<code>text/html</code>&quot;. The client need to know the message type in order to correctly display the data received. (Other MIME types include <code>text/plain</code>, <code>image/jpeg</code>, <code>video/mpeg</code>, <code>application/xml</code>, and many others.) In Line 23, we retrieve a <code>Writer</code> object called <code>out</code> for writing the response message to the client over the network. We then use the <code>out.println()</code> to print out a proper HTML page containing the message &quot;Hello, world!&quot;. This servlet also echoes some of the clients's request information, and prints a random number for each request.</li>
+<li>Starting from Servlet API 3.0, we can use annotation <code>@WebServlet</code> to configure the URL path of the servlet. In Line 12, we configure <code>HelloServlet</code> to URL path &quot;<code>/sayhello</code>&quot; (relative to the current web context). That is, to invoke the <code>HelloServlet</code>, you issue a URL &quot;<code>http://localhost:8080/helloapp/sayhello</code>&quot;.
+
+<img class="image-center image-border" src="images/Servlet_HelloServletURL.png" alt="Servlet_HelloServletURL.png" />
+
+</li>
+</ol>
+
+<h4> (SKIP)(Pre-Servlet API 3.0) Configure the Webapp Deployment Descriptor &quot;<code>web.xml</code>&quot;</h4>
+
+<p>Before Servlet API 3.0, you need to use Deployment Descriptor <code>web.xml</code> to configure the URL path of servlets. Starting from Servlet 3.0, you can use <code>@WebServlet</code> annotation (as above), which is much simpler and therefore recommended.</p>
+<p>A web user invokes a servlet, which is kept in the web server, by issuing a specific URL from the browser. In this example, we shall configure the following request URL to trigger the &quot;<code>HelloServlet</code>&quot;:</p>
+
+<pre class="command">
+http://<em>hostname</em>:<em>port</em>/<strong>helloapp<span class="new">/sayhello</span></strong></pre>
+
+<p>Create a configuration file called &quot;<code>web.xml</code>&quot;, and save it under &quot;<code>webapps\helloapp\WEB-INF</code>&quot;, as follows:</p>
+
+<pre><code class="language-xml line-numbers">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!-- To save as &lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\web.xml --&gt;
+&lt;!-- For Jakarta Servlet 6.0 --&gt;
+&lt;web-app xmlns = "https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation = "https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version = "6.0"
+         metadata-complete = "false"&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;<mark>HelloWorldServlet</mark>&lt;/servlet-name&gt;
+    <mark>&lt;servlet-class&gt;com.nowhere.HelloServlet&lt;/servlet-class&gt;</mark>
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;<mark>HelloWorldServlet</mark>&lt;/servlet-name&gt;
+    <mark>&lt;url-pattern&gt;/sayhello&lt;/url-pattern&gt;</mark>
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre>
+
+<ul>
+<li>The &quot;<code>web.xml</code>&quot; is called <em>web deployment descriptor</em>. It provides the configuration options for that particular webapp, such as defining the the <em>mapping</em> between URL and servlet class.</li>
+
+<li>The above configuration defines a servlet named &quot;<code>HelloWorldServlet</code>&quot;, implemented in &quot;<code>com.nowhere.HelloServlet.class</code>&quot;, and maps to URL &quot;<code>/sayhello</code>&quot;, where &quot;<code>/</code>&quot; denotes the  root of this webapp  &quot;<code>helloapp</code>&quot;. In other words, the absolute URL for this servlet is <code>http://<em>hostname</em>:<em>port</em>/helloapp<strong>/sayhello</strong></code>.
+</li>
+
+<li>Take note that EACH servlet requires a pair of <code>&lt;servlet&gt;</code> and <code>&lt;servlet-mapping&gt;</code> elements to do the mapping, via an arbitrary but unique <code>&lt;servlet-name&gt;</code>.</li>
+</ul>
+
+<p><span class="lead">Notes</span>: For each servlet, you can use either annotations or <code>web.xml</code>, but NOT both.</p>
+
+<h4>Run the Hello-world Servlet</h4>
+<p>To run the servlet, first start the Tomcat server. Verify that the web context &quot;<code>helloapp</code>&quot; has been deployed by observing the following messages in the Tomcat's console:</p>
+
+<pre class="output">
+xxx x, xxxx xx:xx:xx xx org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory <strong>helloapp</strong>
+......</pre>
+
+<p>Start a web browser (Firefox, Chrome, Safari), and issue the following URL (as configured in <code>@WebServlet</code>). Assume that Tomcat is running in port number 8080.</p>
+
+<pre class="command">http://localhost:8080/helloapp/sayhello</pre>
+
+<p>We shall see the output &quot;Hello, world!&quot;.</p>
+
+<img src="images/Servlet_HelloServletOutput.png" alt="Servlet_HelloServletOutput.png" width="266" height="208" class="image-center image-border" />
+
+<h5>View Page Source</h5>
+
+<p>Right-click on the page &rArr; Select &quot;View Page Source&quot;:</p>
+
+<pre class="output">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;&lt;head&gt;
+&lt;meta http-equiv='Content-Type' content='text/html; charset=UTF-8'&gt;
+&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello, world!&lt;/h1&gt;
+  &lt;p&gt;Request URI: /helloapp/sayhello&lt;/p&gt;
+  &lt;p&gt;Protocol: HTTP/1.1&lt;/p&gt;
+  &lt;p&gt;PathInfo: null&lt;/p&gt;
+  &lt;p&gt;Remote Address: 127.0.0.1&lt;/p&gt;
+  &lt;p&gt;A Random Number: &lt;strong&gt;0.4320795689818858&lt;/strong&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>It is important to take note that <em>users receive the output of the servlet</em>. User does not receive the servlet's source codes/classes, which are kept under a hidden directory &quot;<code>WEB-INF</code>&quot; and  not directly accessible by users.</p>
+
+<h5>Tomcat's Console</h5>
+<p>Check the Tomcat's console for the <code>System.out.println()</code> message. You need to monitor Tomcat's console for information messages and errors.</p>
+
+<h5>Errors?</h5>
+<p><span class="lead">Everything that can possibly go wrong will go wrong...</span> Read &quot;<a href="../howto/ErrorMessages.html">Common Error Messages</a>&quot;. The likely errors are &quot;404 File Not Found&quot; and &quot;500 Internal Server Error&quot;.</p>
+
+<h5>Inspecting HTTP Request and Response Messages</h5>
+<p>When you enter a URL (e.g., <code>http://localhost:8080/helloapp/sayhello</code>) on a web browser, an HTTP GET <em>request message</em> is sent to the server; and the server returns a <em>response message</em> for display on the web browser. You can inspect the request and response messages via Web browser's Developer Tool.</p>
+<p>For <strong>Firefox/Chrome</strong>, press F12 (called F12 debugger) to enable &quot;Web Console&quot; or &quot;Developer Tool&quot; &rArr; Choose "Network" (or "Net") tab &rArr; Enter URL <code>http://localhost:8080/helloapp/sayhello</code> (or refresh) &rArr; Expand a request and inspect the request/response's header/body.</p>
+
+<p>The <strong>Request  Header</strong> is as follows:</p>
+<pre class="color-example">
+GET http://localhost:8080/helloapp/sayhello HTTP/1.1
+Host: localhost:9999
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Cache-Control:max-age=0
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0</pre>
+
+<p>For this request, there is no <strong>Request  Body</strong>.</p>
+
+<p>The <strong>Response Header</strong> is as follows:</p>
+<pre class="color-example">
+HTTP/1.1 200 OK
+Date: xxx, xx xxx xxxx xx:xx:xx xxx
+Content-Length: 286
+Content-Type: text/html;charset=ISO-8859-1</pre>
+
+<p>The <strong>Response Body</strong> is as follows:</p>
+<pre class="color-example">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Hello, world!&lt;/h1&gt;
+  &lt;p&gt;Request URI: /hello/sayhello&lt;/p&gt;
+  &lt;p&gt;Protocol: HTTP/1.1&lt;/p&gt;
+  &lt;p&gt;PathInfo: null&lt;/p&gt;
+  &lt;p&gt;Remote Address: 0:0:0:0:0:0:0:1&lt;/p&gt;
+  &lt;p&gt;A Random Number: &lt;strong&gt;0.4480280769255568&lt;/strong&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+
+<h5>(Advanced) Using cURL (Client URL)</h5>
+<p>Alternatively, you can also use utility cURL (client URL) to inspect the HTTP request and response header/body, by issuing <code>curl</code> command from CMD/Terminal:</p>
+
+<pre class="color-example">
+<strong>curl -v http://localhost:9999/hello/sayhello</strong>
+*   Trying [::1]:9999...
+* Connected to localhost (::1) port 9999
+&gt; GET /helloapp/sayhello HTTP/1.1
+&gt; Host: localhost:9999
+&gt; User-Agent: curl/8.4.0
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200
+&lt; Content-Type: text/html;charset=UTF-8
+&lt; Content-Length: 297
+&lt; Date: Sun, 14 Apr 2024 09:43:16 GMT
+&lt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello, world!&lt;/h1&gt;
+  &lt;p&gt;Request URI: /helloapp/sayhello&lt;/p&gt;
+  &lt;p&gt;Protocol: HTTP/1.1&lt;/p&gt;
+  &lt;p&gt;PathInfo: null&lt;/p&gt;
+  &lt;p&gt;Remote Address: 0:0:0:0:0:0:0:1&lt;/p&gt;
+  &lt;p&gt;A Random Number: &lt;strong&gt;0.251389&lt;/strong&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+* Connection #0 to host localhost left intact</pre>
+
+<p>Notes:</p>
+<ol>
+<li><code>cURL</code> is a command line tool that enables data exchange between a client and a server using various network protocols through a terminal.</li>
+<li>The <strong>request header</strong> is marked by a leading <code>&gt;</code>. There is no <strong>request body</strong>.</li>
+<li>The <strong>response header</strong> is marked by a leading <code>&lt;</code> followed by the <strong>response body</strong>.</li>
+</ol>
+
+<h3>Using IDE</h3>
+<p>For production, you certainly should use an IDE to raise your productivity. See "IDE for Jakarta EE". Try out IntelliJ IDEA, Eclipse, or NetBeans.</p>
+
+<h3>Processing HTML Form Data</h3>
+
+<h4>Write a Client-side HTML Form: <code>input.html</code></h4>
+<p>HTML  provides a <code>&lt;form&gt;...&lt;/form&gt;</code> tag, which can be used to build a user input form containing elements such as text fields, password field, radio buttons, pull-down menu, checkboxes, text area, hidden field, submit and reset buttons. This allows web users to interact with the web server by submit data. For example,</p>
+<img src="images/Servlet_SampleHTMLForm.png" alt="Servlet_SampleHTMLForm.png" width="463" height="506" class="image-center" />
+
+<p>Create the following HTML script, and save as &quot;<code>input.html</code>&quot; under the context root &quot;<code>helloapp</code>&quot;.</p>
+
+<pre><code class="language-xml line-numbers">&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;User Input Form&lt;/title&gt;
+&lt;/head&gt;
+ 
+&lt;body&gt;
+&lt;h2&gt;User Input Form&lt;/h2&gt;
+&lt;form method=&quot;get&quot; action=&quot;echo&quot;&gt;
+  &lt;fieldset&gt;
+    &lt;legend&gt;Personal Particular&lt;/legend&gt;
+    Name: &lt;input type=&quot;text&quot; name=&quot;username&quot; minlength=&quot;8&quot; maxlength=&quot;12&quot; required /&gt;&lt;br /&gt;&lt;br /&gt;
+    Password: &lt;input type=&quot;password&quot; name=&quot;password&quot; required
+      pattern=&quot;^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*_=+]).{12,}$&quot; /&gt;&lt;br /&gt;&lt;br /&gt;
+    email: &lt;input type=&quot;email&quot; name=&quot;email&quot; required /&gt;&lt;br /&gt;&lt;br /&gt;
+    Gender: 
+    &lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;m&quot; checked /&gt;Male
+    &lt;input type=&quot;radio&quot; name=&quot;gender&quot; value=&quot;f&quot; /&gt;Female&lt;br /&gt;&lt;br /&gt;
+    Age: &lt;select name = &quot;age&quot;&gt;
+      &lt;option value=&quot;1&quot;&gt;&amp;lt; 1 year old&lt;/option&gt;
+      &lt;option value=&quot;99&quot;&gt;1 to 99 years old&lt;/option&gt;
+      &lt;option value=&quot;100&quot;&gt;&amp;gt; 99 years old&lt;/option&gt;
+    &lt;/select&gt;
+  &lt;/fieldset&gt;
+ 
+  &lt;fieldset&gt;
+    &lt;legend&gt;Languages&lt;/legend&gt;
+    &lt;input type=&quot;checkbox&quot; name=&quot;language&quot; value=&quot;java&quot; checked /&gt;Java
+    &lt;input type=&quot;checkbox&quot; name=&quot;language&quot; value=&quot;c&quot; /&gt;C/C++
+    &lt;input type=&quot;checkbox&quot; name=&quot;language&quot; value=&quot;cs&quot; /&gt;C#
+  &lt;/fieldset&gt;
+ 
+  &lt;fieldset&gt;
+    &lt;legend&gt;Instruction&lt;/legend&gt;
+    &lt;textarea rows=&quot;5&quot; cols=&quot;30&quot; name=&quot;instruction&quot;&gt;Enter your instruction here...&lt;/textarea&gt;
+  &lt;/fieldset&gt;
+ 
+  &lt;input type=&quot;hidden&quot; name=&quot;secret&quot; value=&quot;888&quot; /&gt;
+  &lt;input type=&quot;submit&quot; value=&quot;SEND&quot; /&gt;
+  &lt;input type=&quot;reset&quot; value=&quot;CLEAR&quot; /&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Start the tomcat server. Issue the following URL to request for the HTML page:</p>
+<pre class="command">
+http://localhost:8080/helloapp<span class="new">/input.html</span></pre>
+
+<h5>How It Work?</h5>
+<ol>
+<li>The <code>&lt;fieldset&gt;...&lt;/fieldset&gt;</code> tag groups related elements and displays them in a box. The <code>&lt;legend&gt;...&lt;/legend&gt;</code> tag provides the legend for the box.</li>
+
+<li>This HTML form (enclosed within <code>&lt;form&gt;...&lt;/form&gt;</code>) contains the following types of input elements:
+
+  <ol>
+<li>Text field (<code>&lt;input type=&quot;text&quot;&gt;</code>): for web users to enter text.</li>
+<li>Radio buttons (<code>&lt;input type=&quot;radio&quot;&gt;</code>): choose any one (and possibly none).</li>
+<li>Pull-down menu (<code>&lt;select&gt;</code> and <code>&lt;option&gt;</code>): pull-down menu of options.</li>
+<li>Checkboxes (<code>&lt;input type=&quot;checkbox&quot;&gt;</code>): chose none or more.</li>
+<li>Text area (<code>&lt;textarea&gt;...&lt;textarea&gt;</code>): for web users to enter multi-line text. (Text field for single line only.)</li>
+<li>Hidden field (<code>&lt;input type=&quot;hidden&quot;&gt;</code>): for submitting hidden <code>name=value</code> pair.</li>
+<li>Submit button (<code>&lt;input type=submit&gt;</code>): user clicks this button to submit the form data to the server.</li>
+<li>Reset button (<code>&lt;input type=&quot;reset&quot;&gt;</code>): resets all the input field to their default value.</li>
+  </ol>
+
+Each of the input elements has an attribute &quot;<code>name</code>&quot;, and an optional attribute &quot;<code>value</code>&quot;. If an element is selected, its &quot;<code>name=value</code>&quot; pair will be submitted to the server for processing.</li>
+
+<li>The &lt;form&gt; start-tag also specifies the URL for submission in the <code>action=&quot;<em>url</em></code>&quot; attribute, and the request method in the <code>method=&quot;<span class="underline">get</span>|post&quot;</code> attribute.</li>
+<li>For &quot;Name&quot; text field, we set the <code>minlength=&quot;8&quot;</code> and <code>maxlength=&quot;12&quot;</code>.</li>
+<li>For &quot;Password&quot; field, we use the following <code>pattern=&quot;<em>regex</em>&quot;</code> attribute:
+<pre class="syntax">pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&amp;*_=+]).{12,}$"</pre>
+
+This regular expression looks for at least one lowercase letter, one uppercase letter, one number and one special symbol, with minimum length of 12. <br>
+"<code>?=</code>" is known as <em>positive lookahead</em>, which performs the match but does not consume any characters. For example, &quot;<code>?=.*[a-z]</code>&quot; match zero or more ANY characters (<code>.*</code>) followed by a lowercase letter (<code>[a-z]</code>), without consuming any characters. The &quot;<code>.{12,}</code>&quot; sets the minimum length to 12 (and consumes the characters).<br />
+</li></ol>
+
+<h5>Query Parameters Name-Value Pairs</h5>
+<p>For example, suppose that we enter &quot;Alan Smith&quot; in the text field, &quot;aaaaaaaaa1@&quot; in password, &quot;a.b@c&quot; in email, select &quot;male&quot;, and click the &quot;SEND&quot; button, we will get a &quot;404 page not found&quot; error (because we have yet to write the processing script). BUT observe the destination URL:</p>
+<pre class="command">
+http://localhost:8080/helloapp/echo<strong>?<span class="underline">username=Alan+Smith</span>&amp;<span class="underline">email=a%40b.c</span>&amp;<span class="underline">gender=m</span></strong>&amp;....</pre>
+
+<p>Observe that:</p>
+
+<ol>
+<li>The URL <code>http://localhost:8080/helloapp/echo</code> is retrieved from the attribute <code>action=&quot;echo&quot;</code> of the <code>&lt;form&gt;</code> start-tag. <em>Relative</em> URL is used in this example. The <em>base</em> URL for the current page &quot;<code>input.html</code>&quot; is <code>http://localhost:8080/helloapp/</code>. Hence, the relative URL &quot;<code>echo</code>&quot; resolves into <code>http://localhost:8080/helloapp/echo</code>.</li>
+
+<li>A <code>'?'</code> follows the URL, which  separates the URL and the so-called <em>query string</em> (or <em>query parameters</em>, <em>request parameters</em>) followed.</li>
+
+<li>The query string comprises the &quot;<code>name=value</code>&quot; pairs of the <em>selected</em> input elements (i.e., &quot;<code>username=Alan+Smith</code>&quot;, &quot;<code>gender=m</code>&quot;, etc). The &quot;<code>name=value</code>&quot; pairs are separated by an <code>'&amp;'</code>. Also take note that the blank (in &quot;<code>Alan Smith</code>&quot;) is replace by a <code>'+'</code>. This is because special characters are not permitted in the URL and have to be encoded (known as <em>URL-encoding)</em>. Blank is encoded as <code>'+'</code> (or <code>%20</code>). Other characters are encoded as <code>%<em>xx</em></code>, where <em><code>xx</code></em> is the ASCII code in hex. For example, <code>'&amp;'</code> as <code>%26</code>, <code>'?'</code> as <code>%3F</code>.</li>
+
+<li> Some input elements such as checkboxes may trigger multiple parameter values, e.g., &quot;<code>language=java&amp;language=c&amp;language=cs</code>&quot; if all three boxes are checked.</li>
+
+<li>HTTP provides two request methods: GET and POST. For GET request, the query parameters are appended behind the URL. For POST request, the query string are sent in the request message's body. POST request is often preferred, as users will not see the strange string in the URL and it can send an unlimited amount of data. The amount of data that can be sent via the GET request is limited by the length of the URL. The request method is specified in the <code>&lt;form method=&quot;<span class="underline">get</span>|post&quot;...&gt;</code> start-tag. In this tutorial, we use the GET request, so that you can inspect the query string.</li>
+</ol>
+
+<h4>Write a Server-side Servlet to Process Form Input: &quot;<code>EchoServlet.java</code>&quot;</h4>
+
+<p>The form that we have written send its data to a server-side program having URL of &quot;<code>echo</code>&quot; (as specified in the <code>action=&quot;<em>url</em>&quot;</code> attribute of the <code>&lt;form&gt;</code> start-tag). Let us write a servlet called <code>EchoServlet</code>, which shall be mapped to the URL &quot;<code>echo</code>&quot;, to process the incoming form data. The servlet simply echoes the data back to the client.</p>
+
+<p>Similar to the &quot;<code>HelloServlet</code>&quot;, we define the &quot;<code>EchoServlet</code>&quot; under package &quot;<code>com.nowhere</code>&quot;, and save the source file as &quot;<code>&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\<strong>src\com\nowhere\EchoServlet.java</strong></code>&quot;.</p>
+
+<pre><code class="language-css line-numbers drop-token">
+// To save as "&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\src\com\nowhere\EchoServlet.java"
+package com.nowhere;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+import java.io.*;
+import java.util.*;
+import static org.apache.commons.text.StringEscapeUtils.escapeHtml4;  // Apache Commons Text 1.12
+
+<mark>@WebServlet("/echo")</mark>
+public class EchoServlet extends HttpServlet {
+
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response)
+         throws IOException, ServletException {
+      // Set the response message's MIME type
+      response.setContentType("text/html; charset=UTF-8");
+      // Allocate an output writer to write the response message into the network socket
+      PrintWriter out = response.getWriter();
+
+      // Write the response message, in an HTML page
+      out.println("&lt;!DOCTYPE html&gt;");
+      out.println("&lt;html&gt;&lt;head&gt;");
+      out.println("&lt;meta charset='UTF-8'&gt;");
+      out.println("&lt;title&gt;Echo Servlet&lt;/title&gt;&lt;/head&gt;");
+      out.println("&lt;body&gt;&lt;h2&gt;You have enter&lt;/h2&gt;");
+
+      // Retrieve the value of the query parameter "username" (from text field)
+      String username = request.getParameter("username");
+      // Get null if the parameter is missing.
+      // Get empty string or string of white spaces if user did not fill in.
+      if (username == null
+            || (username = escapeHtml4(username.trim())).isEmpty()) {
+         out.println("&lt;p&gt;Name: MISSING&lt;/p&gt;");
+      } else {
+         out.println("&lt;p&gt;Name: " + username + "&lt;/p&gt;");
+      }
+
+      // Retrieve the value of the query parameter "email" (from text field)
+      String email = request.getParameter("email");
+      if (email == null
+            || (email = escapeHtml4(email.trim())).isEmpty()) {
+         out.println("&lt;p&gt;Email: MISSING&lt;/p&gt;");
+      } else {
+         out.println("&lt;p&gt;Email: " + email + "&lt;/p&gt;");
+      }
+
+      // Retrieve the value of the query parameter "gender" (from radio button)
+      String gender = request.getParameter("gender");
+      if (gender == null) {
+         out.println("&lt;p&gt;Gender: MISSING&lt;/p&gt;");
+      } else if (gender.equals("m")) {
+         out.println("&lt;p&gt;Gender: male&lt;/p&gt;");
+      } else {
+         out.println("&lt;p&gt;Gender: female&lt;/p&gt;");
+      }
+
+      // Retrieve the value of the query parameter "age" (from pull-down menu)
+      String age = request.getParameter("age");
+      if (age == null) {
+         out.println("&lt;p&gt;Age: MISSING&lt;/p&gt;");
+      } else if (age.equals("1")) {
+         out.println("&lt;p&gt;Age: &lt; 1 year old&lt;/p&gt;");
+      } else if (age.equals("99")) {
+         out.println("&lt;p&gt;Age: 1 to 99 years old&lt;/p&gt;");
+      } else {
+         out.println("&lt;p&gt;Age: &gt; 99 years old&lt;/p&gt;");
+      }
+
+      // Retrieve the value of the query parameter "language" (from checkboxes).
+      // Multiple values possible. Use getParameterValues() which returns an array of String.
+      String[] languages = request.getParameterValues("language");
+      if (languages == null || languages.length == 0) {
+         out.println("&lt;p&gt;Languages: NONE&lt;/p&gt;");
+      } else {
+         out.println("&lt;p&gt;Languages: ");
+         for (String language : languages) {
+            switch (language) {
+               case "c" -&gt; out.println("C/C++ ");
+               case "cs" -&gt; out.println("C# ");
+               case "java" -&gt; out.println("Java ");
+            }
+         }
+         out.println("&lt;/p&gt;");
+      }
+
+      // Retrieve the value of the query parameter "instruction" (from text area)
+      String instruction = request.getParameter("instruction");
+      if (instruction == null
+            || (instruction = escapeHtml4(instruction.trim())).isEmpty()
+            || instruction.equals("Enter your instruction here...")) {
+         out.println("&lt;p&gt;Instruction: NONE&lt;/p&gt;");
+      } else {
+         out.println("&lt;p&gt;Instruction: " + instruction + "&lt;/p&gt;");
+      }
+
+      // Retrieve the value of the query parameter "secret" (from hidden field)
+      String secret = request.getParameter("secret");
+      out.println("&lt;p&gt;Secret: " + secret + "&lt;/p&gt;");
+
+      // Get all the names of request parameters in an Enumeration&lt;String&gt;
+      Enumeration&lt;String&gt; names = request.getParameterNames();
+      out.println("&lt;p&gt;Request Parameter Names are: ");
+      if (names.hasMoreElements()) {
+         out.print(escapeHtml4(names.nextElement()));
+      }
+      do {
+         out.print(", " + escapeHtml4(names.nextElement()));
+      } while (names.hasMoreElements());
+      out.println(".&lt;/p&gt;");
+
+      // Hyperlink "BACK" to input page
+      out.println("&lt;a href='input.html'&gt;BACK&lt;/a&gt;");
+
+      out.println("&lt;/body&gt;&lt;/html&gt;");
+      out.close();  // Always close the output writer
+   }
+
+   // Redirect POST request to GET request.
+   @Override
+   public void doPost(HttpServletRequest request, HttpServletResponse response)
+         throws IOException, ServletException {
+      doGet(request, response);
+   }
+}</code></pre>
+
+<h5>How It Works?</h5>
+<ol>
+<li>The query string comprises <code>name=value</code> pairs. We can retrieve the query parameters from the request message (captured in <code>doGet()</code>'s argument <code>HttpServletRequest request</code>) via one of the following methods:
+  <pre class="syntax">
+request.getParameter(&quot;<em>paramName</em>&quot;):String
+  <span class="comment">// Returns the parameter value in a String.
+  // Returns null if parameter name does not exist.
+  // Returns the first parameter value for a multi-value parameter.</span>
+ 
+request.getParameterValues(&quot;<em>paramName</em>&quot;):String[]
+  <span class="comment">// Return all the parameter values in a String[].
+  // Return null if the parameter name does not exist.</span>
+ 
+request.getParameterNames():java.util.Enumeration&lt;String&gt;
+  <span class="comment">// Return all the parameter names in a java.util.Enumeration, possibly empty.</span></pre>
+</li>
+
+<li>Take note that the parameter name is case sensitive.</li>
+<li>We use <code>request.getParameter(&quot;<em>paramName</em>&quot;)</code> to retrieve the parameter value for most of the single-value input elements (such as text field, radio button, text area, etc). If the parameter is present (not <code>null</code>), we <code>trim()</code> the returned string to remove the leading and trailing white spaces.</li>
+<li>We also replace the special HTML characters (<code>&gt;</code>, <code>&lt;</code>, <code>&amp;</code>, <code>&quot;</code>) with the HTML escape sequences in the input strings, before we echo them back to the client via <code>out.println()</code>. This step is necessary to prevent the so-called <em>command-injection attack</em>, where user enters a script into the text field. <br>
+The replacement is done via <code>static</code> method <code>StringEscapeUtils.escapeHtml4()</code> of the "Apache Commons Text" library.<br>
+To use this library, you need to:
+<ol>
+<li>Goto "Apache Commons Text" @ <a href="https://commons.apache.org/proper/commons-text/">https://commons.apache.org/proper/commons-text/</a>. Download <code>commons-text-1.12.0-bin.zip</code>. Extract <code>commons-text-1.12.0.jar</code> and place in under <code>helloapp\WEB-INF\lib</code>.</li>
+<li>"Apache Commons Text" requires "Apache Commons Lang". Goto Apache Commons Lang @ <a href="https://commons.apache.org/proper/commons-lang/">https://commons.apache.org/proper/commons-lang/</a>. Download <code>commons-lang3-3.14.0-bin.zip</code>. Extract <code>commons-lang3-3.14.0.jar</code> and place in under <code>helloapp\WEB-INF\lib</code>.</li></ol>
+To compile <code>EchoServlet.java</code> using JDK, issue these commands:
+<pre class="command">
+cd &lt;CATALINA_HOME&gt;\webapp\helloapp\WEB-INF
+javac -cp ..\..\..\lib\servlet-api.jar;lib\commons-lang3-3.14.0.jar;lib\commons-text-1.12.0.jar -d classes src\com\nowhere\Ech
+oServlet.java</pre>
+
+If you use Maven, you can add the following dependency in <code>pom.xml</code>:
+<pre class="command">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-text&lt;/artifactId&gt;
+    &lt;version&gt;1.12.0&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+
+<span class="lead">Rule of thumb</span>: Any text string taken from the client and echoing back via <code>out.println()</code> needs to  be filtered to prevent command-injection attack!</li>
+
+<li>If the parameter could possess multiple values (e.g., checkboxes), we use <code>request.getParameterValues()</code>, which returns an array of <code>String</code> or <code>null</code> if the parameter does not exist.</li>
+
+<li>One of the nice features of Java servlet is that all the form data decoding (i.e., <em>URL-decoding</em>) is handled automatically. That is, <code>'+'</code> will be decoded to blank, <code>%<em>xx</em></code> decoded into the corresponding character.</li>
+</ol>
+
+<h5>Run the <code>EchoServlet</code></h5>
+
+<p>Start the Tomcat server. Issue URL <code>http://localhost:8080/helloapp/input.html</code>. Fill up the form, click the submit button to trigger the servlet at <code>http://localhost:8080/helloapp/echo?...</code>.</p>
+<p> Alternatively, you could issue a URL <code>http://localhost:8080/helloapp/echo?...</code> with query string.</p>
+
+<h4>HTTP Methods for Submitting Form Data: <code>GET</code> vs. <code>POST</code></h4>
+<p>Two HTTP request methods, GET and POST, are available for submitting form data, specified in the <code>&lt;form&gt;</code>'s attribute &quot;<code>method=<span class="underline">GET</span>|POST</code>&quot;. GET and POST performs the same basic function. That is, gather the name-value pairs of the selected input elements, URL-encode (e.g., replace blank with +), and pack them into a query string. However, in a GET request, the query string is appended behind the URL, separated by a <code>'?'</code>. Whereas in a POST request, the query string is kept in the request body (and not shown in the URL). The length of query string in a GET request is limited by the maximum length of URL permitted, whereas it is unlimited in a POST request. I recommend POST request for production, as it does not show the strange looking query string in the URL, even if the amount of data is limited. However, in this tutorial, I use GET method, so that you can inspect the query string on the URL.</p>
+<p>To try out the POST request, modify the &quot;<code>input.html</code>&quot;:</p>
+
+<pre class="example">
+&lt;form <span class="new"><strong>method=&quot;post&quot;</strong></span> action=&quot;echo&quot;&gt;
+  ......
+&lt;/form&gt;</pre>
+
+<p> Inside the servlet, GET request is processed by the method <code>doGet()</code>, while POST request is processed by the method <code>doPost()</code>. If they perform the same operations, we could re-direct <code>doPost()</code> to <code>doGet()</code> (or vice versa), as follows:</p>
+
+<pre class="example">
+public class MyServlet extends HttpServlet {
+   <span class="comment">// doGet() handles HTTP GET request</span>
+   @Override
+   public void <strong>doGet</strong>(HttpServletRequest request, HttpServletResponse response)
+               throws IOException, ServletException {
+      ......
+      ......
+   }
+   
+   <span class="new"><span class="comment">// doPost() handles HTTP POST request</span>
+   @Override
+   public void <strong>doPost</strong>(HttpServletRequest request, HttpServletResponse response)
+               throws IOException, ServletException {
+      <strong>doGet(request, response);</strong>  <span class="comment">// call doGet()</span>
+   }</span>
+}</pre>
+
+<h3>Request Header and Response Header</h3>
+
+
+<p>HTTP is a request-response protocol. The client sends a <em>request message</em> to the server. The server, in turn, returns a <em>response message</em>. The request and response messages consists of two parts: a <em>header</em> (information about the message) and a <em>body</em> (contents). Header provides information about the request/response messages. The data in header is organized in name-value pairs. Read &quot;<a href="../webprogramming/HTTP_Basics.html#http_mesages">HTTP Request and Response Messages</a>&quot; for the format, syntax of request and response messages.</p>
+
+<h4><code>HttpServletRequest</code> Object</h4>
+<p>The request message is encapsulated in an <code>HttpServletRequest</code> object, which is passed into the <code>doGet()</code> methods by the Servlet container. <code>HttpServletRequest</code> object provides many methods for you to retrieve the headers:</p>
+<ul>
+<li>General methods: <code>getHeader(<em>name</em>)</code>, <code>getHeaders(<em>name</em>)</code>, <code>getHeaderNames()</code>.</li>
+<li>Specific methods: <code>getContentLength()</code>, <code>getContentType()</code>, <code>getCookies()</code>, <code>getAuthType()</code>, etc.</li>
+<li>URL related: <code>getRequestURI()</code>, <code>getQueryString()</code>, <code>getProtocol()</code>, <code>getMethod()</code>.</li>
+</ul>
+<p>Example: Read &quot;<a href="JavaServletExamples.html#ServletExample_RequestHeader">Request Header Example</a>&quot;.</p>
+
+<h4><code>HttpServletResponse</code> Object</h4>
+
+<p>The response message is encapsulated in the <code>HttpServletResponse</code> object, which is passed into <code>doGet()</code> for you to form the servlet output by the servlet container.</p>
+
+<ul>
+<li><code>setStatusCode(int statuscode)</code>, <code>sendError(int code, String message)</code>, <code>sendRedirect(url)</code>.</li>
+<li><code>response.setHeader(String headerName, 
+  String headerValue)</code>. </li>
+<li><code>setContentType(String mimeType)</code>, <code>setContentLength(int length)</code>, etc.</li>
+</ul>
+<p>Example: [TODO]</p>
+
+<h3><code>RequestDispatcher</code>: <code>forward()</code> and <code>include()</code></h3>
+
+<p>We could use a <code>RequestDispatcher</code> to forward a request to another entity, or include another entity in the response.</p>
+<p> The API is as follows:</p>
+
+<pre class="syntax">Interface jakarta.servlet.<span class="new">RequestDispatcher</span>
+void <span class="new">forward</span>(ServletRequest request, ServletResponse response)
+   <span class="comment">// Forwards a request from a servlet to another resource (servlet, JSP file, or HTML file).</span>
+void <span class="new">include</span>(ServletRequest request, ServletResponse response)
+   <span class="comment">// Includes the content of a resource (servlet, JSP page, HTML file) in the response.</span></pre>
+
+<p>You can get a <code>RequestDispatcher</code> from <code>HttpServletRequest</code> via method <code>getRequestDispatcher()</code>:</p>
+<pre class="syntax">
+Interface <span class="new">HttpServletRequest</span>
+<span class="command">Super-Interface ServletRequest
+jakarta.servlet</span>.RequestDispatcher <span class="new">getRequestDispatcher</span>(String <span class="new">path</span>)
+   <span class="comment">// Returns a RequestDispatcher that acts as a wrapper for the resource located at the given path
+   // within the current servlet context.</span></pre>
+
+<h4>Example: <code>LoginServlet</code></h4>
+<h5>Client-side HTML Form: <code>input.html</code></h5>
+<p>We shall re-use the <code>input.html</code>, but change  <code>action="login"</code>.</p>
+
+<h5>Server-side Servlet: <code>LoginServlet.java</code></h5>
+
+<pre><code class="language-java line-numbers drop-token">// To save as "&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\src\com\nowhere\LoginServlet.java"
+package com.nowhere;
+ 
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+import java.io.*;
+
+<mark>@WebServlet("/login")</mark> 
+public class LoginServlet extends HttpServlet {
+ 
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response)
+               throws IOException, ServletException {
+      // Set the response message's MIME type
+      response.setContentType("text/html; charset=UTF-8");
+      // Allocate an output writer to write the response message into the network socket
+      PrintWriter out = response.getWriter();
+ 
+      // Write the response message, in an HTML page
+      String username = request.getParameter("username");
+      if (username.equals("peter678")) {
+         <mark>RequestDispatcher rd = request.getRequestDispatcher("/echo");</mark>
+         <mark>rd.forward(request, response);</mark>
+         // or one-liner
+         // request.getRequestDispatcher("/echo").forward(request, response);
+      } else {
+         <mark>RequestDispatcher rd = request.getRequestDispatcher("input.html");</mark>
+         out.println("&lt;p&gt;Wrong username or password. Try again:&lt;/p&gt;");  // break well-form HTML
+         <mark>rd.include(request, response);</mark>
+      }
+      out.close();
+   }
+ 
+   // Redirect POST request to GET request.
+   @Override
+   public void doPost(HttpServletRequest request, HttpServletResponse response)
+               throws IOException, ServletException {
+      doGet(request, response);
+   }
+}</code></pre>
+
+<h5>How It Works?</h5>
+<ol>
+<li>We check the username (hardcoded in this example). If it is valid, we forward to "<code>/echo</code>" (<code>EchoServlet</code>). Otherwise, we print a error message and include the "<code>input.html</code>" to try again (however, the html page is broken and not well-form!).</li>
+</ol>
+
+<h3><code>HttpServletResponse: sendRedirect()</code></h3>
+<p>The <code>HttpServletResponse</code>'s <code>sendRedirect()</code> can be used to send a redirect response, so that the client can make a new request to the redirect location. See HTTP article on &quot;302 Temporary Redirect&quot; response.</p>
+
+<pre class="syntax">
+Interface <span class="new">HttpServletResponse</span>
+void <span class="new">sendRedirect</span>(String location)
+  <span class="comment">// Sends a temporary redirect response to the client using the specified redirect location URL and
+  //   sets the status code to SC_FOUND 302 (Found).
+  // The client shall make a new request to the location specified.</span></pre>
+  
+<h4>Example: <code>SearchServlet</code></h4>
+
+<h5>Client-side HTML Form: <code>search.html</code></h5>
+<pre><code class="language-html line-numbers drop-token">&lt;!DOCTYPE html&gt;
+&lt;html lang = "en"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Search Form&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;form method="get" <mark>action=&quot;search&quot;</mark>&gt;
+  &lt;p&gt;Search: &lt;input type="text" <mark>name=&quot;searchKey&quot;</mark>&gt;&lt;/p&gt;
+  &lt;input type="submit" value="search"&gt;
+&lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<h5>Server-side Servlet: <code>SearchServlet.java</code></h5>
+<pre><code class="language-java line-numbers drop-token">package com.nowhere;
+
+import java.io.*;
+import jakarta.servlet.*;             // Tomcat 10
+import jakarta.servlet.http.*;        // Tomcat 10
+import jakarta.servlet.annotation.*;  // Tomcat 10
+
+<mark>@WebServlet("/search")</mark>
+public class SearchServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String searchKey = req.getParameter("<mark>searchKey</mark>");
+        resp.sendRedirect("https://www.google.com/search?q=" + searchKey);
+    }
+}</code></pre>
+
+<h5>How It Works?</h5>
+<ol>
+<li>The <code>SearchServlet</code> redirects to google with the <code>searchKey</code> received.</li>
+<li>Push F12 on the browser to trigger the debugger. Inspect the requests/responses to understand how &quot;302 temporary redirect&quot; works.
+<ol>
+<li>The HTTP GET request http://localhost:8080/helloapp/search.html receives a 302 response.</li>
+<li>The response header is:
+<pre class="output">HTTP/1.1 <mark>302</mark> 
+<mark>Location: https://www.google.com/search?q=java</mark>
+Content-Length: 0
+Date: Mon, 29 Apr 2024 05:50:40 GMT
+Keep-Alive: timeout=20
+Connection: keep-alive</pre>
+</li>
+<li>The browser automatically sends a new request to the &quot;Location&quot; in the 302 response header.</li>
+</ol>
+
+</li>
+</ol>
+
+<h3><code>ServletConfig</code> and <code>ServletContext</code></h3>
+<ul>
+<li>There is ONE <code>jakarta.servlet.ServletConfig</code> for EACH servlet.</li>
+<li>There is ONE <code>jakarta.servlet.ServletContext</code> for the entire webapp shared by all the servlets and resources under the webapp.</li>
+</ul>
+
+<h4><code>ServletConfig</code> Object</h4>
+
+<p>From the API: The <code>jakarta.servlet.ServletConfig</code> is a servlet configuration object used by a servlet container (e.g., Tomcat, GlassFish) to pass information to a particular servlet during initialization<em>.</em></p>
+<p>Each servlet can maintain a set of init parameters in the form of name-value pairs. You can set the init parameters using <code>@WebInitParam</code> annotation or <code>web.xml</code> deployment descriptor.</p>
+
+<h4>Example 1: Using Init Parameters defined in <code>web.xml</code></h4>
+
+<h5>Server-side Servlet: <code>ServletConfigInitParamTest1.java</code></h5>
+<pre><code class="language-java line-numbers drop-token">package com.nowhere;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+// urlPatterns="/initparam1" and initParam defined in web.xml
+public class ServletConfigInitParamTest1 extends HttpServlet {
+   <mark>String databaseURL;</mark>
+   <mark>String username;</mark>
+
+   // init() runs ONCE during the servlet initialization.
+   @Override
+   public void init(ServletConfig config) throws ServletException {
+      super.init(config);
+      // You can retrieve the init parameter in init() once to be used by doGet() repeatably.
+      <mark>databaseURL = config.getInitParameter(&quot;databaseURL&quot;);</mark>
+   }
+
+   // doGet() runs ONCE per HTTP GET request.
+   @Override
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      // You can also retrieve the init parameter in doGet()
+      <mark>username = getInitParameter(&quot;username&quot;);</mark>   // (1) via HttpServlet
+      <mark>// username = getServletConfig().getInitParameter(&quot;username&quot;);</mark>   // (2) via ServletConfig
+      resp.setContentType("text/plain");
+      PrintWriter out = resp.getWriter();
+      out.println("Connecting to " + <mark>databaseURL</mark>);
+      out.println("username: " + <mark>username</mark>);
+      out.close();
+   }
+}</code></pre>
+
+<h5>Deployment Descriptor <code>web.xml</code></h5>
+
+<pre><code class="language-xml line-numbers drop-token">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- for Jakarta Servlet 6.0 --&gt;
+&lt;web-app xmlns = "https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation = "https://jakarta.ee/xml/ns/jakartaee
+         https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version = "6.0" metadata-complete = "false"&gt;
+  &lt;display-name&gt;Servlet Init Parameters Tests&lt;/display-name&gt;
+
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;ServletInitParamTest1&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.nowhere.ServletConfigInitParamTest1&lt;/servlet-class&gt;
+    <mark>&lt;init-param&gt;</mark>
+      <mark>&lt;param-name&gt;databaseURL&lt;/param-name&gt;</mark>
+      <mark>&lt;param-value&gt;jdbc:mysql://localhost:3306/ebookshop&lt;/param-value&gt;</mark>
+    <mark>&lt;/init-param&gt;</mark>
+    <mark>&lt;init-param&gt;</mark>
+      <mark>&lt;param-name&gt;username&lt;/param-name&gt;</mark>
+      <mark>&lt;param-value&gt;peter&lt;/param-value&gt;</mark>
+    <mark>&lt;/init-param&gt;</mark>
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;ServletInitParamTest1&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/initparam1&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</code></pre>
+
+<p>To run: Issue URL <code>http://localhost:8080/helloapp/initparam1</code>.</p>
+
+<h5>How It Works?</h5>
+<ol>
+<li>You could keep the database username and password in a configuration file (web.xml) and read into the servlet via init parameters, instead of hardcoding in your source file, for security reason.</li>
+<li>Each servlet has a <code>ServletConfig</code> object. You could retrieve the init parameters in the <code>init()</code> once, and use in <code>doGet()</code> repeatably.</li>
+</ol>
+
+<h4>Example 2: Using init parameters defined by <code>@WebInitParam</code></h4>
+
+<h5>Server-side Servlet: <code>ServletConfigInitParamTest2.java</code></h5>
+<pre><code class="language-java line-numbers drop-token">package com.nowhere;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+// use @WebInitParam annotation to define init parameters under @WebServlet
+@WebServlet(<mark>urlPatterns = &quot;/initparam2&quot;</mark>,
+      initParams = {
+          <mark>@WebInitParam(name = "username", value = "paul"),</mark>
+          <mark>@WebInitParam(name = "password", value = "yyyy")</mark>
+      }
+)
+public class ServletConfigInitParamTest2 extends HttpServlet {
+   @Override
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      String username = getInitParameter("username");
+      String password = getInitParameter("password");
+
+      resp.setContentType("text/plain");
+      PrintWriter out = resp.getWriter();
+      out.println("username: " + username);
+      out.println("password: " + password);
+      out.close();
+   }
+}</code></pre>
+
+<p>To run: Issue URL <code>http://localhost:8080/helloapp/initparam2</code>.</p>
+
+<h5>How It Works?</h5>
+<ol>
+<li>In this example, we define the init parameters using annotation <code>@WebInitParam</code> (Servlet 3.0 onwards) in the same source file. This is no difference from defining <code>private</code> <code>static</code> <code>final</code> variables?!</li>
+</ol>
+
+<h4><code>ServletContext</code> Object</h4>
+
+<p>From the API: The <code>jakarta.servlet.ServletContext</code> defines a set of methods that a servlet uses to communicate with its servlet container, for example, to get the MIME type of a file, dispatch requests, or write to a log file. There is one context per webapp.</p>
+<p>The <code>ServletContext</code> object is contained within the <code>ServletConfig</code> object, which the Web server provides the servlet when the servlet is initialized. You can get the <code>ServletContext</code> via <code>ServletConfig.getServletContext()</code>.</p>
+<p><code>ServletContext</code> has an &quot;application&quot; scope. It can also be used to pass information between servlets and JSPs within the same webapp, via methods <code>setAttribute(&quot;name&quot;, Object)</code> and <code>getAttribute(&quot;name&quot;)</code>.</p>
+
+<h4>Example 3: Using <code>ServletContext</code></h4>
+
+<h5>Server-side Servlet: <code>ServletContextParamTest1.java</code></h5>
+<pre><code class="language-java line-numbers drop-token">package com.nowhere;
+
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.*;
+import jakarta.servlet.http.*;
+import java.io.*;
+
+<mark>@WebServlet(&quot;/contextparam1&quot;)</mark>
+public class ServletContextParamTest1 extends HttpServlet {
+   String username;
+   String password;
+
+   @Override
+   public void <mark>init</mark>(ServletConfig config) throws ServletException {
+      super.init(config);
+      // You can retrieve the context parameter in init() once to be used by doGet() repeatably.
+      username = <mark>config.getServletContext().getInitParameter(&quot;username&quot;)</mark>;
+   }
+
+   @Override
+   protected void <mark>doGet</mark>(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      // You can also retrieve the context param in deGet(), once per request.
+      password = <mark>getServletContext().getInitParameter(&quot;password&quot;)</mark>;
+      resp.setContentType("text/plain");
+      PrintWriter out = resp.getWriter();
+      out.println("username: " + username);
+      out.println("password: " + password);
+      out.close();
+   }
+}</code></pre>
+
+<h5><code>web.xml</code></h5>
+<p>Define the context parameters in <code>web.xml</code> as follows:</p>
+
+<pre><code class="language-css line-numbers drop-token">&lt;web-app ...&gt;
+  ......
+  &lt;context-param&gt;
+    &lt;param-name&gt;username&lt;/param-name&gt;
+    &lt;param-value&gt;emily&lt;/param-value&gt;
+  &lt;/context-param&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;password&lt;/param-name&gt;
+    &lt;param-value&gt;zzzz&lt;/param-value&gt;
+  &lt;/context-param&gt;
+  ......
+&lt;/web-app&gt;</code></pre>
+
+<p>Notes:</p>
+<ol>
+<li>You could write another servlet (called <code>ServletContextInitParamTest1a</code>) to access the same context parameters. The <code>ServletContext</code> is available to all servlets in the same webapp.</li>
+<li>Take note that I am mixing the annotation and <code>web.xml</code> in this example, which is not recommended.</li>
+<li>There is no annotations for <code>context-param</code> (unlike the <code>@WebInitParam</code> for <code>ServletConfig</code>'s init param), because you cannot attached them to a particular servlet.</li>
+</ol>
+
+
+<h4>Example 4: Using <code>ServletContext</code> to Pass Data Between Servlets</h4>
+
+<h5>Server-side Servlet: <code>ServletContextParamTest2.java</code></h5>
+
+<pre><code class="language-java line-numbers drop-token">package com.nowhere;
+
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.*;
+import jakarta.servlet.http.*;
+import java.io.*;
+
+@WebServlet("/contextparam2")
+public class ServletContextParamTest2 extends HttpServlet {
+
+   // init() runs ONCE during the servlet initialization.
+   @Override
+   public void <mark>init</mark>(ServletConfig config) throws ServletException {
+      super.init();
+      // Save in ServletContext to be shared by all servlets.
+      <mark>ServletContext context = config.getServletContext();</mark>
+      <mark>context.setAttribute(&quot;username&quot;, &quot;alice&quot;);</mark>   // set
+      <mark>context.setAttribute(&quot;password&quot;, &quot;yyyy&quot;);</mark>
+   }
+
+   @Override
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      <mark>req.getRequestDispatcher(&quot;/contextparam2a&quot;).forward(req, resp);</mark>
+   }
+}</code></pre>
+
+<h5>Server-side Servlet: <code>ServletContextParamTest2a.java</code></h5>
+
+<pre><code class="language-java line-numbers drop-token">package com.nowhere;
+
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.*;
+import jakarta.servlet.http.*;
+import java.io.*;
+
+@WebServlet("/contextparam2a")
+public class ServletContextParamTest2a extends HttpServlet {
+   <mark>String username;</mark>
+   <mark>String password;</mark>
+
+   @Override
+   public void <mark>init</mark>(ServletConfig config) throws ServletException {
+      super.init();
+      <mark>ServletContext context = config.getServletContext();</mark>
+      <mark>username = (String) context.getAttribute(&quot;username&quot;);</mark>  // get
+      <mark>password = (String) context.getAttribute(&quot;password&quot;);</mark>
+   }
+
+   @Override
+   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      resp.setContentType("text/plain");
+      PrintWriter out = resp.getWriter();
+      out.println("username: " + <mark>username</mark>);
+      out.println("password: " + <mark>password</mark>);
+      out.close();
+   }
+}</code></pre>
+
+
+<h3 id="Servlet_HTTPSession">Session Tracking</h3>
+<p>HTTP is a <em>stateless</em> protocol. In other words, the current request does not know what has been done in the previous requests. This creates a problem for applications that runs over many requests, such as online shopping (or shopping cart). You need to maintain a so-called <em>session</em> to pass data among the multiple requests.</p>
+<p>You can maintain a session via one of these three approaches:</p>
+<ol>
+<li>Cookie: A cookie is a small text file that is stored in the client's machine, which will be send to the server on each request. You can put your session data inside the cookie. The biggest problem in using cookie is clients may disable the cookie.</li>
+<li>URL Rewriting: Passes data by appending a short text string at the end of every URL, e.g., <code>http://host/path/file.html<strong>;jsessionid=123456</strong></code>. You need to rewrite all the URLs (e.g., the &quot;<code>action</code>&quot; attribute of <code>&lt;form&gt;</code>) to include the session data.</li>
+<li>Hidden field in an HTML form: pass data by using hidden field tag (<code>&lt;input type=&quot;hidden&quot; name=&quot;session&quot; value=&quot;....&quot; /&gt;</code>). Again, you need to include the hidden field in all the pages.</li>
+</ol>
+
+<p>For detailed information, read &quot;<a href="../webprogramming/HTTP_StateManagement.html">HTTP state and session management</a>&quot;.</p>
+
+<h4><code>HttpSession</code></h4>
+<p>Programming your own session tracking (using the above approaches) is tedious and cumbersome.  Fortunately, Java Servlet API provides a session tracking facility, via an interface called <code>jakarta.servlet.http.HttpSession</code>. It allows servlets to:</p>
+
+<ul>
+  <li>View and manipulate information about a session,  such as the session identifier, creation time, and last accessed time.</li>
+  <li>Bind objects to sessions, allowing user  information to persist across multiple user requests.</li>
+</ul>
+<p>The procedure is as follows:</p>
+
+<ol>
+<li>Check if a session already exists. If so, use the existing session object; otherwise, create a new session object. Servlet API automates this step via the <code>getSession()</code> method of <code>HttpServletRequest</code>:<br />
+<pre class="example">
+<span class="comment">// Retrieve the current session. Create one if not exists</span>
+HttpSession session = request.getSession(true);
+HttpSession session = request.getSession();  <span class="comment">// same as above</span>
+ 
+<span class="comment">// Retrieve the current session. 
+// Do not create new session if not exists but return null</span>
+HttpSession session = request.getSession(false);</pre>
+
+The first statement returns the existing session if exists, and create a new <code>HttpSession</code> object otherwise. Each session is identified via a session ID. You can use <code>session.getID()</code> to retrieve the session ID string.<br />
+
+<code>HttpSession</code>, by default, uses cookie to pass the session ID in all the client's requests within a session. If cookie is disabled, <code>HttpSession</code> switches to URL-rewriting to append the session ID behind the URL. To ensure robust session tracking, all the URLs emitted from the server-side programs should pass thru the method <code>response.encodeURL(<em>url</em>)</code>. If cookie is used for session tracking, <code>encodeURL(<em>url</em>)</code> returns the <em><code>url</code></em> unchanged. If URL-rewriting is used, <code>encodeURL(<em>url</em>)</code> encodes the specified <code><em>url</em></code> by including the session ID.</li>
+
+<li>The session object maintains data in the form of <em><code>key-value</code></em> pairs. You can use <code>session.getAttribute(<em>key</em>)</code> to retrieve the <em><code>value</code></em> of an existing key, <code>session.setAttribute(<em>key</em>, <em>value</em>)</code> to store new <em><code>key-value</code></em> pair, and <code>session.removeAttribute(<em>key</em>)</code> to remove an existing <em><code>key-value</code></em> pair. For example,
+
+<pre class="example">
+<span class="comment">// Allocate a shopping cart (assume to be a list of String)</span>
+List&lt;String&gt; shoppingCart = new ArrayList&lt;&gt;();
+<span class="comment">// Populate the shopping cart</span>
+shoppingCart.add(&quot;Item 1&quot;);
+.....
+<span class="comment">// Retrieve the current session, create one if not exists</span>
+HttpSession session = request.getSession(true);
+<span class="comment">// Place the shopping cart inside the session</span>
+synchronized (session) {  <span class="comment">// synchronized to prevent concurrent updates</span>
+   session.setAttribute(&quot;cart&quot;, shoppingCart);
+}
+.....</pre>
+
+Any page within the session can retrieve the shopping cart:
+<pre class="example">
+<span class="comment">// Retrieve the current session, do not create new session</span>
+HttpSession session = request.getSession(false);
+if (session != null) {
+   List&lt;String&gt; theCart = (List&lt;String&gt;)session.getAttribute(&quot;cart&quot;);
+   if (theCart != null) {  <span class="comment">// cart exists?</span>
+      for (String item : theCart) {
+         ......
+      }
+   }
+}</pre></li>
+
+<li>You can use <code>session.invalidate()</code> to terminate and remove a session. You can use set <code>setMaxInactiveInterval()</code> and <code>getMaxInactiveInterval()</code> to set and get the inactive interval from the last client request, before the server invalidate the session.</li>
+</ol>
+
+<h4>Example</h4>
+<p>The following servlet demonstrates the use of session, by counting the number of accesses within this session from a particular client. We also use <code>getID()</code> to retrieve the session ID, <code>getCreationTime()</code> and <code>getLastAccessedTime()</code> to get the session creation and last accessed times.</p>
+
+<h5><code>SessionServlet.java</code></h5>
+
+<pre class="example">
+<span class="comment">// To save as &quot;&lt;CATALINA_HOME&gt;\webapps\helloapp\WEB-INF\src\com\nowhere\SessionServlet.java&quot;</span>
+package com.nowhere;
+ 
+import java.io.*;
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import java.util.Date;
+ 
+public class <strong>SessionServlet</strong> extends HttpServlet {
+   @Override
+   public void <strong>doGet</strong>(HttpServletRequest request, HttpServletResponse response)
+               throws IOException, ServletException {
+      <span class="comment">// Set the response message's MIME type</span>
+      response.setContentType(&quot;text/html;charset=UTF-8&quot;);
+      <span class="comment">// Allocate a output writer to write the response message into the network socket</span>
+      PrintWriter out = response.getWriter();
+ 
+      <span class="comment">// Return the existing session if there is one. Create a new session otherwise.</span>
+      <strong>HttpSession session = request.getSession();</strong>
+      Integer accessCount;
+      synchronized(session) {
+         accessCount = (Integer)<strong>session.getAttribute(&quot;accessCount&quot;)</strong>;
+         if (accessCount == null) {
+            accessCount = 0;   <span class="comment">// autobox int to Integer</span>
+         } else {
+            accessCount = new Integer(accessCount + 1);
+         }
+         <strong>session.setAttribute(&quot;accessCount&quot;, accessCount)</strong>;
+      }
+ 
+      <span class="comment">// Write the response message, in an HTML page</span>
+      try {
+         out.println(&quot;&lt;!DOCTYPE html&gt;&quot;);
+         out.println(&quot;&lt;html&gt;&quot;);
+         out.println(&quot;&lt;head&gt;&lt;meta http-equiv='Content-Type' content='text/html; charset=UTF-8'&gt;&quot;);
+         out.println(&quot;&lt;title&gt;Session Test Servlet&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&quot;);
+         out.println(&quot;&lt;h2&gt;You have access this site &quot; + <strong>accessCount</strong> + &quot; times in this session.&lt;/h2&gt;&quot;);
+         out.println(&quot;&lt;p&gt;(Session ID is &quot; + <strong>session.getId()</strong> + &quot;)&lt;/p&gt;&quot;);
+ 
+         out.println(&quot;&lt;p&gt;(Session creation time is &quot; +
+               new Date(<strong>session.getCreationTime()</strong>) + &quot;)&lt;/p&gt;&quot;);
+         out.println(&quot;&lt;p&gt;(Session last access time is &quot; +
+               new Date(<strong>session.getLastAccessedTime()</strong>) + &quot;)&lt;/p&gt;&quot;);
+         out.println(&quot;&lt;p&gt;(Session max inactive interval  is &quot; +
+               <strong>session.getMaxInactiveInterval()</strong> + &quot; seconds)&lt;/p&gt;&quot;);
+ 
+         out.println(&quot;&lt;p&gt;&lt;a  href='&quot; + <strong>request.getRequestURI()</strong> +  &quot;'&gt;Refresh&lt;/a&gt;&quot;);
+         out.println(&quot;&lt;p&gt;&lt;a  href='&quot; + <strong>response.encodeURL(request.getRequestURI())</strong>  +
+                     &quot;'&gt;<strong>Refresh with  URL rewriting</strong>&lt;/a&gt;&quot;);
+         out.println(&quot;&lt;/body&gt;&lt;/html&gt;&quot;);
+      } finally {
+         out.close();  <span class="comment">// Always close the output writer</span>
+      }
+   }
+}</pre>
+
+<h5><code>web.xml</code></h5>
+
+<pre class="example">
+......
+&lt;servlet&gt;
+   &lt;servlet-name&gt;<strong>SessionTestServlet</strong>&lt;/servlet-name&gt;
+   &lt;servlet-class&gt;<strong>com.nowhere.SessionServlet</strong>&lt;/servlet-class&gt;
+&lt;/servlet&gt;
+......
+......
+&lt;servlet-mapping&gt;
+   &lt;servlet-name&gt;<strong>SessionTestServlet</strong>&lt;/servlet-name&gt;
+   &lt;url-pattern&gt;<strong>/sessiontest</strong>&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</pre>
+
+<h5>Running the Servlet</h5>
+
+<p>You can use URL <code>http://localhost:8080/helloapp/sessiontest</code> to access this servlet. Try refreshing the page. Try also closing and restart the browser, and issue the URL.</p>
+<img class="image-center" src="images/Servlet_SessionOutput.png" alt="Servlet_SessionOutput.png" />
+
+<p>Under Firefox, a cookie named <code>jsessionid</code> is created for this session. The value of the cookie is the same as the return value of <code>session.getID()</code>. By default, Servlet API uses a cookie for managing session, but will automatically switch into URL rewriting if cookie is disabled. To ensure robust session tracking, all the URLs emitted from the server-side programs should pass thru the method <code>response.encodeURL(<em>url</em>)</code>. If cookie is used for session tracking, <code>encodeURL(<em>url</em>)</code> returns the <em><code>url</code></em> unchanged. If URL-rewriting is used, <code>encodeURL(<em>url</em>)</code> encodes the specified <code><em>url</em></code> by including the session ID. The session data are kept in the server, only a session ID is passed to the client.</p>
+<img class="image-center" src="images/Servlet_SessionCookie.png" alt="Servlet_SessionCookie.png" />
+
+<p>Try disabling the cookie, and use (a) the refresh button (F5), (b) refresh and clear cache (Ctrl-F5), (c) the refresh link, and (d) the refresh with URL re-writing, to refresh the page.</p>
+
+
+
+<h3>Developing and Deploying Web Applications using IDE</h3>
+
+<p>It is a lot more productive and efficient to use an IDE (such as Eclipse or NetBeans) to develop your web application. You could start/stop your servers from IDE directly. You could debug your web application in IDE, like debugging standalone application.</p>
+
+<p><span class="lead">NetBeans</span>: Read &quot;<a href="../howto/NetBeans_HowTo.html#NetBeans_WebApp">Developing and Deploying Web Applications in NetBeans</a>&quot;.</p>
+
+<p><span class="lead">Eclipse</span>: Read &quot;<a href="../howto/EclipseJava_HowTo.html#EclipseWebapp">Developing and Deploying Web Applications in Eclipse</a>&quot;.</p>
+
+<h3>Tomcat's Servlet Examples</h3>
+<p>Tomcat provides a number of <em>excellent</em> servlet examples in &quot;<code>&lt;CATALINA_HOME&gt;\webapps\examples</code>&quot;. The servlet source files are kept under &quot;<code>&lt;CATALINA_HOME&gt;\webapps\examples\WEB-INF\classes</code>&quot;, together with the compiled classes. To run the examples, start Tomcat server and issue URL <code>http://localhost:8080/examples</code>.</p>
+<p>I strongly encourage you to study the examples, Read &quot;<a href="JavaServletExamples.html">Tomcat's Java Servlet Examples Explained</a>&quot;.</p>
+
+<h3>Database Servlet</h3>
+<p>Read &quot;<a href="JavaServletCaseStudy.html">Java Servlet Case Study</a>&quot; and &quot;<a href="JavaServletCaseStudyPart2.html">Java Servlet Case Study Continue</a>&quot;.</p>
+
+<h3>Servlet API – A Deeper Look</h3>
+
+<p>A servlet is a Java web component, managed by a servlet container (such as Apache Tomcat or Glassfish), which generates dynamic content in response to client's request.  A servlet container (or servlet engine) is a web server extension which provides servlet functionality.  A servlet container contains and manages servlets throughout their life cycle.</p>
+
+<h4>Interface <code>Servlet</code></h4>
+
+<p>The <code>Servlet</code> interface is the central abstraction of the Java servlet API.  <code>HttpServlet</code> - the most commonly servlet which handles HTTP requests, is a subclass of <code>GenericServlet</code> which implements <code>Servlet</code> interface.</p>
+
+<p>The <code>Servlet</code> interface declares these <code>abstract</code> methods:</p>
+
+<pre class="syntax">
+<span class="comment">// Servlet's lifecycle</span>
+void <strong>init</strong>(ServletConfig config)
+void <strong>destroy</strong>()
+void <strong>service</strong>(ServletRequest request, ServletResponse response)
+ 
+<span class="comment">// Servlet configuration and information</span>
+ServletConfig <strong>getServletConfig</strong>()
+String <strong>getServletInfo</strong>()</pre>
+
+<h4>A Servlet's Life cycle</h4>
+
+<p>A servlet's life cycle is managed via the <code>init()</code>, <code>service()</code> and <code>destroy()</code> methods.</p>
+
+<p><img class="image-center" src="images/Servlet_LifeCycle.png" alt="Servlet_LifeCycle.png" /></p>
+
+<h5>Loading and Initialization</h5>
+
+<p>Servlet container (e.g., Tomcat or Glassfish) is responsible for loading and instantiating  servlets.  It may load and instantiate  servlets when it is started, or delay until it determines that the servlet is  needed to service a request (usually at the first request to the servlet).</p>
+
+<p>The servlet container invokes the <code>init(ServletConfig)</code> method of the servlet, providing a <code>ServletConfig</code> object as an argument.  <code>init()</code> runs only once.  It is usually used to  read persistent configuration data and initialize costly resource.</p>
+
+<p>This  <code>ServletConfig</code> object allows the servlet to access <em>initialization parameters</em> for this  particular servlet.  These parameters are defined in  the <em>web application deployment descriptor file</em> (i.e., “<code>web.xml</code>”), under the servlet's name, as follows:</p>
+
+<pre class="example">
+&lt;servlet&gt;
+   &lt;servlet-name&gt;<strong>ServletName</strong>&lt;/servlet-name&gt;
+   &lt;servlet-class&gt;<strong>ServletClassFile</strong>&lt;/servlet-class&gt;
+   &lt;init-param&gt;
+      &lt;param-name&gt;initParam1&lt;/param-name&gt;
+      &lt;param-value&gt;initParam1Value&lt;/param-value&gt;
+   &lt;/init-param&gt;
+   &lt;init-param&gt;
+      &lt;param-name&gt;initParam2&lt;/param-name&gt;
+      &lt;param-value&gt;initParam2Value&lt;/param-value&gt;
+   &lt;/init-param&gt;
+&lt;/servlet&gt;</pre>
+
+<p>The <code>ServletConfig</code> interface defines these methods to retrieve the initialization parameters for this servlet.</p>
+
+<pre class="syntax">
+String <strong>getInitParameter</strong>(String name)
+java.util.Enumeration <strong>getInitParameterNames</strong>()</pre>
+
+<p>For example,</p>
+
+<pre class="example">
+public void init(ServletConfig config) throws ServletException {
+   <span class="comment">// Read all the init parameters for this servlet</span>
+   Enumeration e = config.getInitParameterNames();
+   while (e.hasMoreElements()) {
+      String initParamName = (String)e.nextElement();
+      String initParamValue = config.getInitParameter(initParamName);
+      ......
+   }
+}</pre>
+
+<p>The <code>ServletConfig</code> interface is implemented by <code>HTTPServlet</code> and <code>GenericServlet</code>.  Hence, the <code>getInitParameter()</code> and <code>getInitParameterNames()</code> method can be called directly within <code>init()</code> or <code>service()</code>.</p>
+
+<p>The <code>ServletConfig</code> also gives servlet access to a <code>ServletContext</code> object that provides information about this web context (aka web application).  <code>ServletContext</code> will be discussed later.</p>
+
+<h5>In Service</h5>
+
+<p>Once a servlet is initialized, the servlet container invokes its <code>service()</code> method to handle client requests.  This method is called once for each request.  Generally, the servlet container handle concurrent request to the same servlet by running <code>service()</code> on different threads (unless <code>SingleThreadModel</code> interface is declared).</p>
+
+<p>For <code>HttpServlet</code>, <code>service()</code> dispatches <code>doGet()</code>, <code>doPost()</code>, <code>doHead()</code>, <code>doOptions()</code>, <code>doTrace()</code>, etc, to handle HTTP GET, POST, HEAD, OPTIONS, TRACE, etc, request respectively.</p>
+
+<p>The <code>service()</code> method of an <code>HttpServlet</code> takes two arguments, an <code>HttpServletRequest</code> object and an <code>HttpServletResponse</code> object that corresponds to the HTTP request and response messages respectively.</p>
+
+<h5>End of Service</h5>
+
+<p>When the servlet container decides that a servlet should be removed from the container (e.g., shutting down the container or time-out, which is implementation-dependent), it calls the <code>destroy()</code> method to release any resource it is using and save any persistent state.  Before the servlet container calls the <code>destroy()</code>, it must allow all <code>service()</code> threads to complete or time-out.</p>
+
+<h4>Interface <code>ServletContext</code></h4>
+
+<p>The <code>ServletContext</code> interface defines a servlet's view of the webapp (or web context) in which it is running (a better name is actually <code>ApplicationContext</code>).  Via the <code>ServletContext</code> object, a servlet can communicate with the container, e.g., write to event log, get the URL reference to resources, and get and set attributes that other servlets in the same context can access.</p>
+
+<p>There is one <code>ServletContext</code> object for each web application deployed into a container.  You can specify initialization parameters for a web context (that are available to all the servlet under the web context) in the web application deployment descriptor, e.g.,</p>
+
+<pre class="example">
+&lt;web-app ......&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;jdbcDriver&lt;/param-name&gt;
+    &lt;param-value&gt;com.mysql.jdbc.Driver&lt;/param-value&gt;
+  &lt;/context-param&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;databaseUrl&lt;/param-name&gt;
+    &lt;param-value&gt;jdbc:mysql://localhost/eshop&lt;/param-value&gt;
+  &lt;/context-param&gt;
+......
+&lt;/web-app&gt;</pre>
+
+<p>Servlets under this web context can access the context's initialization parameters via the <code>ServletConfig</code>'s methods:</p>
+
+<pre class="syntax">
+<span class="comment">// ServletConfig</span>
+String <strong>getInitParameter</strong>(String name)
+java.util.Enumeration <strong>getInitParameterNames</strong>()</pre>
+
+<p>A servlet can bind an attribute of name-value pair into the <code>ServletContext</code>, which will then be available to other servlet in the same web application.  The methods available are:</p>
+
+<pre class="syntax">
+<span class="comment">// ServletContext</span>
+Object <strong>getAttribute</strong>(String name)
+void <strong>setAttribute</strong>(String name, Object value)
+void <strong>removeAttribute</strong>(String name)
+java.util.Enumeration <strong>getAttributeNames</strong>()</pre>
+
+<p>Other methods in <code>ServletContext</code> are:</p>
+
+<pre class="syntax">
+<span class="comment">// Write message to event log</span>
+void log(String message)
+<span class="comment">// Get container info</span>
+String <strong>getServerInfo</strong>()
+int <strong>getMajorVersion</strong>()
+int <strong>getMinorVersion</strong>()</pre>
+
+<p>The <code>ServletContext</code> provides direct access to static content of the web application (such as HTML, GIF files), via the following methods:</p>
+
+<pre class="syntax">
+java.net.URL <strong>getResource</strong>(String path)
+java.io.InputStream <strong>getResourceAsStream</strong>(String path)</pre>
+
+<h4>Dispatch Request - <code>RequestDispatcher</code></h4>
+
+<p>When building a web application, it is often useful to forward a request to another servlet, or to include the output of another servlet in the response.  The <code>RequestDispatcher</code> interface supports these.  The <code>RequestDispatcher</code> can be obtained via <code>ServletContext</code>:</p>
+
+<pre class="syntax">
+<span class="comment">// ServletContext</span>
+RequestDispatcher <strong>getRequestDispatcher</strong>(String servletPath)
+RequestDispatcher <strong>getNamedDispatcher</strong>(String servletName)</pre>
+
+<p>Once the servlet obtained a <code>RequestDispatcher</code> of another servlet within the same web application, it could include or forward the request to that servlet, e.g.,</p>
+
+<pre class="example">
+RequestDispatcher rd = context.getRequestDispatcher(&quot;/test.jsp?isbn=123&quot;);
+rd.<strong>include</strong>(request, response);
+<span class="comment">// or</span>
+rd.<strong>forward</strong>(request, response);</pre>
+
+<h4>Filtering</h4>
+
+<p>A filter is a reusable piece of code that can transform the content of HTTP requests, responses, and header information.  Examples of filtering components are:</p>
+
+<ul>
+<li>Authentication filters</li>
+<li>Logging and auditing filters</li>
+<li>Image conversion filters</li>
+<li>Data compression filters</li>
+<li>Encryption filters</li>
+<li>Tokenizing filters</li>
+<li>Filters that trigger resource access events</li>
+<li>XSL/T filters that transform XML content</li>
+<li>MIME-type chain filters</li>
+<li>Caching filters</li>
+</ul>
+
+<p>[TODO] more</p>
+
+<h3>Web Application Deployment Descriptor &quot;<code>web.xml</code>&quot;</h3>
+
+<p>The &quot;<code>web.xml</code>&quot; contains the web application <em>deployment descriptors</em>. Tomcat's has a system-wide (global) &quot;<code>web.xml</code>&quot; in &quot;<code>&lt;CATALINA_HOME&gt;\conf</code>&quot;. Each web application has its own &quot;<code>web.xml</code>&quot; in &quot;<em><code>ContextRoot</code></em><code>\WEB-INF</code>&quot;, which overrides the global settings. Tomcat monitors <code>web.xml</code> for all web applications and reloads the web application when <code>web.xml</code> changes, if <code>reloadable</code> is set to <code>true</code>.</p>
+
+<h4>A Sample &quot;<code>web.xml</code>&quot;</h4>
+
+<pre><code class="language-xml line-numbers">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app version=&quot;3.0&quot;
+  xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;&gt;
+   
+  &lt;!-- General Description of the web application --&gt;
+   &lt;display-name&gt;Workshop Continue&lt;/display-name&gt;
+   &lt;description&gt;We shall continue our e-bookstore...&lt;/description&gt;
+ 
+   <span class="comment">&lt;!-- Context initialization parameters --&gt;
+   &lt;!-- Provide the database related parameters --&gt;</span>
+   &lt;context-param&gt;
+      &lt;param-name&gt;jdbcDriver&lt;/param-name&gt;
+      &lt;param-value&gt;com.mysql.jdbc.Driver&lt;/param-value&gt;
+   &lt;/context-param&gt;
+   &lt;context-param&gt;
+      &lt;param-name&gt;databaseUrl&lt;/param-name&gt;
+      &lt;param-value&gt;jdbc:mysql://localhost/eshop&lt;/param-value&gt;
+   &lt;/context-param&gt;
+ 
+   &lt;!-- Define servlets --&gt;
+   &lt;servlet&gt;
+       &lt;servlet-name&gt;BookQuery&lt;/servlet-name&gt;
+       &lt;servlet-class&gt;BookQueryServlet&lt;/servlet-class&gt;
+       &lt;init-param&gt;
+         &lt;param-name&gt;popularAuthor&lt;/param-name&gt;
+         &lt;param-value&gt;Kelvin Jones&lt;/param-value&gt;
+       &lt;/init-param&gt;
+   &lt;/servlet&gt;
+ 
+   &lt;!-- Define servlet's URL mapping --&gt;
+   &lt;servlet-mapping&gt;
+       &lt;servlet-name&gt;BookQuery&lt;/servlet-name&gt;
+       &lt;url-pattern&gt;/query&lt;/url-pattern&gt;
+   &lt;/servlet-mapping&gt;
+ 
+   &lt;session-config&gt;
+     &lt;session-timeout&gt;30&lt;/session-timeout&gt;
+   &lt;/session-config&gt;
+ 
+   &lt;mime-mapping&gt;
+     &lt;extension&gt;pdf&lt;/extension&gt;
+     &lt;mime-type&gt;application/pdf&lt;/mime-type&gt;
+   &lt;/mime-mapping&gt;
+ 
+   &lt;!-- For directory request --&gt;
+   &lt;welcome-file-list&gt;
+     &lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+     &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+     &lt;welcome-file&gt;index.htm&lt;/welcome-file&gt;
+   &lt;/welcome-file-list&gt;
+ 
+   &lt;error-page&gt;
+     &lt;error-code&gt;404&lt;/error-code&gt;
+     &lt;location&gt;/404.html&lt;/location&gt;
+   &lt;/error-page&gt;
+&lt;/web-app&gt;</code></pre>
+
+
+<h4>Syntax for &quot;<code>web.xml</code>&quot;</h4>
+
+<h5>Servlets 3.0 &quot;<code>web.xml</code>&quot; Syntax</h5>
+
+<p>Tomcat 7 and Glassfish 3.1 supports Servlet 3.0.</p>
+<pre class="syntax">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app <strong>version=&quot;3.0&quot;</strong>
+      xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+      xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
+      metadata-complete=&quot;true&quot;&gt;
+  ......
+&lt;/web-app&gt;</pre>
+<h5>Servlets 2.5 &quot;<code>web.xml</code>&quot; Syntax</h5>
+<p>Tomcat 6 and Glassfish 3 supports Servlets 2.5, JSP 2.1 and JSF 2.0.</p>
+<pre class="syntax">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app <strong>version=&quot;2.5&quot;</strong>
+      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+      xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+      xmlns:web=&quot;http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;
+      xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;&gt;
+   .......
+&lt;/web-app&gt;</pre>
+<h5>Servlets 2.4 &quot;<code>web.xml</code>&quot; Syntax</h5>
+<pre class="syntax">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app <strong>version=&quot;2.4&quot;</strong>
+      xmlns=&quot;http://java.sun.com/xml/ns/j2ee&quot;
+      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+      xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot;&gt;
+   .......
+&lt;/web-app&gt;</pre>
+
+
+<h4>Servlet Deployment Descriptor</h4>
+
+<p>To deploy a servlet, you need to write one pair of <code>&lt;servlet&gt;</code> and <code>&lt;servlet-mapping&gt;</code> elements, with a matching (but arbitrary and unique) <code>&lt;servlet-name&gt;</code>. The <code>&lt;servlet-class&gt;</code> specifies the fully-qualified name of the servlet class. The <code>&lt;url-pattern&gt;</code> specifies the URL. For example,</p>
+<pre class="example">
+&lt;web-app ...&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;<strong>ServletName</strong>&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;<strong>com.nowhere.MyServlet</strong>&lt;/servlet-class&gt;
+  &lt;/servlet&gt;
+
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;<strong>ServletName</strong>&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;<strong>/MyURL</strong>&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</pre>
+<p>The resultant URL is <code>http://<em>hostname</em>:<em>port</em>/<em>WebContext</em><strong>/MyURL</strong></code>.</p>
+<p>You can use wildcard '<code>*</code>' in the <code>&lt;url-pattern&gt;</code> for pattern matching. For example, <code>/MyURL.*</code> (which is matched by <code>/MyURL.html</code> and etc.), <code>/MyURL/*</code> (which is matched by <code>/MyURL/test</code>, and etc.)</p>
+<p>Always use a custom URL for servlet, as you could choose a short and meaningful URL and include initialization. parameters, filter, security setting in the deployment descriptor (see the next section).</p>
+
+<h4>Servlet Initialization Parameters</h4>
+<p>You can pass <em>initialization parameters</em> in the form of <em><code>name-value</code></em> pairs into a particular servlet from &quot;<code>web.xml</code>&quot;. For example,</p>
+<pre class="example">
+&lt;web-app ...&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;ServletName&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;com.nowhere.MyServlet&lt;/servlet-class&gt;
+    <strong>&lt;init-param&gt;
+      &lt;param-name&gt;debug&lt;/param-name&gt;
+      &lt;param-value&gt;false&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+      &lt;param-name&gt;listing&lt;/param-name&gt;
+      &lt;param-value&gt;true&lt;/param-value&gt;
+    &lt;/init-param&gt;</strong>
+  &lt;/servlet&gt;
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;ServletName&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/MyURL&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</pre>
+<p>Inside the servlet, you can retrieve the init parameters via the <code>ServletConfig</code> object:</p>
+<pre class="example">
+package <strong>com.nowhere</strong>;
+public class <strong>MyServlet</strong> extends HttpServlet {
+  
+   private boolean debug = false, listing = false;
+   
+   @Override
+   public void <strong>init()</strong> {
+      <strong>ServletConfig config = getServletConfig();</strong>
+      String strDebug = <strong>config.getInitParameter(&quot;debug&quot;)</strong>;
+      if (strDebug.equals(&quot;true&quot;)) debug = true;
+      String strListing = <strong>config.getInitParameter(&quot;listing&quot;)</strong>;
+      if (strListing.equals(&quot;true&quot;)) listing = true;
+   }
+   ......
+}</pre>
+
+<h4>Application Initialization Parameters</h4>
+
+<p>Specified in webapp's &quot;<code>WEB-INF\web.xml</code>&quot;, and available to all the servlets under this webapp. You can use the <code>getInitParameter()</code> method of <code>ServletContext</code> object to retrieve the init parameters.</p>
+<pre class="example">
+&lt;web-app ......&gt;
+  &lt;context-param&gt;
+    &lt;param-name&gt;email&lt;/param-name&gt;
+    &lt;param-value&gt;query@abcde.com&lt;/param-value&gt;
+  &lt;/context-param&gt;
+  ......
+&lt;/web-app&gt;</pre>
+
+<h4>Server-wide Initialization Parameters</h4>
+<p>Similar to application init parameters, but defined in the global &quot;<code>&lt;CATALINA_HOME&gt;\conf\web.xml</code>&quot;.</p>
+<pre class="example">
+&lt;context-param&gt;
+  &lt;param-name&gt;email&lt;/param-name&gt;
+  &lt;param-value&gt;query@abcde.com&lt;/param-value&gt;
+&lt;/context-param&gt;</pre>
+
+<p>Use the <code>getInitParameter()</code> method of <code>ServletContext</code> object to retrieve the init parameters.</p>
+
+<h4>Welcome Page</h4>
+
+<p>Specifies the page to be displayed for request to web context root. For example,</p>
+<pre class="example">
+&lt;web-app ...&gt;
+  ......
+  &lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.jsp&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+    &lt;welcome-file&gt;test/index.html&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;</pre>
+
+<h3>Servlet 3.0</h3>
+
+<p>Servlet API 3.0 introduces these annotations to simplify deployment in <code>jakarta.servlet.annotation</code> package:</p>
+<ul>
+<li><code>@WebServlet</code>: Define a servlet component</li>
+<li><code>@WebInitParam</code>: Define initialization parameters for a servlet</li>
+<li><code>@WebListener</code>: Define a listener</li>
+<li><code>@WebFilter</code>: Define a filter</li>
+<li><code>@MultipartConfig</code>: For multipart file upload</li>
+</ul>
+
+<p>For example,</p>
+<pre class="example">
+<strong>@WebServlet(
+    name = &quot;HelloServletExample&quot;,
+    urlPatterns = {&quot;/sayhello&quot;},
+    initParams = {
+        @WebInitParam(name = &quot;param1&quot;, value = &quot;value1&quot;),
+        @WebInitParam(name = &quot;param2&quot;, value = &quot;value2&quot;)}
+)</strong>
+public class HelloServlet extends HttpServlet { ...... }</pre>
+
+<p>The above is equivalent to the following configuration in &quot;<code>web.xml</code>&quot; prior to Servlet 3.0. The web application deployment descriptor &quot;<code>web.xml</code>&quot; has become optional in Servlet 3.0. Instead, the container at run time   will process the annotations of the classes in <code>WEB-INF/classes</code> and JAR files in <code>lib</code> directory.</p>
+<pre class="example">
+<span class="comment">// web.xml</span>
+&lt;servlet&gt;
+  &lt;servlet-name&gt;HelloServletExample&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;hello.HelloServlet&lt;/servlet-class&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;param1&lt;/param-name&gt;
+    &lt;param-value&gt;value1&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;param2&lt;/param-name&gt;
+    &lt;param-value&gt;value2&lt;/param-value&gt;
+  &lt;/init-param&gt;
+&lt;/servlet&gt;
+ 
+&lt;servlet-mapping&gt;
+  &lt;servlet-name&gt;HelloServletExample&lt;/servlet-name&gt;
+  &lt;url-pattern&gt;/sayhello&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;
+</pre>
+
+<h4><code>@WebServlet</code></h4>
+
+<p><code>@WebServlet</code> defines a servlet component and its metadata, with the following  attributes:</p>
+<ul>
+<li><code>String[] urlPatterns</code>: An array of String declaring the <code>url-pattern</code> for <code>servlet-mapping</code>. Default is an empty array <code>{}</code>.</li>
+
+<li><code>String[] value</code>: <code>urlPatterns</code>.</li>
+
+<li><code>String name</code>: <code>servlet-name</code>, default is empty string <code>&quot;&quot;</code>.</li>
+
+<li><code>loadOnStartup</code>: The <code>load-on-startup</code> order of the servlet, default is -1.</li>
+<li><code>WebInitParam[] initParams</code>: The init parameters of the servlet, default is an empty array <code>{}</code>.</li>
+<li><code>boolean asyncSupported</code>: Declares whether the servlet supports asynchronous operation mode, default is false.</li>
+<li><code>String smallIcon</code>, <code>String largeIcon</code>, <code>String description</code>: icon and description of the servlet.</li>
+</ul>
+
+<p>Example:</p>
+<pre class="example"><span class="example"><strong>@WebServlet(&quot;/sayHello&quot;)
+</strong>public class Hello1Servlet extends HttpServlet { ...... }</span>
+  <span class="comment">// One URL pattern</span>
+  
+<span class="example"><strong>@WebServlet(urlPatterns = {&quot;/sayhello&quot;, &quot;/sayhi&quot;})
+</strong>public class Hello2Servlet extends HttpServlet { ...... }</span>
+  <span class="comment">// More than one URL patterns</span> </pre>
+
+
+<h4><code>@WebInitParam</code></h4>
+
+<p><code>@WebInitParam</code> is Used to declare init params in servlet, with the following attributes:</p>
+
+<ul>
+<li><code>String name</code> and <code>String value</code> (required): Declare the name and value of the init parameter.</li>
+<li><code>String description</code> (optional) description, default empty string <code>&quot;&quot;</code>.</li>
+</ul>
+
+<p>See the above example.</p>
+
+<h4><code>@WebFilter</code></h4>
+
+<p><code>@WebFilter</code> defines a filter (which implements <code>jakarta.servlet.Filter</code> interface). </p>
+<p>For example, the following filter log the request time for all the requests (<code>urlPattern=&quot;/*&quot;</code>).</p>
+
+<pre><code class="language-java line-numbers">package com.nowhere;
+ 
+import java.io.*;
+import java.util.logging.Logger;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.*;
+import jakarta.servlet.http.*;
+ 
+@WebFilter(urlPatterns={&quot;/*&quot;})
+public class RequestTimerFilter implements Filter {
+   private static final Logger logger
+           = Logger.getLogger(RequestTimerFilter.class.getName());
+ 
+   @Override
+   public void init(FilterConfig config) throws ServletException {
+      logger.info(&quot;RequestTimerFilter initialized&quot;);
+   }
+ 
+   @Override
+   public void doFilter(ServletRequest request, ServletResponse response,
+           FilterChain chain)
+           throws IOException, ServletException {
+      long before = System.currentTimeMillis();
+      chain.doFilter(request, response);
+      long after = System.currentTimeMillis();
+      String path = ((HttpServletRequest)request).getRequestURI();
+      logger.info(path + &quot;: &quot; + (after - before) + &quot; msec&quot;);
+   }
+ 
+   @Override
+   public void destroy() {
+      logger.info(&quot;RequestTimerFilter destroyed&quot;);
+   }
+}</code></pre>
+
+ 
+<h4><code>@WebListener</code></h4>
+
+<p><code>@WebListener</code> defines a listener (which extends <code>ServletContextListener</code>, <code>ServletRequestListener</code> or <code>HttpSessionListener</code>). For example,</p>
+
+<pre class="example">
+<strong>@WebListener()</strong>
+public class MyContextListener extends ServletContextListener { ...... }</pre>
+
+<h4><code>@MultipartConfig</code></h4>
+<p>For uploading file using <code>multipart/form-data</code> POST Request. Read &quot;<a href="JavaServletCaseStudyPart2.html#FileUpload">Uploading Files in Servlet 3.0</a>&quot;.</p>
+
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+<ol>
+<li>Java Servlets Home Page @ <a href="http://java.sun.com/products/servlet/">http://java.sun.com/products/servlet</a>. Servlet Developers @ <a href="http://java.net/projects/servlet/">http://java.net/projects/servlet/</a>.</li>
+<li>Java Servlet 2.2, 2.3, 2.4, 2.5, 3.0 API Specifications.</li>
+
+<li>Apache Tomcat Server @ <a href="http://tomcat.apache.org/">http://tomcat.apache.org</a>.</li>
+<li>RFC2616 &quot;Hypertext Transfer Protocol HTTP 1.1&quot;, W3C, June 1999.</li>
+
+<li>HTML 4.01 Specification, W3C Recommendation, 24 Dec 1999 @ <a href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401</a>, and HTML 5 Draft Specification @ <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5</a>.</li>
+
+<li>The Java EE 6 Tutorial, Chapter 10 Java Servlet Technology, December 2009 @ <a href="http://java.sun.com/javaee/6/docs/tutorial/doc/bnafd.html">http://java.sun.com/javaee/6/docs/tutorial/doc/bnafd.html</a>.</li>
+
+<li>The Java EE 5 Tutorial, Chapter 4 Java Servlet Technology, October 2008 @ <a href="http://java.sun.com/javaee/5/docs/tutorial/doc/bnafd.html">http://java.sun.com/javaee/5/docs/tutorial/doc/bnafd.html</a>.</li>
+
+<li>The J2EE 1.4 Tutorial, Chapter 11 Java Servlet Technology, December, 2005 @ <a href="http://java.sun.com/j2ee/1.4/docs/tutorial/doc/">http://java.sun.com/j2ee/1.4/docs/tutorial/doc/</a>.</li>
+
+<li>The J2EE 1.3 Tutorial &quot;Java Servlet Technology&quot; @ <a href="http://java.sun.com/j2ee/tutorial/1_3-fcs/doc/Servlets.html">http://java.sun.com/j2ee/tutorial/1_3-fcs/doc/Servlets.html</a>.</li>
+
+<li>Java EE 6 Technologies @ <a href="http://www.oracle.com/technetwork/java/javaee/tech/index-jsp-142185.html">http://www.oracle.com/technetwork/java/javaee/tech/index-jsp-142185.html</a>.</li>
+
+<li>Java EE 5 Technologies @ <a href="http://www.oracle.com/technetwork/java/javaee/tech/javaee5-jsp-135162.html">http://www.oracle.com/technetwork/java/javaee/tech/javaee5-jsp-135162.html</a>.</li>
+
+<li>Marty Hall, &quot;Core Servlets and JavaServer Pages&quot;, vol.1 (2nd eds, 2003) and vol. 2 (2nd eds, 2006), Prentice Hall.</li>
+
+<li>java.net - The Source for Java Technology Collaboration @ <a href="http://www.java.net">http://www.java.net</a>.</li>
+
+</ol>
+
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: Apache Tomcat 7.0.32, JDK 1.7.0_07<br />
+Last modified: October, 2012</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- ======= @@@ v3 footer changes starts here, before "footer" ======== -->
+<!-- footer filled by JavaScript -->
+<footer id="footer" class="footer"><p>&nbsp;</p></footer>
+
+</div>  <!-- end of <div class="wrap-outer"> for outer container -->
+
+<!-- Place all JavaScript before end of body to load last -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- My custom JavaScript v3 -->
+<script src="../scripts/programming_notes_v3.js"></script>
+<!-- Prism Syntax Highlighter -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/keep-markup/prism-keep-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+<a href="https://www3.ntu.edu.sg/f61217a453d065015090cd27fd6fb2c2"> </a></body>
+</html>

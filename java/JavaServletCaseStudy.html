@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<!--
+<div id="wrap-outer">
+  <header id="header">
+  <div id="wrap-inner">
+     <aside id="wrap-toc">
+        <section id="toc">
+     <header id="content-header">
+     <main id="content-main">
+     <footer id="content-footer">
+  <footer id="footer">
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- for responsive web design -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- for SEO -->
+<meta name="description" content="Java Servlet e-shop case study">
+<meta name="keywords" content="Java Servlet, Jakarta Servlet, case study, beginners">
+<title>A Java Servlet E-Shop Case Study</title>
+<!-- ========== @@@@@@ v3 header changes starts here after <title> ========== -->
+
+<!-- My custom CSS -->
+<link rel="stylesheet" href="../css/programming_notes_v3.css">
+<!-- Prism Syntax Highlighter -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.css" rel="stylesheet">
+<!-- favicon -->
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+
+
+<body>
+
+<div id="wrap-outer"> <!-- outer container -->
+
+<!-- header filled by JavaScript -->
+<header id="header" class="header"><p>&nbsp;</p></header>
+
+<div id="wrap-inner"> <!-- inner container -->
+
+<aside id="wrap-toc">
+<h5>Table of Contents <a id="show-toc" href="JavaServletCaseStudy.html#show-toc">(Hide)</a></h5>
+<section id="toc"></section>  <!-- for showing the "Table of Content" -->
+</aside>
+
+	
+<!-- ====== @@@ v3 header changes ends b4 "content-header", h1, h2 ======= -->
+<div id="content-header">
+<h1>Java Server-side Programming</h1>
+<h2>A Java Servlet e-Shop Case Study</h2>
+</div>
+
+<div id="content-main">
+
+<h3>Introduction</h3>
+<p>In this case study, we shall develop an e-shop based on the &quot;Java Servlet&quot; (now &quot;Jakarta Servlet&quot;) Technology. This e-shop is a typical Internet <em>business-to-consumer</em> (B2C) <em>3-tier client/server database application</em>, as illustrated below.</p>
+
+<img class="image-center image-border" src="../howto/images/HTTP_ClientServerSystem.png" alt="HTTP_ClientServerSystem.png" />
+
+<p>A typical <em>3-tier client/server web database application </em>consists of 5 components:</p>
+
+<ol>
+
+<li>A <span class="new">HTTP Server</span> (or commonly known as a <span class="new">Web Server</span>), such as Apache HTTP Server, Apache Tomcat Server, Microsoft Internet Information Server (IIS), Nginx, Google Web Server (GWS), and etc..</li>
+
+<li>A <span class="new">HTTP Client</span>, commonly known as a <span class="new">Web Browser</span>, such as FireFox, Chrome, MSIE, Safari, and etc.</li>
+
+<li>A <span class="new">Relational Database</span>, such as MySQL, PostgreSQL, Oracle, IBM DB2, MS SQL Server, MS Access, SAP SyBase, and etc.</li>
+
+<li><span class="new">Client-side program</span>, running inside the browser, which sends request to the server and receives server's response. Client-side program can be written in many technologies, e.g., HTML form, JavaScript, VBScript, and others.</li>
+
+<li><span class="new">Server-side program</span>, running inside the HTTP server, which receives and processes clients' requests. The server-side program extracts the query parameters submitted by the client-side program and queries the database. Server-side program can also be written in many ways, e.g., Java Servlet/JSP/JSF, ASP, PHP, Python, JavaScript, and others.</li>
+</ol>
+
+<p>The client and server interact with each other by <em>exchanging messages </em>using a protocol called HTTP (HyperText Transfer Protocol). HTTP is an <em>asymmetric request-response protocol</em>. A client sends a <em>request message </em>to the server. The server processes the request and returns a <em>response message</em>. In other words, in HTTP, the client <em>pulls</em> information from the server, instead of server <em>pushes</em> information to the client. An HTTP server typically runs over TCP/IP, with a server IP address and on a TCP port number. The default TCP port number for HTTP is 80.</p>
+
+<p>A typical <span class="new">Use Case</span> for a webapp is as follows:</p>
+
+<ol>
+<li>A client issues an URL to request and download an HTML page containing an HTML form (or some client-side programs).</li>
+
+<li>The client enters the requested data into the form (such as search criteria), and submits these query parameters back to a server-side program for processing.</li>
+
+<li>The server-side program extracts the query parameters, performs the database query, and returns the query results back to the requesting client.</li>
+
+<li>The client displays the query results, and repeats the above steps for further request-response exchange.</li>
+</ol>
+
+<p>In this article, we shall build our webapp in Java and MySQL. We shall write our server-side programs in <em>Java servlets</em>. We shall write our client-side programs in <em>HTML forms</em>.</p>
+
+<h3 id="ServletCS_SetupDB">Setting up  the E-Shop's Database in MySQL</h3>
+
+<p>The first step in building our e-shop is to setup a database. We shall call our database &quot;<code>ebookshop</code>&quot; which contains  one table &quot;<code>books</code>&quot;. The table &quot;<code>books</code>&quot; has 5 columns: <code>id</code>, <code>title</code>, <code>author</code>, <code>price</code> and <code>qty</code>. The <code>id</code> column is the <span class="new">primary key (PK)</span> (having unique value) of the table.</p>
+
+<pre class="example">
+Database: <strong>ebookshop</strong>
+Table: <strong>books</strong>
++-------+----------------------------+---------------+---------+-------+
+| <strong>id  </strong>  | <strong>title</strong>                      | <strong>author</strong>        | <strong>price</strong>   | <strong>qty  </strong> |
+| (INT) | (VARCHAR(50))              | (VARCHAR(50)) | (FLOAT) | (INT) |
++-------+----------------------------+---------------+---------+-------+
+| 1001  | Java for dummies           | Tan Ah Teck   | 11.11   | 11    |
+| 1002  | More Java for dummies      | Tan Ah Teck   | 22.22   | 22    |
+| 1003  | More Java for more dummies | Mohammad Ali  | 33.33   | 33    |
+| 1004  | A Cup of Java              | Kumar         | 44.44   | 44    |
+| 1005  | A Teaspoon of Java         | Kevin Jones   | 55.55   | 55    |
++-------+----------------------------+---------------+---------+-------+</pre>
+
+<h5>MySQL</h5>
+
+<p>If you are new to MySQL, read &quot;<a href="../sql/MySQL_HowTo.html">How to Set Up MySQL and Get Started</a>&quot;.</p>
+
+<p>Start the MySQL server. Take note of the server's TCP port number. I shall assume that MySQL server is running on port 3306, which is the <em>default</em> TCP port number for MySQL server.</p>
+<pre class="command">
+<span class="comment">// For Windows: assume that MySQL is installed in &quot;c:\myWebProject\mysql&quot;</span>
+<strong>c:
+cd \myWebProject\mysql\bin</strong>
+<strong>mysqld --console</strong>
+ 
+<span class="comment">// For macOS
+// Use graphical control at &quot;System Preferences&quot; -&gt; MySQL</span>
+</pre>
+
+
+<p>Start a MySQL client. I shall also assume that there is an authorized user called &quot;<code>myuser</code>&quot; with password &quot;<code>xxxx</code>&quot;.</p>
+<pre class="command">
+<span class="comment">// For Windows: assume that MySQL is installed in &quot;c:\myWebProject\mysql&quot;</span>
+<strong>c:
+cd \myWebProject\mysql\bin</strong>
+<strong>mysql -u myuser -p</strong>
+ 
+<span class="comment">// For macOS: assume that MySQL is installed in &quot;/usr/local/mysql&quot;</span>
+<span class="syntax"><strong>cd /usr/local/mysql/bin</strong>
+<strong>./mysql -u myuser -p</strong></span></pre>
+
+<p> You can run the following SQL script to set up the database:</p>
+
+<pre class="example">
+create database if not exists <strong>ebookshop</strong>;
+ 
+use ebookshop;
+ 
+drop table if exists books;
+create table <strong>books</strong> (
+  <strong>id</strong>     int,
+ <strong> title</strong>  varchar(50),
+ <strong> author</strong> varchar(50),
+ <strong> price</strong>  float,
+ <strong> qty</strong>    int,
+  primary key (id));
+ 
+insert into books values (1001, 'Java for dummies', 'Tan Ah Teck', 11.11, 11);
+insert into books values (1002, 'More Java for dummies', 'Tan Ah Teck', 22.22, 22);
+insert into books values (1003, 'More Java for more dummies', 'Mohammad Ali', 33.33, 33);
+insert into books values (1004, 'A Cup of Java', 'Kumar', 44.44, 44);
+insert into books values (1005, 'A Teaspoon of Java', 'Kevin Jones', 55.55, 55);
+ 
+select * from books;</pre>
+
+<h3>Setting up HTTP Server with Apache Tomcat</h3>
+
+<p>Next, we have to setup an HTTP server to host our webapp. In this case study, we shall use Apache Tomcat Server as our HTTP server. Read &quot;<a href="../howto/Tomcat_HowTo.html">How to install Apache Tomcat server</a>&quot;. I shall assume that our Tomcat is running in TCP port number 9999.</p>
+
+<h3>Setting up the e-Shop Webapp under Apache Tomcat</h3>
+
+<h5>Step 1: Create the Directory Structure for a new Webapp &quot;<code>ebookshop</code>&quot;</h5>
+
+<img class="image-float-right" src="images/ServletCS_Directory.png" alt="ServletCS_Directory.png" />
+
+<p>First of all, choose a name for your webapp. In this case study, we shall call it &quot;ebookshop&quot;. Navigate to Tomcat's &quot;<code>webapps</code>&quot; sub-directory, and create the following directory structure:</p>
+
+<ol>
+<li>Under Tomcat's &quot;<code>webapps</code>&quot; directory, create you web application <em>root</em> directory &quot;<code>ebookshop</code>&quot;.</li>
+<li>Under &quot;<code>ebookshop</code>&quot;, create a sub-directory &quot;<code>WEB-INF</code>&quot; (case sensitive, uppercase, a dash not underscore).</li>
+<li>Under &quot;<code>WEB-INF</code>&quot;, create a sub-sub-directory &quot;<code>classes</code>&quot; (case sensitive, lowercase, plural).</li>
+</ol>
+
+<p>You need to keep your web resources in the proper directories:</p>
+
+<ol>
+<li>&quot;<code>ebookshop</code>&quot;: The is called the <em>context root</em> (or <em>document base directory</em>) of your webapp. You should keep all your HTML files and resources visible to the web users (e.g., CSS, images, scripts) here.</li>
+
+<li>&quot;<code>ebookshop\WEB-INF</code>&quot;: This directory, although under the context root, is not visible to the web users. This is where you keep your application's configuration files &quot;<code>web.xml</code>&quot;.</li>
+
+<li>&quot;<code>ebookshop\WEB-INF\classes</code>&quot;: This is where you keep all the Java classes.</li>
+</ol>
+
+<h5>Step 2: Start the Tomcat Server</h5>
+
+<p>To start the Tomcat server:</p>
+<ul>
+<li>For Windows: start a CMD shell and run the batch file &quot;<code>startup.bat</code>&quot; under Tomcat's &quot;<code>bin</code>&quot; directory. Tomcat will be started in a new console window. </li>
+<li>For macOS and Linux: start a Terminal and run &quot;<code>./catalina.sh run</code>&quot; under Tomcat's &quot;<code>bin</code>&quot; directory.</li>
+</ul>
+
+<p>Monitor the Tomcat console, because the <span class="new">error messages</span>, and output of <code>System.out.println()</code> from your programs will be sent to this console. Check the Tomcat's HTTP TCP port number.</p>
+
+<pre class="example">
+.....
+xxxxxx INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory
+Deploying web application directory [xxx\webapps\<span class="highlight">ebookshop</span>]
+xxxxxx INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory
+Deployment of web application directory [xxx\webapps\<span class="highlight">ebookshop</span>] has finished in [188] ms
+......
+xxxxxx INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [&quot;<span class="highlight">http-nio-<strong>9999</strong></span>&quot;]
+xxxxxx INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [&quot;ajp-nio-8009&quot;]
+xxxxxx INFO [main] org.apache.catalina.startup.Catalina.start <strong>Server startup</strong> in 1927 ms</pre>
+
+<h5>Step 3: Access the Tomcat HTTP Server</h5>
+
+<p>The Tomcat HTTP Server has been started on TCP port 9999. The default TCP port number for HTTP  is 80. To access an HTTP server NOT running on the default TCP port 80, the port number must be explicitly specified in the URL in the form of <code>host:port</code>.</p>
+
+<p>To access your Tomcat Server, start a web browser (e.g., FireFox, IE, Chrome, Safari, Edge) and issue the following URL:</p>
+
+<pre class="command">
+http://localhost:9999</pre>
+
+<p>The &quot;localhost&quot; is a special <em>hostname</em> (with IP address of 127.0.0.1) meant for <em>local loop-back</em> testing.</p>
+
+<p>You could also use the IP address to access your HTTP server. You can find out your IP address by running commands such as &quot;<code>ipconfig</code>&quot;, &quot;<code>winipcfg</code>&quot; (Windows in CMD), &quot;<code>ifconfig</code>&quot; (macOS/Linux in Terminal).</p>
+
+<p>You shall see the <em>welcome page </em>of Tomcat Server.</p>
+
+<img class="image-left image-border" src="../howto/images/TomcatHomePage.png" alt="TomcatHomePage.png" />
+
+<h5>Step 5: Shutting down the Tomcat Server.</h5>
+
+<p>To <em>orderly</em> shutdown the Tomcat web server, press Ctrl-C from the Tomcat's console; or run the script &quot;<code>shutdown.bat</code>&quot; (Windows) or &quot;<code>./shutdown.sh</code>&quot; (macOS/Linux) under Tomcat's &quot;<code>bin</code>&quot; directory.</p>
+
+<h3>Writing Client-side HTML Form (<code></code><code>querybook.html</code>)</h3>
+
+<p>Let's write an HTML script to create a query <em>form</em> using checkboxes. Save the HTML file as &quot;<code>querybook.html</code>&quot; in your application <em>root</em> directory &quot;<code>ebookshop</code>&quot;.</p>
+
+<pre class="example">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Yet Another e-Bookshop&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Yet Another e-Bookshop&lt;/h2&gt;
+  &lt;form method=&quot;get&quot; <span class="highlight"><strong>action=&quot;http://localhost:9999/ebookshop/query&quot;</strong></span>&gt;
+    Choose an author:&lt;br /&gt;&lt;br /&gt;
+    &lt;input type=&quot;checkbox&quot; <span class="highlight"><strong>name=&quot;author&quot; value=&quot;Tan Ah Teck&quot;</strong></span> /&gt;Ah Teck
+    &lt;input type=&quot;checkbox&quot; <span class="highlight"><strong>name=&quot;author&quot; value=&quot;Mohammad Ali&quot;</strong></span> /&gt;Ali
+    &lt;input type=&quot;checkbox&quot; <span class="highlight"><strong>name=&quot;author&quot; value=&quot;Kumar&quot;</strong></span> /&gt;Kumar
+    &lt;input type=&quot;submit&quot; value=&quot;Search&quot; /&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+ 
+<p>Browse the HTML page by issuing the URL:</p>
+
+<pre class="command">
+http://localhost:9999/ebookshop/<strong>querybook.html</strong></pre>
+
+<img class="image-center image-border" src="images/ServletCS_Form.png" alt="ServletCS_Form.png" />
+
+<p>Check a box (e.g., Ah Teck) and click the &quot;Search&quot; button. A request will be issued to the URL specified in the <code>&lt;form&gt;</code>'s <code>action</code> attribute. You are expected to receive an Error &quot;404 Page Not Found&quot; at this stage as you have yet to write the server-side program (i.e., &quot;<code>query</code>&quot;). </p>
+<p>But observe the URL generated:</p>
+
+<p><img class="image-center image-border" src="images/ServletCS_URL.png" alt="ServletCS_URL.png" /></p>
+
+<p>The query parameter, in the form of <code>name=value</code> pair, are extracted from the <code>&lt;input&gt;</code> tag (e.g., <code>author=Tan+Ah+Tack</code>). It is appended behind the URL, separated by a <code>'?'</code>.</p>
+
+<p> Check two boxes (e.g., &quot;Ah Teck&quot; and &quot;Ali&quot;) and submit the request, the URL is:</p>
+
+<pre class="command">
+http://localhost:9999/ebookshop/query<span class="highlight"><strong>?author=Tan+Ah+Teck&amp;author=Mohammad+Ali</strong></span></pre>
+
+<p>Two <code>name=value</code> pairs are sent to the server, separated by an <code>'&amp;'</code>.</p>
+
+<p>Also take note that blank is replaced by <code>'+'</code>. This is because special characters are not permitted in the URL. They are encoded as <code>%<em>xx</em></code> where <em><code>xx</code></em> is the hex code in ASCII. For example, <code>'~'</code> is encoded as <code>%7e</code>; blank is encoded as <code>%20</code> or <code>'+'</code>.</p>
+
+<h3>Writing Server-side Java Database Query Servlet (<code></code><code>QueryServlet.java</code>)</h3>
+
+<p>The next step is to write the server-side program, which responses to the client's request by querying the database and returns the query results. We shall use Java servlet technology in our servlet-side programming.</p>
+
+<h4>Java Database Programming</h4>
+<p>The steps involved in Java database programs are:</p>
+<ol>
+<li>Allocate a <code>Connection</code> object.</li>
+
+<li>Allocate a <code>Statement</code> object, under the <code>Connection</code> object created.</li>
+
+<li>Query database:
+
+<ol>
+<li>Execute a SQL <code>SELECT</code> query by calling the <code>executeQuery()</code> method of the <code>Statement</code> object, which returns the query results in a <code>ResultSet</code> object; or</li>
+<li>Execute a SQL <code>INSERT|UPDATE|DELETE</code> command by calling the <code>executeUpdate()</code> method of the <code>Statement</code> object, which returns an <code>int</code> indicating the number of rows affected.</li></ol></li>
+
+<li>Process the query result.</li>
+<li>Free the resources by closing the <code>Statement</code> and <code>Connection</code>.</li>
+</ol>
+
+<h4>Java Database Servlet</h4>
+
+<p>Let write a servlet that queries the database based on the client's request.</p>
+
+<h5>Step 1: Write the Servlet &quot;<code></code><code>QueryServlet.java</code>&quot;</h5>
+
+<p>Enter the following codes and save as &quot;<code>QueryServlet.java</code>&quot; under your web application &quot;<code>classes</code>&quot; directory, i.e., &quot;<span class="highlight"><strong><code>ebookshop\WEB-INF\classes\</code></strong></span>&quot;. <strong>You must keep all your servlets in &quot;<code>ebookshop\WEB-INF\classes</code></strong>&quot;, because that is where Tomcat picks up the servlets.</p>
+
+<pre><code class="language-java line-numbers drop-tokens">// To save as "<mark>ebookshop\WEB-INF\classes\QueryServlet.java</mark>".
+import java.io.*;
+import java.sql.*;
+import jakarta.servlet.*;            // Tomcat 10 (Jakarta EE 9)
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+//import javax.servlet.*;            // Tomcat 9 (Java EE 8 / Jakarta EE 8)
+//import javax.servlet.http.*;
+//import javax.servlet.annotation.*;
+
+@WebServlet("<mark>/query</mark>")   // Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)
+public class <mark>QueryServlet</mark> extends HttpServlet {
+
+   // The doGet() runs once per HTTP GET request to this servlet.
+   @Override
+   public void <mark>doGet</mark>(HttpServletRequest request, HttpServletResponse response)
+               throws ServletException, IOException {
+      // Set the MIME type for the response message
+      response.setContentType("text/html");
+      // Get a output writer to write the response message into the network socket
+      PrintWriter out = response.getWriter();
+      // Print an HTML page as the output of the query
+      out.println("&lt;!DOCTYPE html&gt;");
+      out.println("&lt;html&gt;");
+      out.println("&lt;head&gt;&lt;title&gt;Query Response&lt;/title&gt;&lt;/head&gt;");
+      out.println("&lt;body&gt;");
+
+      try (
+         // Step 1: Allocate a database 'Connection' object
+         Connection conn = DriverManager.getConnection(
+               "jdbc:mysql://localhost:3306/<mark>ebookshop</mark>?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC",
+               "<mark>myuser</mark>", "<mark>xxxx</mark>");   // For MySQL
+               // The format is: "jdbc:mysql://hostname:port/databaseName", "username", "password"
+
+         // Step 2: Allocate a 'Statement' object in the Connection
+         Statement stmt = conn.createStatement();
+      ) {
+         // Step 3: Execute a SQL SELECT query
+         // === Form the SQL command - BEGIN ===
+         String sqlStr = "select * from books where author = "
+               + <mark>&quot;'&quot; + request.getParameter(&quot;author&quot;) + &quot;'&quot;</mark>   // Single-quote SQL string
+               + " and qty &gt; 0 order by price desc";
+         // === Form the SQL command - END ===
+
+         out.println("&lt;h3&gt;Thank you for your query.&lt;/h3&gt;");
+         out.println("&lt;p&gt;Your SQL statement is: " + sqlStr + "&lt;/p&gt;"); // Echo for debugging
+         ResultSet rset = stmt.executeQuery(sqlStr);  // Send the query to the server
+
+         // Step 4: Process the query result set
+         int count = 0;
+         while(rset.next()) {
+            // Print a paragraph &lt;p&gt;...&lt;/p&gt; for each record
+            out.println("&lt;p&gt;" + rset.getString("author")
+                  + ", " + rset.getString("title")
+                  + ", $" + rset.getDouble("price") + "&lt;/p&gt;");
+            count++;
+         }
+         out.println("&lt;p&gt;==== " + count + " records found =====&lt;/p&gt;");
+         // === Step 4 ends HERE - Do NOT delete the following codes ===
+      } catch(SQLException ex) {
+         out.println("&lt;p&gt;Error: " + ex.getMessage() + "&lt;/p&gt;");
+         out.println("&lt;p&gt;Check Tomcat console for details.&lt;/p&gt;");
+         ex.printStackTrace();
+      }  // Step 5: Close conn and stmt - Done automatically by try-with-resources (JDK 7)
+ 
+      out.println("&lt;/body&gt;&lt;/html&gt;");
+      out.close();
+   }
+}</code></pre>
+
+<p>Recall that the HTML form that we created earlier submits query parameters in the form of <code><em>name=value</em></code> pairs, (e.g., <code>author=Tan+Ah+Teck</code>), as part of the request. In the processing servlet, we need to extract the author name (e.g., <code>&quot;Tan Ah Teck&quot;</code>) from the request to form a SQL SELECT query (e.g., <code>SELECT * FROM books WHERE author='Tan Ah Teck'</code>). This is done via the method <code>request.getParameter(<em>name</em>)</code>, which returns the <em><code>value</code></em> of the <code><em>name=value</em></code> pair.</p>
+
+<p>For example, suppose that the URL is:</p>
+
+<pre class="command">
+http://localhost:9999/ebookshop/query<strong>?</strong><span class="new">author=Tan+Ah+Teck</span></pre>
+
+<p>The method <code>request.getParameter(&quot;author&quot;)</code> returns a <code>String</code> <code>&quot;Tan Ah Teck&quot;</code>. The resultant <code>sqlStr</code> becomes:</p>
+
+<pre class="command">
+SELECT * FROM books WHERE author=<span class="new">'Tan Ah Teck'</span> AND qty &gt; 0 ORDER BY author ASC, title ASC</pre>
+
+<p>Note that you do not have to handle encoded characters such as <code>'+'</code>, <code>%20</code>, <code>'?'</code> and <code>'&amp;'</code>. They will be properly decoded by the <code>getParameter()</code> method.</p>
+<h5>Step 2: Compile</h5>
+
+<p>Compile the source code &quot;<code>QueryServlet.java</code>&quot; into &quot;<code>QueryServlet.class</code>&quot;.</p>
+
+<pre class="command">
+<span class="comment">// For Windows: Assume that Tomcat is installed in &quot;c:\myWebProject\tomcat&quot;
+</span>c:
+cd \myWebProject\tomcat\webapps\ebookshop\WEB-INF\classes
+javac <mark>-cp .;c:\myWebProject\tomcat\lib\servlet-api.jar</mark> QueryServlet.java
+ 
+<span class="comment">// For macOS: Assume that Tomcat is installed in &quot;~/myWebProject/tomcat&quot;</span>
+cd ~/myWebProject/tomcat/webapps/ebookshop/WEB-INF/classes
+<span class="comment">// Need to use $HOME instead of ~ in the &quot;javac&quot; command</span>
+javac <mark>-cp .:$HOME/myWebProject/tomcat/lib/servlet-api.jar</mark> QueryServlet.java</pre>
+
+<h5>Step 3: Test the Servlet</h5>
+<p>You can now try to invoke the servlet by issuing a request URL with proper query parameter:</p>
+
+<pre class="command">
+http://localhost:9999<strong>/<mark>ebookshop</mark>/<mark>query</mark>?<mark>author=Tan+Ah+Teck</mark></strong></pre>
+
+<img class="image-center" src="images/ServletCS_QueryOutput.png" alt="ServletCS_QueryOutput.png" />
+ 
+<p>The request URL &quot;<code>/query</code>&quot; is mapped to the servlet &quot;<code>QueryServlet.class</code>&quot;, as configured via <code>@WebServlet(&quot;/query&quot;)</code>, as follows:</p>
+ 
+<img class="image-center image-border" src="images/ServletCS_QueryMapping.png" alt="ServletCS_QueryMapping.png" />
+ 
+<p>Try &quot;View Source&quot; (or &quot;View Page Source&quot;) in your browser to study the output produced by the servlet. It is important to note that the client has no access to the servlet's program codes, but merely the outputs produced by the servlet.</p>
+
+<pre class="output">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Query Results&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h3&gt;Thank you for your query.&lt;/h3&gt;
+&lt;p&gt;Your SQL statement: SELECT * FROM books WHERE author = 'Tan Ah Teck' AND qty &gt; 0 ORDER BY author ASC, title ASC&lt;/p&gt;
+&lt;p&gt;Tan Ah Teck, Java for dummies, $11.11&lt;/p&gt;
+&lt;p&gt;Tan Ah Teck, More Java for dummies, $22.22&lt;/p&gt;
+&lt;p&gt;==== 2 records found ====&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+
+<h5>Step 5: Invoke the Servlet from the HTML Form</h5>
+
+<p>Use the HTML form that you have created earlier (i.e., &quot;<code>querybook.html</code>&quot;) to trigger this servlet. Take note that the request URL is coded in the <code>&lt;form&gt;</code>'s <code>action</code> attribute.</p>
+
+<h3>More Java Database Servlets</h3>
+
+<h4>Ex 1: Relative URL vs. Absolute URL (<code></code><code>querybook.html</code>)</h4>
+
+<p>In the &quot;<code>querybook.html</code>&quot;, the request URL in the <code>&lt;form&gt;</code>'s <code>action</code> attribute (i.e., <code>http://localhost:9999/ebookshop/query</code>) is called an <em>absolute URL</em>. The hostname, port number and path are all hard-coded in an absolute URL. This will cause problem if you decide to relocate your program to another host (e.g., from the testing host into the production host), or another webapp.</p>
+
+<p>Instead of using an absolute URL, we would use a <em>relative URL</em> (in &quot;<code>querybook.html</code>&quot;) as follows:</p>
+
+<pre class="command">
+&lt;form method=&quot;get&quot; <mark>action=&quot;query&quot;</mark>&gt;</pre>
+ 
+<p>A relative URL is <em>relative</em> to the <em>currently displayed page</em>. Since the current page &quot;<code>querybook.html</code>&quot; is located at <em>directory</em> &quot;<code>http://localhost:9999/ebookshop/</code>&quot;, the <em>relative</em> URL of &quot;<code><span class="new">query</span></code>&quot; resolves into an <em>absolute</em> reference of &quot;<code><span class="underline">http://localhost:9999/ebookshop/</span><span class="new">query</span></code>&quot;.</p>
+<p>Relative URLs should be used (instead of absolute URLs) in your HTML pages whenever possible, so that the HTML pages can be easily relocated from one webapp to another webapp, or to another server, under difference base directory. You should only use absolute URL for referencing resources from other servers.</p>
+
+<p>Try it out!</p>
+<p><span class="new">Use relative URL from this point onwards.</span></p>
+
+<h4>Ex 2: Multi-Value Query Parameter (<code>QueryMultiValueServlet.java</code> and <code></code><code>querybookmv.html</code>)</h4>
+
+<p>If you check more than one boxes in the &quot;<code>querybook.html</code>&quot;, the resultant URL contains multiple <code>author=<em>value</em></code> parameters separated by an <code>'&amp;'</code>. For example, if you check all three boxes, the resultant URL is:</p>
+
+<pre class="command">
+http://localhost:9999/ebookshop/<strong>query</strong>?<strong><mark>author</mark>=Tan+Ah+Teck</strong>&amp;<strong><mark>author</mark>=Mohammad+Ali</strong>&amp;<strong><mark>author</mark>=Kumar</strong></pre>
+
+
+<p>However, If you check more than one authors and submit your request to the <code>QueryServlet</code>, the query result shows only the first author. This is because the method <code>request.getParameter(<em>name</em>)</code> returns only the first <em><code>value</code></em>, if there are more than one values for that particular parameter <em><code>name</code></em>.</p>
+
+<p>We have to use the method <code>request.getParameter<span class="underline">Values</span>(<em>name</em>)</code> (instead of <code>request.getParameter(<em>name</em>)</code>) to handle multi-value parameters. The <code>request.getParameterValues(<em>name</em>)</code> returns an <em>array</em> of <code>String</code> containing all the values of that parameter; whereas <code>request.getParameter(<em>name</em>)</code> returns a single <code>String</code>.</p>
+
+<p>In the SQL SELECT command, we could use the <code>IN</code> predicate in the <code>WHERE</code> clause to select from a set of values. For example,</p>
+
+<pre class="command">
+SELECT * FROM books WHERE author <strong><span class="new">IN</span></strong> ('Tan Ah Teck', 'Mohammad Ali', 'Kumar')</pre>
+
+<p>The above SQL command is the same but  simpler than:</p>
+<pre class="command">
+SELECT * FROM books WHERE author='Tan Ah Teck' <strong>OR</strong> author='Mohammad Ali' <strong>OR</strong> author='Kumar'</pre>
+ 
+<p>Let us write a new servlet &quot;<code>QueryMultiValueServlet.java</code>&quot; (modified from &quot;<code>QueryServlet.java</code>&quot;) to handle query parameter with multiple values. We shall map this new servlet &quot;<code>QueryMultiValueServlet.class</code>&quot; to request URL &quot;<code>/querymv</code>&quot;. We shall also create a new HTML page (called &quot;<code>querybookmv.html</code>&quot;) to trigger URL &quot;<code>/querymv</code>&quot;. For example,  if all the three checkboxes are checked, the URL triggered shall be:</p>
+
+<pre class="command">
+http://localhost:9999/ebookshop/<strong><span class="highlight">querymv</span></strong>?<strong>author=Tan+Ah+Teck</strong>&amp;<strong>author=Mohammad+Ali</strong>&amp;<strong>author=Kumar</strong></pre>
+
+<h5>Step 1: Write the &quot;<code></code><code>QueryMultiValueServlet.java</code>&quot;</h5>
+
+
+<p>Copy &quot;<code>QueryServlet.java</code>&quot; to &quot;<code>QueryMultiValueServlet.java</code>&quot;.</p>
+<ol>
+<li> Change the classname from <code>QueryServlet</code> to <code>QueryMultiValueServlet</code>.</li>
+<li>Change the request URL to &quot;<code>/querymv</code>&quot; in <code>@WebServlet()</code> at Line 8.</li>
+<li>We can include all the selected authors in the servlet's <code>sqlstr</code> as follows:
+
+<pre class="example">
+         <span class="comment">// Step 3: Execute a SQL SELECT query</span>
+         <strong></strong><mark>String[] authors = request.getParameterValues(&quot;author&quot;);</mark>  <span class="comment">// Returns an array of Strings</span>
+         String sqlStr = &quot;SELECT * FROM books WHERE author <strong>IN (</strong>&quot;;
+         for (int i = 0; i &lt; authors.length; ++i) {
+            if (i &lt; authors.length - 1) {
+               sqlStr += <strong>&quot;'&quot; + authors[i] + &quot;', &quot;</strong>;  <span class="comment">// need a commas</span>
+            } else {
+               sqlStr += <strong>&quot;'&quot; + authors[i] + &quot;'&quot;</strong>;    <span class="comment">// no commas</span>
+            }
+         }
+         sqlStr += &quot;<strong>)</strong> AND qty &gt; 0 ORDER BY author ASC, title ASC&quot;;</pre></li>
+
+<li>Compile the &quot;<code>QueryMultiValueServlet.java</code>&quot; into &quot;<code>QueryMultiValueServlet.class</code>&quot;. Verify that the class-file is created.</li>
+</ol>
+
+<h5>Step 2: Create a new HTML Form (<code>querybookmv.html</code>)</h5>
+
+<p>Create a new HTML form &quot;<code>querybookmv.html</code>&quot; (based on &quot;<code>querybook.html</code>&quot;) to direct the <code>action</code> to &quot;<code>/querymv</code>&quot;, as follows:</p>
+
+<pre class="example">
+&lt;form method=&quot;get&quot; action=&quot;<strong>querymv</strong>&quot;&gt;
+  ......
+&lt;/form&gt;</pre>
+ 
+<h5>Step 3: Test Your Application</h5>
+<p>Now, you can try out the new form and new servlet.</p>
+<p><strong>IMPORTANT:</strong> Most browsers <em>cache</em> pages downloaded to improve performance. You need to <em>refresh</em> your page. Use <strong>Ctrl-F5</strong> (instead of F5) to refresh, which clears the cache. You may use &quot;view source&quot; to check and ensure that you are working on the modified page instead of the cached page.</p>
+
+<h5>Step 4: More</h5>
+<p>The <code>getParameterValues(<em>name</em>)</code> returns <code>null</code> if the query string does not contain parameter <em><code>name</code></em> (i.e., the user did not check any box). This will trigger a <code>NullPointerException</code> in the above codes. Try it out!</p>
+<p>You can use the following codes to check for the existence of a parameter:</p>
+<pre class="example">
+         <span class="comment">// Add the following lines after 
+         // String[] authors = request.getParameterValues(&quot;author&quot;);</span>
+         if (<strong>authors == null</strong>) {
+            out.println(&quot;&lt;h2&gt;No author selected. Please go back to select author(s)&lt;/h2&gt;&lt;body&gt;&lt;/html&gt;&quot;);
+            return; <span class="comment">// Exit doGet()</span>
+         } 
+<span class="comment">         // Continue the exiting codes - Okay to perform the database query</span>
+         ......
+         ......</pre>
+<p>Recompile the servlet, and test it with not checking any box.</p>
+
+
+
+<h4>Ex 3: Multiple Query Parameters (<code>QueryMultiParamServlet.java</code> and <code></code><code>querybookmp.html</code>)</h4>
+
+<p>Create a new servlet called &quot;<code>QueryMultiParamServlet.java</code>&quot; (based on &quot;<code>QueryServlet.java</code>&quot;) to handle multiple query parameters. For example, the following URL has two parameters: <code>author</code> and <code>price</code>.</p>
+
+<pre class="command">
+http://localhost:9999/ebookshop/<strong>querymp?author=kumar&amp;price=50</strong></pre>
+ We shall configure this servlet to the request URL &quot;<code>/querymp</code>&quot;.
+ <h5>Step 1: HTML form (<code>querybookmp.html</code>)</h5>
+
+<p>Create a new HTML form (called &quot;<code>querybookmp.html</code>&quot;), which could submit two query parameters: <code>author</code> and <code>price</code>, using checkboxes and radio buttons respectively, as follows:</p>
+
+<pre><code class="language-css line-numbers drop-tokens">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Yet Another e-Bookshop&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Yet Another e-Bookshop&lt;/h2&gt;
+  &lt;form method=&quot;get&quot; <mark>action=&quot;querymp&quot;</mark>&gt;
+    Choose an author:
+    &lt;input type=&quot;checkbox&quot; <mark>name=&quot;author&quot; value=&quot;Tan Ah Teck&quot;</mark> /&gt;Ah Teck
+    &lt;input type=&quot;checkbox&quot; <mark>name=&quot;author&quot; value=&quot;Mohammad Ali&quot;</mark> /&gt;Ali
+    &lt;input type=&quot;checkbox&quot; <mark>name=&quot;author&quot; value=&quot;Kumar&quot;</mark> /&gt;Kumar
+    &lt;br /&gt;&lt;br /&gt;
+    Choose a price range:
+    &lt;input type=&quot;radio&quot; <mark>name=&quot;price&quot; value=&quot;50&quot;</mark> checked /&gt;less than $50
+    &lt;input type=&quot;radio&quot; <mark>name=&quot;price&quot; value=&quot;100&quot;</mark> /&gt;less than $100
+    &lt;br /&gt;&lt;br /&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Search&quot; /&gt;
+    &lt;input type=&quot;reset&quot; value=&quot;Clear&quot; /&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Note that:</p>
+<ol>
+<li><em>Checkboxes</em> (can check zero or more boxes) are used for <code>author</code> and <em>radio buttons</em> (can check zero or one box) are used for <code>price</code>.</li>
+
+<li>A &quot;<code>reset</code>&quot; button is added (<code>&lt;input type=&quot;reset&quot;&gt;</code>), which clears the inputs.</li>
+</ol>
+
+<h5>Step 2: Write the Processing Servlet (<code>QueryMultiParamServlet.java</code>)</h5>
+
+<p>Write a servlet called &quot;<code>QueryMultiParamServlet.java</code>&quot; (copy from &quot;<code>QueryServlet.java</code>&quot;).</p>
+<p>Set the URL to &quot;<code>/querymp</code>&quot; in  <code>@WebServlet()</code>.</p>
+<p>You can form the SQL statement as follows:</p>
+
+<pre class="example">
+         <span class="comment">// Step 3: Execute a SQL SELECT query</span>
+         String sqlStr = &quot;SELECT * FROM books WHERE author = &quot;
+               + <mark>&quot;'&quot; + request.getParameter(&quot;author&quot;) + &quot;'&quot;</mark>
+               + &quot; AND price &lt; &quot; + <mark>request.getParameter(&quot;price&quot;)</mark>
+               + &quot; AND qty &gt; 0 ORDER BY author ASC, title ASC&quot;;</pre>
+ 
+<p>Note that:</p>
+<ol>
+<li>In the SQL SELECT statement, <code>author</code> is a string and must be enclosed by a pair of single quotes; <code>price</code> is a number and cannot be quoted.</li>
+<li>The <code>name=value</code> pair of <code>price=&quot;50&quot;</code> is interpreted as <code>price&lt;50</code> in the SELECT statement.</li>
+</ol>
+
+<p>Compile the &quot;<code>QueryMultiParamServlet.java</code>&quot; into &quot;<code>QueryMultiParamServlet.class</code>&quot;.</p>
+<p>Try out the new HTML form and the new servlet.</p>
+
+<h4>Ex 4: Multiple Multi-Value Parameters (Optional)</h4>
+
+<p>Combining Exercises 2 and 3:</p>
+<ol>
+<li>Write a servlet called &quot;<code>QueryMultiParamValueServlet.java</code>&quot;, that is capable of processing multiple authors and a single price, and map to URL &quot;<code>/querymvp</code>&quot;.</li>
+<li>Write an HTML form called &quot;<code>querybookmvp.html</code>&quot; to trigger this servlet.</li>
+</ol>
+
+<h4>Ex 5: HTTP &quot;POST&quot; Request (<code>querybookpost.html</code>)</h4>
+
+<p>HTTP defines two request methods: <code>GET</code> and <code>POST</code>. We have been using GET requests thus far as specified in our <code>&lt;form method=&quot;get&quot; ...&gt;</code>. GET request is processed by the method <code>doGet()</code> in our servlet. POST request, on the other hand, is processed by a <code>doPost()</code> method in the servlet.</p>
+
+<p>Let's try out the HTTP POST request method:</p>
+
+<ol>
+
+<li>Create a new HTML form called &quot;<code>querybookpost.html</code>&quot; (based on &quot;<code>querybook.html</code>&quot;)
+<ol>
+<li>Change the <code>&lt;form&gt;</code>'s attribute <code>method=&quot;get&quot;</code> to <strong><code>method=&quot;post&quot;</code></strong>.</li>
+<li>Change the <code>&lt;form&gt;</code>'s <code>action</code> attribute to <strong><code>action=&quot;querypost&quot;</code></strong>.</li>
+</ol></li>
+
+<li>Create a new servlet called &quot;<code>QueryPostServlet.java</code>&quot; (based on &quot;<code>QueryServlet.java</code>&quot;). Set the URL to &quot;<code>/querypost</code>&quot; in <code>@WebServlet()</code>. Rename the method <code>doGet()</code> to <code>doPost()</code>. Compile the source.</li>
+
+<li>Try out the new form and new servlet.</li>
+</ol>
+
+<p>What is the difference between GET and POST? For POST request, the query string is not shown in the URL (i.e., no &quot;<code>?author=Tan+Ah+Teck&amp;...</code>&quot;). Instead, the query string is sent in the <em>body</em> of the HTTP request message. The advantages are: (a) the client will not see the strange-looking query string in the URL; (b) The GET request's query string length is limited, because it is part of the URL. POST request can send large amount of data in the body of the request message.</p>
+	
+<h5>Same Action for <code>doGet()</code> and <code>doPost()</code></h5>
+
+<p>In practice, it is common to use the <em>same</em> method to handle both the GET and POST requests. In this case, you could simply re-direct <code>doPost()</code> to <code>doGet()</code>. In your &quot;<code>QueryPostServlet.java</code>&quot;:</p>
+<ol>
+<li>Rename <code>doPost()</code> back to <code>doGet()</code> to handle GET request.</li>
+<li>Write a new method <code>doPost()</code> to handle POST request as follows, which invokes the <code>doGet()</code>.  In other words, <code>doGet()</code> and <code>doPost()</code> do the same thing.
+<pre class="example">
+<span class="comment">// No change to the original doGet()</span>
+@Override
+public void <strong>doGet</strong>(HttpServletRequest request, HttpServletResponse response)
+                   throws ServletException, IOException {
+   ......
+}
+
+<span class="comment">// Add a new doPost() method</span>
+<span class="comment">// The new doPost() runs the doGet() too</span>
+@Override
+public void <strong>doPost</strong>(HttpServletRequest request, HttpServletResponse response)
+                   throws ServletException, IOException {
+   <strong>doGet(request, response);</strong>  <span class="comment">// Re-direct POST request to doGet()</span>
+}</pre></li>
+</ol>
+ 
+<p>Try it out.</p>
+
+<p><span class="lead">(Advanced)</span> In fact, HTTP defines seven request methods, namely, <code>GET</code>, <code>POST</code>, <code>PUT</code>, <code>DELETE</code>, <code>HEAD</code>, <code>OPTIONS</code>, <code>TRACE</code>. You can use <code>doXxx()</code> inside <code>HttpServlet</code> to handle each of these requests.</p>
+<ul>
+<li><code>doGet()</code>: handles HTTP <code>GET</code> requests for displaying data</li>
+<li><code>doPost()</code>: handles HTTP <code>POST</code> requests for performing inserts</li>
+<li><code>doPut()</code>: handles HTTP <code>PUT</code> requests for performing updates</li>
+<li><code>doDelete()</code>: handles HTTP <code>DELETE</code> requests for performing deletions</li>
+<li><code>doHead()</code>: handles HTTP <code>HEAD</code> requests for displaying <code>GET</code> request header only (without body)</li>
+<li><code>doOptions()</code>: handles HTTP <code>OPTIONS</code> requests for display options supported</li>
+<li><code>doTrace()</code>: handles HTTP <code>TRACE</code> requests</li>
+</ul>
+
+
+<h3>Programming the Client-Side (Front-End)</h3>
+
+<p>In the previous sections, we used a simple HTML <em>form</em> of <em>checkboxes</em>. HTML also provides other input component, such as text field, radio button and pull-down menu.</p>
+
+<h5>HTML Form with &quot;Pull-down Menu&quot; (<code>querybookmenu.html</code>)</h5>
+
+<p>Create the following HTML form with a &quot;pull-down menu&quot; and save as &quot;<code>querybookmenu.html</code>&quot;. Pull-down menu uses <code>&lt;select&gt;</code> and <code>&lt;option&gt;</code> tags. The <code>name</code> is specified in <code>&lt;select&gt;</code>; while the <code>value</code> is specified in <code>&lt;option&gt;</code>.</p>
+
+<pre><code class="language-java line-numbers drop-tokens">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Yet Another e-Bookshop&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;Yet Another e-Bookshop&lt;/h2&gt;
+  &lt;form method=&quot;get&quot; action=&quot;query&quot;&gt;
+    Choose an author:
+    &lt;select <mark>name=&quot;author&quot;</mark> size=&quot;1&quot;&gt;
+      &lt;option <mark>value=&quot;Tan Ah Teck&quot;</mark>&gt;Ah Teck&lt;/option&gt;
+      &lt;option <mark>value=&quot;Mohammad Ali&quot;</mark>&gt;Ali&lt;/option&gt;
+      &lt;option <mark>value=&quot;Kumar&quot;</mark>&gt;Kumar&lt;/option&gt;
+    &lt;/select&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Search&quot; /&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+<p>Try out this new HTML form, which triggers URL <code>/query</code> (mapped to <code>QueryServlet.java</code>).</p>
+
+<h5>HTML form with Text Field (<code>querybooktextfield.html</code>)</h5>
+
+<p>Crate a new HTML form with text field (called &quot;<code>querybooktextfield.html</code>&quot;). The syntax for text field is as follow. The &quot;<code>name</code>&quot; is specified in the <code>&lt;input&gt;</code> tag; while the &quot;<code>value</code>&quot; corresponds to the user's input.</p>
+
+<pre class="example">
+&lt;form ......&gt;
+  Enter an author: &lt;input type=&quot;text&quot; <mark>name=&quot;author&quot;</mark> /&gt;
+  ......
+&lt;/form&gt;</pre>
+
+<p>Try out this new HTML form.</p>
+
+<h5>HTML form with Text Area (<code>querybooktextarea.html</code>)</h5>
+<p>Text field allows you to enter a single line of text; while text area allows you to enter multiple lines. Text area uses <code>&lt;textarea&gt;...&lt;/textarea&gt;</code> tag as follow. Write an HTML form with text area (called &quot;<code>querybooktextarea.html</code>&quot;).</p>
+
+<pre class="example">
+&lt;form ......&gt;
+  &lt;textarea <mark>name=&quot;author&quot;</mark>&gt;Enter an author&lt;/textarea&gt;
+  ......
+&lt;/form&gt;</pre>
+
+<p>Try out this new HTML form.</p>
+
+<h3>Programming the Server-Side to Process Order</h3>
+
+<p>So far, we have tested the &quot;query&quot; part of the e-shop. Let us continue to allow the client to &quot;order&quot; items in our e-shop.</p>
+
+<p>The sequence of events shall be as follow (as illustrated in the figure):</p>
+<img class="image-center image-border" src="images/ServletCS_Order.png" alt="ServletCS_Order.png" />
+
+
+<ol>
+<li>A client issues URL <code>http://<em>hostname</em>:9999/ebookshop/<strong>eshopquery.html</strong></code>. The server responses with an HTML form showing the available authors. The form is to be submitted to URL &quot;<code>/eshopquery</code>&quot;, which is mapped to &quot;<code>Eshop<strong>Query</strong>Servlet.class</code>&quot;.</li>
+
+<li>The client selects the author(s) and sends the request to the &quot;<code>Eshop<strong>Query</strong>Servlet.class</code>&quot;, with request parameter &quot;<code>author=<em>authorName</em></code>&quot;. The servlet retrieves the authors' name, queries the database, and returns a list of available books by that authors. Instead of writing a paragraph (<code>&lt;p&gt;...&lt;/p&gt;</code>) for each book (as in the previous exercises), the servlet shall now print a checkbox for each book. This allows the client to further interact with the server. The checkboxes are enclosed within an HTML form, which is to be submitted to URL &quot;<code>/eshoporder</code>&quot; (mapped to &quot;<code>Eshop<strong>Order</strong>Servlet.class</code>&quot;).</li>
+<li>The client selects the book(s) and sends the order request to the &quot;<code>Eshop<strong>Order</strong>Servlet.class</code>&quot;, with request parameter &quot;<code>id=<em>xxx</em></code>&quot;. The servlet retrieves the books' <code>id</code>, updates the database, and returns a confirmation message.</li>
+</ol>
+
+<p>For this exercise, you need to write 3 files (1 html and 2 java) as shown in the above figure:</p>
+<ol>
+<li><code>eshopquery.html</code></li>
+<li><code>EshopQueryServlet.java</code> </li>
+<li><code>EshopOrderServlet.java</code></li>
+</ol>
+<p>Let's do it one-by-one.</p>
+
+<h4>Step 1: HTML form (<code>eshopquery.html</code>)</h4>
+<p>Create a new HTML form called <code>eshopquery.html</code> (based on <code>querybook.html</code>), with action to <code>/eshopquery</code> (which is supposed to trigger servlet <code>EshopQueryServlet.class</code> in the next step).</p>
+
+
+<h4>Step 2: Processing Servlet to display an Order Form (<code>EshopQueryServlet.java</code>)</h4>
+
+<p>The &quot;<code>QueryServlet</code>&quot; that we wrote easier returns a <em>static</em> HTML page, which prints a paragraph (using <code>&lt;p&gt;...&lt;/p&gt;</code>) for each book returned.  We shall modify it (called &quot;<code>EshopQueryServlet</code>&quot;) to return a <em>dynamic</em> HTML page containing <em>a form of checkboxes</em> to allow the client to order books. We shall map the &quot;<code>EshopQueryServlet</code>&quot; to URL &quot;<code>/eshopquery</code>&quot;.</p>
+
+<p>Recall that a checkbox is produced by an <code>&lt;input&gt;</code> tag as follows:</p>
+
+<pre class="command">
+&lt;input type='checkbox' name='<strong><em>aName</em></strong>' value='<strong><em>aValue</em></strong>' /&gt;<strong><em>aLabel</em></strong></pre>
+
+<p>We shall use the book's <code>id</code> as the ordering criterion. We shall choose &quot;<code>id=<em>xxx</em></code>&quot; as the <code>name=value</code><code></code> pair of the checkbox. We shall use <code>author</code>, <code>title</code> and <code>price</code> as the <em>label</em> for the checkbox. Hence, the servlet needs to produce an <code>&lt;input&gt;</code> tag which looks like:</p>
+
+<pre class="command">
+&lt;input type='checkbox' name='<strong>id</strong>' value='<strong>1001</strong>' /&gt;Tan Ah Teck, Java For Dummies, $11.11</pre>
+
+<p>Take note that I used single-quotes (instead of double quotes) for the attribute values in the above HTML tags, as they are easier to print in <code>println()</code>.</p>
+ 
+
+<p>The <code>EshopQueryServlet</code> shall send the order request to another servlet called <code>EshopOrderServlet</code> (which shall be mapped to an URL &quot;<code>/eshoporder</code>&quot;). Hence the <code>&lt;form&gt;</code> tag shall look like:</p>
+
+<pre class="command">
+&lt;form method='get' action='<strong>eshoporder</strong>'&gt;
+  &lt;p&gt;&lt;input type='checkbox' name='id' value='1001' /&gt;Tan Ah Teck, Java For Dummies, $11.11&lt;/p&gt;
+  &lt;p&gt;&lt;input type='checkbox' name='id' value='1002' /&gt;.........&lt;/p&gt;
+  ......
+&lt;/form&gt;</pre>
+
+<br />
+<p>The programming steps are as follows:</p>
+ 
+<p>Write the &quot;<code>EshopQueryServlet.java</code>&quot; (based on  &quot;<code>QueryMultiValueServlet.java</code>&quot;). Map to URL &quot;<code>/eshopquery</code>&quot;. It shall process the <code>ResultSet</code> as follow, so as to generate the desired HTML <code>&lt;form&gt;</code> and <code>&lt;input&gt;</code> tags:</p>
+
+<pre class="example">
+         <span class="comment">// Step 4: Process the query result
+         // Print the &lt;form&gt; start tag</span>
+         out.println(&quot;&lt;form method='get' action='<strong><span class="highlight">eshoporder</span></strong>'&gt;&quot;);
+         
+         <span class="comment">// For each row in ResultSet, print one checkbox inside the &lt;form&gt;</span>
+         while(rset.next()) {
+            out.println(&quot;&lt;p&gt;<strong><span class="highlight">&lt;input type='checkbox' name='id' value=&quot;</span>
+                  <span class="highlight">+ &quot;'&quot; + rset.getString(&quot;id&quot;) + &quot;' /&gt;</span></strong>&quot;
+                  + rset.getString(&quot;author&quot;) + &quot;, &quot;
+                  + rset.getString(&quot;title&quot;) + &quot;, $&quot;
+                  + rset.getString(&quot;price&quot;) + &quot;&lt;/p&gt;&quot;);
+         }
+ 
+         <span class="comment">// Print the submit button and &lt;/form&gt; end-tag</span>
+         out.println(&quot;&lt;p&gt;&lt;input type='submit' value='ORDER' /&gt;&quot;);
+         out.println(&quot;&lt;/form&gt;&quot;);</pre>
+
+<p>Try out the new HTML form and new servlet.</p>
+
+<p>Select some books and click the &quot;ORDER&quot; submit button. Observe the HTTP GET request triggered. You are expected to receive a &quot;404 File Not Found&quot; error because you have yet to write the <code>EshopOrderServlet</code>.</p>
+ 
+<h4>Step 3: Processing the Order (<code>EshopOrderServlet.java</code>)</h4>
+
+<p>The submit button in the previous step invokes this URL, with possibly zero or more <code>id</code>'s corresponding to the book(s) ordered.</p>
+
+<pre class="command">
+http://<em>hostname</em>:9999/ebookshop/<strong>eshoporder?id=1001&amp;id=1002</strong></pre>
+ 
+<p>We shall map the request URL &quot;<code>/eshoporder</code>&quot; to a new servlet called &quot;<code>EshopOrderServlet</code>&quot;.</p>
+
+<p>The &quot;<code>EshopOrderServlet</code>&quot; shall process the order by:</p>
+
+<ol>
+<li>Retrieve the <code>id</code> number(s) from the request.</li>
+
+<li>In table <code>books</code>, reduce the &quot;<code>qty</code>&quot; by 1 for that particular <code>id</code> number. To update records in the table <code>books</code>, use an SQL UPDATE statement as follows:
+
+<pre class="command">
+UPDATE books <strong>SET qty = qty – 1</strong> WHERE <strong>id = 1001</strong>
+UPDATE books <strong>SET qty = qty – 1</strong> WHERE <strong>id = 1002</strong></pre>
+</li>
+
+<li>Insert a transaction record in a new table called &quot;<code>order_records</code>&quot;.</li>
+</ol>
+
+<br  />
+<p>The programming steps are as follows:</p>
+
+<p><span class="line-heading">Step 3a:</span> Create a <em>new</em> table called &quot;<code>order_records</code>&quot; in the same database &quot;<code>ebookshop</code>&quot; with five columns: <code>id</code> (<code>int</code>), <code>qty_ordered</code> (<code>int</code>), <code>cust_name</code> (<code>String</code>), <code>cust_email</code> (<code>String</code>) and <code>cust_phone</code> (<code>String</code>).</p>
+<p>[Notes: You should avoid naming the table <code>order</code>, as it is a reserve word in SQL, which requires special handling.]</p>
+
+<pre class="example">
+Database: <strong>ebookshop</strong>
+Table: <strong>order_records</strong>
++-------+-------------+---------------+---------------+------------+
+| <strong>id  </strong>  | <strong>qty_ordered</strong> | <strong>cust_name</strong>     | <strong>cust_email</strong>    | <strong>cust_phone</strong> |
+| (INT) | (INT)       | (VARCHAR(30)) | (VARCHAR(30)) | CHAR(8)    |
++-------+-------------+---------------+---------------+------------+</pre>
+
+<p>You could use the following SQL script:</p>
+
+<pre class="command">
+use ebookshop;
+ 
+drop table if exists order_records;
+create table order_records (
+  id          int,
+  qty_ordered int,
+  cust_name   varchar(30),
+  cust_email  varchar(30),
+  cust_phone  char(8));</pre>
+
+<p><strong>(Notes)</strong> A much better design is to have a table called <code>customers</code> with <code>id</code> (primary key), <code>name</code>, <code>email</code> and <code>phone</code>, and include the customer's <code>id</code> in the above table.</p>
+
+<p><span class="line-heading">Step 3b:</span> Write the &quot;<code>EshopOrderServlet.java</code>&quot; (map to URL &quot;<code>/eshoporder</code>&quot;) which retrieves the <code>id</code> from the request parameter &quot;<code>id=<em>xxx</em></code>&quot;, and updates the tables <code>books</code> and <code>order_records</code>.</p>
+
+<p>The syntax for SQL INSERT is as follows:</p>
+<pre class="command">
+<span class="comment">// Insert full record</span>
+INSERT INTO order_records VALUES (1001, 2, 'Kelvin Jones', 'kelvin@somewhere.com', '88881234')
+<span class="comment">// Insert partial record</span>
+INSERT INTO order_records (id, qty_ordered) VALUES (1001, 1)</pre>
+ 
+<p>To execute SQL UPDATE and INSERT statements, you have to use the method <code>executeUpdate(<em>sqlStr</em>)</code>, which returns an <code>int</code>, indicating the number of rows affected by the UPDATE or INSERT. (Recall that we use <code>executeQuery()</code> for SQL SELECT, which returns a <code>ResultSet</code>). For example,</p>
+
+<pre class="example">
+String <strong>sqlstr = &quot;INSERT INTO order_records (id, qty_ordered) VALUES (1234, 1)&quot;</strong>;
+int count;
+count = stmt.<strong>executeUpdate(sqlstr)</strong>;
+out.println(count + &quot; records inserted.&quot;);</pre>
+ 
+<p>The <code>doGet()</code> method of the <code>EshopOrderServlet</code> shall look like:</p>
+
+<pre class="example">
+         <span class="comment">// Step 3 &amp; 4: Execute a SQL SELECT query and Process the query result</span>
+         <span class="comment">// Retrieve the books' id. Can order more than one books.</span>
+         String[] ids = request.getParameterValues(&quot;id&quot;);
+         if (ids != null) {
+            String sqlStr;
+            int count;
+ 
+            <span class="comment">// Process each of the books</span>
+            for (int i = 0; i &lt; ids.length; ++i) {
+               <span class="comment">// Update the qty of the table books</span>
+               sqlStr = &quot;UPDATE books SET qty = qty - 1 WHERE id = &quot; + ids[i];
+               out.println(&quot;&lt;p&gt;&quot; + sqlStr + &quot;&lt;/p&gt;&quot;);  <span class="comment">// for debugging</span>
+               count = stmt.executeUpdate(sqlStr);
+               out.println(&quot;&lt;p&gt;&quot; + count + &quot; record updated.&lt;/p&gt;&quot;);
+ 
+               <span class="comment">// Create a transaction record</span>
+               sqlStr = &quot;INSERT INTO order_records (id, qty_ordered) VALUES (&quot;
+                     + ids[i] + &quot;, 1)&quot;;
+               out.println(&quot;&lt;p&gt;&quot; + sqlStr + &quot;&lt;/p&gt;&quot;);  <span class="comment">// for debugging</span>
+               count = stmt.executeUpdate(sqlStr);
+               out.println(&quot;&lt;p&gt;&quot; + count + &quot; record inserted.&lt;/p&gt;&quot;);
+               out.println(&quot;&lt;h3&gt;Your order for book id=&quot; + ids[i]
+                     + &quot; has been confirmed.&lt;/h3&gt;&quot;);
+            }
+            out.println(&quot;&lt;h3&gt;Thank you.&lt;h3&gt;&quot;);
+         } else { <span class="comment">// No book selected</span>
+            out.println(&quot;&lt;h3&gt;Please go back and select a book...&lt;/h3&gt;&quot;);
+         }</pre>
+ 
+<p>Run the application. Check the database to confirm the updating. Make sure that you have the message &quot;Thank you&quot; displayed.</p>
+
+<h4>Touching Up</h4>
+
+<ol>
+<li>Add three text fields: <code>cust_name</code>, <code>cust_email</code> and <code>cust_phone</code> in <code>EshopQueryServlet</code>. The <code>&lt;input&gt;</code> tag for text fields look like:
+
+  <pre class="syntax">
+&lt;p&gt;Enter your Name: <strong>&lt;input type='text' name='cust_name' /&gt;</strong>&lt;/p&gt;
+&lt;p&gt;Enter your Email: <strong>&lt;input type='text' name='cust_email' /&gt;</strong>&lt;/p&gt;
+&lt;p&gt;Enter your Phone Number: <strong>&lt;input type='text' name='cust_phone' /&gt;</strong>&lt;/p&gt;</pre>
+
+The <code>value</code> of a text field is the string entered.
+
+<img class="image-center" src="images/ServletCS_Table.png" alt="ServletCS_Table.png" /><br>
+You need to modify <code>EshopOrderServlet</code> to retrieve these new parameters (<code>cust_name</code>, <code>cust_phone</code>, <code>cust_email</code>) and INSERT them into the <code>order_records</code> table.</li>
+
+<li>In <code>EshopQueryServlet</code>, put the rows into an HTML table (as illustrated in the above figure).
+
+<br />
+The HTML syntax for displaying a table is:
+<pre class="syntax">
+&lt;table&gt;
+  &lt;tr&gt;
+    &lt;th&gt;heading for column 1&lt;/th&gt;
+    &lt;th&gt;heading for column 2&lt;/th&gt;
+    ......
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;data for column 1&lt;/td&gt;
+    &lt;td&gt;data for column 2&lt;/td&gt;
+    ......
+  &lt;/tr&gt;
+  ......
+&lt;/table&gt;</pre>
+ 
+The <code>&lt;table&gt;...&lt;/table&gt;</code> tag markups a <em>table</em>; <code>&lt;tr&gt;...&lt;/tr&gt;</code> markups a <em>row</em>; <code>&lt;th&gt;...&lt;/th&gt;</code> is a <em>header</em> <em>cell</em> in the row, and <code>&lt;td&gt;...&lt;/td&gt;</code> is a <em>data cell</em>.<br />
+To do this, in <code>EshopQueryServlet</code>, you need to <em>painfully</em> use <code>out.println()</code> to print out the HTML codes line-by-line. First, print the <code>&lt;table&gt;</code> begin-tag and header-row (<code>&lt;tr&gt;&lt;th&gt;..&lt;/th&gt;&lt;/tr&gt;</code>). After that, in the while-loop<code></code> for processing the <code>ResultSet</code>, print the data-row (<code>&lt;tr&gt;&lt;td&gt;...&lt;/td&gt;&lt;/tr&gt;</code>) inside the while-loop. Then, print the <code>&lt;/table&gt;</code> end-tag after the while-loop.<br />
+I will not show you the codes!!!</li>
+
+</ol>
+ 
+<h3>What's Next</h3>
+<p>You have created an e-shop, driven by Tomcat HTTP server and a database, with Java servlet as the server-side programs and HTML form and Java Applet as the client-side programs. This e-shop, although primitive, is functional. It illustrates the principles and technologies behind a database webapp.</p>
+
+<p>You can improve on:</p>
+<ol>
+<li>Database: use a comprehensive database with multiple tables (e.g., <code>authors</code>, <code>books</code>, <code>writes</code>, <code>customers</code>, <code>order_details</code>, etc.).</li>
+<li>Client-side: use HTML 5, CSS 3, BootStrap, and JavaScript to improve on the presentation (with images, video and audio) and client-side validation.</li>
+<li>Server-side: provide more functions.</li>
+</ol>
+
+
+<p>Some critical components are still missing in our e-shop:</p>
+<ol>
+<li>The names of authors are hard-coded in <code>&quot;Eshopquerybook.html</code>&quot;. Instead of hard-coding, write a servlet (called <code>EShopDisplayServlet</code>) to <strong>generate the list of authors from the database automatically</strong>. Instead of starting with an HTML page, the webapp begins by requesting for the servlet.<br />
+Hints: Use the following SQL statement to retrieve all the <em>distinct</em> authors from table <code>books</code>:
+
+<pre class="command">
+SELECT <strong>DISTINCT</strong> author FROM books WHERE qty &gt; 0</pre></li>
+
+ <li><strong>Customer registration and sign-in</strong>.</li>
+ <li><strong>Input Validation</strong> (client-side and server-side), e.g., phone number (8-digit), email (xxx@yyy), name required, proper date format.</li>
+ 
+ <li><strong>Session Management</strong> (aka &quot;<strong>Shopping Cart</strong>&quot;): HTTP is a <em>stateless</em> protocol. It does not maintain state information across requests. That is, the 2nd HTTP request does not know what was done in the 1st request. This poses a problem for our e-shop. If a user chooses a few books over multiple requests, the books chosen in the earlier requests have to be &quot;remembered&quot; and placed inside a so-called &quot;shopping cart&quot;. The user will check-out the items in the &quot;shopping cart&quot; after he/she finishes all his/her shopping.</li>
+
+<li><strong>User Management</strong>: to manage users with different roles, such as customers, administrator, etc.</li>
+
+<li><strong>Database Connection Pooling</strong>: Creating a connection for each user request is inefficient, due to the high overhead in initializing and opening the connection. We commonly set up a pool of connection known as <em>database connection pool</em>. A request picks up an available connection from the pool, and returns the connection to the pool after processing.</li>
+<li><strong>Uploading Files</strong>.</li>
+<li><strong>Deploying the Web Application</strong></li>
+<li><strong>A Secured Payment Gateway</strong></li>
+</ol>
+
+<p>These topics are beyond the scope of this workshop.</p>
+
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+<ol>
+
+<li>JDK (aka Java SE) Home Page @<a href="http://www.oracle.com/technetwork/java/javase/overview/index.html">http://www.oracle.com/technetwork/java/javase/overview/index.html</a>.</li>
+
+<li>Apache Tomcat Home Page @ <a href="http://tomcat.apache.org">http://tomcat.apache.org</a>.</li>
+
+<li>Java Database Connectivity (JDBC) Home Page @ <a href="http://www.oracle.com/technetwork/java/index.html">http://www.oracle.com/technetwork/java/index.html</a>.</li>
+
+<li>Java Servlets Home Page @ <a href="http://www.oracle.com/technetwork/java/javaee/servlet/index.html">http://www.oracle.com/technetwork/java/javaee/servlet/index.html</a>.</li>
+
+<li>The Java EE 6 Tutorial, Chapter 10 &quot;<em>Java Servlet Technology</em>&quot;, December 2009 @ <a href="http://java.sun.com/javaee/6/docs/tutorial/doc/bnafd.html">http://java.sun.com/javaee/6/docs/tutorial/doc/bnafd.html</a>.</li>
+
+<li>White Fisher, et al., &quot;<em>JDBC API Tutorial and Reference</em>&quot;, 3rd eds, Addison Wesley.</li>
+
+<li>MySQL Mother Site @ <a href="http://www.mysql.com">www.mysql.com</a>, and MySQL 8.0 Reference Manual @ <a href="http://dev.mysql.com/doc/refman/5.7/en/index.html.">http://dev.mysql.com/doc/refman/8.0/en/index.html.</a></li>
+
+<li>Marty Hall, et al., &quot;<em>Core Servlets and JavaServer Pages</em>&quot;, vol.1 (2nd eds, 2003) and vol. 2 (2nd eds, 2006), Prentice Hall.</li>
+  
+<li>RFC2616 &quot;<em>Hypertext Transfer Protocol HTTP 1.1</em>&quot;, World-Wide-Web Consortium (W3C), June 1999.</li>
+  
+<li>&quot;<em>HTML 4.01 Specification</em>&quot;, W3C Recommendation, 24 Dec 1999.</li>
+</ol>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: Apache Tomcat 10.1.18, MySQL 8.3.0, JDK 21.0.1, Windows 11, macOS 14<br />
+Last modified: March 2024</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- ======= @@@ v3 footer changes starts here, before "footer" ======== -->
+<!-- footer filled by JavaScript -->
+<footer id="footer" class="footer"><p>&nbsp;</p></footer>
+
+</div>  <!-- end of <div class="wrap-outer"> for outer container -->
+
+<!-- Place all JavaScript before end of body to load last -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- My custom JavaScript v3 -->
+<script src="../scripts/programming_notes_v3.js"></script>
+<!-- Prism Syntax Highlighter -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/keep-markup/prism-keep-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

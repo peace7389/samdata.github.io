@@ -1,0 +1,801 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>The Collection Framework - Java Programming Tutorial</title>
+<link href="../css/programming_notes_v1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts/programming_notes_v1.js"></script>
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="J5c_CollectionPart2.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>The Java Collection Framework</h1>
+<h2>Part 2: Enhancements since JDK 8</h2>
+</div>
+
+<div id="content-main">
+
+<h3 id="intro">Introduction</h3>
+<p>Prior to JDK 8, Java Interfaces can contain only <code>abstract</code> methods and constants. If you wish to add an additional <code>abstract</code> method to an existing interface, you need to re-write all the existing classes that implement this interface to support this additional method. This makes enhancement to existing interfaces (including those in the Collection Framework such as <code>Collection</code> and <code>List</code>) difficult.</p>
+<p>JDK 8 introduces <code>public default</code> and <code>public static</code> methods into Interface. JDK 9 further introduces <code>private</code> and <code>private static</code> method. (See &quot;<a href="JDK8_Lambda.html#NewInterfaceMethods">Interface public default, public static, private and private static methods</a>&quot;). Adding these non-<code>abstract</code> methods to existing interfaces does not require re-writing the existing implementation classes. As a result, JDK 8 is able to enhance many interfaces in the Collection framework.</p>
+<p>JDK 8 also introduces <em>Lambda Expressions</em> as a shorthand for creating an instance that implements a single-abstract-method interface (or functional interface) via anonymous inner class (See &quot;<a href="JDK8_Lambda.html#LambdaExpressions">Lambda Expressions</a>&quot;), new Function API and new Stream API (See &quot;<a href="JDK8_Lambda.html#StreamAPI">Stream API</a>&quot;) to support <em>Functional Programming</em> (See &quot;<a href="JDK8_Lambda.html#FunctionalProgramming">Functional Programming in Java</a>&quot;). The retrofitted Collection Framework in JDK 8 makes extensive use of these new features.</p>
+<p>If you are not familiar with the new features in JDK 8, I suggest you read through the article &quot;<a href="JDK8_Lambda.html">Lambda Expression, Streams and Functional Programming</a>&quot;.</p>
+
+<h3>Collection API Enhancements since JDK 8</h3>
+
+<p>The Collection framework is defined via many interfaces, such as <code>java.util.Collection&lt;E&gt;</code>, <code>java.util.List&lt;T&gt;</code>,<code> java.util.Set&lt;T&gt;</code>, and <code>java.util.Map&lt;K,V&gt;</code>. With the introduction of <code>default</code> and <code>static</code> methods in interfaces, JDK 8 enhances these interfaces by adding many <code>default</code> and <code>static</code> methods, without breaking any existing implementation classes.</p>
+<p>You can check out these new methods from the JDK API documentation. Select the desired interface &rArr; &quot;SUMMARY METHOD&quot; &rArr; &quot;Default Methods&quot; or &quot;Static Methods&quot;.</p>
+
+<h4 id="Iterable">Interface <span class="font-code">Iterable&lt;T&gt;</span> New <span class="font-code">default</span>  Method <span class="font-code">.forEach()</span> (JDK 8)</h4>
+<p>JDK 8 added a new <code>default</code> instance method <code>.forEach()</code> to the <code>java.lang.Iterable&lt;T&gt;</code> interface to consume each of the elements of the collection. Since <code>java.util.Collection&lt;T&gt;</code> is a subtype of <code>Iterable&lt;T&gt;</code>, <code>.forEach()</code> is available to all <code>Collection</code> objects.</p>
+<p>The definition of <code>.forEach()</code> is:</p>
+
+<pre class="color-command">
+<span class="color-comment">// Interface java.lang.<span class="color-new">Iterable&lt;T&gt;</span></span>
+default void <span class="color-new">forEach</span>(java.util.function.Consumer&lt;? super T&gt; action) {
+   Objects.requireNonNull(action);  <span class="color-comment">// Ensure that action is NOT null</span>
+   for (T t : this) {
+      action.accept(t);
+   }
+}</pre>
+
+<p>The <code>Consumer&lt;T&gt;</code> is a functional interface (single-abstract-method interface) defined as follow:</p>
+<pre class="color-example">
+<span class="color-comment">// Functional Interface java.util.function.<span class="color-new">Consumer&lt;T&gt;</span></span>
+@FunctionalInterface
+public interface <span class="color-new">Consumer&lt;T&gt;</span> {
+   void <span class="color-new">accept</span>(T t);   <span class="color-comment">// public abstract</span>
+   ......
+}</pre>
+
+<p>In <code>Consumer&lt;T&gt;</code>, the single abstract method (called <code>accept()</code>) takes an object of type <code>T</code>, performs its programmed operations, and returns <code>void</code>. In JDK 8, you can create an instance of Functional Interface via the shorthand Lambda Expressions.</p>
+<p> In <code>.forEach()</code>, this <code>Consumer</code> will be applied to each of the elements of the <code>Collection</code>.</p>
+
+<h5>Example</h5>
+
+<p><span class="line-heading"><span class="font-code">Person.java</span>:</span></p>
+<pre class="color-example">
+public class <strong>Person</strong> {
+   private String name;  <span class="color-comment">// private instance variables</span>
+   private int age;
+   public Person(String name, int age) { this.name = name; this.age = age; } <span class="color-comment">// constructor</span>
+   public String getName() { return name; }  <span class="color-comment">// getter</span>
+   public int getAge() { return age; }
+   public String toString() { return name + &quot;(&quot; + age + &quot;)&quot;; }  <span class="color-comment">// toString() to describe itself</span>
+   <span class="color-comment">// To be used in testing Consumer</span>
+   public void sayHello() { System.out.println(name + &quot; says hello&quot;); }
+}</pre>
+
+
+<p><span class="line-heading"><span class="font-code">J8IterableForEachTest.java</span>:</span></p>
+
+<pre class="color-example">
+import java.util.List;
+import java.util.Iterator;
+public class <strong>J8IterableForEachTest</strong> {
+   public static void main(String[] args) {
+      List&lt;Person&gt; pList = List.of( <span class="color-comment">// JDK 9 to construct an unmodifiable List</span>
+            new Person(&quot;Paul&quot;, 60),
+            new Person(&quot;John&quot;, 15));
+      System.out.println(pList); <span class="color-comment">//<span class="color-output">[Paul(60), John(15)]</span></span>
+
+      <span class="color-comment">// Pre-JDK 8: Using a for-each loop</span>
+      for (Person p: pList) {
+         System.out.println(p);
+      }
+      <span class="color-comment">//<span class="color-output">Paul(60)</span></span>
+      <span class="color-comment">//<span class="color-output">John(15)</span></span>
+
+      <span class="color-comment">// Pre-JDK 8: Using an Iterator</span>
+      Iterator&lt;Person&gt; iter = pList.iterator();
+      while (iter.hasNext()) {
+         Person p = iter.next();
+         System.out.println(p.getName());
+      }
+      <span class="color-comment">//<span class="color-output">Paul</span></span>
+      <span class="color-comment">//<span class="color-output">John</span></span>
+
+      <span class="color-comment">// JDK 8 introduces .forEach() in Iterable&lt;T&gt;</span>
+      pList.forEach(p -&gt; System.out.println(p));  <span class="color-comment">// Use Lambda Expression</span>
+      <span class="color-comment">//<span class="color-output">Paul(60)</span></span>
+      <span class="color-comment">//<span class="color-output">John(15)</span></span>
+      pList.<span class="color-new">forEach(System.out::println)</span>;  <span class="color-comment">// Use method reference (same as above)</span>
+
+      pList.<span class="color-new">forEach(Person::sayHello)</span>;  <span class="color-comment">// Use method reference to invoke an instance method</span>
+      <span class="color-comment">//<span class="color-output">Paul says hello</span></span>
+      <span class="color-comment">//<span class="color-output">John says hello</span></span>
+
+      pList.<span class="color-new">forEach(p -&gt; System.out.print(p.getName() + &quot; &quot;))</span>;  <span class="color-comment">// Another Lambda Expression</span>
+      <span class="color-comment">//<span class="color-output">Paul John</span></span>
+
+      <span class="color-comment">// JDK 8 also introduces Stream API, with a forEach() terminal operation,</span>
+      <span class="color-comment">//  which is different from Iterable's forEach(). See &quot;Stream API&quot;</span>
+      pList.<span class="color-new">stream()</span>.filter(p -&gt; p.getAge() &gt;= 21).<span class="color-new">forEach(System.out::println)</span>;
+      <span class="color-comment">//<span class="color-output">Paul(60)</span></span>
+   }
+}</pre>
+
+<p>[TODO] Explanation</p>
+<p><span class="line-heading">Notes</span>: The <code>Iterable</code>'s <code>.forEach()</code> is different from <code>Stream</code>'s <code>.forEach()</code> introduced in JDK 8 Stream API.</p>
+
+
+<h4 id="OptionalClass">New Class <span class="font-code">java.util.Optional&lt;T&gt;</span> (JDK 8)</h4>
+<p>JDK 8 introduces a new container class <code>java.util.Optional&lt;T&gt;</code> as a container which may contain a value or nothing. It is primarily intended for use as a method return-type, where the method may return a non-null value or nothing. Instead of returning <code>null</code>, which may trigger <code>NullPointerException</code>, you can return an <code>Optional.empty()</code>.</p>
+
+<p>The commonly-used methods in <code>java.util.Optional&lt;T&gt;</code> are:</p>
+
+<pre class="color-syntax">
+public final class <span class="color-new">Optional&lt;T&gt;</span> {
+   static &lt;T&gt; Optional&lt;T&gt; <span class="color-new">empty</span>()     <span class="color-comment">// static factory method to return an empty Optional instance</span>
+   static &lt;T&gt; Optional&lt;T&gt; <span class="color-new">of</span>(T value) <span class="color-comment">// static factory method to return a non-null value instance</span>
+
+   boolean <span class="color-new">isEmpty</span>()
+   boolean <span class="color-new">isPresent</span>()
+   T <span class="color-new">get</span>()
+   T <span class="color-new">orElse</span>(T other)
+
+   <span class="color-comment">// To support Functional Programming</span>
+   Optional&lt;T&gt; <span class="color-new">filter</span>&lt;Predicate&lt;? super T&gt; p)
+   &lt;U&gt; Optional&lt;U&gt; <span class="color-new">map</span>(Function&lt;? super T, ? extends U&gt; mapper)
+   void <span class="color-new">ifPresent</span>(Consumer&lt;? super T&gt; action)
+   void <span class="color-new">ifPresentOrElse</span>(Consumer&lt;? super T&gt; action, Runnable emptyAction)
+   Stream&lt;T&gt; <span class="color-new">stream</span>()
+   ......
+}</pre>
+
+<p>For example,</p>
+
+<pre class="color-example">
+import java.util.Optional;
+public class <strong>JDK8OptionalTest</strong> {
+   public static void main(String[] args) {
+      Optional&lt;String&gt; o1 = Optional.of(&quot;apple&quot;);
+      System.out.println(o1);                   <span class="color-comment">//<span class="color-output">Optional[apple]</span></span>
+      System.out.println(o1.isPresent());       <span class="color-comment">//<span class="color-output">true</span></span>
+      System.out.println(o1.get());             <span class="color-comment">//<span class="color-output">apple</span></span>
+      System.out.println(o1.orElse(&quot;orange&quot;));  <span class="color-comment">//<span class="color-output">apple</span></span>
+      o1.ifPresent(System.out::println);        <span class="color-comment">//<span class="color-output">apple</span></span>
+      System.out.println(o1.filter(v -&gt; v.charAt(0) == 'a'));  <span class="color-comment">//<span class="color-output">Optional[apple]</span></span>
+      System.out.println(o1.filter(v -&gt; v.charAt(0) == 'o'));  <span class="color-comment">//<span class="color-output">Optional.empty</span></span>
+      System.out.println(o1.map(v -&gt; v.charAt(0)));  <span class="color-comment">//<span class="color-output">Optional[a]</span></span>
+
+      <span class="color-comment">// empty optional instance</span>
+      Optional&lt;String&gt; o2 = Optional.empty();
+      System.out.println(o2);                   <span class="color-comment">//<span class="color-output">Optional.empty</span></span>
+      System.out.println(o2.isEmpty());         <span class="color-comment">//<span class="color-output">true</span></span>
+      <span class="color-comment">//System.out.println(o2.<span class="color-error">get</span>());</span>
+      <span class="color-comment">//<span class="color-new">java.util.NoSuchElementException: No value present</span></span>
+      System.out.println(o2.orElse(&quot;orange&quot;));  <span class="color-comment">//<span class="color-output">orange</span></span>
+      o2.ifPresent(System.out::println);        <span class="color-comment">//<span class="color-output">no output</span></span>
+   }
+}</pre>
+
+<p>Primitive type specializations of <code>OptionalInt</code>, <code>OptionalDouble</code>, <code>OptionalLong</code> are also available.</p>
+
+
+<h4 id="ofandcopyof">Instantiation of an Unmodifiable Collection: New <span class="font-code">static</span> Factory Method <span class="font-code">.of()</span> and <span class="font-code">.copyOf()</span></h4>
+<p>JDK 9/10 introduces new <code>static</code> factory method <code>.of()</code> and <code>.copyOf()</code> in <code>List</code>, <code>Set</code>, <code>Map</code>, <code>Optional</code>, etc. to generate an instance of unmodifiable collection. In an unmodifiable collections, elements cannot be added, removed or replaced. Calling any mutator will trigger an <code>UnsupportedOperationException</code>.</p>
+
+<h5><span class="font-code">List.of()</span> and <span class="font-code">Set.of()</span> (JDK 9)</h5>
+
+<p>JDK 9 introduces 11 new overloaded <code>static</code> factory methods <code><span class="color-new">List.of()</span></code> and <code><span class="color-new">Set.of()</span></code> to generate an unmodifiable <code>List/Set</code>, with 0 to 10 elements. The signatures are as follows:</p>
+
+<pre class="color-syntax">
+<span class="color-comment">// Interface java.util.<span class="color-new">List&lt;E&gt;</span></span>
+static &lt;E&gt; List&lt;E&gt; <span class="color-new">of</span>()  <span class="color-comment">// 11 overloaded methods to support 0 to 10 elements</span>
+static &lt;E&gt; List&lt;E&gt; <span class="color-new">of</span>(e1)
+static &lt;E&gt; List&lt;E&gt; <span class="color-new">of</span>(e1, e2)
+......
+static &lt;E&gt; List&lt;E&gt; <span class="color-new">of</span>(e1, e2, e3, e4, e5, e6, e7, e8, e9, e10)
+
+<span class="color-comment">// Interface java.util.<span class="color-new">Set&lt;E&gt;</span></span>
+static &lt;E&gt; Set&lt;E&gt; <span class="color-new">of</span>()  <span class="color-comment">// 11 overloaded methods to support 0 to 10 elements</span>
+static &lt;E&gt; Set&lt;E&gt; <span class="color-new">of</span>(E e1)
+static &lt;E&gt; Set&lt;E&gt; <span class="color-new">of</span>(E e1, E e2)
+......
+static &lt;E&gt; Set&lt;E&gt; <span class="color-new">of</span>(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10)</pre>
+
+<p>For example,</p>
+
+<pre class="color-example">
+import java.util.List;
+import java.util.Set;
+public class <strong>J9ListSetOfTest</strong> {  <span class="color-comment">// JDK 9</span>
+   public static void main(String[] args) {
+      List&lt;String&gt; lst = List<span class="color-new">.of</span>(&quot;apple&quot;, &quot;orange&quot;);  <span class="color-comment">// 0 to 10 elements only</span>
+      System.out.println(lst);  <span class="color-comment">//<span class="color-output">[apple, orange]</span></span>
+      System.out.println(lst.get(0));  <span class="color-comment">//<span class="color-output">apple</span> (List is ordered with numerical index)</span>
+      <span class="color-comment">// Unmodifiable</span>
+      <span class="color-comment">//lst.<span class="color-error">add</span>(&quot;banana&quot;);  //<span class="color-new">java.lang.UnsupportedOperationException</span></span>
+
+      Set&lt;Double&gt; set = Set.of(1.1, 2.2, 3.3);  <span class="color-comment">// 0 to 10 elements only</span>
+      System.out.println(set);  <span class="color-comment">//<span class="color-output">[3.3, 1.1, 2.2]</span> (Set is unordered)</span>
+      <span class="color-comment">// Unmodifiable</span>
+      <span class="color-comment">//set.<span class="color-error">clear</span>();        //<span class="color-new">java.lang.UnsupportedOperationException</span></span>
+   }
+}</pre>
+
+Notes:
+<ul>
+<li>You will get an <code>UnsupportedOperationException</code> if you try to modify an unmodifiable <code>Collection</code> object.</li>
+<li>The underlying implementation class is not known, but non-modifiable.</li>
+<li>There are 11 overloaded <code>static</code> factory methods for handling 0 to 10 elements. Check out the API documentation.</li>
+</ul>
+
+<h5 id="mapof"><span class="font-code">Map.of()</span>, <span class="font-code">Map.ofEntries()</span> and <span class="font-code">Map.entry()</span> (JDK 9)</h5>
+
+<p>JDK 9 introduces 11 new overloaded <code>static</code> factory methods <code><span class="color-new">Map.of()</span></code> to generate an unmodifiable <code>Map</code>, with 0 to 10 key-value pairs. It also introduces new <code>static</code> methods <code><span class="color-new">Map.ofEntries()</span></code> and <code><span class="color-new">Map.entry()</span></code> to generate an unmodifiable <code>Map</code>, with arbitrary number of key-value pairs.</p>
+<p> The signatures is as follows:</p>
+
+<pre class="color-syntax">
+<span class="color-comment">// Interface java.util.<span class="color-new">Map&lt;K,V&gt;</span></span>
+static &lt;K,V&gt; Map&lt;K,V&gt; <span class="color-new">of</span>()  <span class="color-comment">// 11 overloaded methods to support 0 to 10 key-value pairs</span>
+static &lt;K,V&gt; Map&lt;K,V&gt; <span class="color-new">of</span>(K k1, V v1)
+static &lt;K,V&gt; Map&lt;K,V&gt; <span class="color-new">of</span>(K k1, V v1, K k2, V v2)
+......
+static &lt;K,V&gt; Map&lt;K,V&gt; <span class="color-new">of</span>(K k1, V v1, K k2, V v2, ..., K k10, V v10)
+
+static &lt;K,V&gt; Map&lt;K,V&gt; <span class="color-new">ofEntries</span>(Map.Entry&lt;? extends K, ? extends V&gt;... entries)
+static &lt;K,V&gt; Map.Entry&lt;K,V&gt; <span class="color-new">entry</span>(K k, V v)</pre>
+
+
+
+<p>For example,</p>
+
+<pre class="color-example">
+import java.util.Map;
+public class <strong>J9MapOfEntryTest</strong> {
+   public static void main(String[] args) {  <span class="color-comment">// JDK 9</span>
+      <span class="color-comment">// Using Map.of() factory method for 0 to 10 key-value pairs</span>
+      Map&lt;String, Integer&gt; nameAgePairs = <span class="color-new">Map.of</span>(&quot;Peter&quot;, 60, &quot;John&quot;, 16);
+      System.out.println(nameAgePairs);  <span class="color-comment">//<span class="color-output">{John=16, Peter=60}</span></span>
+      System.out.println(nameAgePairs.get(&quot;John&quot;));  <span class="color-comment">//16</span>
+      <span class="color-comment">// Unmodifiable</span>
+      <span class="color-comment">//nameAgePairs.<span class="color-error">put</span>(&quot;Paul&quot;, 18);  //<span class="color-error">java.lang.UnsupportedOperationException</span></span>
+
+      <span class="color-comment">// Using Map.ofEntries() and Map.entry() factory methods for an arbitrary number of key-value pairs</span>
+      Map&lt;String, Double&gt; coffeePrices = <span class="color-new">Map.ofEntries</span>(
+         <span class="color-new">Map.entry</span>(&quot;espresso&quot;, 1.1),
+         <span class="color-new">Map.entry</span>(&quot;latte&quot;, 2.2),
+         <span class="color-new">Map.entry</span>(&quot;cappuccino&quot;, 3.3)
+      );
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=1.1, cappuccino=3.3, latte=2.2}</span></span>
+   }
+}</pre>
+
+<h5 id="copyof"><span class="font-code">List.copyOf()</span>, <span class="font-code">Set.copyOf()</span> and <span class="font-code">Map.copyOf()</span> (JDK 10)</h5>
+
+<p>JDK 10 introduces <code>static</code> factory method <code><span class="color-new">List.copyOf()</span></code>, <code><span class="color-new">Set.copyOf()</span></code>, <code><span class="color-new">Map.copyOf()</span></code> to create a unmodifiable instance from another collection. The signatures are:</p>
+
+<pre class="color-syntax">
+<span class="color-comment">// Construct an unmodifiable instance, copying from the given object</span>
+<span class="color-comment">// Interface java.util.<span class="color-new">List&lt;E&gt;</span></span>
+static &lt;E&gt; List&lt;E&gt; <span class="color-new">copyOf</span>(Collection&lt;? extends E&gt; c)
+
+<span class="color-comment">// Interface java.util.<span class="color-new">List&lt;E&gt;</span></span>
+static &lt;E&gt; Set&lt;E&gt; <span class="color-new">copyOf</span>(Collection&lt;? extends E&gt; c)
+<span class="color-comment"></span>
+<span class="color-comment">// Interface java.util.<span class="color-new">Map&lt;K,V&gt;</span></span>
+static &lt;K,V&gt; Map(K,V&gt; <span class="color-new">copyOf</span>(Map&lt;? extends K, ? extends V&gt; map)
+</pre>
+
+
+<p>For example,</p>
+
+
+<pre class="color-example">
+import java.util.List;
+import java.util.Set;
+import java.util.Map;
+public class <strong>J10ListSetMapCopyOfTest</strong> {  <span class="color-comment">// JDK 10</span>
+   public static void main(String[] args) {
+      List&lt;String&gt; sourceLst = <span class="color-new">List.of</span>(&quot;apple&quot;, &quot;orange&quot;);  <span class="color-comment">// 0 to 10 elements only</span>
+
+      List&lt;String&gt; fruitLst = <span class="color-new">List.copyOf</span>(sourceLst);
+      System.out.println(fruitLst);  <span class="color-comment">//<span class="color-output">[apple, orange]</span></span>
+      <span class="color-comment">// Unmodifiable</span>
+      <span class="color-comment">//fruitLst.<span class="color-error">add</span>(&quot;banana&quot;);  //<span class="color-error">java.lang.UnsupportedOperationException</span></span>
+
+      Set&lt;String&gt; fruitSet = <span class="color-new">Set.copyOf</span>(sourceLst);
+      System.out.println(fruitSet);  <span class="color-comment">//<span class="color-output">[orange, apple]</span></span>
+
+      Map&lt;String, Double&gt; mapSource = <span class="color-new">Map.of</span>(&quot;tea&quot;, 1.1, &quot;coffee&quot;, 2.2);
+      Map&lt;String, Double&gt; mapCopy = <span class="color-new">Map.copyOf</span>(mapSource);
+      System.out.println(mapCopy);   <span class="color-comment">//<span class="color-output">{coffee=2.2, tea=1.1}</span></span>
+   }
+}</pre>
+
+
+
+
+<h4 id="CollectionEnhancement">Interface <span class="font-code">Collection&lt;E&gt;</span> Enhancements (JDK 8, 11)</h4>
+
+<p>JDK 8 introduces these new <code>default</code> methods:</p>
+
+<ul>
+<li>To complement the existing  <code>abstract remove(Object)</code> and <code>removeAll(Collection)</code>, JDK 8 introduces <code>default <span class="color-new">removeIf(Predicate)</span></code> to remove all the elements that match the <code>Predicate</code>.<br />
+The signatures are:
+<pre class="color-syntax">
+<span class="color-comment">// Interface java.util.<span class="color-new">Collection&lt;E&gt;</span></span>
+<span class="color-comment">// Before JDK 8</span>
+abstract boolean <span class="color-new">remove</span>(Object o)
+abstract boolean <span class="color-new">removeAll</span>(Collection&lt;?&gt; c)
+<span class="color-comment">// JDK 8</span>
+default boolean <span class="color-new">removeIf</span>(Predicate&lt;? super E&gt; filter)</pre>
+For example,
+  <pre class="color-example">
+import java.util.Collection;
+import java.util.List;
+import java.util.ArrayList;
+public class <strong>J8CollectionRemoveIfTest</strong> {  <span class="color-comment">// JDK 8</span>
+   public static void main(String[] args) {
+      Collection&lt;String&gt; fruits = new ArrayList&lt;&gt;();  <span class="color-comment">// modifiable collection</span>
+      fruits.add(&quot;apple&quot;);
+      fruits.add(&quot;orange&quot;);
+      fruits.add(&quot;banana&quot;);
+      System.out.println(fruits);  <span class="color-comment">//<span class="color-output">[apple, orange, banana]</span></span>
+
+      <span class="color-comment">// Pre-JDK 8 abstract remove(anObject) to remove anObject</span>
+      System.out.println(fruits.<span class="color-new">remove</span>(&quot;apple&quot;));  <span class="color-comment">//<span class="color-output">true</span></span>
+      System.out.println(fruits);  <span class="color-comment">//<span class="color-output">[orange, banana]</span></span>
+
+      <span class="color-comment">// Pre-JDK 8 abstract removeAll(Collection) to remove those in Collection</span>
+      Collection&lt;String&gt; fruitsToRemove = List.of(&quot;orange&quot;, &quot;pear&quot;);  <span class="color-comment">// JDK 9 unmodifiable collection</span>
+      System.out.println(fruitsToRemove);  <span class="color-comment">//<span class="color-output">[orange, pear]</span></span>
+      System.out.println(fruits.<span class="color-new">removeAll</span>(fruitsToRemove));  <span class="color-comment">//<span class="color-output">true</span></span>
+      System.out.println(fruits);  <span class="color-comment">//<span class="color-output">[banana]</span></span>
+
+      <span class="color-comment">// JDK 8 introduces default removeIf(Predicate) to remove those match Predicate</span>
+      System.out.println(fruits.<span class="color-new">removeIf</span>(s -&gt; s.charAt(0) == 'z'));  <span class="color-comment">//<span class="color-output">false</span></span>
+      System.out.println(fruits);  <span class="color-comment">//<span class="color-output">[banana]</span></span>
+      System.out.println(fruits.<span class="color-new">removeIf</span>(s -&gt; s.charAt(0) == 'b'));  <span class="color-comment">//<span class="color-output">true</span></span>
+      System.out.println(fruits);  <span class="color-comment">//<span class="color-output">[]</span></span>
+   }
+}</pre></li>
+
+<li>To support Stream API, JDK 8 introduces <code>default</code> <code><strong>stream()</strong></code> and <code><strong>parallelStream()</strong></code> to create a sequential and parallel <code>Stream</code> from a <code>Collection</code>.</li>
+<li>To support parallel stream, JDK 8 introduces a <code>default <strong>spliterator()</strong></code> to create a <code>Spliterator</code> for traversing and partitioning elements of a source. Similar to the sequential <code>Iterator</code>, <code>Spliterator</code> was designed to support efficient parallel traversal.</li>
+</ul>
+
+<p>JDK 11 introduces these new <code>default</code> methods:</p>
+<ul>
+<li>To complement <code>toArray()</code> which creates an <code>Object[]</code> and <code>toArray(T[])</code> which creates a <code>T[]</code>, JDK 11 introduces <code><strong>toArray(IntFunction&lt;T[]&gt; generator)</strong></code> to use the given <code>generator</code> to allocate the returned fix-sized array, based on the size of <code>Collection</code>. Recall that arrays have fixed size, while <code>Collection</code>s are dynamically allocated.<br />The signatures are:
+<pre class="color-syntax">
+<span class="color-comment">// Interface java.util.<span class="color-new">Collection&lt;E&gt;</span>
+// Before JDK 11</span>
+Object[] <span class="color-new">toArray</span>()
+&lt;T&gt; T[] <span class="color-new">toArray</span>(T[] a)
+<span class="color-comment">// JDK 11</span>
+default &lt;T&gt; T[] <span class="color-new">toArray</span>(IntFunction&lt;T[]&gt; arrayGenerator)</pre>
+For example,
+<pre class="color-example">
+import java.util.List;
+import java.util.Collection;
+import java.util.Arrays;
+public class <strong>J8CollectionToArrayTest</strong> {  <span class="color-comment">// JDK 8</span>
+   public static void main(String[] args) {
+      Collection&lt;String&gt; fruits = List.of(&quot;apple&quot;, &quot;orange&quot;, &quot;banana&quot;);  <span class="color-comment">// JDK 9 unmodifiable list</span>
+      System.out.println(fruits);  <span class="color-comment">//</span><span class="color-output">[apple, orange, banana]</span>
+
+      <span class="color-comment">// Pre-JDK 11 toArray() to create a fix-sized &quot;Object&quot; array</span>
+      Object[] fruitObjArray = fruits.<span class="color-new">toArray()</span>;  <span class="color-comment">// array length based on fruits.size()</span>
+      System.out.println(fruitObjArray.length);   <span class="color-comment">//<span class="color-output">3</span></span>
+      System.out.println(Arrays.toString(fruitObjArray)); <span class="color-comment">//<span class="color-output">[apple, orange, banana]</span></span>
+
+      <span class="color-comment">// Pre-JDK 11 toArray(T[]) to create an T[]. Need to pre-allocated a fix-sized array.</span>
+      String[] fruitStrArray1 = new String[fruits.size()];
+      System.out.println(fruitStrArray1.length);  <span class="color-comment">//<span class="color-output">3</span></span>
+      fruits.<span class="color-new">toArray(fruitStrArray1)</span>;
+      System.out.println(Arrays.toString(fruitStrArray1)); <span class="color-comment">//<span class="color-output">[apple, orange, banana]</span></span>
+
+      <span class="color-comment">// JDK 11 introduces toArray(arrayGenerator) to simplify the above</span>
+      String[] fruitStrArray2 = fruits.<span class="color-new">toArray(String[]::new)</span>;
+      System.out.println(fruitStrArray2.length);  <span class="color-comment">//<span class="color-output">3</span></span>
+      System.out.println(Arrays.toString(fruitStrArray2)); <span class="color-comment">//<span class="color-output">[apple, orange, banana]</span></span>
+   }
+}</pre></li>
+</ul>
+
+
+<h4 id="IteratorEnhancement">Interface <span class="font-code">Iterator&lt;E&gt;</span> Enhancements (JDK 8)</h4>
+<p>JDK 8 added these <code>default</code> methods:</p>
+<ul>
+<li><code>default <strong>forEachRemaining​(Consumer)</strong></code> to process the rest of elements. The signature is:
+<pre class="color-syntax">
+<span class="color-comment">// Interface java.util.<span class="color-new">Iterator&lt;E&gt;</span></span>
+default void <span class="color-new">forEachRemaining</span>(Consumer&lt; super E&gt; action)</pre>
+For example,
+<pre class="color-example">
+import java.util.List;
+import java.util.Iterator;
+public class <strong>J8IteratorTest</strong> {
+   public static void main(String[] args) {
+      List&lt;String&gt; coffees = List.of(&quot;espresso&quot;, &quot;latte&quot;, &quot;cappuccino&quot;);  <span class="color-comment">// JDK 9 unmodifiable List</span>
+      System.out.println(coffees);  <span class="color-comment">//</span><span class="color-output">[espresso, latte, cappuccino]</span>
+
+      <span class="color-comment">// JDK 8 introduces .forEachRemaining​(Consumer)</span>
+      Iterator&lt;String&gt; iter = coffees.iterator();
+      iter.next();   <span class="color-comment">// consume the first element</span>
+      iter.<span class="color-new">forEachRemaining(System.out::println)</span>;
+      <span class="color-comment">//<span class="color-output">latte</span></span>
+      <span class="color-comment">//<span class="color-output">cappuccino</span></span>
+   }
+}</pre></li>
+</ul>
+
+
+<h4 id="MapEnhancement">Interface <span class="font-code">Map(K,V)</span>  Enhancements (JDK 8, 9, 10)</h4>
+
+<p>JDK 8 introduces new <code>default</code> methods to <code>java.util.Map(K,V)</code>:</p>
+<ul>
+  <li>To complement the existing  <code>abstract get(key)</code>, JDK 8 introduces <code>default <strong>getOrDefault(key, defaultValue)</strong></code> to provide a default value if key is not present.</li>
+  <li>To complement the existing <code>abstract put(key,value)</code>, JDK 8 introduces <code>default <strong>putIfAbsent(key,value)</strong></code> method to prevent accidental update.</li>
+  <li>To complement the existing <code>abstract remove(key)</code>, JDK 8 introduces <code>default <strong>remove(key, value)</strong></code> to remove matching key-value pair.</li>
+  <li>JDK 8 introduces <code>default <strong>forEach(BiConsumer)</strong></code> to consume each key-value pair of the map.</li>
+  <li>JDK 8 supports &quot;Stream on Map&quot; via <code><strong>entrySet().stream()</strong></code>.</li>
+  <li>JDK 8 introduces <code>default <strong>compute(key,  BiFunction)</strong></code>, <code><strong>computeIfPresent(key, BiFunction)</strong></code>, <code><strong>computeIfAbsent(key, Function)</strong></code> to perform mapping of value based on key.</li>
+  <li>JDK 8 introduces <code>default <strong>replace(key, newValue)</strong></code>, <code><strong>replace(key, oldValue, newValue)</strong></code> to replace the value based on key.</li>
+  <li>JDK 8 introduces <code>default <strong>merge(key, newValue, BiFunction)</strong></code> to merge the value based on key.</li>
+</ul>
+
+<p>The signatures are:</p>
+
+<pre class="color-syntax">
+<span class="color-comment">// Interface java.util.<span class="color-new">Map(K,V)</span></span>
+default void <span class="color-new">forEach</span>(BiConsumer&lt;? super K, ? super V&gt; action)  <span class="color-comment">// Perform action on each key-value pair</span>
+
+default V <span class="color-new">getOrDefault</span>(Object key, V defaultValue)
+   // Existing: abstract V <span class="color-new">get</span>(Object key)
+default V <span class="color-new">putIfAbsent</span>(K key, V value)
+   // Existing: abstract V <span class="color-new">put</span>(K key, V value)
+   // Existing: abstract void <span class="color-new">putAll</span>(Map&lt;? extends K, ? extends V&gt; m)
+default boolean <span class="color-new">remove</span>(Object key, Object value)
+   // Existing: abstract V <span class="color-new">remove</span>(Object key)
+default V <span class="color-new">replace</span>(K key, V value)
+default boolean <span class="color-new">replace</span>(K key, V oldValue, V newValue)
+default void <span class="color-new">replaceAll</span>(BiFunction&lt;? super K, ? super V, ? extends V&gt; function)
+default V <span class="color-new">merge</span>(K key, V value, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)
+
+default V <span class="color-new">compute</span>(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)
+default V <span class="color-new">computeIfAbsent</span>(K key, Function&lt;? super K, ? extends V&gt; mappingFunction)
+default V <span class="color-new">computeIfPresent</span>(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)</pre>
+
+<p>JDK 9 introduces these new <code>static</code> methods (see above):</p>
+
+<ul>
+<li><code>static <strong>of(k1, v1, k2, v2,...)</strong></code> method to construct an unmodifiable map, for 1 to 10 key-value pairs.</li>
+<li><code>static <strong>ofEntries()</strong></code> and <code><strong>entry()</strong></code> to construct an un unmodifiable map of arbitrary number of key-value pairs.</li>
+</ul>
+
+<p>JDK 10 introduces these new <code>static</code> methods (see above):</p>
+<ul>
+<li><code>static <strong>copyOf(Map)</strong> </code>method to copy the given <code>Map</code> to a new unmodifiable map.</li>
+</ul>
+
+<p>For example,</p>
+
+<pre class="color-example">
+import java.util.Map;
+import java.util.HashMap;
+import java.util.OptionalDouble;
+public class <strong>J8MapTest</strong> {
+   public static void main(String[] args) {
+      <span class="color-comment">// Use JDK 9 static of() to construct a &quot;unmodifiable&quot; Map for 1 to 10 key-value pairs</span>
+      Map&lt;String, Double&gt; fruitPrices = Map.of(&quot;apple&quot;, 1.1, &quot;orange&quot;, 2.2, &quot;banana&quot;, 3.3);
+      System.out.println(fruitPrices);  <span class="color-comment">//<span class="color-output">{apple=1.1, orange=2.2, banana=3.3}</span></span>
+      <span class="color-comment">//fruitPrices.<span class="color-error">put</span>(&quot;apple&quot;, 4.4);    //<span class="color-new">java.lang.UnsupportedOperationException</span></span>
+
+      <span class="color-comment">// Pre-JDK 8</span>
+      System.out.println(fruitPrices.isEmpty());             <span class="color-comment">//<span class="color-output">false</span></span>
+      System.out.println(fruitPrices.containsKey(&quot;banana&quot;)); <span class="color-comment">//<span class="color-output">true</span></span>
+      System.out.println(fruitPrices.containsValue(0.0));    <span class="color-comment">//<span class="color-output">false</span></span>
+
+      <span class="color-comment">// In additional to abstract get(key), JDK 8 introduces default getOrDefault(key)</span>
+      System.out.println(fruitPrices.get(&quot;banana&quot;));  <span class="color-comment">//<span class="color-output">3.3</span></span>
+      System.out.println(fruitPrices.get(&quot;pear&quot;));    <span class="color-comment">//<span class="color-output">null</span></span>
+      System.out.println(fruitPrices.getOrDefault(&quot;pear&quot;, 99.99));  <span class="color-comment">//<span class="color-output">99.99</span></span>
+
+      <span class="color-comment">// Use JDK 9 static entry() and ofEntries() to construct a &quot;unmodifiable&quot; Map
+      //  for an arbitrary number of key-value pairs</span>
+      Map&lt;String, Double&gt; teaPrices = Map.ofEntries(
+            Map.entry(&quot;green tea&quot;, 1.1),
+            Map.entry(&quot;black tea&quot;, 2.2));
+      System.out.println(teaPrices);  <span class="color-comment">//<span class="color-output">{green tea=1.1, black tea=2.2}</span></span>
+
+      <span class="color-comment">// Construct a modifiable map with a chosen implementation (Pre-JDK 8)</span>
+      Map&lt;String, Double&gt; coffeePrices = new HashMap&lt;&gt;();  <span class="color-comment">// modifiable</span>
+      coffeePrices.put(&quot;cappuccino&quot;, 5.5);
+      coffeePrices.put(&quot;espresso&quot;, 6.6);
+      System.out.println(coffeePrices);     <span class="color-comment">//<span class="color-output">{espresso=6.6, cappuccino=5.5}</span></span>
+      coffeePrices.put(&quot;cappuccino&quot;, 7.7);  <span class="color-comment">// update</span>
+      System.out.println(coffeePrices);     <span class="color-comment">//<span class="color-output">{espresso=6.6, cappuccino=7.7}</span></span>
+
+      <span class="color-comment">// In additional to abstract put(), JDK 8 introduces default putIfAbsent()</span>
+      coffeePrices.putIfAbsent(&quot;cappuccino&quot;, 8.8);  <span class="color-comment">// no update</span>
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=6.6, cappuccino=7.7}</span></span>
+
+      <span class="color-comment">// JDK 8 introduces default forEach(BiConsumer)</span>
+      coffeePrices.forEach((k, v) -&gt; System.out.println(k + &quot;:&quot; + v));
+      <span class="color-comment">//<span class="color-output">espresso:6.6</span></span>
+      <span class="color-comment">//<span class="color-output">cappuccino:7.7</span></span>
+
+      <span class="color-comment">// JDK 8 introduces Stream API</span>
+      <span class="color-comment">// Stream API does not support Map directly.</span> <span class="color-comment">Need to get a Set view via .entrySet().</span>
+      OptionalDouble maxPrice = coffeePrices
+            .entrySet()  <span class="color-comment">// Returns a Set view Set&lt;Map.Entry&lt;K,V&gt;&gt; of this map</span>
+            .stream()
+            .mapToDouble(Map.Entry::getValue)
+            .max();
+      System.out.println(maxPrice);  <span class="color-comment">//<span class="color-output">OptionalDouble[7.7]</span></span>
+
+      <span class="color-comment">// JDK 8 introduces default compute(key, BiFunction) to compute (update)</span>
+      <span class="color-comment">//  a newValue (instead of get() and put())</span>
+      coffeePrices.compute(&quot;cappuccino&quot;, (k, v) -&gt; v + 1.0);
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=6.6, cappuccino=8.7}</span></span>
+      <span class="color-comment">// Also default computeIfPresent(key, aBiFunction(key,oldValue))</span>
+      coffeePrices.computeIfPresent(&quot;cappuccino&quot;, (k, v) -&gt; v + 1.0);
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=6.6, cappuccino=9.7}</span></span>
+      <span class="color-comment">// Also default computeIfAbsent(key, Function(key))</span>
+      coffeePrices.computeIfAbsent(&quot;latte&quot;, k -&gt; 8.8);
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=6.6, cappuccino=9.7, latte=8.8}</span></span>
+      System.out.println(coffeePrices.computeIfAbsent(&quot;latte&quot;, k -&gt; 9.9)); <span class="color-comment">// <span class="color-output">8.8</span> (no update)</span>
+
+      <span class="color-comment">// In additional to abstract remove(key), JDK 8 introduces default remove(key, value)</span>
+      <span class="color-comment">//  for removing a matching key-value pair</span>
+      System.out.println(coffeePrices.remove(&quot;latte&quot;, 0.0));  <span class="color-comment">//<span class="color-output">false</span></span>
+      System.out.println(coffeePrices.remove(&quot;latte&quot;, 8.8));  <span class="color-comment">//<span class="color-output">true</span></span>
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=6.6, cappuccino=9.7}</span></span>
+
+      <span class="color-comment">// JDK 8 introduces default replace(key, newValue) if key exists</span>
+      System.out.println(coffeePrices.replace(&quot;espresso&quot;, 9.9));  <span class="color-comment">//<span class="color-output">6.6</span> (return old value)</span>
+      System.out.println(coffeePrices);  <span class="color-comment">//</span><span class="color-output">{espresso=9.9, cappuccino=9.7}</span>
+      System.out.println(coffeePrices.replace(&quot;latte&quot;, 9.9));     <span class="color-comment">//<span class="color-output">null</span> (old value)</span>
+      <span class="color-comment">// Also default replace(key, oldValue, newValue)</span>
+      System.out.println(coffeePrices.replace(&quot;espresso&quot;, 9.9, 11.1));  <span class="color-comment">//<span class="color-output">true</span></span>
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=11.1, cappuccino=9.7}</span></span>
+      System.out.println(coffeePrices.replace(&quot;espresso&quot;, 0.0, 12.2));  <span class="color-comment">//<span class="color-output">false</span> (no change)</span>
+
+      <span class="color-comment">// JDK 8 introduces default merge(key, newValue, BiFunction)</span>
+      <span class="color-comment">// If key exists, replace by the output of BiFunction</span>
+      System.out.println(coffeePrices.merge(&quot;espresso&quot;, 1.1, (oldValue, v) -&gt; oldValue + v));  <span class="color-comment">//<span class="color-output">12.2</span> (replace)</span>
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=12.2, cappuccino=9.7}</span></span>
+      <span class="color-comment">// If key does not exist, put an entry (key, newValue), ignore BiFunction</span>
+      System.out.println(coffeePrices.merge(&quot;latte&quot;, 1.1, (oldValue, v) -&gt; oldValue + v));  <span class="color-comment">//<span class="color-output">1.1</span></span>
+      System.out.println(coffeePrices);  <span class="color-comment">//<span class="color-output">{espresso=12.2, cappuccino=9.7, latte=1.1}</span></span>
+
+      <span class="color-comment">// JDK 10 introduces static copyOf(Map) to copy to a map to a new unmodifiable map</span>
+      Map&lt;String, Double&gt; newCoffeePrices = Map.copyOf(coffeePrices);
+      System.out.println(newCoffeePrices);  <span class="color-comment">//<span class="color-output">{latte=1.1, espresso=12.2, cappuccino=9.7}</span> (unmodifiable)</span>
+   }
+}</pre>
+
+<h4>Interface <span class="font-code">java.util.Comparator&lt;T&gt;</span> Enhancements</h4>
+<p>[TODO]</p>
+
+
+<h4>Others</h4>
+<ul>
+<li>more.</li>
+</ul>
+
+<h3>Enhancements to the Collection Framework by JDK Releases</h3>
+
+<h4 id="J5Enhancement">JDK 5 Enhancements to the Collection Framework</h4>
+
+<h5>New Language Features</h5>
+<p>JDK 5 introduces MAJOR upgrades to the Java Language. It introduces many new language features, which are applicable to collection framework:</p>
+<ul>
+<li>Generics: support collection of generic type. See &quot;<a href="JavaGeneric.html">Generics</a>&quot;.</li>
+<li>Auto-boxing/Auto-Unboxing of primitive types (such as <code>int</code>, <code>double</code>) to their wrapper types (such as <code>Integer</code>, <code>Double</code>). Since <code>Collection</code> does not hold primitives, the auto-boxing/auto-unboxing greatly simplifies the conversion. See &quot;<a href="J5c_CollectionPart2.html#autoboxing">Auto-boxing/Auto-Unboxing</a>&quot;.</li>
+<li>Enhanced for-each loop: Simplifies looping through all elements of a <code>Collection</code>. See &quot;<a href="J5c_CollectionPart2.html#foreachloop">Enhance for-each loop</a>&quot;.</li>
+<li>Annotations</li>
+<li>Enumerations</li>
+<li>Varargs (Variable number of arguments)</li>
+<li><code>static import</code> statement</li>
+</ul>
+
+<h5>New API Packages</h5>
+
+<ul>
+<li>New package <code>java.util.concurrent</code> to support concurrent (parallel) programming, with thread-safe collection classes that allow to be modified, such as <code>CopyOnWriteArrayList</code>, <code>ConcurrentHashMap</code>, <code>CopyOnWriteArraySet</code>.</li>
+</ul>
+
+<h4 id="J6Enhancement">JDK 6 Enhancements to the Collection Framework</h4>
+<p>[TODO]</p>
+
+<h4 id="J7Enhancement">JDK 7 Enhancements to the Collection Framework</h4>
+<h5>New Language Features</h5>
+
+<ul>
+<li>JDK 7 improves type inference for generic instant creation with the diamond operator <code>&lt;&gt;</code>. For example,
+
+<pre class="color-example">
+<span class="color-comment">// Before JDK 7
+// Construct an instance of Generic</span>
+List&lt;String&gt; lst = new ArrayList<span class="color-new">&lt;String&gt;</span>();
+
+<span class="color-comment">// JDK 7
+// The type can be omitted and inferred from the variable declaration</span>
+List&lt;String&gt; lst = new ArrayList<span class="color-new">&lt;&gt;</span>();</pre></li>
+</ul>
+
+<h4 id="J8Enhancement">JDK 8 Enhancements to the Collection Framework</h4>
+
+<h5>New Language Features</h5>
+<p>JDK 8 introduces MAJOR upgrades to the Java Language. It introduces many new language features (See &quot;<a href="JDK8_Lambda.html">Lambda Expression, Streams and Functional Programming</a>&quot;):</p>
+<ul>
+<li><code>public default</code> and <code>public static</code> methods in interface.</li>
+<li>Lambda Expressions: shorthand for creating an instance that implements a single-abstract-method interface via an anonymous inner class.</li>
+</ul>
+
+<h5>New API Packages</h5>
+
+<p>JDK 8 introduces these new API packages, which enhances collection framework (See &quot;<a href="JDK8_Lambda.html">Lambda Expression, Streams and Functional Programming</a>&quot;):</p>
+<ul>
+<li>Stream API: in package <code>java.util.stream</code>.</li>
+<li>Function API: in package <code>java.util.function</code>.</li>
+</ul>
+
+<h5>New Classes/Interfaces</h5>
+
+<p>JDK 8 introduces these new classes/interfaces to the Collection framework:</p>
+<ul>
+<li>Added class <code>java.util.Optional&lt;T&gt;</code>, which may contain a value or nothing, to avoid returning <code>null</code> that may trigger <code>NullPointerException</code>.</li>
+</ul>
+
+<h5>New Interface <span class="font-code">default/static</span> Methods</h5>
+<p>JDK 8 enhances the Collection Library:</p>
+<ul>
+<li>Interface <code>java.lang.<span class="color-new">Iterable&lt;T&gt;</span></code> (supertype of Interface <code>java.util.Collection&lt;E&gt;</code>):
+  <pre class="color-syntax">default void <span class="color-new">forEach</span>(Consumer&lt;? super T&gt; action)
+   <span class="color-comment">// Perform action on each element of the Iterable (Collection)</span>  </pre>
+</li>
+
+<li>Interface <code>java.util.<span class="color-new">Collection&lt;E&gt;</span></code>:
+<pre class="color-syntax">
+<span class="color-comment">// Supporting Stream API</span>
+default Stream&lt;E&gt; <span class="color-new">stream</span>()           <span class="color-comment">// Creates a sequential stream</span>
+default Stream&lt;E&gt; <span class="color-new">parallelStream</span>()   <span class="color-comment">// Creates a parallel stream</span>
+default Spliterator&lt;E&gt; <span class="color-new">spliterator</span>() <span class="color-comment">// Creates a Spliterator to support efficient parallel traversal</span>
+
+<span class="color-comment">// Others</span>
+default boolean <span class="color-new">removeIf</span>(Predicate&lt;? super E&gt; filter)  <span class="color-comment">// Removes elements that satisfy the Predicate</span> </pre></li>
+
+<li>Interface <code>java.util.<span class="color-new">Iterator&lt;T&gt;</span></code>:
+<pre class="color-syntax">default void <span class="color-new">forEachRemaining</span>(Consumer&lt;? super E&gt; action)  <span class="color-comment">// Performs action on the rest of elements</span>
+default void <span class="color-new">remove</span>()  <span class="color-comment">// Remove the last element returned by this Iterator</span></pre>
+</li>
+
+<li>Interface <code>java.util.<span class="color-new">Map&lt;K,V&gt;</span></code>:
+<pre class="color-syntax">default void <span class="color-new">forEach</span>(BiConsumer&lt;? super K, ? super V&gt; action)  <span class="color-comment">// Perform action on each key-value pair</span>
+
+default V <span class="color-new">getOrDefault</span>(Object key, V defaultValue)
+   // Existing: abstract V <span class="color-new">get</span>(Object key)
+default V <span class="color-new">putIfAbsent</span>(K key, V value)
+   // Existing: abstract V <span class="color-new">put</span>(K key, V value)
+   // Existing: abstract void <span class="color-new">putAll</span>(Map&lt;? extends K, ? extends V&gt; m)
+default boolean <span class="color-new">remove</span>(Object key, Object value)
+   // Existing: abstract V <span class="color-new">remove</span>(Object key)
+default V <span class="color-new">replace</span>(K key, V value)
+default boolean <span class="color-new">replace</span>(K key, V oldValue, V newValue)
+default void <span class="color-new">replaceAll</span>(BiFunction&lt;? super K, ? super V, ? extends V&gt; function)
+default V <span class="color-new">merge</span>(K key, V value, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)
+
+default V <span class="color-new">compute</span>(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)
+default V <span class="color-new">computeIfAbsent</span>(K key, Function&lt;? super K, ? extends V&gt; mappingFunction)
+default V <span class="color-new">computeIfPresent</span>(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)</pre></li>
+</ul>
+
+<h4 id="J9Enhancement">JDK 9 Enhancements to the Collection Framework</h4>
+
+<h5>New Language Features</h5>
+<p>JDK 9 introduces these new language features:</p>
+
+<ul>
+<li><code>private</code> and <code>private static</code> methods in interface.</li>
+</ul>
+
+<h5>New Interface <span class="font-code">default/static</span> Methods</h5>
+<p>JDK 9 introduces these methods:</p>
+<ul>
+<li>Interfaces <code>java.util.<span class="color-new">List&lt;E&gt;</span></code>, <code>java.util.<span class="color-new">Set&lt;E&gt;</span></code>, <code>java.util.<span class="color-new">EnumSet&lt;E&gt;</span></code>:
+<pre class="color-syntax">
+<span class="color-comment">// Construct an unmodifiable instance, with 0 to 10 elements</span>
+static &lt;E&gt; List&lt;E&gt; <span class="color-new">of</span>(e1, e2, ...)
+static &lt;E&gt; Set&lt;E&gt; <span class="color-new">of</span>(e1, e2, ...)</pre></li>
+
+<li>Interface <code>java.util.<span class="color-new">Map&lt;K,V&gt;</span></code>:
+<pre class="color-syntax">
+<span class="color-comment">// Constructs an unmodifiable instance of Map, with 0 to 10 key-value pairs</span>
+static &lt;K,V&gt; Map(K,V) <span class="color-new">of</span>(k1, v1, k2, v2, ...)
+
+<span class="color-comment">// Constructs an unmodifiable instance of Map, with arbitrary number of key-value pairs</span>
+static &lt;K,V&gt; Map(K,V) <span class="color-new">ofEntries</span>(Map.Entry&lt;? extends K, ? extends V&gt;... entries)
+static &lt;K,V&gt; Map.Entry&lt;K,V&gt; <span class="color-new">entry</span>(K k, V v)</pre></li>
+</ul>
+
+<h4 id="J10Enhancement">JDK 10 Enhancements to the Collection Framework</h4>
+
+<h5>New Interface <span class="font-code">default/static</span> Methods</h5>
+<p>JDK 10 introduces these methods:</p>
+<ul>
+
+<li>Interfaces <code>java.util.<span class="color-new">List&lt;E&gt;</span></code>, <code>java.util.<span class="color-new">Set&lt;E&gt;</span></code>, <code>java.util.<span class="color-new">EnumSet&lt;E&gt;</span></code>:
+<pre class="color-syntax">
+<span class="color-comment">// Construct an unmodifiable instance, copying from the given Collection</span>
+static &lt;E&gt; List&lt;E&gt; <span class="color-new">copyOf</span>(Collection&lt;? extends E&gt; c)
+static &lt;E&gt; Set&lt;E&gt; <span class="color-new">copyOf</span>(Collection&lt;? extends E&gt; c)
+</pre>
+</li>
+
+<li>Interface <code>java.util.Map&lt;K,V&gt;</code>:
+<pre class="color-syntax">
+<span class="color-comment">// Construct an unmodifiable instance of Map, copy from the given Map</span>
+static &lt;K,V&gt; Map(K,V&gt; <span class="color-new">copyOf</span>(Map&lt;? extends K, ? extends V&gt; map)
+</pre></li>
+
+</ul>
+
+<h4 id="J11Enhancement">JDK 11 Enhancements to the Collection Framework</h4>
+
+<h5>New Interface <span class="font-code">default/static</span> Methods</h5>
+<p>JDK 11 enhances the Collection Libraries:</p>
+<ul>
+<li><code>java.util.<span class="color-new">Collection&lt;E&gt;</span></code>:
+<pre class="color-syntax">
+default &lt;T&gt; T[] toArray(IntFunction&lt;T[]&gt; generator)
+   <span class="color-comment">// Returns an array containing all elements in this Collection,
+   //   using the provided generator function to allocate the returned fixed-size array</span>
+   // Existing: Object[] <span class="color-new">toArray</span>()
+   // Existing: &lt;T&gt; T[] <span class="color-new">toArray</span>(T[] a)
+   // Similar function in java.util.stream.Stream</pre></li>
+</ul>
+
+<h4 id="J12Enhancement">JDK 12 Enhancements to the Collection Framework</h4>
+<p>[TODO]</p>
+
+<h4 id="J13Enhancement">JDK 13 Enhancements to the Collection Framework</h4>
+<p>[TODO]</p>
+
+<h4 id="J14Enhancement">JDK 14 Enhancements to the Collection Framework</h4>
+<p>[TODO]</p>
+
+
+<a class="references" href="../howto/References.html#java">LINK TO JAVA REFERENCES &amp; RESOURCES</a>
+
+<p class="references">More References</p>
+<ol>
+<li>Java Online Tutorial on &quot;Generics&quot; @ <a href="http://docs.oracle.com/javase/tutorial/extra/generics/index.html">http://docs.oracle.com/javase/tutorial/extra/generics/index.html</a>.</li>
+<li>Java Online Tutorial on &quot;Collections&quot; @ <a href="http://docs.oracle.com/javase/tutorial/collections/index.html">http://docs.oracle.com/javase/tutorial/collections/index.html</a>.</li>
+
+</ol>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 13.0.1<br />
+Last modified: February, 2020</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+
+<a href="https://www3.ntu.edu.sg/f61217a453d065015090cd27fd6fb2c2"> </a></body>
+</html>

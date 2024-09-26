@@ -1,0 +1,1386 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Java Servlet Tutorial - How to Install Tomcat 8 (on Windows, Mac OS and Ubuntu) and Get Started with Java Servlet Programming</title>
+<link href="../css/programming_notes_v1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts/programming_notes_v1.js"></script>
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="Tomcat_HowTo.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>How to Install Apache Tomcat  10 (on Windows, macOS, Ubuntu) and Get Started with Java Servlet Programming</h1>
+<h2>&nbsp;</h2>
+</div>
+
+<div id="content-main">
+
+<p>This practical can be completed in a 3-hour session.</p>
+<p>This installation and configuration guide is applicable to Tomcat 10. Take note that Tomcat 10 is not compatible with Tomcat 9 - Applications that run on Tomcat 9 and earlier will not run on Tomcat 10  without changes. To install Tomcat 9, see &quot;<a href="Tomcat9_HowTo.html">Tomcat9 - HowTo</a>&quot;.</p>
+
+<h5>(Advanced) Java EE vs. Jakarta EE</h5>
+<p>Java Servlet is NOT part of JDK (or Java Standard Edition or Java SE). It was part of the &quot;Java Enterprise Edition (Java EE)&quot;.  In 2017, Oracle submitted &quot;Java EE&quot; to Eclipse Foundation (open source). Eclipse subsequently renamed &quot;Java EE&quot; to &quot;Jakarta EE&quot; (because Oracle owns the trademark &quot;Java&quot;).</p>
+<p>The EE versions are:</p>
+<ul>
+<li>(Under Sun Microsystem/Oracle) J2EE 1.2, J2EE 1.3, J2EE 1.4, Java EE 5, Java EE 6, Java EE 7, Java EE 8. Move to Eclipse Foundation.</li>
+<li>Jakarta EE 8, first Jakarta version (Sept 2019) is fully compatible with Java EE 8 (which is the last version of Java EE).</li>
+<li>Jakarta EE 9 (Dec 2020): API namespace moved from <code>javax.*</code> to <code>jakarta.*</code></li>
+<li>Jakarta EE 10 (Sept 2022): Removal of deprecated items in Servlet, Faces, CDI and EJB (Entity Beans and Embedable Container).</li>
+<li>Jakarta EE 11 (July 2024): ??</li>
+</ul>
+
+<p>&quot;Java Servlet&quot; is now called &quot;Jakarta Servlet&quot;. &quot;Java Server Pages (JSP)&quot; is now called &quot;Jakarta Server pages&quot;.</p>
+	
+<h5>(Advanced) Differences between Tomcat 10 and Tomcat 9</h5>
+<p>Tomcat 10 (for Jakarta EE 9) moves all the Tomcat 9 (for Java EE 8) packages in the <code>javax.*</code> namespace to the <code>jakarta.*</code> namespace. You need to change the following <code>import</code> statements:</p>
+<pre class="color-example">
+import jakarta.servlet.ServletException;      <span class="color-comment">// Tomcat 10 (Jakarta EE 9 onwards)</span>
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+//import javax.servlet.ServletException;      <span class="color-comment">// Tomcat 9 (Java EE 8)(same as Jakarta EE 8)</span>
+//import javax.servlet.http.HttpServlet;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;</pre>
+
+<h3>Introduction</h3>
+
+<h4>Web Application (Webapp)</h4>
+<p>A <em>web application</em> (or <em>webapp</em>), unlike standalone application, runs over the Internet. Examples of webapps are google, amazon, facebook and twitter.</p>
+
+<p>A webapp is typically a <em>3-tier</em> (or <em>multi-tier</em>) <em>client-server database application</em> run over the Internet as illustrated in the diagram below. It comprises five components:</p>
+
+<ol>
+<li><span class="line-heading">HTTP Server</span>: E.g., Apache HTTP Server, Apache Tomcat  Server, Microsoft Internet Information Server (IIS), nginx, Google Web Server (GWS), and others.</li>
+<li><span class="line-heading">HTTP Client (or Web Browser)</span>: E.g., Internet Explorer (MSIE), FireFox, Chrome, Safari, and others.</li>
+<li><span class="line-heading">Database</span>: E.g., Open-source MySQL, PostgreSQL, Apache Derby, mSQL, SQLite, OpenOffice's Base; Commercial Oracle, IBM DB2, SAP SyBase, Microsoft SQL Server, Microsoft Access; and others.</li>
+<li><span class="line-heading">Client-Side Programs</span>: Could be written in HTML Form, JavaScript, and others.</li>
+<li><span class="line-heading">Server-Side Programs</span>: Could be written in Java Servlet/JSP, ASP, PHP, Perl, Python, JavaScript, and others.</li>
+</ol>
+
+<img class="image-center image-border" src="images/HTTP_ClientServerSystem.png" alt="HTTP_ClientServerSystem.png" />
+
+<p>A typical <em>use case</em> is:</p>
+<ol>
+<li>(client-to-server) A user, via a web browser (HTTP client), issues a URL request to an HTTP server to start a webapp.</li>
+<li>(server-to-client) The HTTP server returns an HTML form (client-side program), which is loaded and rendered in the client's browser.</li>
+<li>(client-to-server) The user fills up the query criteria inside the form and submits the form. This sends the query parameters to a server-side program.</li>
+<li>(server-to-client) The server-side program receives the query parameters, queries the database based on these parameters, and returns the query result to the client-side program.</li>
+<li>(client) The client-side program receives the query result and displays on the browser.</li>
+<li>The process repeats for the next request-response.</li>
+</ol>
+
+<h4>Hypertext Transfer Protocol (HTTP)</h4>
+<ul>
+<li>HTTP is an <em>application layer</em> protocol runs over TCP/IP. The IP provides support for routing and addressing (via a unique IP address for machines connected to the Internet); while TCP supports multiplexing via 64K ports from port number 0 to 65535. The default port number assigned to HTTP is TCP port 80. (Notes: TCP Port numbers below 1024 are reserved for popular protocols such as HTTP, FTP, SMTP; Port numbers 1024 and above could be used for applications.)</li>
+
+<li>HTTP is an <em>asynchronous request-response application-layer protocol</em>. A client sends a request message to the server. The server then returns a response message to the client. In other words, HTTP is a <em>pull</em> protocol, a client pulls a page from the server (instead of server pushes pages to the clients).</li>
+
+<li>The syntax of the message is defined in the <a href="https://www.w3.org/standards/webarch/protocols">HTTP specification</a>.</li>
+</ul>
+
+<img class="image-center image-border" src="images/HTTP_RequestResponseMessages.png" alt="HTTP_RequestResponseMessages.png"/>
+
+<h4>Apache Tomcat HTTP Server</h4>
+
+<p>Apache Tomcat is a Java-capable HTTP server, which could execute special Java programs known as &quot;Java Servlet&quot; and &quot;Java Server Pages (JSP)&quot;. Tomcat is an <em>open-source</em> project, under the &quot;Apache Software Foundation&quot; (which also provides the most use, open-source, industrial-strength Apache HTTP Server).  The mother site for Tomcat is <a href="http://tomcat.apache.org/">http://tomcat.apache.org</a>. Alternatively, you can find tomcat via the Apache mother site @ <a href="http://www.apache.org">http://www.apache.org</a>.</p>
+<p>Tomcat was originally written by James Duncan Davison (then working in Sun Microsystem) in 1998, based on an earlier Sun's server called Java Web Server (JWS). It began at version 3.0 after JWS 2.1 it replaced. Sun subsequently made Tomcat open-source and gave it to Apache.</p>
+
+<p>The various Tomcat releases are:</p>
+<ol>
+<li>Tomcat 3.0 (1999): Reference Implementation (RI) for Servlet 2.2 and JSP 1.1.</li>
+<li>Tomcat 4.1 (Sep 2002): RI for Servlet 2.3 and JSP 1.2.</li>
+<li>Tomcat 5.0 (Dec 2003): RI for Servlet 2.4 and JSP 2.0.</li>
+<li>Tomcat 6.0 (Feb 2007): RI for Servlet 2.5 and JSP 2.1.</li>
+<li>Tomcat 7.0 (Jan 2011): RI for Servlet 3.0, JSP 2.2 and EL 2.2.</li>
+<li>Tomcat 8.0 (Jun 2014): RI for Servlet 3.1, JSP 2.3, EL 3.0 and WebSocket 1.0. Tomcat 8.5 (June 2016) supports HTTP/2, OpenSSL, TLS virtual hosting and JASPIC 1.1.</li>
+<li>Tomcat 9.0 (Jan 2018): RI for Servlet 4.0, JSP 2.3, EL 3.0, WebSocket 1.0, JASPIC 1.1.</li>
+<li>Tomcat 10.0 (Feb 2021): Support Servlet 5.0, JSP 3.0, EL 4.0, WebSocket 2.0 and Authentication 2.0.</li>
+</ol>
+
+<h3 id="TomcatInstall">How to Install Tomcat and Get Started with Java Servlet Programming</h3>
+
+<h4>STEP 0: Create a Directory to Keep all your Works</h4>
+<p>I shall assume that you have created a directory called &quot;<code>c:\myWebProject</code>&quot; (for Windows) or &quot;<code>~\myWebProject</code>&quot; (for macOS) in your earlier exercises. Do it otherwise. This step is important; otherwise, you will be out-of-sync with this article and will not be able to find your files later.</p>
+
+
+<h4>STEP 1:  Download and Install Tomcat</h4>
+
+<div class="side-note">
+<p class="line-heading">For Windows</p>
+<ol>
+<li>Goto <a href="http://tomcat.apache.org/">http://tomcat.apache.org</a> &rArr; Look for &quot;Tomcat 10.1.<span class="color-new">{xx}</span> Released&quot;, where <span class="color-new">{xx}</span> is the latest update number &rArr; Click &quot;Download&quot;</li>
+<li>Under Tomcat 10 Software Downloads &rArr; Look for &quot;10.1.<span class="color-new">{xx}</span>&quot;  &rArr; Binary Distributions &rArr; <span class="color-new"><strong>Core</strong></span> &rArr; &quot;<span class="color-new"><strong>zip</strong></span>&quot; (e.g., &quot;<code>apache-tomcat-10.1.<span class="color-new">{xx}</span>.<strong><span class="color-new">zip</span></strong></code>&quot;, about 12MB).</li>
+
+<li> UNZIP (right-click &rArr; Extract All) the downloaded file into your project directory &quot;<code>c:\myWebProject</code>&quot;. Tomcat shall be unzipped into directory &quot;<code>c:\myWebProject\apache-tomcat-10.1.<span class="color-new">{xx}</span></code>&quot;.</li>
+<li>For <strong>EASE OF USE</strong>, we shall <strong>SHORTEN</strong> and <strong>RENAME</strong> this directory to &quot;<code>c:\myWebProject\tomcat</code>&quot;.</li>
+</ol>
+<p><strong><span class="color-new"><strong>Take note of Your Tomcat Installed Directory</strong></span></strong>. Hereafter, I shall refer to the Tomcat installed directory as <code>&lt;TOMCAT_HOME&gt;</code>.</p>
+</div>
+
+<div class="side-note">
+<p><span class="line-heading">For macOS</span></p>
+
+<ol>
+<li>Goto <a href="http://tomcat.apache.org">http://tomcat.apache.org</a> &rArr; Under &quot;Tomcat 10.1.<span class="color-new">{xx}</span> Released&quot;, where <span class="color-new">{xx}</span> is the latest update number &rArr; Click &quot;Download&quot; </li>
+<li>Under Tomcat 10 Software Downloads &rArr; Look for &quot;10.1.{xx}&quot;&rArr; Binary distribution &rArr; <span class="color-new"><strong>Core</strong></span> &rArr; &quot;<span class="color-new"><strong>tar.gz</strong></span>&quot; (e.g., &quot;<code>apache-tomcat-10.1.<span class="color-new">{xx}</span>.<strong><span class="color-new">tar.gz</span></strong></code>&quot;, about 12 MB).</li>
+
+<li>To install Tomcat:
+<ol>
+<li>Double-click the  downloaded tarball (e.g., &quot;<code>apache-tomcat-10.1.<span class="color-new">{xx}</span>.tar.gz</code>&quot;) to expand it into a folder (e.g., &quot;<code>apache-tomcat-10.1.<span class="color-new">{xx}</span></code>&quot;).</li>
+
+<li>Move the extracted folder (e.g., &quot;<code>apache-tomcat-10.1.<span class="color-new">{xx}</span></code>&quot;) to your project directory &quot;<code>~/myWebProject</code>&quot;.</li>
+
+<li>For <strong>EASE OF USE</strong>, we shall <strong>SHORTEN</strong> and <strong>RENAME</strong> this folder to &quot;tomcat&quot;, i.e., &quot;<code>~/myWebProject/tomcat</code>&quot;.</li>
+</ol>
+</li>
+</ol>
+<p><strong><span class="color-new"><strong>Take note of Your Tomcat Installed Directory</strong></span></strong>. Hereafter, I shall refer to the Tomcat installed directory as <code>&lt;TOMCAT_HOME&gt;</code>.</p>
+
+</div>
+
+<div class="side-note">
+<p><span class="line-heading">For Ubuntu</span></p>
+<p>Read &quot;<a href="Ubuntu_HowTo.html#tomcat">How to Install Tomcat on Ubuntu</a>&quot;. You need to switch between these two articles.</p>
+
+</div>
+
+
+<p>For academic learning, I recommend and show you how to use &quot;<code>zip</code>&quot; (or &quot;<code>tar.gz</code>&quot;) packages. You could simply delete the entire directory when  Tomcat is no longer needed (without running any un-installer). You are free to move or rename the Tomcat's installed directory. You can install (unzip) multiple copies of Tomcat in the same machine in different folders.</p>
+
+<h5>Tomcat's Sub-Directories</h5>
+
+<p>Take a quick look at the Tomcat installed directory. It contains the these sub-directories:</p>
+<ul>
+<li><span class="line-heading font-code">bin</span>: contains the <em>binaries</em> and <em>scripts</em> (e.g., <code>startup.bat</code> and <code>shutdown.bat</code> for Windows; <code>startup.sh</code> and <code>shutdown.sh</code> for Unixes and macOS).</li>
+
+<li><span class="line-heading font-code">conf</span>: contains the system-wide <em>configuration</em> files, such as <code>server.xml</code>, <code>web.xml</code>, and <code>context.xml</code>.</li>
+
+<li><span class="line-heading font-code">webapps</span>: contains the <em>webapps</em> to be deployed. You can also place the WAR (Webapp Archive) file for deployment here.</li>
+
+<li><span class="line-heading font-code">lib</span>: contains the Tomcat's system-wide library JAR files, accessible by all webapps. You could also place external JAR file (such as MySQL JDBC Driver) here.</li>
+
+<li><span class="line-heading font-code">logs</span>: contains Tomcat's log files. You may need to check for error messages here.</li>
+
+
+<li><span class="line-heading font-code">work</span>: Tomcat's working directory used by JSP, for JSP-to-Servlet conversion.</li>
+</ul>
+
+
+<h4 id="javahome">STEP 2:  Create an Environment Variable <span class="font-code">JAVA_HOME</span> <span class="color-new">(Don't Miss this Step)</span></h4>
+
+<div class="side-note">
+<p class="line-heading">(For Windows)</p>
+
+<p>You need to create an <em>environment variable</em> (system variable available to all applications) called &quot;<code>JAVA_HOME</code>&quot;, and set it to your JDK installed directory.</p>
+<p>Follow the steps <a href="Environment_Variables.html#javahomeWin">HERE</a>!</p>
+</div>
+
+<div class="side-note">
+<p><span class="line-heading">(For macOS)</span></p>
+<p>Skip this step. No need to do anything.</p>
+</div>
+
+
+<h4 id="configure">STEP 3:  Configure the Tomcat Server</h4>
+
+<p>The Tomcat configuration files, in XML format, are located in the &quot;<code>conf</code>&quot; sub-directory of your Tomcat installed directory, e.g. &quot;<code>c:\myWebProject\tomcat\conf</code>&quot; (for Windows) or &quot;<code>~/myWebProject/tomcat/conf</code>&quot; (for macOS). The important configuration files are:</p>
+<ol>
+<li><code>server.xml</code></li>
+<li><code>web.xml</code></li>
+<li><code>context.xml</code></li>
+</ol>
+
+<p>Make a BACKUP of the configuration files before you proceed!!!</p>
+
+<h5>Step 3(a) &quot;<span class="font-code">conf\server.xml</span>&quot; - <strong>Set the TCP Port Number</strong></h5>
+
+<p>Use a Programming Text Editor (e.g., Sublime Text, Atom) to open the configuration file &quot;<code>server.xml</code>&quot;.</p>
+
+<p>The default TCP port number configured in Tomcat is 8080, you may choose any number between 1024 and 65535, which is not used by  existing applications. We shall choose 9999 in this article. (For production server, you should use port 80, which is pre-assigned to HTTP server as the default port number.)</p>
+
+<p>Locate the following lines (around Line 68) that define the HTTP connector, and change <code>port=&quot;8080&quot;</code> to <code>port=&quot;9999&quot;</code>.</p>
+
+<pre class="color-example">
+<span class="color-comment">&lt;!-- A &quot;Connector&quot; represents an endpoint by which requests are received
+      and responses are returned. Documentation at :
+      Java HTTP Connector: /docs/config/http.html
+      Java AJP  Connector: /docs/config/ajp.html
+      APR (HTTP/AJP) Connector: /docs/apr.html
+      <strong><span class="color-new">Define a non-SSL HTTP/1.1 Connector on port 8080</span></strong>
+--&gt;</span>
+&lt;Connector <span class="color-highlight">port=&quot;<span class="underline"><strong>9999</strong></span>&quot;</span> protocol=&quot;<span class="color-highlight">HTTP/1.1</span>&quot;
+           connectionTimeout=&quot;20000&quot;
+           redirectPort=&quot;8443&quot; /&gt;</pre>
+
+<h5>Step 3(b) &quot;<span class="font-code">conf\web.xml</span>&quot; - <strong>Enable Directory Listing</strong></h5>
+
+<p>Again, use a programming text editor to open the configuration file &quot;<code>web.xml</code>&quot;.</p>
+
+<p>We shall enable directory listing by changing &quot;<code>listings</code>&quot;  from &quot;<code>false</code>&quot; to &quot;<code>true</code>&quot; for the &quot;<code>default</code>&quot; servlet. This is handy for test system, but not for production system for security.</p>
+<p>Locate the following lines (around Line 122) that define the &quot;<code>default</code>&quot; servlet; and change the &quot;<code>listings</code>&quot; from &quot;<code>false</code>&quot; to &quot;<code>true</code>&quot;.</p>
+
+<pre class="color-example">&lt;servlet&gt;
+  &lt;servlet-name&gt;<span class="color-highlight"><strong>default</strong></span>&lt;/servlet-name&gt;
+  &lt;servlet-class&gt;org.apache.catalina.servlets.DefaultServlet&lt;/servlet-class&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;debug&lt;/param-name&gt;
+    &lt;param-value&gt;0&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;init-param&gt;
+    &lt;param-name&gt;<span class="color-highlight"><strong>listings</strong></span>&lt;/param-name&gt;
+    &lt;param-value&gt;<span class="color-highlight"><strong><span class="underline">true</span></strong></span>&lt;/param-value&gt;
+  &lt;/init-param&gt;
+  &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+&lt;/servlet&gt;</pre>
+
+<h5>Step 3(c) &quot;<span class="font-code">conf\context.xml</span>&quot; - <strong>Enabling Automatic Reload</strong></h5>
+
+<p>We shall add the attribute <code>reloadable=&quot;true&quot;</code> to the <code>&lt;Context&gt;</code> element to enable automatic reload after code changes. Again, this is handy for test system but not recommended for production, due to the overhead of detecting changes.</p>
+<p>Locate the <code>&lt;Context&gt;</code> start element (around Line 19), and change it to:</p>
+<pre class="color-example">
+&lt;Context <span class="color-highlight"><strong><span class="underline">reloadable=&quot;true&quot; crossContext=&quot;true&quot; parallelAnnotationScanning=&quot;true&quot;</span></strong></span>&gt;
+   ......
+   ......
+&lt;/Context&gt;</pre>
+
+<h4>STEP 4:  Start  Tomcat Server</h4>
+
+<p>The Tomcat's executable programs and scripts are kept in the &quot;<code>bin</code>&quot; sub-directory of the Tomcat installed directory.</p>
+
+<h5>Step 4(a) Start Server</h5>
+
+<div class="side-note">
+<p class="line-heading">For Windows</p>
+
+<p>I shall assume that Tomcat is installed in &quot;<code>c:\myWebProject\tomcat</code>&quot;. Launch a CMD shell and issue:</p>
+
+<pre class="color-command">
+<strong>c:</strong>                           <span class="color-comment">// Change drive</span>
+<strong>cd \myWebProject\tomcat\bin</strong>  <span class="color-comment">// Change directory to your Tomcat's binary directory</span>
+<strong>startup</strong>                      <span class="color-comment">// Run startup.bat to start tomcat server</span></pre>
+If &quot;Windows Defender Firewall&quot; pops up, choose &quot;Allow Access&quot;.
+</div>
+
+<div class="side-note">
+<p><span class="line-heading">For macOS</span></p>
+<p>I assume that Tomcat is installed in &quot;<code>~/myWebProject/tomcat</code>&quot;. To start the Tomcat server, open a new &quot;Terminal&quot; and issue:</p>
+<pre class="color-command">
+<strong>cd ~/myWebProject/tomcat/bin</strong>  <span class="color-comment">// Change directory to your Tomcat's binary directory</span>
+<strong><span class="color-highlight">./catalina.sh run</span></strong>             <span class="color-comment">// Run catalina.sh to start tomcat server</span></pre>
+</div>
+
+<h5>Tomcat's Console</h5>
+<p>(For Windows) A <em>new</em> Tomcat console window appears. Look for this new console on your taskbar.</p>
+<p>Study the messages (as follows) on the console. Look out for the Tomcat's port number. Double check that Tomcat is running on port 9999 as configured.</p>
+
+<pre class="output">
+............
+............
+xxxxx INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [&quot;<span class="color-highlight">http-nio-9999</span>&quot;]
+xxxxx INFO [main] org.apache.coyote.AbstractProtocol.start Starting ProtocolHandler [&quot;ajp-nio-8009&quot;]
+xxxxx INFO [main] org.apache.catalina.startup.Catalina.start <span class="color-highlight">Server startup</span> in [1325] ms</pre>
+
+<p><span class="color-new">Error messages will be sent to this console</span>. <code>System.out.println()</code> issued by your Java servlets will also be sent to this console.</p>
+
+
+<p><span class="line-heading">(Skip Unless ...) Cannot Start Tomcat:</span> Read &quot;<a href="Tomcat_HowTo.html#TomcatDebug">How to Debug</a>&quot;.</p>
+
+
+
+
+<h5>Step 4(b) Start a Client to Access the Server</h5>
+
+
+<p>Start a browser (Firefox, Chrome) as an HTTP client. Issue URL &quot;<code>http://localhost:9999</code>&quot; to access the Tomcat server's welcome page. The hostname &quot;<code>localhost</code>&quot; (with IP address of <code>127.0.0.1</code>) is meant for local loop-back testing within the same machine. For users on the other machines over the net, they have to use the server's IP address or DNS domain name in the form of &quot;<code>http://<em>serverHostnameOrIPAddress</em>:9999</code>&quot;.</p>
+
+<img class="image-center" src="images/TomcatHomePage.png" alt="TomcatHomePage.png" />
+
+<p>(Optional) Try issuing URL <code>http://localhost:9999/examples</code> to view the servlet and JSP examples. Try running some of the servlet examples.</p>
+
+<h5>Step 4(c) Shutdown Server</h5>
+
+<div class="side-note">
+<p class="line-heading">For Windows</p>
+<p>You can shutdown the tomcat server by either:</p>
+
+<ol>
+<li>Press Ctrl-C on the Tomcat console; OR</li>
+<li>Run &quot;<code>&lt;TOMCAT_HOME&gt;\bin\<strong>shutdown.bat</strong></code>&quot; script. Open a new &quot;cmd&quot; and issue:
+<pre class="color-command">
+<strong>c:</strong>                           <span class="color-comment">// Change the current drive</span>
+<strong>cd \myWebProject\tomcat\bin</strong>  <span class="color-comment">// Change directory to your Tomcat's binary directory</span>
+<strong>shutdown</strong>                     <span class="color-comment">// Run shutdown.bat to shutdown the server</span></pre> 
+</li>
+</ol>
+</div>
+
+<div class="side-note">
+<p><span class="line-heading">For macOS</span></p>
+
+<p>To shutdown the Tomcat server:</p>
+<ol>
+<li>Press Control-C (NOT Command-C) on the Tomcat console; OR</li>
+<li>Run the &quot;<code>&lt;TOMCAT_HOME&gt;/bin/shutdown.sh</code>&quot; script. Open a new &quot;Terminal&quot; and issue:
+<pre class="color-command">
+<strong>cd ~/myWebProject/tomcat/bin</strong>  <span class="color-comment">// Change current directory to Tomcat's bin directory</span>
+<strong>./shutdown.sh</strong>                 <span class="color-comment">// Run shutdown.sh to shutdown the server</span></pre></li>
+</ol>
+</div>
+
+<p><span class="line-heading">WARNING</span>: You MUST properly shutdown the Tomcat. DO NOT kill the CAT by pushing the window's &quot;CLOSE&quot; button.</p>
+
+<h4>STEP 5: Develop and Deploy a &quot;Hello-world&quot; WebApp</h4>
+
+<h5>Step 5(a) Create the Directory Structure for your WebApp</h5>
+
+<img class="image-float-right" src="images/TomcatWebappHello.png" alt="TomcatWebappHello.png" />
+
+<p>Let's call our first webapp &quot;<code>hello</code>&quot;. Goto Tomcat's &quot;<code>webapps</code>&quot; sub-directory and create the following directory structure for your webapp &quot;<code>hello</code>&quot; (as illustrated).</p>
+
+<ol>
+<li>Under Tomcat's &quot;<code>webapps</code>&quot;, create your webapp's <em>root</em> directory &quot;<code>hello</code>&quot; (i.e., &quot;<code>&lt;TOMCAT_HOME&gt;\webapps\hello</code>&quot;).</li>
+
+<li>Under &quot;<code>hello</code>&quot;, create a sub-directory &quot;<code>WEB-INF</code>&quot; (case sensitive, it is a &quot;dash&quot; NOT an underscore) (i.e., &quot;<code>&lt;TOMCAT_HOME&gt;\webapps\hello\WEB-INF</code>&quot;).</li>
+
+<li>Under &quot;<code>WEB-INF</code>&quot;, create a sub-sub-directory &quot;<code>classes</code>&quot; (case sensitive, lowercase and plural) (i.e., &quot;<code>&lt;TOMCAT_HOME&gt;\webapps\hello\WEB-INF\classes</code>&quot;).</li>
+</ol>
+
+
+<p class="color-new">These directory names are case-sensitive!!! Don't make typo error!!! Double check the <strong>SPELLING</strong> again and again!!!</p>
+<p>You need to keep your web resources (e.g., HTMLs, CSSs, images, scripts, servlets, JSPs) in the proper directories:</p>
+<ul>
+<li>&quot;<code>hello</code>&quot;: The is called the <em>context root</em> (or <em>document base directory</em>) of your  webapp. You should keep all your HTML files and resources visible to the web users (e.g., HTMLs, CSSs, images, scripts, JSPs) under this <em>context root</em>.</li>
+<li>&quot;<code>hello/WEB-INF</code>&quot;: This directory, although under the context root, is a <em>secure</em> directory (i.e., not visible to web users). It is used to store resources that should not be directly accessible by clients; but accessible through servlets or other server-side components. This is also where you keep your application's web descriptor file &quot;<code>web.xml</code>&quot;.</li>
+<li>&quot;<code>hello/WEB-INF/classes</code>&quot;: This is where you keep all the Java classes such as servlet class-files.</li>
+</ul>
+
+<p>You need to <span class="color-new">RE-START</span> your Tomcat server to pick up the <code>hello</code> webapp. Check the Tomcat's console to confirm that &quot;<code>hello</code>&quot; application has been properly deployed:</p>
+
+<pre class="color-example">
+......
+xxxxx INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory
+Deploying web application directory [xxx\webapps\<span class="color-highlight">hello</span>]
+xxxxx INFO [main] org.apache.catalina.startup.HostConfig.deployDirectory
+Deployment of web application directory [xxx\webapps\<span class="color-highlight">hello</span>] has finished in [38] ms
+......</pre>
+
+<p>You can issue the following URL to access the web application &quot;<code>hello</code>&quot;:</p>
+<pre class="color-command">
+http://localhost:9999<strong>/hello</strong></pre>
+
+<p>You should see the directory listing of the directory &quot;<code>&lt;TOMCAT_HOME&gt;\webapps\hello</code>&quot;, which shall be empty at this point of time. Take note that we have earlier  enabled directory listing in &quot;<code>web.xml</code>&quot;. Otherwise, you will get an error &quot;404 Not Found&quot;.</p>
+
+<h5>Step 5(b) Write a Welcome Page</h5>
+
+<p>Create the following HTML page and save as &quot;<code>HelloHome.html</code>&quot;
+in your webapp's root directory &quot;<code>hello</code>&quot;.</p>
+
+<table class="table-program">
+<col class="col-line-number" />
+<col class="col-program" />
+<tbody>
+<tr>
+<td>
+<pre class="text-right">
+1
+2
+3
+4
+5
+6
+7
+8</pre>
+</td>
+<td>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;head&gt;&lt;title&gt;My Home Page&lt;/title&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, world!&lt;/h1&gt;
+    &lt;p&gt;My Name is so and so. This is my HOME.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>You can browse this page by issuing this URL:</p>
+
+<pre class="color-command">
+http://localhost:9999/hello/<strong>HelloHome.html</strong></pre>
+
+<img class="image-center image-border" src="images/TomcatWebappHelloHome.png" alt="TomcatWebappHelloHome.png" />
+
+<p>Alternatively, you can issue an URL  to your webapp's root &quot;<code>hello</code>&quot;:</p>
+<pre class="color-command">
+http://localhost:9999/hello</pre>
+<p>The server will return the directory listing of your base directory. You can then click on &quot;<code>HelloHome.html</code>&quot;.</p>
+
+<p>Rename &quot;<code>HelloHome.html</code>&quot; to &quot;<code>index.html</code>&quot;, and issue a directory request again:</p>
+<pre class="color-command">
+http://localhost:9999/hello</pre>
+<p>Now, the server will redirect the directory request to &quot;<code>index.html</code>&quot;, if the root directory contains an &quot;<code>index.html</code>&quot;, instead of serving the directory listing.</p>
+<p>Rename  &quot;<code>index.html</code>&quot; back to &quot;<code>HelloHome.html</code>&quot;, so that you could see get directory listing for convenience.</p>
+
+<p>You can check out the home page of your peers by issuing:</p>
+<pre class="color-command">
+http://<em>YourPeerHostnameOrIPAddr</em>:9999/hello
+http://<em>YourPeerHostnameOrIPAddr</em>:9999/hello/HelloHome.html
+</pre>
+
+<p>with a valid &quot;<code><em>YourPeerHostnameOrIPAddr</em></code>&quot;, provided that your peer has started his tomcat server and his firewall (and the network) does not block your access. You can use command such as &quot;<code>ipconfig</code>&quot; (Windows), &quot;<code>ifconfig</code>&quot; (macOS and Unix) to find your IP address.</p>
+
+<br />
+<p><span class="line-heading">(Skip Unless...)</span> The likely errors are &quot;Unable to Connect&quot;, &quot;Internet Explorer cannot display the web page&quot;, and &quot;404 File Not Found&quot;. Read &quot;<a href="Tomcat_HowTo.html#TomcatDebug">How to Debug</a>&quot; section.</p>
+<h4>STEP 6: Write a &quot;Hello-world&quot; Java Servlet</h4>
+
+<p>A <em>servlet</em> is Java program that runs inside a Java-capable HTTP Server, such as Apache Tomcat. A web user invokes a servlet by issuing an appropriate URL from a web browser (HTTP client).</p>
+
+<p>Before you proceed, I shall assume that you are familiar with Java Programming and have installed the followings:</p>
+
+<ol>
+<li>JDK (Read &quot;<a href="JDK_HowTo.html">How to install JDK and Get Started</a>&quot;).</li>
+<li>A programming text editor, such as Sublime Text or Atom.</li>
+</ol>
+
+<h5>Step 6(a): Write a &quot;Hello-world&quot; Java Servlet</h5>
+
+<p>A Java servlet is a Java program that runs inside a HTTP server. A web user invokes a servlet by issuing a URL from a browser (or HTTP client). </p>
+<p>In this example,  we are going to write a Java servlet called <code>HelloServlet</code>, which says &quot;Hello, world!&quot;. We will configure such that web users can invoke this servlet by issuing URL <code>http://<em>ip_addr</em>:<em>port</em>/hello/<span class="underline">sayhello</span></code> from their browser, as illustrated:</p>
+
+<img class="image-center image-border" src="images/TomcatWebappHelloServlet.png" alt="TomcatWebappHelloServlet.png" />
+
+<p>Write the following source codes called &quot;<code>HelloServlet.java</code>&quot; and save it under your application &quot;<code>classes</code>&quot; directory (i.e., &quot;<code>&lt;TOMCAT_HOME&gt;\webapps\hello\<span class="underline"><strong>WEB-INF\classes</strong></span>\HelloServlet.java</code>&quot;). This servlet says &quot;Hello&quot;, echoes some request information, and prints a random number upon each request.</p>
+
+<table class="table-program">
+<col class="col-line-number" />
+<col class="col-program" />
+<tbody>
+<tr>
+<td>
+<pre class="text-right">
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42</pre></td>
+<td>
+<pre>
+<span class="color-comment">// To save as &quot;&lt;TOMCAT_HOME&gt;\<span class="color-highlight">webapps\hello\WEB-INF\classes\HelloServlet.java</span>&quot;</span>
+import java.io.*;
+import jakarta.servlet.*;             // Tomcat 10
+import jakarta.servlet.http.*;        // Tomcat 10
+import jakarta.servlet.annotation.*;  // Tomcat 10
+//import javax.servlet.*;             // Tomcat 9
+//import javax.servlet.http.*;        // Tomcat 9
+//import javax.servlet.annotation.*;  // Tomcat 9
+ 
+<span class="color-highlight">@WebServlet(&quot;/sayhello&quot;)</span>   <span class="color-comment">// Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)</span>
+public class <strong>HelloServlet</strong> extends HttpServlet {
+
+   <span class="color-comment">// The doGet() runs once per HTTP GET request to this servlet.</span>
+   @Override
+   public void <strong>doGet</strong>(HttpServletRequest <strong>request</strong>, HttpServletResponse <strong>response</strong>)
+         throws IOException, ServletException {
+ 
+      <span class="color-comment">// Set the response's MIME type of the response message</span>
+      <strong>response.setContentType(&quot;text/html&quot;);</strong>
+      <span class="color-comment">// Allocate an output writer to write the response message into the network socket</span>
+      <strong>PrintWriter out = response.getWriter();</strong>  <span class="color-comment">// throw IOException</span>
+      
+      <span class="color-comment">// Write the response message, in an HTML page</span>
+      out.println(&quot;&lt;!DOCTYPE html&gt;&quot;);
+      out.println(&quot;&lt;html&gt;&quot;);
+      out.println(&quot;&lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;&quot;);
+      out.println(&quot;&lt;body&gt;&quot;);
+      out.println(&quot;&lt;h1&gt;Hello, world!&lt;/h1&gt;&quot;);  <span class="color-comment">// says Hello</span>
+      <span class="color-comment">// Echo some selected client's request information</span>
+      out.println(&quot;&lt;p&gt;Request URI: &quot; + <strong>request.getRequestURI()</strong> + &quot;&lt;/p&gt;&quot;);
+      out.println(&quot;&lt;p&gt;Protocol: &quot; + <strong>request.getProtocol()</strong> + &quot;&lt;/p&gt;&quot;);
+      out.println(&quot;&lt;p&gt;PathInfo: &quot; + <strong>request.getPathInfo()</strong> + &quot;&lt;/p&gt;&quot;);
+      out.println(&quot;&lt;p&gt;Remote Address: &quot; + <strong>request.getRemoteAddr()</strong> + &quot;&lt;/p&gt;&quot;);
+      <span class="color-comment">// Generate a random number on &quot;each&quot; request via JDK function Math.random()</span>
+      out.println(&quot;&lt;p&gt;A Random Number: &lt;strong&gt;&quot; + <strong>Math.random()</strong> + &quot;&lt;/strong&gt;&lt;/p&gt;&quot;);
+      out.println(&quot;&lt;/body&gt;&lt;/html&gt;&quot;);
+      out.close();  <span class="color-comment">// Always close the output writer</span>
+      
+      <span class="color-comment">// For testing and debugging - Print a message to Tomcat's console</span>
+      System.out.println("hello world, to Tomcat!");   <span class="color-comment">// Check Tomcat's console for this message</span>
+   }
+}</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>Take note that in Line 10, we map this <code>HelloServlet</code> to URL &quot;<code>/sayhello</code>&quot; via annotation <code>@WebServlet(&quot;<span class="color-new">/sayhello</span>&quot;)</code>. That is, the full URL shall be <code>http://<em>ip_addr</em>:<em>port</em>/hello/<span class="color-new">sayhello</span></code> to trigger this <code>HelloServlet</code>.</p>
+
+<h5>Step 6(b): Compiling the Servlet <span class="color-new">(DIFFICULT)</span></h5>
+
+<p>We need the Java Servlet API to compile the servlet. Servlet API is NOT part of JDK (or Java SE), but belongs to Java EE (or now Jakarta EE). Tomcat provides a copy in <code>&lt;TOMCAT_HOME&gt;/lib/servlet-api.jar</code>. We need to include this JAR file in the compilation via the <code>-cp</code> (classpath) option as follows:</p>
+
+<div class="side-note">
+<p><span class="line-heading">(For Windows)</span></p>
+<pre>
+<span class="color-comment">// Assume that &lt;TOMCAT_HOME&gt; is c:\myWebProject\tomcat</span>
+<span class="color-comment">// Change directory to the Java source directory</span>
+<strong>c:</strong>
+<strong>cd \myWebProject\tomcat\webapps\hello\WEB-INF\classes</strong>
+
+<span class="color-comment">// Compile with servlet API library (<code>servlet-api.jar</code>) with option -cp (or --class-path)</span>
+<strong>javac <span class="color-highlight">-cp ..\..\..\..\lib\servlet-api.jar</span> HelloServlet.java</strong>
+   <span class="color-comment">// .. refers to the parent directory
+   // ..\..\..\..\lib refers to "c:\myWebProject\tomcat\lib"</span>
+</pre>
+</div>
+
+<div class="side-note">
+<p><span class="line-heading">(For macOS)</span></p>
+<pre>
+<span class="color-comment">// Assume that &lt;TOMCAT_HOME&gt; is ~/myWebProject/tomcat where ~ is $HOME</span>
+<span class="color-comment">// Change directory to the Java source directory</span>
+<strong>cd ~/myWebProject/tomcat/webapps/hello/WEB-INF/classes</strong>
+
+<span class="color-comment">// Compile with Servlet API - Need to use $HOME instead of ~ in the "javac" command</span>
+<strong>javac <span class="color-highlight">-cp ../../../../lib/servlet-api.jar</span> HelloServlet.java</strong>
+   <span class="color-comment">// .. refers to the parent directory
+   // ../../../../lib refers to "$HOME/myWebProject/tomcat/lib"</span>
+</pre>
+</div>
+
+<p>The output of the compilation is &quot;<code>HelloServlet.class</code>&quot;.</p>
+<p><span class="color-new"><strong>Use your &quot;File Explorer (Windows)&quot; or &quot;Finder (macOS)&quot; to check the &quot;<code>webapps/hello/WEB-INF/classes</code>&quot; folder to make sure that &quot;<code>HelloServlet.class</code>&quot; has been created in the right place.</strong></span></p>
+
+<h5>Step 6(c): Invoke the Servlet</h5>
+
+<p><span class="color-new"><strong>Restart your Tomcat Server</strong></span>.</p>
+<p>Servlet runs inside the servlet container in the web server. Unlike traditional C/Java programs, there is NO <code>main()</code> method to start the servlet. Instead, it is triggered by the URL configured.</p>
+<p> To invoke the <code>HelloServlet</code>, start a browser and issue the  URL configured (in <code>@WebServlet</code>) as follows:</p>
+
+<pre class="color-command">
+http://localhost:9999/<strong>hello<span class="color-new">/sayhello</span></strong></pre>
+
+<p>You shall see the output of the servlet displayed in your web browser. Refresh the browser, you shall see a new random number upon each refresh. In other word, the <code>doGet()</code> method of the servlet <em>runs once</em> per HTTP request.</p>
+
+<p><span class="line-heading">(Skip Unless...)</span> The likely errors are &quot;404 File Not Found&quot; and &quot;500 Internal Server Error&quot;. Read &quot;<a href="Tomcat_HowTo.html#TomcatDebug">How to debug</a>&quot; Section.</p>
+
+
+<h5>Step 6(d): Tomcat's Console</h5>
+<ol>
+<li>Goto Tomcat's console, look for the hello-world message printed via <code>System.out.println("hello world, from Tomcat!")</code>.</li>
+<li>Make some changes to the <code>HelloServlet</code>, e.g., in Line 40:
+<pre class="color-example">System.out.println("hello world, from Tomcat <span class="color-new">again and again</span>!");</pre></li>
+<li>Recompile the <code>HelloServlet.java</code>.</li>
+<li>Goto Tomcat's console, look for the <em>servlet-reloading</em> message, e.g.,
+<pre class="color-example">...... INFO [Catalina-utility-2] org.apache.catalina.core.StandardContext.reload
+   <span class="color-new">Reloading Context with name [/hello] has started</span>
+............
+...... INFO [Catalina-utility-2] org.apache.catalina.core.StandardContext.reload
+   <span class="color-new">Reloading Context with name [/hello] is completed</span></pre>
+</li>
+<li>Goto the browser, and refresh your page <code>http://localhost:9999/hello/sayhello</code>. You shall see the new message printed to the Tomcat's console.</li>
+<li>If you did not find the servlet-reload message in the Tomcat's console (bug?!). You need to re-start the Tomcat for the new servlet to take effect.</li>
+</ol>
+	
+<h5>Step 6(e): View Page Source</h5>
+
+<p><strong>(For Firefox and Chrome)</strong> Right-click the page &rArr; &quot;View Page Source&quot; to look at the output received by the web browser (which is returned by the server). Take note that the web browser receives only the output of the servlet (generated via the <code>out.println()</code> statements). The client has no access to the servlet source codes (which may contain confidential information).</p>
+
+<p><strong>(For macOS's Safari browser)</strong> You need to enable &quot;Developer Menu&quot; under the &quot;Preferences&quot; to enable the &quot;View Source&quot; menu.</p>
+
+<pre class="output">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello, world!&lt;/h1&gt;
+&lt;p&gt;Request URI: /hello/sayhello&lt;/p&gt;
+&lt;p&gt;Protocol: HTTP/1.1&lt;/p&gt;
+&lt;p&gt;PathInfo: null&lt;/p&gt;
+&lt;p&gt;Remote Address: 127.0.0.1&lt;/p&gt;
+&lt;p&gt;A Random Number: &lt;strong&gt;0.3523682325749493&lt;/strong&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<h5>Step 6(f): Triple-quoted Multi-line Strings (or Text Blocks)</h5>
+<p>Starting with JDK 15, JDK supports triple-quoted Multi-line Strings (or Text Block). You can write one <code>out.println()</code> as follows:</p>
+
+<pre class="color-example">      <span class="color-comment">// Write the response message, in an HTML page
+      // Using triple-quoted multi-line string (Text Block) (JDK 15)
+      // The beginning triple-quote must be in its own line (i.e., ends with a newline)</span>
+      out.println(<span class="color-new">&quot;&quot;&quot;</span>
+         &lt;!DOCTYPE html&gt;
+         &lt;html&gt;
+         &lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+         &lt;body&gt;
+           &lt;h1&gt;Hello, world!&lt;/h1&gt;
+           &lt;p&gt;Request URI: <span class="color-new">%s</span>&lt;/p&gt;
+           &lt;p&gt;Protocol: <span class="color-new">%s</span>&lt;/p&gt;
+           &lt;p&gt;PathInfo: <span class="color-new">%s</span>&lt;/p&gt;
+           &lt;p&gt;Remote Address: <span class="color-new">%s</span>&lt;/p&gt;
+           &lt;p&gt;A Random Number: &lt;strong&gt;<span class="color-new">%f</span>&lt;/strong&gt;&lt;/p&gt;
+         &lt;/body&gt;
+         &lt;/html&gt;
+         <span class="color-new">&quot;&quot;&quot;</span>.formatted(request.getRequestURI(), request.getProtocol(),
+                       request.getPathInfo(), request.getRemoteAddr(),
+                       Math.random()));</pre>
+
+<p>Notes:</p>
+<ol>
+<li>The beginning triple-quote shall be on its own line, i.e., ends with a newline.</li>
+<li>The left-margin is set by shifting to the left until the line with the least leading white space has no leading white space.</li>
+<li>You can use <code>str.formatted()</code> (NOT <code>format()</code>) to work with place holders (<code>%s</code>, <code>%f</code>, <code>%d</code>) in the <code>str</code>, just like <code>System.out.printf()</code> and <code>String.format()</code>.</li>
+<li>JDK 21 introduces <em>embedded template</em> (inside the string) in the form of <code>\{expr}</code>, as a <em>preview feature</em>. For example, you can replace <code>%f</code> with <code>\{Math.random()}</code> in the above example.</li>
+</ol>
+
+<h5>Step 6(g)(Optional): Inspecting HTTP Request and Response Messages</h5>
+<p>When you enter a URL (e.g., <code>http://localhost:9999/hello/sayhello</code>) on a web browser, an HTTP GET <em>request message</em> is sent to the server; and the server returns a <em>response message</em> for display on the web browser. You can inspect the request and response messages via Web browser's Developer Tool.</p>
+<p>For <strong>Firefox/Chrome</strong>, press F12 (called F12 debugger) to enable &quot;Web Console&quot; or &quot;Developer Tool&quot;. Choose &quot;Console&quot; or &quot;Network&quot; pane. Enter URL <code>http://localhost:9999/hello/sayhello</code> (or refresh). Under &quot;Net&quot; or &quot;Network&quot;. Expand the link <code>http://localhost:9999/hello/sayhello</code>. A HTTP message consists of a header and a body. Inspect the request header and body; as well as the response header and body.</p>
+<p>The request message <em>header</em> is as follows:</p>
+<pre class="color-example">
+GET http://localhost:9999/hello/sayhello HTTP/1.1
+Host: localhost:9999
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Encoding: gzip, deflate
+Accept-Language: en-US,en;q=0.5
+Cache-Control:max-age=0
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0</pre>
+
+<p>For this request, there is no request message body.</p>
+
+<p>The response message <em>header </em>is as follows:</p>
+<pre class="color-example">
+HTTP/1.1 200 OK
+Date: xxx, xx xxx xxxx xx:xx:xx xxx
+Content-Length: 286
+Content-Type: text/html;charset=ISO-8859-1</pre>
+
+<p>The response message <em>body</em> is as follows:</p>
+<pre class="color-example">
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello, world!&lt;/h1&gt;
+&lt;p&gt;Request URI: /hello/sayhello&lt;/p&gt;
+&lt;p&gt;Protocol: HTTP/1.1&lt;/p&gt;
+&lt;p&gt;PathInfo: null&lt;/p&gt;
+&lt;p&gt;Remote Address: 0:0:0:0:0:0:0:1&lt;/p&gt;
+&lt;p&gt;A Random Number: &lt;strong&gt;0.4480280769255568&lt;/strong&gt;&lt;/p&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+
+<h5>Step 6(h)(Optional): Using cURL (Client URL)</h5>
+<p>You can also use utility cURL (client URL) to inspect the HTTP request and response messages, by issuing <code>curl</code> command from CMD/Terminal:</p>
+
+<pre class="color-example">
+<strong>curl -v http://localhost:9999/hello/sayhello</strong>
+*   Trying [::1]:9999...
+* Connected to localhost (::1) port 9999
+&gt; GET /hello/sayhello HTTP/1.1
+&gt; Host: localhost:9999
+&gt; User-Agent: curl/8.4.0
+&gt; Accept: */*
+&gt;
+&lt; HTTP/1.1 200
+&lt; Content-Type: text/html;charset=UTF-8
+&lt; Content-Length: 297
+&lt; Date: Sun, 14 Apr 2024 09:43:16 GMT
+&lt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello, world!&lt;/h1&gt;
+&lt;p&gt;Request URI: /hello/sayhello&lt;/p&gt;
+&lt;p&gt;Protocol: HTTP/1.1&lt;/p&gt;
+&lt;p&gt;PathInfo: null&lt;/p&gt;
+&lt;p&gt;Remote Address: 0:0:0:0:0:0:0:1&lt;/p&gt;
+&lt;p&gt;A Random Number: &lt;strong&gt;0.251389&lt;/strong&gt;&lt;/p&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+* Connection #0 to host localhost left intact</pre>
+
+<p>Notes:</p>
+<ol>
+<li>cURL is a command line tool that enables data exchange between a client and a server using various network protocols through a terminal.</li>
+<li>The request header is marked by a leading &gt;. There is no request body.</li>
+<li>The response header is marked by a leading &lt; followed by the response body.</li>
+</ol>
+
+
+<h4 id="DatabaseServlet">STEP 7: Write a Database Servlet</h4>
+
+<p>This section assumes that you are familiar with &quot;Java database programming&quot; and &quot;MySQL database server&quot;. Otherwise, read &quot;<a href="../java/JDBC_Basic.html">Java Database Program</a>&quot; and &quot;<a href="../sql/MySQL_HowTo.html">How to Install MySQL and Get Started</a>&quot;, respectively.</p>
+
+<h5>Step 7(a): Setup a Database on MySQL (Already done in the MySQL exercises)</h5>
+
+<p>Start your MySQL server. Take note of the server's port number. I shall assume that the MySQL server is running on port <code>3306</code>, whereas the Tomcat is running on port <code>9999</code>.</p>
+
+<pre class="color-command">
+<span class="color-comment">// For Windows: I shall assume that MySQL is installed in &quot;c:\myWebProject\mysql&quot;</span>
+<strong>c:
+cd \myWebProject\mysql\bin
+mysqld --console</strong>
+
+<span class="color-comment">// For macOS
+// Use graphical control at &quot;System Preferences&quot; -&gt; MySQL</span></pre>
+
+
+<p>Start a MySQL client. I shall assume that there is a user called &quot;<code>myuser</code>&quot; with password &quot;<code>xxxx</code>&quot;.</p>
+
+<pre class="color-command">
+<span class="color-comment">// For Windows: I shall assume that MySQL is installed in &quot;c:\myWebProject\mysql&quot;</span>
+<strong>c:
+cd \myWebProject\mysql\bin
+mysql -u myuser -p</strong>
+ 
+<span class="color-comment">// For macOS: I shall assume that MySQL is installed in &quot;/usr/local/mysql&quot;</span>
+<strong>cd /usr/local/mysql/bin</strong>
+<strong>./mysql -u myuser -p</strong></pre>
+
+<p> Run the following SQL statements to create a database called &quot;<code>ebookshop</code>&quot;, with a table called &quot;<code>books</code>&quot; with 5 columns: <code>id</code>, <code>title</code>, <code>author</code>, <code>price</code>, <code>qty</code>.
+</p>
+ <pre class="color-example">
+create database if not exists <strong>ebookshop</strong>;
+
+use ebookshop;
+
+drop table if exists books;
+create table <strong>books</strong> (
+   <strong>id</strong>     int,
+   <strong>title</strong>  varchar(50),
+   <strong>author</strong> varchar(50),
+   <strong>price</strong>  float,
+   <strong>qty</strong>    int,
+   primary key (id));
+
+insert into books values (1001, 'Java for dummies', 'Tan Ah Teck', 11.11, 11);
+insert into books values (1002, 'More Java for dummies', 'Tan Ah Teck', 22.22, 22);
+insert into books values (1003, 'More Java for more dummies', 'Mohammad Ali', 33.33, 33);
+insert into books values (1004, 'A Cup of Java', 'Kumar', 55.55, 55);
+insert into books values (1005, 'A Teaspoon of Java', 'Kevin Jones', 66.66, 66);
+
+select * from books;</pre>
+
+<h5>Step 7(b): Install MySQL JDBC Driver (Already done in the previous JDBC exercises)</h5>
+
+<p>You need to download MySQL JDBC driver if you have not done so. Read &quot;<a href="../java/JDBC_Basic.html#MySQLJDBCDriverInstall">Installing the MySQL JDBC Driver</a>&quot;.</p>
+
+<h5>Step 7(c): Copy the MySQL JDBC Driver to Tomcat's &quot;lib&quot; <span class="color-new">(IMPORTANT!!! DON'T MISS THIS STEP!!!)</span></h5>
+
+<p>Copy the MySQL JDBC Driver Connector/J (which you installed in previous JDBC session) <span class="color-new"><strong><code>JAR</code></strong></span> file &quot;<code>mysql-connector-j-8.3.<span class="color-new">{xx}</span>.jar</code>&quot; into  Tomcat's <code><strong><span class="color-new">lib</span></strong></code> directory, i.e., &quot;<code>c:\myWebProject\tomcat\lib</code>&quot; (for Windows) or &quot;<code>~\myWebProject\tomcat\lib</code>&quot; (macOS).</p>
+<p class="color-new">You need to re-start the Tomcat Server.</p>
+
+
+<h5>Step 7(d): Write a Client-side HTML Form</h5>
+  
+<p>Let's write an HTML script to create a <em>query form</em> with  3 checkboxes and a submit button, as illustrated below.  Save the HTML file as “<code>querybook.html</code>” in your application  root directory “<code>&lt;TOMCAT_HOME&gt;\webapps\hello</code>”.</p>
+
+<img class="image-center image-border" src="images/HtmlFormBookQuery.png" alt="HtmlFormBookQuery.png"/>
+
+<br />
+
+<table class="table-program">
+<col class="col-line-number" />
+<col class="col-program" />
+<tbody>
+<tr>
+<td>
+<pre class="text-right">
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16</pre>
+</td>
+<td>
+<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Yet Another Bookshop&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h2&gt;One More Bookshop&lt;/h2&gt;
+  &lt;form method=&quot;get&quot; <span class="color-new">action=&quot;http://localhost:9999/hello/query</span>&quot;&gt;
+    &lt;b&gt;Choose an author:&lt;/b&gt;
+    &lt;input type=&quot;checkbox&quot; <span class="color-new">name=&quot;author&quot; value=&quot;Tan Ah Teck&quot;</span> /&gt;Ah Teck
+    &lt;input type=&quot;checkbox&quot; <span class="color-new">name=&quot;author&quot; value=&quot;Mohammad Ali&quot;</span> /&gt;Ali
+    &lt;input type=&quot;checkbox&quot; <span class="color-new">name=&quot;author&quot; value=&quot;Kumar&quot;</span> /&gt;Kumar
+    &lt;input type=&quot;submit&quot; value=&quot;Search&quot; /&gt;
+  &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>You can browse the HTML page by issuing the following URL:</p>
+
+<pre class="color-command">http://localhost:9999/<strong>hello/querybook.html</strong></pre>
+
+<p>Check a box (e.g., &quot;Tan Ah Teck&quot;) and click the &quot;Search&quot;  button. You are expected to get an error &quot;404 File Not Found&quot;, as you have yet to write the server-side program.</p>
+<p>But observe the URL in the browser's navigation bar, reproduced as follows:</p>
+<pre class="color-command">
+http://localhost:9999/hello/query<strong><span class="color-new">?</span>author=Tan+Ah+Teck</strong></pre>
+
+<h5>Query String and NAME=VALUE pairs</h5>
+<p>The above URL consists of two parts:</p>
+<ol>
+  <li>the URL extracted from the &quot;<span class="color-new"><code>action</code></span>&quot; attribute of the <code>&lt;form&gt;</code> tag.</li>
+	<li>a so-called <em>query string</em> begins with a <code>'<span class="color-new">?</span>'</code>, followed by &quot;<span class="color-new"><code>name=value</code></span>&quot; pair extracted from the selected <code>&lt;input&gt;</code> tag (i.e., <code>author=Tan+Ah+Teck</code>). Take note that blanks are replaced by <code>'+'</code> (or <code>%20</code> - a <code>'%'</code> followed by ASCII code of blank in hex), because blanks are not allowed in the URL.</li>
+</ol>
+
+<p>If you check two boxes  (e.g., &quot;Tan Ah Teck&quot; and &quot;Mohammad Ali&quot;), you will trigger a query string with two &quot;name=value&quot; pairs separated by an <code>'&amp;'</code>.</p>
+<pre class="color-command">
+http://localhost:9999/hello/query<strong><span class="color-new">?</span>author=Tan+Ah+Teck<span class="color-new">&amp;</span>author=Mohammad+Ali</strong></pre>
+
+<h5>Step 7(e): Write the Server-side Database Query Servlet</h5>
+
+<p>The next step is to write a Java servlet, which responses to the client’s request by querying the database and returns the query results.</p>
+
+
+<table class="table-program">
+<col class="col-line-number" />
+<col class="col-program" />
+<tbody>
+<tr>
+<td>
+<pre class="text-right">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71</pre>
+</td>
+<td>
+<pre>
+<span class="color-comment">// To save as &quot;&lt;TOMCAT_HOME&gt;\<strong><span class="color-highlight">webapps\hello\WEB-INF\classes\QueryServlet.java</span></strong>&quot;.</span>
+import java.io.*;
+import java.sql.*;
+import jakarta.servlet.*;             // Tomcat 10
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+//import javax.servlet.*;             // Tomcat 9
+//import javax.servlet.http.*;
+//import javax.servlet.annotation.*;
+
+@WebServlet(&quot;<strong><span class="color-highlight">/query</span></strong>&quot;)   <span class="color-comment">// Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)</span>
+public class <span class="color-highlight"><strong>QueryServlet</strong></span> extends HttpServlet {
+
+   <span class="color-comment">// The doGet() runs once per HTTP GET request to this servlet.</span>
+   @Override
+   public void <strong><span class="color-highlight">doGet</span></strong>(HttpServletRequest request, HttpServletResponse response)
+               throws ServletException, IOException {
+      <span class="color-comment">// Set the MIME type for the response message</span>
+      response.setContentType(&quot;text/html&quot;);
+      <span class="color-comment">// Get an output writer to write the response message into the network socket</span>
+      PrintWriter out = response.getWriter();
+
+      <span class="color-comment">// Print an HTML page as the output of the query</span>
+      out.println(&quot;&quot;&quot;
+         &lt;!DOCTYPE html&gt;
+         &lt;html&gt;
+         &lt;head&gt;
+           &lt;title&gt;Query Response&lt;/title&gt;
+         &lt;/head&gt;
+         &lt;body&gt;
+         &quot;&quot;&quot;;   <span class="color-comment">// using triple-quoted multi-line String</span>
+         
+      try (
+         <span class="color-comment">// Step 1: Allocate a database 'Connection' object</span>
+         <strong>Connection conn = DriverManager.getConnection(
+               &quot;jdbc:mysql://localhost:3306/<span class="color-highlight">ebookshop</span>?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC&quot;,
+               &quot;<span class="color-highlight">myuser</span>&quot;, &quot;<span class="color-highlight">xxxx</span>&quot;);</strong>   <span class="color-comment">// For MySQL</span>
+               <span class="color-comment">// The format is: &quot;jdbc:mysql://hostname:port/databaseName&quot;, &quot;username&quot;, &quot;password&quot;</span>
+
+         <span class="color-comment">// Step 2: Allocate a 'Statement' object in the Connection</span>
+         <strong>Statement stmt = conn.createStatement();</strong>
+      ) {
+         <span class="color-comment">// Step 3: Execute a SQL SELECT query</span>
+         <strong>String sqlStr = &quot;select * from books where author = &quot;
+               + <span class="color-highlight">&quot;'&quot; + request.getParameter(&quot;author&quot;) + &quot;'&quot;</span> </strong>  <span class="color-comment">// Single-quote SQL string</span>
+               <strong>+ &quot; and qty &gt; 0 order by price desc&quot;;</strong>
+
+         out.println(&quot;&lt;h3&gt;Thank you for your query.&lt;/h3&gt;&quot;);
+         out.println(&quot;&lt;p&gt;Your SQL statement is: &quot; + sqlStr + &quot;&lt;/p&gt;&quot;); <span class="color-comment">// Echo for debugging</span>
+         <strong>ResultSet rset = stmt.executeQuery(sqlStr);</strong>  <span class="color-comment">// Send the query to the server</span>
+
+         <span class="color-comment">// Step 4: Process the query result set</span>
+         int count = 0;
+         while(<strong>rset.next()</strong>) {
+            <span class="color-comment">// Print a paragraph &lt;p&gt;...&lt;/p&gt; for each record</span>
+            out.println(&quot;&lt;p&gt;&quot; + <strong>rset.getString(&quot;author&quot;)</strong>
+                  + &quot;, &quot; + <strong>rset.getString(&quot;title&quot;)</strong>
+                  + &quot;, $&quot; + <strong>rset.getDouble(&quot;price&quot;)</strong> + &quot;&lt;/p&gt;&quot;);
+            count++;
+         }
+         out.println(&quot;&lt;p&gt;==== &quot; + count + &quot; records found =====&lt;/p&gt;&quot;);
+      } catch(SQLException ex) {
+         out.println(&quot;&lt;p&gt;Error: &quot; + ex.getMessage() + &quot;&lt;/p&gt;&quot;);  <span class="color-comment">// for debugging</span>
+         out.println(&quot;&lt;p&gt;Check Tomcat console for details.&lt;/p&gt;&quot;);
+         ex.printStackTrace();
+      }  <span class="color-comment">// Step 5: Close conn and stmt - Done automatically by try-with-resources (JDK 7)</span>
+ 
+      out.println(&quot;&lt;/body&gt;&lt;/html&gt;&quot;);
+      out.close();
+   }
+}</pre>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Take note that in Line 8, we configure this <code>QueryServlet</code> to URL &quot;<code>/query</code>&quot; via annotation <code>@WebServlet(&quot;/query&quot;)</code>. In other words, the full URL to trigger this <code>QueryServlet</code> is <code>http://<em>ip_addr</em>:<em>port</em>/hello/query</code>, which corresponds to the &quot;<code>action</code>&quot; attribute of the <code>&lt;form&gt;</code> tag of the &quot;<code>querybook.html</code>&quot; written earlier.</p>
+
+<img class="image-center image-border" src="images/TomcatWebappQueryServlet.png" alt="TomcatWebappQueryServlet.png" />
+
+
+<p>Compile &quot;<code>QueryServlet.java</code>&quot; with the Servlet API library as follows:</p>
+
+<pre class="color-command">
+<span class="color-comment">// Windows</span>
+<strong>c:</strong>
+<strong>cd \myWebProject\tomcat\webapps\hello\WEB-INF\classes</strong>
+<strong>javac <span class="color-highlight">-cp ..\..\..\..\lib\servlet-api.jar</span> QueryServlet.java</strong>
+
+<span class="color-comment">// macOS</span>
+<strong>cd ~/myWebProject/tomcat/webapps/hello/WEB-INF/classes</strong>
+<strong>javac <span class="color-highlight">-cp ../../../../lib/servlet-api.jar</span> QueryServlet.java</strong></pre>
+
+<p>Use a &quot;File Explorer&quot; (Windows) or Finder (macOS), verify that &quot;<code>QueryServlet.class</code>&quot; was generated in the &quot;<code>classes</code>&quot; directory.</p>
+
+<h5>Step 7(f): Invoke the Servlet from the Client-Side Form with Query String</h5>
+
+<p>Issue the following URL to browse the HTML form &quot;<code>querybook.html</code>&quot; that you have created earlier:</p>
+<pre class="color-command">
+http://localhost:9999/hello/<strong>querybook.html</strong></pre>
+
+<p>Select an author (e.g., &quot;Tan Ah Teck&quot;) and click the submit button, which activates the following URL coded in the <code>&lt;form&gt;</code>'s &quot;<code>action</code>&quot; attribute, together with a query string of NAME=VALUE pair:</p>
+<pre class="color-command">
+http://localhost:9999/hello/<strong>query?author=Tan+Ah+Teck</strong></pre>
+
+<p>The above URL &quot;/<code>query</code>&quot; maps to <code>QueryServlet</code>.</p>
+
+<h5>Using method  <span class="font-code">request.getParameter(NAME)</span> to handle NAME=VALUE pair</h5>
+<p>We can use the method <code>request.getParameter()</code> to handle the <code>NAME=VALUE</code> pair in the query string. Specifically, the method <code>request.getParameter(NAME)</code> returns the <code>VALUE</code>, as illustrated below:</p>
+	
+<img src="images/ServletGetParameter.png" class="image-center" alt="requestGetParameter" />
+<p>The above query string has a <code>NAME=VALUE</code> pair of <code>author=Tan+Ah+Teck</code>. In Line 38, the method <code>request.getParameter(&quot;author&quot;)</code> returns a string &quot;<code>Tan Ah Teck</code>&quot;, which is  inserted into the SQL <code>SELECT</code> command:</p>
+<pre class="color-example">
+select * from books where author = <span class="color-highlight">'Tan Ah Teck'</span> and qty &gt; 0 order by price desc</pre>
+	
+	
+<p>In this way, the SQL <code>SELECT</code> command is formed based on the user's selection in the form.</p>
+
+<p><span class="color-new"><strong><span class="line-heading">(Skip Unless...)</span> If you see a blank screen or incorrect output, look for error messages from the Tomcat console!!!</strong></span> Check &quot;<a href="Tomcat_HowTo.html#TomcatDebug">How to debug</a>&quot; Database Servlet Errors.</p>
+
+<h4>(Obsolete and Don't Do)(Prior to Tomcat 7) Deploying Servlets using <span class="font-code">web.xml</span></h4>
+
+<p>Please skip this section. I keep it here just in case...</p>
+<p>The annotation <code>@WebServlet(&quot;<em>url</em>&quot;)</code> for deploying servlet is supported from Tomcat 7/Servlet 3.0. Prior to Tomcat 7, you need to deploy servlets via <em>deployment descriptors</em> in the <code>web.xml</code> configuration file.</p>
+<p>Create the following configuration file called &quot;<code><strong>web.xml</strong></code>&quot;, and save it under &quot;<strong><code>webapps\hello\<span class="underline">WEB-INF</span></code></strong>&quot; (i.e., &quot;<code>&lt;TOMCAT_HOME&gt;\webapps\hello\<span class="underline">WEB-INF</span>\web.xml</code>&quot;).</p>
+<table class="table-program">
+  <col class="col-line-number" />
+  <col class="col-program" />
+  <tbody>
+    <tr>
+      <td><pre class="text-right">
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></td>
+      <td><pre>
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;web-app version=&quot;3.0&quot;
+  xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
+  xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+  xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;&gt;
+ 
+   <span class="color-comment"><strong>&lt;!-- To save as &quot;hello\WEB-INF\web.xml&quot; --&gt;</strong></span>
+ 
+   &lt;servlet&gt;
+      &lt;servlet-name&gt;<strong><span class="color-new">HelloWorld</span></strong>&lt;/servlet-name&gt;
+      &lt;servlet-class&gt;<strong><span class="color-new">HelloServlet</span></strong>&lt;/servlet-class&gt;
+   &lt;/servlet&gt;
+ 
+   <strong><span class="color-comment">&lt;!-- Note: All &lt;servlet&gt; elements MUST be grouped together and
+     placed IN FRONT of the &lt;servlet-mapping&gt; elements --&gt;</span></strong>
+ 
+   &lt;servlet-mapping&gt;
+      &lt;servlet-name&gt;<strong><span class="color-new">HelloWorld</span></strong>&lt;/servlet-name&gt;
+      &lt;url-pattern&gt;<strong><span class="color-new">/sayhello</span></strong>&lt;/url-pattern&gt;
+   &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;</pre></td>
+    </tr>
+  </tbody>
+</table>
+<p>In the above configuration, a servlet having a class file &quot;<code>HelloServlet.class</code>&quot; is mapped to request URL &quot;<code>/sayhello</code>&quot; (via an <em>arbitrary</em> <code>servlet-name</code> &quot;<code>HelloWorld</code>&quot;), under this web application &quot;<code>hello</code>&quot;. In other words, the complete request URL for this servlet is &quot;<code>http://<em>hostname</em>:<em>port</em><span class="underline"><strong>/hello/sayhello</strong></span></code>&quot;.</p>
+<p>This configuration file, saved under your webapp &quot;<code>hello</code>&quot;, is applicable only to this particular webapp &quot;<code>hello</code>&quot;.</p>
+<p>Restart your Tomcat server to refresh the &quot;<code>web.xml</code>&quot; file.</p>
+<p><span class="line-heading">Note:</span> For EACH servlet, you need to write a pair of <code>&lt;servlet&gt;</code> and <code>&lt;servlet-mapping&gt;</code> elements with a common but arbitrary <code>&lt;servlet-name&gt;</code>. Take note that all the <code>&lt;servlet&gt;</code> elements MUST be grouped together and placed IN FRONT of the <code>&lt;servlet-mapping&gt;</code> elements.</p>
+
+<h3>A Full-Stack Web Developer</h3>
+<p>A full-stack web developer is a person who can develop both client and server software. He/She needs to be familiar the client-side (front-end) programming, server-side (back-end) programming and the database. You are now a step closer.</p>
+
+<img class="image-center" src="images/FullStackSoftware.png" alt="Full Stack Web Developer" />
+
+
+
+<h3 id="TomcatDebug">(Skip Unless...) How to Debug?</h3>
+
+<p>&quot;Everything that can possibly go wrong will go wrong.&quot; The most important thing to do is to find the <strong><span class="color-new">ERROR MESSAGES</span></strong>!!!</p>
+<h5>Always...</h5>
+
+<ol>
+
+<li><strong><span class="color-new">Re-start Tomcat (and Check the Tomcat's console for Error Messages)!!!</span></strong></li>
+<li><strong><span class="color-new">Re-start your browser!!!</span></strong></li>
+<li>Refresh your browser using <strong>Ctrl-F5</strong> (instead of refresh button or simply F5) to get a fresh copy, instead of from the cache.</li>
+
+<li>Check your spelling! Always assume that all programs are case-sensitive. Don't type, copy and paste if possible!</li>
+
+<li>and MOST IMPORTANTLY - Find the <strong><span class="color-new">ERROR MESSAGE</span></strong>!!!
+  <ol>
+    <li>Check the Error Messages on Tomcat's Console. Most of the error messages have a few screens of lines. You need to scroll up slowly from the last line to <strong><span class="color-new">look for the FIRST LINE of the error messages</span></strong>.
+<pre class="color-example">
+com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: <span class="color-new">Communications link failure</span>  <span class="color-comment">&lt;== First line</span>
+The last packet sent successfully to the server was 0 milliseconds ago.
+The driver has not received any packets from the server.
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+        ......
+        ......
+        at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:305)
+        at java.sql.DriverManager.getConnection(DriverManager.java:579)
+        at java.sql.DriverManager.getConnection(DriverManager.java:221)
+        at <span class="color-new">MySQLJdbcTestJDK7.main(MySQLJdbcTestJDK7.java:7)</span>         <span class="color-comment">&lt;== Your program's line number here (line 7)</span></pre>    
+    
+    </li>
+    
+    <li>Check the Tomcat's log files, located at &quot;<code>&lt;TOMCAT_HOME&gt;\logs</code>&quot;. The &quot;<code>catalina.yyyy-mm-dd.log</code>&quot; shows the Tomcat's startup messages. Also check the &quot;<code>localhost.yyyy-mm-dd.log</code>&quot;.
+    </li>
+  </ol>
+</li>
+
+<li>If things were running fine until the lightning strikes, ask yourself &quot;What have I changed?&quot;</li>
+
+</ol>
+
+<h4>Cannot Start Tomcat after Installation</h4>
+
+
+
+<pre class="output"><strong>SYMPTOM:</strong> Cannot start Tomcat after installation. <span class="color-new">The Tomcat console flashed and disappeared.</span>
+<strong>POSSIBLE SOLUTIONS:</strong> 
+  1. Run the script &quot;configtest.bat&quot; (for Windows) or &quot;./configtest.sh&quot; (for macOS/Linux) to check
+     configuration files (&quot;server.xml&quot;, &quot;web.xml&quot;, &quot;content.xml&quot;).
+  2. Check the Tomcat's log files, located at &quot;&lt;TOMCAT_HOME&gt;\logs&quot;.
+     The &quot;catalina.{yyyy-mm-dd}.log&quot; shows the Tomcat's startup messages.
+  3. Start the tomcat in the debugging mode by running &quot;catalina debug&quot; (or ./catalina.sh debug) and 
+     type &quot;run&quot; in the &quot;jdb&quot; prompt. Look for the error messages.
+  4. If the error messages indicate that another Tomcat instance is running
+     (java.net.BindException: Address already in use: JVM_Bind), kill the Tomcat process (See below).
+  5. If the error messages indicate that another application is running on the Tomcat's port numbers,
+     then you need to change the Tomcat's port number in &quot;server.xml&quot;.
+     You can issue command &quot;netstat -an&quot; to check the status of all the ports.
+</pre>
+<br />
+<pre class="output"><strong>SYMPTOM:</strong> Cannot start Tomcat
+<strong>ERROR MESSAGE:</strong> <span class="color-new">
+  SEVERE: StandardServer.await: create[localhost:8005]
+  java.net.BindException: Address already in use: JVM_Bind</span>
+<strong>POSSIBLE SOLUTIONS:</strong>
+  1. Another Tomcat instance has been started. Kill it (see below).
+  2. Another application is running on the Tomcat's port number.
+     Change the Tomcat's port number in &quot;server.xml&quot;.
+     You can issue command &quot;netstat -an&quot; to check the status of all the ports.</pre>
+<br />
+<pre class="output"><strong>SYMPTOM:</strong> Cannot start Tomcat after installation
+<strong>ERROR MESSAGE:</strong> 
+  1. <span class="color-new">Neither the JAVA_HOME nor the JRE_HOME environment variable is defined</span>
+  2. <span class="color-new">JRE_HOME environment variable is not defined</span>
+<strong>POSSIBLE SOLUTIONS:</strong>
+  1. Check if JAVA_HOME is properly defined, via command &quot;set JAVA_HOME&quot; (for Windows)
+     or &quot;echo $JAVA_HOME&quot; (for macOS/Linux). Check the spelling carefully.
+  2. Define environment variable JAVA_HOME according to &quot;<a href="Tomcat_HowTo.html#javahome">Step 2: Create an Environment Variable JAVA_HOME</a>&quot;.
+</pre>
+<br />
+<pre class="output"><strong>SYMPTOM:</strong> Cannot start Tomcat after installation (for macOS)
+<strong>ERROR MESSAGE:</strong> 
+  <span class="color-new">&quot;Permission Denied&quot; running catalina.sh</span>
+<strong>POSSIBLE SOLUTIONS:</strong>
+  Check if catalina.sh is executable by the current user!</pre>
+
+
+<h5>Locating/Killing Tomcat's Process</h5>
+<ul>
+<li>In windows, start &quot;Task Manager&quot;, Tomcat run as a &quot;process&quot; named &quot;<code>java.exe</code>&quot;. You may need to kill the process.</li>
+<li>In macOS, start &quot;Activity Monitor&quot;. Select &quot;All Processes&quot; and look for &quot;<code>java.exe</code>&quot;.</li>
+<li> In Linux/macOS, you may issue &quot;<code>ps aux | grep tomcat</code>&quot; to locate the Tomcat process. Note down the process ID (pid). You can kill the Tomcat process via &quot;<code>kill -9 <em>pid</em></code>&quot;.</li>
+</ul>
+
+<h4>Cannot Access the Tomcat Server From Browser</h4>
+
+<pre class="output">
+<strong>ERROR MESSAGE:</strong>
+<span class="color-new">  (Firefox) Unable to Connect
+  (IE) Internet Explorer cannot display the webpage
+  (Chrome) Oops! Google Chrome could not connect to ...
+  (Safari) Safari can't connect to the server</span>
+<strong>PROBABLE CAUSES:</strong> You are simply not connecting to your Tomcat.
+<strong>POSSIBLE SOLUTION:</strong>
+  1. Check if your Tomcat server has been started?
+  2. Check the hostname and port number of your URL (http://localhost:9999/...)
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">Error 404 File Not Found</span>
+<strong>PROBABLE CAUSES:</strong> You have connected to your Tomcat.
+  But Tomcat server cannot find the HTML file or Servlet that your requested.
+<strong>POSSIBLE SOLUTION:</strong>
+  1. Check your spelling! The path is case-sensitive!
+  2. For HTML file request with URL http://localhost:9999/<em>xxxx</em>/<em>filename</em>.html:
+     a. Open Tomcat's &quot;webapps&quot; directory, check if sub-directory &quot;xxxx&quot; exists. It is case-sensitive.
+     b. Open the &quot;xxxx&quot; directory, check if &quot;filename.html&quot; exists.
+  3. For servlet request with URL http://localhost:9999/xxxx/servletURL:
+     a. Check the Tomcat's console for error message.
+     b. Check the Tomcat console to make sure that your application &quot;xxxx&quot; has been deployed.
+     c. Open Tomcat's &quot;webapps&quot; directory, check if sub-directory &quot;xxxx&quot; exists.
+     d. Open the &quot;xxxx&quot; directory, check if sub-directory &quot;WEB-INF&quot; (uppercase with a dash) exists.
+     e. Open the &quot;WEB-INF&quot;, check if sub-directory &quot;classes&quot; (lowercase, plural) exists.
+     f. Open your servlet, check if the servlet is mapped to servletURL
+     g. Check if you have compiled the servlet. That is, the .class exists (NOT .java).
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">Error 500 Internal Server Error</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  Error 500 should have triggered many error message in the Tomcat's console.
+  Go to the Tomcat's console, find the error message.
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">Error 505: GET (or POST) method not supported</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  Check you servlet to make sure that you have defined a doGet() (or doPost()) method.</pre>
+
+
+<h4>Java Servlet Errors</h4>
+
+<pre class="output"><strong>SYMPTOM:</strong> Cannot compile Java Servlet
+<strong>ERROR MESSAGE</strong>: <span class="color-error">class <em>xxxx</em> is public, should be declared in a file named <em>xxxx</em>.java</span>
+<strong>CAUSES/SOLUTION</strong>:
+  In Java, the filename must be the same as the classname with extension of &quot;.java&quot;.</pre>
+<br />
+<pre class="output"><strong>SYMPTOM:</strong> Cannot compile Java Servlet
+<strong>ERROR MESSAGE</strong>: <span class="color-error">package javax.servlet does not exist</span>
+<strong>CAUSES/SOLUTION</strong>:
+  The Java Servlet library is missing. Read &quot;<a href="Tomcat_HowTo.html#InstallServletAPI">Step 6(b) Compiling the Servlet</a>&quot; 
+  again, again and again....</pre>
+
+<br />
+<pre class="output"><strong>SYMPTOM:</strong> A &quot;new&quot; servlet does not run
+<strong>ERROR MESSAGE</strong>:
+<span class="color-error">java.lang.IllegalStateException: Error starting child (in Tomcat console)
+The servlets named [xxx] and [yyy] are both mapped to the url-pattern [zzz] which is not permitted</span>
+<strong>CAUSES/SOLUTION</strong>:
+  Check to ensure that no two servlets are mapping to the SAME URL in @WebServlet(&quot;url&quot;)</pre>
+
+<h4>Java Database Servlet Errors</h4>
+
+<pre class="output">
+<strong>ERROR MESSAGE:</strong> <span class="color-new">No suitable driver found</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  Check if you have done Step 7(c) Copy the MySQL JDBC Drive to Tomcat's &quot;lib&quot;.
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">Communications link failure</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  Check if you have started MySQL server.
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">Access denied for user 'myuser'@'localhost' (using password: YES)</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  Wrong username or password in your servlet's getConnection()
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">Public Key Retrieval is not allowed</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  Add jdbc:mysql://localhost:3306/ebookshop?<strong>allowPublicKeyRetrieval=true&amp;useSSL=false</strong> to databaseURL.
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">The server time zone value '...' is unrecognized or represents more than one time zone</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  Add jdbc:mysql://localhost:3306/ebookshop?<strong>serverTimezone=UTC</strong> to databaseURL.
+
+<strong>ERROR MESSAGE:</strong> <span class="color-new">You have an error in your SQL syntax ...</span>
+<strong>POSSIBLE SOLUTION:</strong>
+  SQL syntax error. Check you SQL statement.</pre>
+
+
+<p class="references">REFERENCES &amp; RESOURCES</p>
+<ol>
+  <li>Apache Tomcat mother site @ <a href="http://tomcat.apache.org/">http://tomcat.apache.org</a> and &quot;Documentation&quot; under &quot;<code>&lt;TOMCAT_HOME&gt;\webapps\docs</code>&quot;.</li> 
+  <li>&quot;<a href="../sql/MySQL_HowTo.html">How to install MySQL and Get Started</a>&quot;.</li>
+  <li>&quot;<a href="../java/JDBC_Basic.html">Introduction to Java Database (JDBC) Programming</a>&quot;.</li>
+<li>Jakarta EE mother site @ <a href="https://jakarta.ee">https://jakarta.ee</a>, Learn @ <a href="https://jakarta.ee/learn/">https://jakarta.ee/learn/</a>.</li>
+  <li>Jason Brittain, Ian F. Darwin, &quot;<em>Tomcat The Definitive Guide</em>&quot;, 2nd eds, OReilly, 2007 (out-dated).</li>
+</ol>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: Tomcat 10.1.18, MySQL 8.3.0, JDK 21.0.1, Windows 11, macOS 14, Ubuntu 18.04LTS<br />
+Last modified: April 2024</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<a href="https://www3.ntu.edu.sg/f61217a453d065015090cd27fd6fb2c2"> </a></body>
+</html>

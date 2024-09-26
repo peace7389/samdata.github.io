@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- for responsive web design -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- for SEO -->
+<meta name="description" content="Bitcoin and Blockchain">
+<meta name="keywords" content="Blockchain, Bitcoin">
+<title>Introduction to Bitcoin</title>
+
+<!-- ===================================================================== -->
+
+
+
+<!-- @@ v3 header changes starts here after <title> -->
+<!-- My custom CSS v3 -->
+<link rel="stylesheet" href="../css/programming_notes_v3.css">
+<!-- Prism Syntax Highlighter -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.css" rel="stylesheet" />
+<!-- favicon -->
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>Table of Contents <a id="show-toc" href="bitcoin.html#show-toc">(Hide)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<!-- @@ v3 header changes ends here before "content-header" <h1> and <h2>"" -->
+
+	
+<!-- ===================================================================== -->
+<div id="content-header">
+<h1>Bitcoin</h1>
+<h2>Introduction</h2>
+</div>
+
+<div id="content-main">
+
+<!-- @@ end change in v1 -->
+
+<p>On 31st October 2008, Satoshi Nakamoto, who remains anonymous to-date, published the famous &quot;Bitcoin White Paper&quot;, i.e., &quot;Bitcoin: A Peer-to-Peer Electronic Cash System&quot; @ <a href="https://bitcoin.org/bitcoin.pdf">https://bitcoin.org/bitcoin.pdf</a> and created the cryptocurrency Bitcoin (v0.1.0 on Jan 9, 2009).</p>
+<p>Bitcoin is a <em>digital currency</em>. Unlike the previous digital currency, bitcoin is the first of its kind, a truly <em>decentralized peer-to-peer</em> digital currency <em>without a central authority</em>, i.e., &quot;a Peer-to-Peer Electronic Cash System&quot;. In Bitcoin, Satoshi solves the difficult problem of creating a digital currency without a central authority, which is secure, trusted and does not allow double spending (via a so-called the proof-of-work consensus algorithm), with incentives (through mining rewards) for its ecosystem to be maintained and sustainable.</p>
+
+<p>Bitcoin needs a digital ledger. A ledger is the records of all transactions (of the digital currency). Bitcoin uses a <em>blockchain</em> to implement its digital ledger. A blockchain is a cryptographic database maintained by a network of nodes distributively and collectively. Each node stores a most up-to-date copy. A blockchain protocol is a set of rules that dictate how the nodes in the network should verify new transactions and add them to the database. The protocol employs cryptography, game theory, and economics to create incentives for the nodes to work toward securing the network instead of attacking it for personal gain. If set up correctly, this system can make it extremely difficult and expensive to add false transactions but relatively easy to verify valid ones.</p>
+
+<h5>Some Statistics of Bitcoin</h5>
+
+<p>The Bitcoin network (as at Apr 2023) from <a href="https://blockchair.com/bitcoin">https://blockchair.com/bitcoin</a>:</p>
+<ul>
+<li>about 7,500 nodes.</li>
+<li>about 46,318,000 addresses (a user/wallet can have many addresses for anonymity)</li>
+<li>Circulation: 19,361,221 BTC (upper limit is 21 million BTC)</li>
+<li>about 787,800 blocks.</li>
+<li>about 830,482,000 transactions - average 1000 transactions per block.</li>
+<li>about 2,338,733,000 outputs - average 2.8 outputs per transaction.</li>
+<li>Size of blockchain: 477GB - average 0.62MB per block (the upper limit for block is 1MB), 0.6KB per transaction.</li>
+<li>Price: highly fluctuating</li>
+</ul>
+<p>Mining Statistics (as at Apr 2023):</p>
+<ul>
+<li>Mining new coin reward (halved about every 4 years): 50 (2009) &rArr; 25 (2013) &rArr; 12.5 (2017) &rArr; 6.25 (2021).</li>
+<li>Average time between block: 9 minutes (faster than target of 10 minutes).</li>
+<li>Difficulty: <span v-update:raw="value !== defaultValue ? value : undefined " v-mount:raw="value !== defaultValue ? value : undefined " v-tooltip="''">48,712,405,953,118</span> = 2^45.5; number of leading zero in the target 256-bit hash = 45.5+32 = 80 (30%)</li>
+<li>Hash Rate: 385 EH/s (double SHA256).</li>
+<li>Recommended transaction fee:  32K satoshi per KB (non-uniformed).</li>
+</ul>
+
+	
+<h5>Cryptocurrency and Cryptography</h5>
+<p>Bitcoin is called a cryptocurrency because of its heavy use and reliance of cryptography.</p>
+<p>Blockchain uses 2 of the cryptographic algorithms (which will be explained in detail in the next section):</p>
+<ol>
+<li><span class="lead">Hashing</span>: on address for identity, on the block and transaction for identity and integrity, and Proof-of-Work as computational efforts.</li>
+<li><span class="lead">Digital Signature</span>: for authenticating the owner, non-repudiation of transaction by the owner, and transaction data integrity.</li>
+</ol>
+<p>Although Bitcoin is called a cryptocurrency, it does not encrypt its data (for confidentiality or privacy). All records are public and open to anyone.</p>
+
+<h5>Permissioned vs. Permissionless Blockchain [TODO]</h5>
+
+<p>Bitcoin and Ethereum are permissionless. Anyone can do anything supported by the network.</p>
+<p>On the other hand, a permissioned network restricts who can join, write transactions and mine new blocks. There is no need for Proof-of-Work (PoW) with trusted miners. Permission networks are closed (not open to public). Examples of permissioned networks are ...</p>
+	
+<h5>Smart Contract and Ethereum [TODO]</h5>
+<p>A smart contract contains data and processing scripts that runs on a blockchain network. It can be used to automate the movement of cryptocurrency according to prescribed rules and conditions in the scripts. This has many potential uses, such as facilitating real legal contracts or complicated financial transactions. </p>
+
+<h3>Bitcoin Basics</h3>
+
+<h4>Blockchain Structure</h4>
+	
+<h5>Blockchain</h5>
+<p>Bitcoin uses a <em>blockchain</em> to implement its digital distributed transaction ledger. The following diagram illustrates the structure of a block, and how the blocks are chained together using the header hash. The transactions in the body of the block are  chained together separately; and a binary hash kept in the block header in the form of Merkle Root. The chaining of hashes ensure that the blockchain is immutability and append-only.</p>
+<img src="images/Bitcoin_BlockStructure.png" alt="Block structure" class="image-center">
+
+<ul>
+<li>A blockchain provides a distributed, immutable, public transaction ledger for Bitcoin.</li>
+<li>A blockchain is a chain of blocks. A block is a collection of transactions. Each block has a header and can contain a few thousand transactions.</li>
+<li>A network of communicating nodes (called miners) running the bitcoin software maintains the blockchain transaction ledger collectively and distributively - without a central authority.</li>
+<li>The blockchain protect against modification of previous transaction records by chaining up the hashes. Modifying one block requires modification of all hashes in the subsequent blocks.</li>
+<li>The blockchain also protect against <em>double spending</em>  via a Proof-of-Work Consensus Protocol (a form of voting to reach a consensus in a decentralized environment - to be explained in detail later). Protecting against double spending without a central authority is the main contribution of Satoshi's Bitcoin white paper.</li>
+</ul>
+
+<h5>Block</h5>
+<ul>
+<li>Each block contains a hash of the previous block header. Any change to this block's content invalidates the hash of all subsequent blocks in the chain. This ensures the <em>immutability</em> and <em>append-only</em> of the transaction ledger.</li>
+<li>To maintain the transaction ledger, new blocks need to be created to record new transactions.</li>
+<li>Satoshi sets a target is to create a new block (of new transactions) every 10 minutes. To encourage the nodes (miners) to create new blocks, there are rewards for nodes - in terms of new coin and transaction fee. The nodes compete to create new block to receive these rewards, which require computational efforts, called &quot;proof-of-work&quot; (to be explained later).</li>
+<li>Each block is limited to 1MB in size, which can batch up a few thousand transactions.</li>
+<li>Transactions kept in the block are hashed, and the hashes are then paired, hashed, paired again, and hashed again until a single hash remains, known as the merkle root of a merkle tree.  Merkle tree supports the purging of spend transactions (to be explained later). The Merkle tree (other than the root) needs not be kept in the block, as it can be re-generated from the transactions stored when needed.</li>
+</ul>
+
+<h5>Network and Nodes</h5>
+<p>[TODO]</p>
+
+<h5>Wallet, Public/Private Key Pairs and Addresses</h5>
+<p>Each bitcoin user has a <em>wallet</em>. Wallets are nodes that build owner's transactions, broadcast transactions to the network, and scan for transactions belonging to the wallet.</p>
+<p>Wallets manage a set of one or more keys (private-public key pairs), and performs functions such as key generation and key storage.</p>
+
+<p>A user can be fully identified and referenced by a public key (256-bit). Nonetheless, Bitcoin also uses an address (160-bit), which is a hash of public key, as a shorthand (37.5% less) for public key.</p>
+
+<p>The public-private key pair and the address are generated by the wallet application as follows:</p>
+<ol>
+<li>First, a 256-bit random binary number is generated as the private key.
+<pre class="command">privateKey k (256-bit) = a randomly generated 256-bit number</pre>
+
+</li>
+<li>Next, the public key is generated from private key via Elliptic Curve Digital Signature Algorithm (ECDSA) SECP256K1 curve.
+<pre class="command">publicKey K (256-bit) = SECP256K1(k)
+</pre>
+Elliptic Curve algorithm is a one-way function (just like hashing functions). You can compute public key from the private key; but you cannot deduce the private key from the public key.
+</li>
+<li>The 160-bit address is then generated via double hashing, SHA256 followed by RIPEMD160.
+<pre class="command">address (160-bit) = RIPEMD160(SHA256(K))</pre>
+Again, you can compute the address from the public key; but you 
+cannot deduce the public key from the address, as hash is a one-way function.</li>
+</ol>
+
+<p>A sender can  identify a recipient by his address (commonly-used) or public key.</p>
+<p>The public key (and address) allows you to receive transactions, while the private key is necessary to sign and send transactions.</p>
+
+<h4>Transactions</h4>
+<p>Transactions are the most important part of the Bitcoin system, which is designed to ensure that transactions can be created, propagated on the network, validated, and finally added to the global ledger (i.e., the blockchain).</p>
+<p>A transaction records transfer of value from sender to recipient in the bitcoin system, e.g., Alice transfers (sends) 10 BTC to Bob.</p>
+	
+	
+<h5>Transactions, like Blocks, are also Chained to Ensure Integrity</h5>
+<img src="images/Bitcoin_TransactionChaining.png" alt="Bitcoin Transaction" class="image-center">
+<ul>
+<li>A  transaction records a transfer of bitcoins (BTC) from a sender to a recipient (or recipients). The unit is satoshi or sat, which is 10^-8 BTC (1 BTC = 100 million sat).</li>
+<li>A transaction consists of one or more inputs and one or more outputs.</li>
+<li>An output contains (1) the value in satoshi and (2) the recipient's address (public key hash) or public key (but in the form of a locking script or public-key script, which will be explained later).</li>
+<li>To ensure that the sender has the money, the input of a transaction must refer to a specific unspent output of a specific previous transaction, via the transaction ID (<code>txID</code>) and an output index. The output index (starting from 0) is needed as a transaction may have more than one outputs.</li>
+<li>The <code>txID</code> is obtained by hashing the transaction record twice using SHA256:
+<pre class="command">txID = SHA256(SHA256(txRecord))</pre></li>
+<li>Hash chaining is used to ensure the integrity of the transactions. If any bit of this transaction is modified, the hash would be invalid and all subsequent transactions are invalid.</li>
+</ul>
+
+<h5>An Example of Transaction Chains</h5>
+<p>Recall that a transaction consists of inputs and outputs - one or more inputs and one or more outputs. The following diagram illustrates chains of transactions.</p>
+
+<img src="images/Bitcoin_TransactionChainEample.png" alt="transaction chain" class="image-center">
+<ul>
+<li>An output contains the value to be transferred and the recipient's address (or public key). Multiple outputs are allowed in a transaction, i.e., a sender  can send BTC to multiple recipients in one transaction.</li>
+<li>An input must refer to a previous <em>unspent transaction output</em> (UTxO).</li>
+<li>In Bitcoin, an output is indivisible and must be spent in its entirety, as blockchain is immutable and you cannot modify the value of an output in an existing transaction in a block. Hence, an output is either a Spent Transaction Output (STxO) or Unspent Transaction Output (UTxO). A STxO is no longer needed and can be destroyed.</li>
+<li> <em>Double spending</em> can be easily detected by tracing that output to check if it has been spent in an earlier transaction.</li>
+<li>Multiple inputs are allowed in a transaction, i.e., a sender can use multiple UTxO (with the same public key or different public keys in his wallet) as inputs - a sender is allowed to have many keys  in his wallets.</li>
+<li>The sum of inputs can   exceed the intended sum of payments (outputs), which is often the case as UTxO is indivisible. In such a case, an additional   output is created, returning the change back to the sender. Any input not accounted for in the transaction outputs become the transaction fee, payable to the successful miner.</li>
+</ul>
+
+<h5>Unspent Transaction Output (UTxO) Sets</h5>
+<p>Bitcoin full nodes track all available and spendable outputs, known as <em>unspent transaction outputs</em> or UTxO in an UTxO set. The UTXO set grows as new UTXO is created and shrinks when UTXO is consumed. Every successful transaction represents a change in the UTXO set.</p>
+<p>Each user has a wallet contains his keys and a set of UTxO controlled by his keys. The wallet application builds the payment transaction for its owner.</p>
+<p>On the other hand, there is no need to track the Spent Tx Output (STxO). If an input cannot be linked to an UTxO in the UTxO set, it is considered invalid.</p>
+
+<h5>Unlocking an UTxO by Signing to Certify its Consumption</h5>
+<img src="images/Bitcoin_TransactionSigning.png" alt="signing transaction" class="image-center">
+
+<ul>
+<li>As mentioned, an input of a transaction must refer to an unspent transaction output (UTxO).</li>
+<li>Since a transaction may have more than one outputs, an Output Index (starting from 0) together with the Transaction ID (txID), called OutPoint, are used to identity a specific output of a specific transaction. The txID is computed by hashing the Raw Transaction Record twice, as follows:
+<pre class="command">
+txID (32-byte) = SHA256(SHA256(txRecord))
+outPoint (36-byte) = txID (32-byte) + outputIndex (4-byte)</pre>
+</li>
+<li>An OutPoint is locked by the address (public key hash), say Alice. Only Alice owns the corresponding private key to unlock this OutPoint. No one else has the private key.</li>
+<li>Suppose Alice want to transfer (spend) this OutPoint to Bob, Alice needs to construct a new transaction (with input referencing this UTxO, output to Bob's address), and sign the new transaction (hash) using her private key.
+<pre class="command">
+t = outPointSender + value + addressRecipient
+sig = encrypt(privateKeySender, hash(t))</pre>
+</li>
+<li>For verification, the signature and public key need to be kept in the new transaction as part of the input. First, the address is verified with the public key; then the public key is used to decrypt the signature to verify the transaction hash.
+<pre class="command">
+hash(pubKeySender) == addressSender
+th' = decrypt(pubKeySender, sig)
+th' == hash(t)</pre></li>
+<li>Anyone can authenticate the sender by decrypting the signature with the public key.</li>
+<li>The signature serves 3 purposes:
+<ol>
+<li>Only the owner of the address has the private key to create the signature (authentication).</li>
+<li>Sender cannot deny she has created the transaction (non-repudiation).</li>
+<li>The transaction data has not been tampered with (integrity).</li>
+</ol>
+</li>
+</ul>
+
+<h4>Incentives For Miners and the Consensus Protocol</h4>
+<h5>Rewards for Recording New Transactions and the Reward Halving Scheme</h5>
+<ul>
+<li>New transactions need to be recorded in the ledger - for Bitcoin to work!</li>
+<li>Bitcoin sets a <em>target</em> of constructing a new block (of new transactions) every 10 minutes. In practice, blocks can be created longer or shorter than the interval of 10 minutes.</li>
+<li>To reward nodes (miners) to record new transaction, and hence maintain the transaction ledger, miners are rewarded for creating new block, in the form of new bitcoins and transaction fee.</li>
+<li>A new block is rewarded with 50 BTC  initially (in 2009). This amount is half after every 210,000 blocks (approximately 4 years), until it cannot be halved.
+<pre class="command">
+Target Block Interval: 10 minute
+210,000 / (24 * 60 / 10) = 1458.3 days
+4 years * 365 days + 1 day for leap year = 1461 days &gt; 1458.3 days</pre>
+As at Apr 2023, a new block is rewarded 6.25 BTC due to the reward halving scheme.
+<pre class="command">2009-Jan-09:  50 BTC
+2012-Nov-28:  25 BTC    (1419 days - every 9.73 minutes &lt; 10 minutes)
+2016-Jul-09:  12.5 BTC  (1319 days - every 9.04 minutes &lt; 10 minutes)
+2020-May-11:  6.25 BTC  (1402 days - every 9.61 minutes &lt; 10 minutes)
+2024-??:      3.125 BTC</pre></li>
+<li>In theory, new blocks can be created forever with halving reward. However, in practice, the smallest unit in bitcoin is 10^-8 BTC (=1 satoshi). Once this smallest unit is reached, it cannot be halved; and new coin will not be generated as reward. The last new bitcoin will be generated around the year <strong>2140</strong> (for a duration of 150 years), after 6,930,000 (=33*210,000) blocks. After that,   a successful miner would be rewarded by transaction fees only.
+  <pre class="command">The smallest division of bitcoin is 1 satoshi = 10^-8 BTC
+Reward Halving: 50BTC / (2^n) &lt; 10^-8 gives n &gt; 32.2
+It can be halved until n=32
+2008 + (32+1)*4 = 2140
+Number of blocks = 33*210,000 = 6,930,000</pre></li>
+<li>The upper limit of bitcoin is 20.999999998 million BTC, or close to 21 million BTC.
+<pre class="command">50 BTC * 210,000 * (1 + 1/2 + 1/4 + ... + 1/2^32)
+= 50 * 210000 * 2 * (1 - 0.5^33)
+= 20,999,999.99755527 BTC (up to 8 decimal places for satoshi)
+~ 21 million BTC</pre></li>
+
+<li>As at Apr 2023, the amount of bitcoins in circulation is about 19.3 million BTC, out of the limit of 21 million BTC, leaving just around 1.68 million BTC to be mined.
+<pre class="command">50BTC * 210,000 * (1 (2008-2012)+ 1/2 (2012-2016) + 1/4 (2016-2020) + 1/8 (2020-2024))
+= 19.6 million BTC</pre></li>
+<li> Suppose 1 BTC is US$30,000, the entire chain is worth US$30,000 * 21 million = US$630 billion (compared with Singapore 2021 GDP of about US$400 billion produced by the hard work of 5.5 million people for one whole year).</li>
+<li>Why Halving Reward?
+<ol>
+<li>For consolidation as the individual miners and small outfits will drop out of the mining ecosystem or are taken over by larger players. Once all coins are issued, the incentive will switch to transaction fee.</li>
+<li>Over the long term, the bitcoin currency is deflationary. Bitcoin cannot be inflated by printing new money.</li>	
+
+</ol>
+</li>
+
+</ul>
+
+<h5>Proof of Work (PoW) Consensus Protocol</h5>
+<p>All nodes (miners) race to create new block so as to receive the rewards (new bitcoin and transaction fee).  A <em>consensus protocol</em> is needed to decide which node (miner) is allowed to create the new block and receive the reward, and it shall be verifiable by all the other nodes.</p>
+<p>All protocols to reach a consensus in a decentralized network involve some form of voting by all the nodes. The issue is how to count the votes - one man one vote, or some men has more votes?</p>
+	
+<p>Bitcoin uses the so-called Proof-of-Work (PoW) (or Proof-of-Computational-Effort) consensus protocol. In PoW, one party (the prover) proves to others (the verifiers) that a certain amount of a specific computational effort has been expended. Verifiers can subsequently check and confirm this expenditure with minimal effort. This process is known as <em>mining</em> in Bitcoin.</p>
+
+<div class="side-note">
+<p>In 1992, Cynthia Dwork and Moni Nash proposed imposing proof-of-work (PoW) to deter email spam, sybil attack and denial of service. Regular users need to commit some &quot;computational efforts&quot; to send an email, which the spammer cannot afford.</p>
+</div>
+
+<p>PoW was  popularized by Bitcoin as a foundation for consensus in a permissionless decentralized network. To create new block, it will require miners to compete to solve a mathematical puzzle which requires computational efforts. The first node who solves the puzzle gets to mine the new block and receive the rewards.</p>
+
+<img src="images/Bitcoin_BlockStructure.png" alt="block structure" class="image-center">
+
+<p>Let us revisit the block. Each block has a 80-byte header that contains:</p>
+<ol>
+<li>Version number (4-byte)</li>
+<li>hash of the previous block header (32-byte)</li>
+<li>Merkle root of all transactions in this block (32-byte)</li>
+<li>Timestamp (4-byte)</li>
+<li>Difficulty Target Hash nBits - for controlling the new block rate (4-byte) (to be explained later)</li>
+<li>A random nonce (4-byte)</li>
+</ol>
+
+<p>Bitcoin PoW requires the miners to compete to find a hash for the new block header beginning with n number of zeros (encoded in the Target Hash  nBits), by varying a random nonce in the header. The value of n varies automatically, so as to maintain the target block interval of 10 minutes. (This will be explained in detail later.)</p>
+	
+<p>Bitcoin's PoW process is as follows:</p>
+<ol>
+<li>The miner collects and validates new transactions in a pool; and compute the merkle tree root. Different miners have different set of new transactions.</li>
+<li>Similarly, different miners have slightly different timestamp.</li>
+<li>The Target hash nbit is set by the mining software automatically based on some rules (to be explained later), which sets the target number of leading zeros in the computed hash.</li>
+<li>The miner picks a nonce and compute hash = SHA256(SHA256(blockHeader)) - hash twice!</li>
+<li>The miner varies the random nonce (in a brute-force manner), until the 256-bit hash begins with the required number n of zero bits.</li>
+<li>The average work required grows exponential with n, as each zero bit has the same probability of 0.5 which give the total probability of 0.5^n.
+<pre class="command">
+To find a hash beginning with n zeros, you need to perform 2^n computation.
+Suppose the total computation power is P hashes/second. In 10 minutes:
+   P * 10 min * 60 sec = 2^n
+   n = log 600P / log 2</pre>
+  <pre class="command">
+Suppose that there are 100,000 CPUs, each capable of hashing 10 Trillion-Hash/sec.
+Total hashes in 10 minutes = 10^5 CPU * 10*10^12 sec * 60 * 10 = 6 * 10^20.
+2 ^ n / 2 (on average) = 6 * 10^20 gives n =  68</pre>
+</li>
+<li>The resultant hash can be verified with a single hash on the header by all the other nodes.</li>
+</ol>
+
+<h5>Coinbase Transaction</h5>
+<p>The first transaction in a block is a special transaction called a <em>coinbase transaction</em>, with the successful miner as the recipient, which is the reward for the miner to win this block. All bitcoins in existence have been created through coinbase transactions.</p>
+<p> The input of the coinbase transaction does not link to a previous UTxO, but has a special type called &quot;coinbase&quot; (to be explained in detail later).</p>
+
+<h5>Checking for Insufficient Fund in a Transaction</h5>
+<p>The miners validate the new transactions collected. A transaction has one or more inputs and one or more outputs. The miner traces the input(s) to their referenced UTxO(s) to retrieve  their total value(s); and check against the total value of the output(s). Transactions with insufficient fund are invalid and discarded.</p>
+
+<h5>Preventing Double Spending</h5>
+<p>Suppose that Alice has an UTxO of 10 BTC. She consumes this UTxO to Bob, and also to Charlie, in two new transactions.</p>
+<ul>
+<li>Nodes receiving both transactions will discard both transactions as invalid, as an UTxO cannot be consumed twice.</li>
+<li>Nodes receiving only the first or second transaction will try to create a new block with that transaction. One of the nodes succeeds to create a new block with one of the transaction (through PoW). All the other nodes will receive this new block and discard the other double-spend transaction.</li>
+</ul>
+
+<h5>The Longest Chain is the Valid Chain</h5>
+<p>As miners work independently to create new blocks in different part of the network, fork may occur where there are more than one branches in the blockchain.</p>
+<p>In Bitcoin, the majority decision is represented by the longest chain, which has the greatest proof-of-work computational efforts invested in it. If a majority (51%) of CPU power is controlled by honest nodes, the honest chain will grow the fastest and outpace any competing chains. In case of a fork, the longest chain is always treated as the valid chain, and branches in shorter chains discarded. Nodes always treat the longest chain to be the correct one. They will switch over to the longest chain if they are in the wrong branches, and continue working on extending it.</p>
+
+<h5>More on Preventing Double Spending</h5>
+
+<p>Back to Alice's two double-spend transactions. Suppose that two nodes in two parts of the network created two new blocks (at about the same time), each holding one of the Alice's double-spend transaction. These two nodes will broadcast different versions of the next block simultaneously, some nodes may receive one or the other first.  They will work on the first one received.  A fork is produced. The tie will be broken when the next proof-of work is found and one branch becomes longer; the nodes that were working on the other branch will then switch to the longer one.</p>
+
+
+<p>You need to wait for at least 10 minutes for your transaction to be blocked. To be safe, you may need to wait for 6 blocks (60 minutes) to be sure that your transaction is not contained in the block that is in a wrong branch. Chance of a block which is 6 level deep being discarded is minimal.</p>
+<p>Preventing double spending in a decentralized network through Proof-of-Work is the most important contribution of Satoshi.</p>
+
+<h5>Network</h5>
+<p>The steps to run the mining networks are as follows:</p>
+<ol>
+<li>Wallets construct new transactions.</li>
+<li>New transactions are broadcast to all nodes.</li>
+<li>Each node collects new transactions into a candidate block.</li>
+<li>Each node works on the proof-of-work for its candidate block.</li>
+<li>When a node finds a proof-of-work, it broadcasts the block to all nodes.</li>
+<li>Nodes accepts the block only if all transactions in it are valid and not already spend (double-spend).</li>
+<li>Nodes express their acceptance of the block by working on create the next block in the chain, using the hash of the accepted block as the previous hash.</li>
+<li>In case of fork, the longest chain (which carries the highest computational efforts) is the valid one; and branches in shorter chains are discarded.</li>
+</ol>
+
+<h5>&quot;Proof-of-Work&quot; is a Voting System - Voting by Computing Power</h5>
+
+<p>A decentralized system needs a consensus protocol. All consensus protocols involves some form of voting. The &quot;Proof-of-Work&quot; consensus protocol is also a voting system, but voting by computing power. Take note that in voting, majority wins.</p>
+
+
+<h5>51% Attack - Majority Wins</h5>
+<p>To modify a past block (e.g., to remove an earlier payment by him so that he can spend it again), an attacker would have to redo the proof-of-work of the block containing that transaction and all subsequent blocks and then catch up with and surpass the work of the honest nodes. The attackers need to achieve the longest chain at a faster rate than the entire network. This is the attacker vs. the rest,  known as 51% attack. Take note that an attacker can only remove his earlier payment and take back money he had spent. He cannot take coins from other to himself, as he does not have the private key to unlock the coins.</p>
+<p>If a greedy attacker is able to assemble more CPU than all the honest nodes, he would have to choose between using it to defraud people by stealing back his payments (remove his earlier payment), or using it to generate new coins.</p>
+<p>A 51% attacker can rewrite the coinbase transaction to channel the new coins to him - but rewrite coinbase is basically mining new coin, which he can honestly does it faster than others with 51% of the computing power!</p>
+
+<h5>Selfish Mining Attack</h5>
+<p>If a miner has enough power, he can keep a block he mined to himself, and mines the next block in secret. By releasing more than one blocks when other miners generate a
+block, he can make other miners waste their power. He also earns more reward than he mines honestly. It has been proven that selfish mining is doable with 25% of the total mining power.</p>
+
+<h5>Privacy</h5>
+<p>Although the public can see all transaction (someone sent something to someone else). But as long the owner of public key (or address) is kept anonymous. The public cannot figure out who the someone is.</p>
+<p>As an additional safe gauge, a new key-pair should be used for each transaction to keep them from being linked to a common owner. Some linking is still unavoidable with multi-input transactions, which reveal that these inputs were owned by the same owner (likely kept in the same wallet).</p>
+
+<h5>Maintaining the Bitcoin Software - Soft Fork vs. Hard Fork</h5>
+<p>In traditional software, a bug can be fixed with a patch. In bitcoin, it is not so simple. Because transactions on a blockchain cannot be undone, deploying a smart contract is a bit like launching a rocket - The software cannot make a mistake. There is no UNDO.</p>
+<p>A soft fork is a backward-compatible upgrade of the blockchain protocol; while a hard fork is not. <span lang="en">The upgrade allows   nodes running previous versions continue to run in the network, with some functional limitations. Soft forks do not   generate a new cryptocurrency; while hard forks do.</span></p>
+<p>[TODO]</p>
+
+<h4>Pros and Cons of Bitcoin</h4>
+<p>Pros:</p>
+<ul>
+<li>Decentralized (Distributed) without a central authority.</li>
+<li>Bitcoin has a fixed amount of 21 million BTC. It cannot be issued indefinitely - inflation proof?</li>
+<li>Ledger is Immutable and secure.</li>
+<li>Low transaction cost.</li>
+<li>New and beautiful technology.</li>
+</ul>
+
+<p>Cons:</p>
+<ul>
+<li>Anonymous (with only an address and public key), enable illegal activities, money laundering and black money.</li>
+<li>Speculative, highly fluctuating price.</li>
+<li>Long transaction time of at least 10 minutes to record a transaction in a new block; and 60 minutes (6 blocks) to be certain that the block is not in a wrong branch of a fork.</li>
+<li>Loss of private key?</li>
+<li>Irreversible transaction? No mistake allowed?</li>
+<li>Distribution of wealth?</li>
+</ul>
+
+<p>Blockchain with the consensus protocol like PoW solves the problem of agreement on the valid data in a distributed environment. However, it is resource intensive (computational power and hence electricity) and slow (every 10 minutes to create a new block to clear some transactions) to run the PoW. It requires a lot of storage (500GB) as all full nodes need to store the entire blockchain, resulted in scaling problem. Furthermore, everyone needs to know about everything in blockchain, which resulted in privacy problem (not for sharing private data in blockchain). </p>
+<p> Blockchain is an immutable (append-only) and distributed (without centralized control and censorship resistance) database, but is an expensive, slow, and inefficient database.</p>
+<p>Bitcoin is a public, open system. Anyone connected to the network can see every transaction ever recorded in the blockchain.</p>
+
+<h3>Review of Cryptographic Techniques and Encoding in Bitcoin</h3>
+
+<h4>Hashing</h4>
+
+<h5>Cryptographic Hash Functions</h5>
+<p>A cryptographic hash function is a function that produces a fixed-length &quot;shorthand&quot; output y (called hash, digest, or digital fingerprint) from an input x of any length. It has the following characteristics:</p>
+<ol>
+<li>Fixed-Length Output: For example, in <code> y=SHA256(x)</code>, y is 256-bit (32-byte) binary number for any input x of any length. Hence, hash can be used as an <em>identifier</em> for data such as bitcoin addresses, blocks and transactions. Examples [TODO]</li>
+<li>Near Random and Unique Output: Changing even one bit in the input x produces a very different output y. Hence, hash can be used to verify that the data has not been tampered with, i.e., data <em>integrity</em>.</li>
+<li>One-Way function (or trapdoor): It is easy to compute the output y from input x; but it is difficult (impossible) to deduce input x from output y - you simply have to try all combinations of x's in a brute-force manner to get the desired y. This is known as one-way function, e.g., <code>y = x^3 + log x + x*sin x</code> - it is easy to compute y from x, but very hard to find x from y.</li>
+</ol>
+
+<p>A good hash function shall be:</p>
+<ol>
+<li>Computational efficient.</li>
+<li>&quot;Hard&quot; (and take a long time) to find two inputs x1 and x2 that hash to the same output y, known as <em>Collision Resistance</em>.</li>
+<li>&quot;Hard&quot; to infer any property of input x (e.g., whether input is odd or even) from the output y.</li>
+<li>Outputs are evenly distributed, and look random.</li>
+</ol>
+
+<p>Storing Passwords: you should store the password hash in your databases, instead of plain password. Hackers will not be able to recover the plain password from the hash.</p>
+
+<h5>Hashing in Bitcoin</h5>
+<p>Bitcoin uses hash for the followings:</p>
+<ol>
+<li><em>Identifier</em>: hash is a fixed-width shorthand for a long data. Hence, hash can be used as an <em>identifier</em> for data. Bitcoin uses hash as the identifier for (a) addresses (shorthand of public key) (b) transactions (c) blocks (block header hash).</li>
+<li><em>Integrity</em>: Even small tampering of data results in a very different hash. Hence, hash can be used to detect data tampering, to ensure the <em>integrity</em> of the data. Bitcoin uses hash to ensure the integrity of (a) transactions (b) blocks.</li>
+<li><em>Proof-of-Work</em>: Satoshi innovatively uses hash in Bitcoin's <em>Proof-of-Work (PoW) consensus protocol</em>, which give miners incentive (in the form of new coins and transaction fee) to commit computational efforts to create new block of transactions, and hence maintain the transaction ledger.</li>
+</ol>
+
+<p>In summary, hash is used in Bitcoin for:</p>
+<ol>
+<li>addresses (identifier) (shorthand of public key)</li>
+<li>transactions (identifier and integrity)</li>
+<li>blocks (identifier and integrity)</li>
+<li>proof-of-work consensus algorithm (computational efforts)</li>
+</ol>
+
+<h5>Hash Function: SHA256</h5>
+<p>Bitcoin uses SHA256 Hash (Secure Hash Algorithm 256-bit) which produces hash of 256-bit (32-byte)</p>
+<p>[TODO]</p>
+
+<h5>Hash Function: RIPEMD160</h5>
+<p>Bitcoin uses RIPEMD160 to produce a 160-bit address from public key, i.e.,</p>
+<pre class="command">address = RIPEMD160(SHA256(pubKey))</pre>
+<p>[TODO]</p>
+
+<h5>Double Hash</h5>
+<p>Bitcoin always performs double hash, e.g., <code>SHA256(SHA256(data))</code> for block header and transaction and <code>RIPEMD160(SHA256(pubKey))</code> for address.</p>
+<p>[TODO] Why double hash?</p>
+
+<h5>Hash Collision</h5>
+<p>Hash collision occurs when two inputs x1 and x2 have the same output hash.</p>
+<p>[TODO] How Bitcoin deals with hash collision?</p>
+
+<h5>Testing Scripts - Python <code>hashlib</code></h5>
+
+<p>Python hashlib (Secure hashes and message digests) module provides SHA-224, SHA-256, SHA-384, SHA-512 hash algorithms, and platform optimized versions of the older MD5 and SHA1.</p>
+
+<pre class="command">&gt;&gt;&gt; import hashlib
+&gt;&gt;&gt; h1 = hashlib.sha256(b&quot;This is a long message&quot;)
+&gt;&gt;&gt; h1.hexdigest()
+<span class="output">'56514b402d7bf504c2ee559075d7ce290b4ac8edd01cdbe4238f839048e4855d'</span>  <span class="comment"># 256-bit, 32-byte, 64-hex</span>
+&gt;&gt;&gt; h1.digest()
+<span class="output">b'VQK@-{\xf5\x04\xc2\xeeU\x90u\xd7\xce)\x0bJ\xc8\xed\xd0\x1c\xdb\xe4#\x8f\x83\x90H\xe4\x85]'</span>
+   <span class="comment"># printable characters are printed, non-printables display in hex</span>
+&gt;&gt;&gt; h1.digest_size
+<span class="output">32</span>   <span class="comment"># in bytes</span>
+ 
+&gt;&gt;&gt; h2 = hashlib.sha256(b&quot;this is a long message&quot;).hexdigest()      <span class="comment"># change 't' to lowercase</span>
+<span class="output">'25e954760a6a9106e4a3f4d3abca3b9108e485a459736584eef158daf63f4aca'</span>  <span class="comment"># totally different hash</span>
+ 
+&gt;&gt;&gt; h3 = hashlib.sha256()    <span class="comment"># construct a hash</span>
+&gt;&gt;&gt; h3.update(b&quot;this is&quot;)    <span class="comment"># update</span>
+&gt;&gt;&gt; h3.update(b&quot; a long message&quot;)  <span class="comment"># update again</span>
+&gt;&gt;&gt; h3.hexdigest()
+<span class="output">'25e954760a6a9106e4a3f4d3abca3b9108e485a459736584eef158daf63f4aca'</span>  <span class="comment"># same as above</span>
+
+<span class="comment"># Trying RIPEMD160 used in bitcoin address</span>
+&gt;&gt;&gt; data = b"This is a long message"
+&gt;&gt;&gt; hashlib.new('ripemd160', data).hexdigest()
+<span class="output">'115da04c16ccbe9ddd0b5ce168fa351a55e707b6'</span>   <span class="comment"># 160-bit, 20-byte, 40-hex</span>
+ 
+&gt;&gt;&gt; h160 = hashlib.new('ripemd160', b"this is a long message")
+&gt;&gt;&gt; h160.hexdigest()
+<span class="output">'088434da9c450c48b76bd0a6afa4b4c389c6539b'</span>
+&gt;&gt;&gt; h160.digest_size
+<span class="output">20</span>   <span class="comment"># in bytes</span></pre>
+
+<p>[TODO]</p>
+
+<h4>Cryptographic Symmetric/Asymmetric Encryption</h4>
+<p>Suppose that Alice sends a message to Bob. You can use cryptographic encryption to provide:</p>
+<ul>
+<li><span class="new">Confidentiality (Privacy)</span>: only Bob can read the message; no one else can.</li>
+<li><span class="new">Integrity</span>: the message has not been tampered during transmission.</li>
+<li><span class="new">Authentication</span>: the message comes from Alice and no one else.</li>
+<li><span class="new">Non-repudiation</span>: Alice cannot deny the content of the message.</li>
+</ul>
+
+<h5>Symmetric Encryption</h5>
+
+<p>In symmetric encryption, a single key is used to encrypt a message; and the same key is used to decrypt the encrypted message.</p>
+
+<p>Symmetric encryption schemes include .... [TODO]</p>
+
+<h5>Asymmetric Encryption</h5>
+
+<p>Asymmetric encryption uses one pair of key, called public key and private key. The public key is available to everyone. The private key must be kept secretly by the owner. Only the owner and no one else has this private key.</p>
+<p>You can use one of the key to encrypt the message; you need to use the other key to decrypt the ciphertext.</p>
+
+<p>Asymmetric encryption schemes include RSA, Elliptic Curve, ... [TODO]</p>
+<p>Bitcoin uses Elliptic Curve Digital Signature Algorithm (ECDSA) for keys.</p>
+
+<h5>Confidentially (Privacy)</h5>
+<p>Confidentiality (or privacy) is the most common usage of cryptographic encryption.</p>
+<p>Suppose Alice wants to send an encrypted secret message to Bob. She wants to ensure that no one else can decrypt and read the message. Alice uses the public key of Bob to encrypt a message and send to Bob. Only Bob has the private key to decrypt and read the message. No one else can read the message.</p>
+
+<img src="images/Crypto_Confidentiality.png" alt="Confidentiality" class="image-center">
+<p>In this scheme, the secret can be revealed without revealing the private key.</p>
+<p>Bitcoin does not apply encryption for confidentiality, as all transactions are public and open-to-all.</p>
+
+<h5>Testing Scripts</h5>
+<p>[TODO]</p>
+
+
+
+<h4>Digital Signature</h4>
+<p>Digital signature, like the analog hand signature, certifies a message by the signer.</p>
+<p>Suppose that Alice sends a message (to a bank): &quot;Transfer $100 from Alice to Bob&quot;, and wishes to sign and certify this message.  Alice uses her private key to encrypt (or sign) the message to create a signature; and sends out the message, signature and her public key. Anyone (the bank) can use Alice's public key to decrypt the signature and verify the message.</p>
+<img src="images/Crypto_DigitalSignature.png" alt="digital signature" class="image-center">
+
+<p>For better efficiency, Alice shall sign a hash of the message (which is shorter, and  hence faster). The verifiers can decrypt the signature and compare with the message hash.</p>
+
+<img src="images/Crypto_DigitalSignatureMessageHash.png" alt="digital signature on message hash" class="image-center">
+
+<h5>Public/Private keys and Digital Signature in Bitcoin</h5>
+<p>Bitcoin uses the public key (or a hash of public key called address) as the identity of the receiver to lock up BTC. Only that receiver has the matching private key to sign a transaction to spend (or unlock) the BTC.</p>
+
+<p>Bitcoin uses digital signature to unlock a BTC for payment to ensure:</p>
+<ol>
+<li>authenticate the owner of BTC</li>
+<li>non-repudiation of transaction</li>
+<li>integrity of transaction detail</li>
+</ol>
+
+<p>In Bitcoin, all transactions are signed by the owners of the BTC, preventing anyone from forging a transaction or altering transaction data.</p>
+
+<h5>Testing Scripts</h5>
+<p>[TODO]</p>
+
+
+<h4>Base58 and Base58Check Text Encoding for Binary Numbers</h4>
+<p>Recall that <span class="new">Base2</span> encoding uses 2 symbols (0 and 1); <span class="new">base10</span> uses 10 (0-9); and <span class="new">base16</span> uses 16 (0-9, A-F).</p>
+<p><span class="new">ASCII</span>, which is used for encoding texts, symbols and controls, cannot be used to display (or print) binary numbers, as many ASCII codes are non-printable.</p>
+<p><span class="lead">Base16 (Hexadecimal) Encoding</span>: Partition the binary stream into 4-bit chunk. Encode each 4-bit chunk with a hex digit (<code>0-9</code>, <code>A-F</code> or <code>a-f</code>). All 16 hex digits are displayable. Since each hex digit is stored as 8-bit ASCII, the efficiency is 50%. This is poor. For example [TODO]</p>
+<p><span class="lead">Base64 Encoding</span>: Base64 is a text encoding format for binary streams. Base64 uses 64 printable ASCII symbols (lowercase letters <code>a-z</code>,  uppercase letters <code>A-Z</code>, numbers <code>0-9</code>, plus 2 special symbols <code>+</code> and <code>/</code>) to encode each 6-bit binary number <code>[0b000000(0), 0b111111(63)]</code>. The efficiency is 6/8 = 75%.  Base64 is padded with <code>=</code>. For example: [TODO]</p>
+<p><span class="lead">Base58 Encoding</span>: Base58 is a text-based binary-encoding format used in Bitcoin. Base58 is a subset of Base64, using 58 printable ASCII symbols: numbers, uppercase letters, lowercase letters, but omitting 4 error-prone symbols 0 (zero), O (capital o), l (lowercase L), and I (capital i) (26+26+10-4=58). To perform Base58 encoding, you need to repeatedly modulus the input with 58 (like converting decimal to hexadecimal). The efficiency of Base58 is slightly lower than Base64 - at about 73%. For example [TODO]</p>
+<p><span class="lead">Base58Check Encoding</span>: Base58Check is a Base58 encoding format with an additional 4-byte error-checking <em>checksum</em> appended. The checksum is derived from a hash of the data, which is used to detect tampering and typing errors.</p>
+<img src="images/Bitcoin_Base58CheckEncoding.png" alt="Base58check encoding" class="image-center">
+<p>The Bitcoin's Base58Check encoding steps are:</p>
+<ol>
+<li>A prefix version number (1-byte) is added in front of the data. For example, address has the prefix of <code>0</code>, private key <code>0x80</code>.</li>
+<li>Double hash:
+<pre class="command">h = SHA256(SHA256(prefix + data))</pre></li>
+<li>Extract the first 4-byte of the 32-byte hash as the checksum, and append the checksum to the data.</li>
+<li>Base58 encode:
+<pre class="command">base58check = base58(1-byte-prefix + data + 4-byte-checksum)</pre></li>
+</ol>
+<p>Base58Check is used in encoding 160-bit addresses, private key, and etc.</p>
+<p>For example: Address [TODO]</p>
+
+<h5>Testing Scripts</h5>
+<p>[TODO]</p>
+
+
+<h4>Little-Endian Format</h4>
+<p>In computing, endianess is the order of bytes of a word in computer memory. For example, for a 4-byte (32-bit) integer say <code>0x12345678</code>, a big-endian system stores the most significant byte (<code>0x12</code>) of a word at the smallest memory address and the least significant byte (<code>0x78</code>) at the largest, i.e., 12 34 56 78 in increasing memory addresses. A little-endian system, in contrast, stores the least-significant byte (0x78) at the smallest address, i.e., 78 56 34 12.</p>
+
+<p>Bitcoin uses little-endian format.</p>
+
+<h3>Bitcoin - More than the Basics</h3>
+
+<h5>The Raw Bitcoin Bit Streams</h5>
+<ul>
+<li>Blockchain database is public and open to anyone. You could install your own Bitcoin nodes to get the full blockchain database.  You could also use a online Bitcoin Explorer (such as Blockstream Explorer @ <a href="https://blockstream.info/">https://blockstream.info/</a>, BlockCypher @ <a href="https://live.blockcypher.com/btc/">https://live.blockcypher.com/btc/</a>, Blockchain.com's Explorer @ <a href="https://www.blockchain.com/explorer">https://www.blockchain.com/explorer</a>) which connects to the bitcoin blockchain and show the detail of all blocks.</li>
+<li>You can find the raw transaction format definition from BitcoinDeveloper's reference @ <a href="https://developer.bitcoin.org/reference/transactions.html">https://developer.bitcoin.org/reference/transactions.html</a>.</li>
+</ul>
+
+<h4>Transaction Data Format</h4>
+<p>This data is taken from Saylor Academy's &quot;<a href="https://learn.saylor.org/mod/book/view.php?id=36308&chapterid=18904">CS120: Bitcoin for Developers</a>&quot;.</p>
+
+<h5>Example</h5>
+
+<p>Suppose that Alice uses an UTxO of 0.1 BTC to pay Bob 0.015 BTC, with return change of 0.0845 BTC and transaction fee of 0.0005 BTC, illustrated as follows:</p>
+
+<img src="images/Bitcoin_TransactionRawFormatExample.png" alt="transaction raw format example" class="image-center">
+<p>The transaction record bitstream is:</p>
+<p>[TODO]</p>
+<p>The raw transaction record can be decoded in JSON format as follows:</p>
+<pre class="command">{
+  "version": 1,
+  "locktime": 0,
+  <span class="comment">// input array</span>
+  "vin": [
+    {
+      <span class="comment">// 32-byte (256-bit) SHA256 txID of the UTxO used for this transaction</span>
+      "txID": "7957a35fe64f80d234d76d83a2a8f1a0d8149a41d81de548f0a65a8a999f6f18",
+      <span class="comment">// 4-byte Output Index of the UTxO (to handle multiple outputs in a transaction)</span>
+      "vout": 0,
+      <span class="comment">// &quot;Unlocking&quot; Signature Script, paired with &quot;locking&quot; ScriptPubKey of the UTxO used
+</span>      "scriptSig" : "3045022100884d142d86652a3f47ba4746ec719bbfbd040a570b1deccb...<span class="comment">(truncated)</span>",
+      <span class="comment">// 4-byte Sequence Number, default is 0xffffffff (4294967295)</span>
+      "sequence": 4294967295
+    }
+  ],
+  <span class="comment">// output array</span>
+  "vout": [
+    {
+      <span class="comment">// 8-byte value transferred</span>
+      "value": 0.01500000,
+      <span class="comment">// Public key script used to identify this recipient Bob's 20-byte (160-bit) address</span>
+      "scriptPubKey": "OP_DUP OP_HASH160 <span class="highlight">ab68025513c3dbd2f7b92a94e0581f5d50f654e7</span> OP_EQUALVERIFY OP_CHECKSIG"
+    },
+    {
+      <span class="comment">// This output is used to return the change back to Alice's 160-bit address</span>
+      "value": 0.08450000,
+      "scriptPubKey": "OP_DUP OP_HASH160 <span class="highlight">7f9b1a7fb68d60c536c2fd8aeaa53a8f3cc025a8</span> OP_EQUALVERIFY OP_CHECKSIG",
+    }
+  ]
+}</pre>
+<h5>Transaction Data Format</h5>
+<table class="table-zebra">
+<tr>
+<th>Byte</th>
+<th colspan="2">Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>4</td>
+<td colspan="2"><code>version</code></td>
+<td><code>int32_t</code></td>
+<td>Transaction version number</td>
+</tr>
+<tr>
+<td>1-9<br>
+<code>count</code></td>
+<td><code>txIns</code></td>
+<td><code>txInCount<br>
+txInArray</code></td>
+<td><code>compactSize</code><br>
+-</td>
+<td>Number of inputs<br>
+Array of Transaction inputs (<code>txIn</code>)</td>
+</tr>
+<tr>
+<td>1-9<br>
+<code>count</code></td>
+<td><code>txOuts</code></td>
+<td><code>txOutCount<br>
+txOutArray</code></td>
+<td><code>compactSize<br>
+- </code></td>
+<td>Number of outputs<br>
+Array of Transaction outputs (<code>txOut</code>)</td>
+</tr>
+<tr>
+<td>4</td>
+<td colspan="2"><code>lockTime</code></td>
+<td><code>uint32_t</code></td>
+<td>lock time or block number</td>
+</tr>
+</table>
+<p>Note: <code>int16_t</code>, <code>int32_t</code>, <code>int64_t</code> are 16, 32, and 64-bit signed integer type (<code>typedef</code>) in Standard C library. <code>int</code> in C could be 16 or 32-bit. <code>uint16_t</code>, <code>uint32_t</code>, <code>uint64_t</code> are unsigned integers.</p>
+<h5>Variable-Length &quot;<code>compactSize</code>&quot; Unsigned Integers</h5>
+<p>The &quot;<code>compactSize</code>&quot; refer to a 1-9 byte variable-length encoded unsigned integer (up to 64-bit) used for count and length, defined as follows:</p>
+<table class="table-zebra">
+<tr>
+<th>Bytes</th>
+<th>Value Range</th>
+<th>Format</th>
+</tr>
+<tr>
+<td>1</td>
+<td><code>[0, 252]</code></td>
+<td><code>uint8_t</code> up to 252. Numbers 253, 254 and 255 used below.</td>
+</tr>
+<tr>
+<td>3 (1+2)</td>
+<td><code>[253, 0xffff]</code></td>
+<td><code>0xfd</code> (253) followed by the number in <code>uint16_t</code> (2 bytes)</td>
+</tr>
+<tr>
+<td>5 (1+4)</td>
+<td><code>[0x1_0000, 0xffff_ffff]</code></td>
+<td><code>0xfe</code> (254) followed by the number in <code>uint32_t</code> (4 bytes)</td>
+</tr>
+<tr>
+<td>9 (1+8)</td>
+<td><code>[0x1_0000_0000, 0xffff_ffff_ffff_ffff]</code></td>
+<td><code>0xff</code> (255) followed by the number in <code>uint64_t</code> (8 bytes)</td>
+</tr>
+</table>
+
+<h5>Transaction Input <code>txIn</code></h5>
+<table class="table-zebra">
+<tr>
+<th>Byte</th>
+<th colspan="2">Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>32<br>
+4</td>
+<td>Referenced UTxO</td>
+<td><code>txID<br>
+outputIndex</code></td>
+<td><code>hash<br>
+int32_t</code></td>
+<td>Transaction ID of the referenced UTxO<br>
+Output Index of the referenced UTxO</td>
+</tr>
+<tr>
+<td>1-9<br>
+length</td>
+<td>Unlocking Script<br>
+(<code>scriptSig</code>)</td>
+<td><code>scriptLength<br>
+scriptSig</code></td>
+<td><code>compactSize<br>
+-</code></td>
+<td>Length of the script<br>
+Signature script to unlock (and spend) the UTxO</td>
+</tr>
+<tr>
+<td>4</td>
+<td colspan="2"><code>sequenceNumber</code></td>
+<td><code>uint32_t</code></td>
+<td>Used for locktime or disabled (<code>0xFFFFFFFF</code>)</td>
+</tr>
+</table>
+<h5>Transaction Output <code>txOut</code></h5>
+<table class="table-zebra">
+<tr>
+<th>Byte</th>
+<th colspan="2">Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>8</td>
+<td colspan="2"><code>value</code></td>
+<td><code>int64_t</code></td>
+<td>Value to spend in satoshis (<code>10^-8</code> BTC)</td>
+</tr>
+<tr>
+<td>1-9<br> 
+length
+</td>
+<td>Locking Script<br>
+(<code>scriptPublicKey</code>)</td>
+<td><code>scriptLength<br>
+scriptPubKey</code></td>
+<td><code>compactSize<br>
+-</code></td>
+<td>Length of the script<br>
+Public key script to lock this UTxO</td>
+</tr>
+</table>
+<h5>Transaction Output's <code>scriptPubKey</code></h5>
+<p>A transaction output is locked by a locking script called scriptPubKey or witness script. [TODO]</p>
+<h5>Transaction Input's <code>scriptSig</code></h5>
+<p>A transaction input must consume an UTxO. The sender must provide proof of ownership through a matching unlocking script called <code>scriptSig</code>, which contains a signature and the public key of the sender (for decrypting the signature after verifying with the address - to be explained later).</p>
+<table class="table-zebra">
+<tr>
+<th>Byte</th>
+<th colspan="2">Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>1-9<br> 
+length
+</td>
+<td>Signature</td>
+<td><code>signatureLength<br>
+signature</code></td>
+<td><code>compactSize<br>
+-</code></td>
+<td>Length of signature<br>
+Signature with a SIGHASH to unlock the referenced UTxO by signing (encrypting) the transaction with sender's private key</td>
+</tr>
+<tr>
+<td>1-9<br> 
+length
+</td>
+<td>Public key</td>
+<td><code>publicKeyLength<br>
+publicKey</code></td>
+<td><code>compactSize<br>
+-</code></td>
+<td>Length of the public key<br>
+Public key (un-hash)</td>
+</tr>
+</table>
+
+<h5>Coinbase Transaction's Input</h5>
+<p>The first transaction of a new block is a coinbase transaction, which contains the rewards (new coins and transaction fee) given to the successful miner.  The coinbase transaction input (called coinbase) does not reference an UTxO. It has the following format:</p>
+<table class="table-zebra">
+<tr>
+<th>Byte</th>
+<th colspan="2">Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>32<br>
+4</td>
+<td><code>null</code></td>
+<td><code>txID<br>
+outputIndex</code></td>
+<td>-<br>
+<code>int32_t</code></td>
+<td>32-byte <code>null</code>: no referenced UTxO<br>
+4-byte <code>null</code>: no output Index</td>
+</tr>
+<tr>
+<td>1-9<br>
+varies<br>
+varies</td>
+<td>Coinbase Data</td>
+<td><code>length<br>
+height<br>
+scriptCoinbase</code></td>
+<td><code>compactSize<br>
+-<br>
+-</code></td>
+<td>Length of the coinbase data<br>
+block height<br>
+coinbase data (arbitrary miner data)<br></td>
+</tr>
+<tr>
+<td>4</td>
+<td colspan="2"><code>sequenceNumber</code></td>
+<td><code>uint32_t</code></td>
+<td>Sequence Number</td>
+</tr>
+</table>
+
+<p>The coinbase data are arbitrary and can be used as an extra nonce, in case of exhausting all the values in the 32-bit nonce (to be explained later).</p>
+<p>The coinbase transaction's output has the same format.</p>
+
+<h5>Transaction Scripts</h5>
+<p>Bitcoin supports transaction scripts, e.g., locking script (<code>scriptPubKey</code>) and unlocking script (<code>scriptSig</code>). The script is written in a &quot;Forth-like reverse-polish notation stack-based execution language&quot;. When a transaction is validated, the unlocking script in each input is executed alongside the matching locking script to see if it satisfies the spending condition.</p>
+<p>Bitcoin's scripting language is called a stack-based language because it uses a data structure called a stack (or Last-In-First-Out (LIFO) queue). A stack has two operations: <code>push()</code> and <code>pop()</code>. Push adds an item on top of the stack (TOS). Pop removes the top item from the stack. The script is executed by processing items from left to right. Numbers (data constants) are pushed onto the stack. Operators push or pop one or more items from the stack, act on them, and might push a result back onto the stack.</p>
+
+<h5>Pay-to-Public-Key-Hash (P2PKH) Scripts</h5>
+<p>Bitcoin supports pay-to-address (aka pay-to-public-key-hash). It also supports pay-to-public-key, but less commonly used.</p>
+
+<p>Recall that address is a hash of public key, i.e., <code>address=hash160(SHA256(pubKey))</code>. The shorter 160-bit address (public key hash) is used in the transaction output to identify the recipient, instead of the longer 256-bit public key.  There is no way to recover public key from the address. But the public key is needed to decrypt the signature. Hence, the public key is kept in the <code>scriptSig</code> together with the signature, as illustrated.</p>
+<img src="images/Bitcoin_P2PKH.png" alt="P2PKH" class="image-center">
+<p>Combining 2 scripts, first verify the public key vs. address of the signer, then check the signature using the public key of the signer.</p>
+<pre class="command">
+<span class="new">scriptSig:</span>    &lt;sig&gt; &lt;pubKeyA&gt;
+<span class="new">scriptPubKey:</span> OP_DUP OP_HASH160 &lt;addressA&gt; OP_EQUALVERIFY OP_CHECKSIG</pre>
+
+<p>The steps are:</p>
+<pre class="command">
+   <span class="comment">T [empty]     // T is top-of-stack</span>
+push &lt;sig&gt;
+   <span class="comment">T &lt;sig&gt;</span>
+push &lt;publicKeyA&gt;
+   <span class="comment">T &lt;publicKeyA&gt; &lt;sig&gt;</span>
+OP_DUP: push(push(pop()))
+   <span class="comment">T &lt;publicKeyA&gt; &lt;publicKeyA&gt; &lt;sig&gt;</span>
+OP_HASH160: push(hash160(pop()))
+   <span class="comment">T &lt;addressA&gt; &lt;publicKeyA&gt; &lt;sig&gt;</span>
+push &lt;addressA&gt;
+   <span class="comment">T &lt;addressA&gt; &lt;addressA&gt; &lt;publicKeyA&gt; &lt;sig&gt;</span>
+OP_EQUALVERIFY: compare(pop(), pop()), terminate if it fails
+   <span class="comment">T &lt;publicKeyA&gt; &lt;sig&gt;</span>
+OP_CHECKSIG: pubKeyA = pop(), sig = pop(), decode(sig, pubKeyA) and check
+   <span class="comment">T [empty]</span></pre>
+
+
+
+<h5>P2SH (Pay-To-Script-Hash)</h5>
+<p>[TODO]</p>
+
+<h5>Transaction Fee</h5>
+<p>User's wallet can compute a transaction fee automatically.</p>
+<p>Transaction fee shall be based on the number of kilobytes in the transaction, instead of the value of transaction. Transaction fees are set based on market forces within the bitcoin network. Miners prioritize transactions based on many different criteria, including fees, and might even process transactions for free under certain circumstances. Transaction fees affect the processing priority, meaning that a transaction with sufficient fees is likely to be included in the next block mined, whereas a transaction with insufficient or no fees might be delayed, processed on a best-effort basis after a few blocks, or not processed at all. Transaction fees are not mandatory, and transactions without fees might be processed eventually; however, including transaction fees encourages priority processing.</p>
+<p>Many wallet applications use third-party services for fee calculations. One popular service is https://bitcoinfees.earn.com/, which provides an API and a visual chart showing the fee in satoshi/byte for different priorities.</p>
+<p>Static fees are no longer viable on the bitcoin network. Wallets that set static fees will produce a poor user experience as transactions will often get "stuck" and remain unconfirmed.</p>
+
+<h4>Block Data Format</h4>
+
+<h5>Block Height and the Reward Halving Scheme</h5>
+<p>Block height, starting from 0 (for Genesis Block), indicates the depth of the block in the blockchain.</p>
+<p>The successful miners receive rewards in the form of new coins (starting from 50 BTC) and transaction fees. Every 210,000 blocks, the rewarded new coin is halved. The scheme continues until the reward cannot be halved. All blocks with a block height less than 6,930,000 (=33 * 210,000) are entitled to receive a reward. After that, the reward of 1 satoshi cannot be halved, and the reward stopped.</p>
+<p>As at May 2023, the block height is 787,767 (= 3.75 * 210,000). The new coin rewards is halved three times from an initial of 50, to 25, to 12.5, to 6.25 BTC.</p>
+<h5>Block Header (80-Byte)</h5>
+<table class="table-zebra">
+<tr>
+<th>Bytes</th>
+<th>Field</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>4</td>
+<td><code>version</code></td>
+<td>Version number of the software</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Previous Block header Hash</td>
+<td>Referenced previous block</td>
+</tr>
+<tr>
+<td>32</td>
+<td>Merkle Root</td>
+<td>Merkle root of the Merkle tree hash of transactions</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Timestamp</td>
+<td>Creation time of this block, in Unix epoch time (number of seconds since January 1, 1970)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Difficulty Target Hash nbits</td>
+<td>The Proof-of-Work difficulty target for this block</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Nonce</td>
+<td>Randomly selected seed used by Proof-of-Work</td>
+</tr>
+</table>
+<h5>Block</h5>
+<table class="table-zebra">
+<tr>
+<th>Byte</th>
+<th colspan="2">Field</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+<tr>
+<td>4</td>
+<td colspan="2">Block Size<code></code></td>
+<td><code>int32_t</code></td>
+<td>Size of the block, in bytes, following this field</td>
+</tr>
+<tr>
+<td>80</td>
+<td colspan="2">Block Header<code></code></td>
+<td><code>-</code></td>
+<td>As above</td>
+</tr>
+<tr>
+<td>1-9<br> 
+count
+</td>
+<td>Transactions (tx's)</td>
+<td><code>tx_count<br>
+tx_array</code></td>
+<td><code>compactSize<br>
+-</code></td>
+<td>Number of transactions in this block<br>
+Raw Transactions Array</td>
+</tr>
+</table>
+
+<h5>Block Identifiers</h5>
+<p>The primary identifier of a block is the block header hash, computed via double hash: <code>SHA256(SHA256(80-byte-block-header))</code>. The current block header hash is not stored in the current block, but the next block in the chain to ensure integrity of the blockchain.</p>
+<p>A second way to identify a block is its position in the blockchain, called <em>block height</em>, starting from 0 for the genesis block.  The current block height refers to the number of blocks currently in the blockchain. For example, the current block height (as at Apr 2023) is 787,799, indicating the total number of blocks in the blockchain. The maximum block height is 6,929,999 (=33*210,000-1).</p>
+
+<h5>Genesis Block</h5>
+<p>The first block in the blockchain is called the <em>genesis block</em>, and was created by Satoshi Nakamoto in January 9, 2009.  It is the common ancestor of all the blocks in the blockchain.  The genesis block is hardcoded in the bitcoin  software.</p>
+<p>The genesis block raw data is:</p>
+<p>[TODO]</p>
+<p> The genesis block decoded in JSON format is as follows:</p>
+<pre class="command">
+{
+    "hash" : "<span class="new">000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f</span>",
+    "confirmations" : 308321,
+    "size" : 285,
+    "height" : 0,
+    "version" : 1,
+    "merkleroot" : "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b",
+    "tx" : [
+        "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b"
+    ],
+    "time" : 1231006505,
+    "nonce" : 2083236893,
+    "bits" : "<span class="new">1d00ffff</span>",
+    "difficulty" : <span class="new">1.00000000</span>,
+    "nextblockhash" : "00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048"
+}</pre>
+<p>The block 277,314 has the following data (data taken from "Saylor Academy CS210"):</p>
+<pre class="command">
+{
+    "size" : 43560,
+    "version" : 2,
+    "previousblockhash" :
+        "00000000000000027e7ba6fe7bad39faf3b5a83daed765f05f7d1b71a1632249",
+    "merkleroot" :
+        "5e049f4030e0ab2debb92378f53c0a6e09548aea083f3ab25e1d94ea1155e29d",
+    "time" : 1388185038,
+    "difficulty" : 1180923195.25802612,
+    "nonce" : 4215469401,
+    "tx" : [
+        "257e7497fb8bc68421eb2c7b699dbab234831600e7352f0d9e6522c7cf3f6c77",
+         ......
+        "05cfd38f6ae6aa83674cc99e4d75a1458c165b7ab84725eda41d018a09176634"
+    ]
+}</pre>
+
+<h5>Block Pace (Block Interval)</h5>
+<p>Block Pace (or Block Interval) in minutes. In bitcoin, the target block pace is 10 minutes. In practice, block pace could be more than or less than 10 minutes.</p>
+
+<h5>The Difficulty Target to achieve Block Pace of 10 minutes</h5>
+<p>The process of mining is to hash the block header repeatedly, changing the nonce, until the resulting hash (<code>h</code>) is equal or less than a hash target (<code>hashTarget</code>) specified in the block header, i.e., <code>h &lt;= hashTarget</code>.</p>
+<p>The hash target is  32-byte (256-bit). But only 4-byte are allocated in the header to specify its value. <code>hashTarget</code> is specified in mantissa-exponent notation (like scientific number but in exponent of 256). The first byte is the exponent, followed by 3 byte of mantissa (coefficient). For example, if target bits is <code>0x1705c739</code>, the exponent is <code>0x17</code> and the mantissa is <code>0x05c739</code>.</p>
+<p>The formula to calculate the <code>hashTarget</code> is:</p>
+<pre class="command">hashTarget = mantissa * 2^(8*(exponent-3))</pre>
+<p>In our example, the <code>hashTarget</code> is:</p>
+
+<pre class="command">
+hashTarget = 0x05c739 * 2^(8*(0x17-3)) = 0x05c739 * 2^160
+= 0x05c739 [160-bit of 0's]
+= [72 bits of 0's] 05c739[=24 bits] [160 bits of 0's] (total 256-bit)
+= 72+4+1 = 77 leading zeros</pre>
+
+<p>Take note that any hash computed &lt;= <code>hashTarget</code> is accepted. In the above example, some values with 77 leading zeros (more than <code>hashTarget</code>) will be rejected, but values with 78 or more leading zeros will certainly be accepted, as they are definitely smaller than <code>hashTarget</code>.</p>
+
+<h5>Re-Targeting to adjust the Difficulty to control the block pace</h5>
+
+<p>The <code>hashTarget</code> is a dynamic parameter that is periodically adjusted to meet the desired target of 10-minute block pace. Every 2,016 blocks (about 2 weeks), all nodes adjust this value based on the following equation.</p>
+
+<pre class="command">newHashTarget = oldHashTarget * (Actual Time of Last 2016 Blocks / 2016 * 10 minutes)</pre>
+
+<p> If the network is creating blocks faster than every 10 minutes, the difficulty increases (<code>hashTarget</code> decreases with more leading zeros). If block discovery is slower than expected, the difficulty decreases (<code>hashTarget</code> increases with less leading zeros).</p>
+<p>To avoid extreme volatility in the difficulty, the re-targeting adjustment must be less than a factor of four (4) per cycle. i.e., x4 or x1/4. If the required target adjustment is greater than a factor of four, it will be adjusted by a factor of 4 and not more.</p>
+<h5>&quot;Difficulty&quot; Value</h5>
+<p>Many Bitcoin explorer shows a &quot;difficulty&quot; value, which is measure of how difficult it is to find a hash below the <code>hashTarget</code>. It is defined as follows:</p>
+<pre class="command">difficulty = difficulty_1_target / current_target</pre>
+<p><code>difficulty_1_target</code> usually represents a hash target with 32 leading zeros and the rest are ones (used in Satoshi's Genesis Block). The 4-byte mantissa-exponent representation is <code>0x00ffff</code>.</p>
+<pre class="command">
+difficulty_1_hash_target 
+= 0x00ffff * 2^(8*(0x1d - 3)) 
+= 0x00000000ffff0000000000000000000000000000000000000000000000000000</pre>
+<p>The &quot;difficult&quot; for the above example is:</p>
+<pre class="command">
+0x00ffff * 2^(8*(0x1d - 3)) / 0x05c739 * 2^(8*(0x17-3))
+= 0x00ffff * 2^208 / 0x05c739 * 2^160
+= 0x00ffff/0x05c739 * 2^48
+= 65,535/378,681 * 2^48
+= <span class="new">48,712,405,953,118</span> 
+= 2^45.5</pre>
+
+<p>It is <code>2^45.5 </code>times more difficult than Satoshi's original hash target.</p>
+
+<h5>&quot;Hash Rate&quot; Value</h5>
+<p>Many Bitcoin explorer also shows a &quot;hash rate&quot; value. Hash rate can be expressed in billions/trillions/quadrillions/quintillions hashes computed per second. One hash refers to one double SHA-256 computation, i.e. one <code>SHA256(SHA256(input))</code>.</p>
+<p>Bitcoin uses Exa Hashes per second (EH/s). 1 Exa = 1024*1024*1024*1024 = 2^40 = 1,099,511,627,776 = ~10^12 (trillion).</p>
+<p>The current hash rate (as at Apr 2023) is about 385 Eh/s (double SHA-256). In other words, in 10 minutes, there is a total of 385 * 60 sec * 10 min * 2^40 = 253,987,186,016,256,000 double-hash computations.</p>
+
+<p>Some of the relevant measures are:</p>
+<ul>
+<li>MHash/s = millions hashes per second (double sha256 raw speed performance)</li>
+<li>MHash/J = millions hashes per joule (energy efficiency; 1 joule of energy is 1 watt during 1 second: 1 J = 1 W*s)</li>
+<li>W = watt (maximum power consumption, i.e. energy per unit of time: 1 W = 1 J/s)</li>
+</ul>
+<p>A Home PC can do around 1-100 MH/s. A typical node can do 100 TH/s.</p>
+<p>The hash rate can be computed from difficulty as:</p>
+<pre class="command">hashRate = difficulty * 2^32 / (60 sec * 10 min)</pre>
+
+<h5>What if all the values in the 32-bit nonce were used?</h5>
+<p>If all 32-bit values of the nonce were tested but no hash can be found to meet the target (called nonce overflow), you can update the timestamp in the header, or change the "extra nonce" in the coinbase transaction (which changes the merkle root in the header). Then, re-hash.</p>
+
+<h5>Reclaiming Disk Space and Merkle Tree</h5>
+<p>The spent transactions can be discarded to save disk space, as it cannot be spent again, can be treated as non-existence.</p>
+<p>To facilitate this, transactions are hashed in a Merkle Tree (or Binary Hash Tree), with only the root included in the block header.  Old blocks can then be compacted by pruning off branches of the tree.  The interior hashes do not need to be stored too, as illustrated in the following example.</p>
+<img src="images/Bitcoin_MerkleTree.png" alt="Merkle Tree" class="image-center">
+<p>A merkle tree (or binary hash tree) is an efficient data structure used for summarizing and verifying the integrity of large set of data.</p>
+<pre class="command">
+<span class="comment">// Bitcoin uses double hashes</span>
+hash_j = SHA256(SHA256(tx_j)) = txID_j
+hash_m_n = SHA256(SHA256(txID_m + txID_n))</pre>
+<p>Because the merkle tree is a binary tree, it needs an even number of leaf nodes. If there is an odd number of transactions to summarize, the last transaction hash will be duplicated to create an even number of leaf nodes, known as a balanced tree.</p>
+<p>Compare with a single-level hash: [TODO]</p>
+<ul>
+<li>Same hash length of 32-byte</li>
+<li>To prove that  a specific transaction is included in a block of N transactions, you only need to compute and compare log<sub>2</sub>N hashes corresponding to the level of the tree (called merkle path). It is provided that the full merkle tree is available for verification, which requires storage space.</li>
+<li>Support pruning of spent transaction.</li>
+</ul>
+
+
+<h4>Wallets</h4>
+<p>Each bitcoin user has a wallet. A wallet is an application that serves as the primary user interface for bitcoin user. The wallet controls access to a user's money, managing keys and addresses, tracking the balance, and creating and signing new transactions of the owner.</p>
+<p>Wallet can generate public-private key-pair and address. A user can have many keys in his wallet to improve his anonymity. Bitcoin uses  Elliptic Curve Digital Signature Algorithm (ECDSA) SECP256K1 curve to generate a public key from a randomly generated private key. The 160-bit address is a shorter hash of 256-bit public key.</p>
+<pre class="command">
+private_key k (256-bit) = a randomly generated 256-bit number
+public_key K (256-bit) = SECP256K1(k)
+address (160-bit) = RIPEMD160(SHA256(K))</pre>
+
+<p>The public key (address) allows you to receive transactions, while the private key is necessary to send transactions.</p>
+<p>The 160-bit Address, which is a double hash of 256-bit public key, is used as a shorthand for public key. Although address is specified in the output, you need the public key to decrypt and check the signature. The public key is contained in the <code>scriptSig</code>. With the address in the output instead of public key, the output is shorter but the input is longer. The UTxO's need to be tracked and are maintain in an UTxO set. Inputs need not be tracked.</p>
+
+<p>A user's wallet contains one or more public-private key-pairs (and the corresponding addresses). It also contains a set of UTxO's locked by one of the public keys (addresses) in the wallet. When we say that a user's wallet has &quot;received&quot; bitcoin, what we mean is that the wallet  has scanned the network and detected on the blockchain an UTxO that can be spent with one of the keys kept in that wallet. Thus, a user's bitcoin &quot;balance&quot; is the sum of all UTxO's that user's wallet can spend and which may be scattered among hundreds of transactions and hundreds of blocks in the blockchain.<br>
+</p>
+<p></p>
+<h5>Building a P2PKH transaction</h5>
+<p>Bitcoin supports both P2PK (Pay-To-Public-Key) and P2PKH (Pay-To-Public-Key-Hash or Pay-To-Address).</p>
+
+<p>Wallets can build transactions of payments for its owner. For example, suppose Alice's wallet want to build a transaction to pay Bob some bitcoin. The steps for building P2PKH (Pay-to-Address) are:</p>
+
+<ol>
+<li>Alice's wallet gets the value (in satoshis) and recipient's address (<code>addressBob</code>).</li>
+<li>Alice's wallet selects one or more UTxOs it controls with enough value to meet the requested value.</li>
+<li>For each UTxO, it writes an input and one or more outputs.</li>
+<li>In each output, it writes the value, and puts the recipient's address (<code>addressBob</code>) in a locking script <code>scriptPubKey</code> to lock this output for the particular recipient (Bob).</li>
+<li>For the input, it writes the <code>txID</code> and <code>outputIndex</code> of the referenced UTxO. It then creates an unlocking script  <code>scriptSig</code> to certify that she is the owner of the UTxO. The <code>scriptSig</code> consists of the signature (encryption of the transaction data using her <code>privateKeyAlice</code>) and <code>publicKeyAlice</code> (needed for decrypting signature).
+<pre class="command">&quot;scriptSig&quot;: &quot;&lt;sig&gt; &lt;<span class="new">publicKeyAlice</span>&gt;&quot;</pre>
+This unlocking <code>scriptSig</code> shall match the locking <code>scriptPubKey</code> in the referenced UTxO:
+<pre class="command">&quot;scriptPubKey&quot;: &quot;DUP HASH160 &lt;<span class="new">addressAlice</span>&gt; EQUALVERIFY CHECKSIG&quot;</pre>
+The signature is verified by first matching the address with the public key, then using the public key to decrypt the signature to verify the transaction detail.</li>
+</ol>
+
+<h5>Nondeterministic vs. Deterministic Wallets</h5>
+
+<p>There are two types of wallets, distinguished by whether the keys they contain are related to each other or not.</p>
+<ol>
+<li>The first type is a <em>nondeterministic wallet</em>, where each key is independently generated from a random number. The keys are not related to each other. This type of wallet is also known as a JBOK wallet from the phrase "Just a Bunch Of Keys".</li>
+<li>The second type of wallet is a <em>deterministic wallet</em>, where all the keys are derived from a single master key, known as the <em>seed</em>. All the keys in this type of wallet are related to each other and can be generated again if one has the original seed. There are a number of different key derivation methods used in deterministic wallets. The most commonly used derivation method uses a tree-like structure and is known as a hierarchical deterministic or HD wallet.</li>
+</ol>
+<p>[TODO] more</p>
+
+<h4>The Bitcoin Network and Nodes</h4>
+<p>A node can serve one or more of the following functions:</p>
+<ol>
+<li><span class="lead">Network Routing nodes</span>: All nodes shall have the routing function to participate in the network.</li>
+<li><span class="lead">Full blockchain nodes or full nodes</span>: Full nodes maintain complete up-to-date copy of blockchain. They can autonomously and authoritatively verify any transaction without external reference. Some nodes maintain only a subset of the blockchain and verify      transactions using a method called simplified payment verification,   or SPV. These nodes are known as SPV nodes or lightweight nodes. To run a full node, it takes more than 500GB of disk space and a few days to sync the network. The most common full node implementation is the reference client &quot;Bitcoin Core&quot;, also known as the          &quot;Satoshi client&quot;, e.g., <code>/satoshi:0.8.6/</code>.</li>
+<li><span class="lead">Mining nodes or Miners</span>: Mining nodes compete to create new blocks by running specialized hardware to solve the Proof-of-Work algorithm.</li>
+<li><span class="lead">Wallets</span>: User wallets might be part of a full node or SPV nodes.</li>
+</ol>
+<h5>Network Discovery</h5>
+<p>When a new node boots up, it must discover (at least one) other nodes on the network in order to participate. To connect to a peer, the new node establishes a TCP connection on port 8333. The node starts a handshake by transmitting a version message. The peer checks if the new node is compatible, and sends back a version acknowledged (verack) message.</p>
+<p>How does a new node find peer? The first method is to query some DNS servers, called DNS Seeds, that provide a list of IP addresses of bitcoin nodes. For example, the &quot;Bitcoin Core client&quot; contains the names of nine  DNS seeds for diversity. Alternatively, the bootstrap node can provide the IP address of at least one bitcoin node in its startup.</p>
+
+<h4>Testing Scripts in Python</h4>
+
+<h5>bitcoinlib (@ <a href="https://pypi.org/project/bitcoinlib/">https://pypi.org/project/bitcoinlib/</a>)</h5>
+<p>bitcoinlib (@ <a href="https://pypi.org/project/bitcoinlib/">https://pypi.org/project/bitcoinlib/</a>) is a Bitcoin, Litecoin and Dash cryptocurrency library for Python. It includes a fully functional wallet....</p>
+<p>[TODO]</p>
+
+<h5>Bit @ <a href="https://ofek.dev/bit/">https://ofek.dev/bit/</a></h5>
+<p>[TODO]</p>
+
+
+<h3>Continuous Development</h3>
+
+<h4>Consensus Protocols - PoW or PoS</h4>
+<p>In a decentralized environment, consensus involves some forms of voting cum competition (with regard) by all the nodes.</p>
+<p>In PoW, the nodes (called miners) vote by computing power. All nodes compete to solve a puzzle, which needs computational efforts. The miner with computing power and luck wins and get the rewards, everyone else can easily verify and agree/disagree. In other words, miners burn electricity to try to win a lottery - the chance of winning is directly proportional to their computing power.</p>
+<p>Bitcoin's PoW is consuming so much electricity, which is not sustainable (nor green, ESG). Ethereum started with PoW, but moved from PoW to PoS in September 2022 to go green. However, bitcoin's miners have too much on stake (10 minute per block &rArr; 24*6=144 blocks per day &rArr; 144*6.25=900 BTC per day &rArr; At US$30,000 per BTC &rArr; US$27 millions per day). Furthermore, Bitcoin mining is dominated by five(?) big mining pools. They are unlikely to switch to PoS, unless major countries pass law to stop the PoW.</p>
+
+<h4>Block Size Limit</h4>
+<p>Satoshi hardcoded the block size limit to 1 MB, which can store about 2000 transactions. With a new block every 10 minutes, 2000/(10*60) = 3.3 transactions per second globally across the entire bitcoin network. This is low. Many transactions will never get pick up (unless large transaction fee is offered), as a new block cannot hold too many transactions.</p>
+<p>The debate about increasing Bitcoin's block size limit started in 2015 and caused great controversy in bitcoin community. In 2017, there was a hard fork to increase the block size limit from 1 to 8MB, which is known as &quot;Bitcoin Cash&quot;. But the majority of the miners and developers stuck with the traditional chain, and Bitcoin Cash became just another Bitcoin spinoff.</p>
+
+<p>Nonetheless, in 21 July 2017, an upgrade (soft fork) to the Bitcoin protocol called &quot;Segregated Witness&quot; (or &quot;SegWit&quot;) replaced the concept of block size with block weight and effectively increased the block size limit by four times to 4 MB.</p>
+
+<h5>Segregated Witness (SegWit) Upgrade</h5>
+<p>[TODO].</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<!-- @@ start change in v1 -->
+<p class="references">REFERENCES &amp; RESOURCES</p>
+<ol>
+<li>Satoshi Nakamoto, &quot;Bitcoin: A Peer-to-Peer Electronic Cash System&quot; (aka &quot;Bitcoin White Paper&quot;), Oct 31, 2008 @ <a href="https://bitcoin.org/bitcoin.pdf">https://bitcoin.org/bitcoin.pdf</a></li>
+<li>Bitcoin Developers @ <a href="https://developer.bitcoin.org/index.html">https://developer.bitcoin.org/index.html</a></li>
+<li>Saylor Academy, &quot;CS120: Bitcoin for Developers&quot; @ <a href="https://learn.saylor.org/course/view.php?id=500">https://learn.saylor.org/course/view.php?id=500</a>.</li>
+<li>&quot;Bitcoin Basic&quot; by RiverFinancial @ <a href="https://river.com/learn/bitcoin-basics/">https://river.com/learn/bitcoin-basics/</a>.</li>
+<li>[TODO]</li>
+</ol>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: <br>
+Last modified: May, 2023</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- ===================================================================== -->
+	
+	
+
+<!-- @@ v3 footer changes starts here, before "footer", to end of document -->
+<!-- footer filled by JavaScript -->
+<div id="footer" class="footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- My custom JavaScript v3 -->
+<script src="../scripts/programming_notes_v3.js"></script>
+<!-- Prism Syntax Highlighter -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

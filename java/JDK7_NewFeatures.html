@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JDK 7 New Features</title>
+
+<!-- @@ start change in v1 -->
+<link rel="stylesheet" href="../css/programming_notes_v1.css">
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+<script src="../scripts/programming_notes_v1.js"></script>
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="JDK7_NewFeatures.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>JDK 7 New Features</h1>
+</div>
+
+<div id="content-main">
+
+<!-- @@ end change in v1 -->
+
+<p>Java SE 7 (or JDK 7), codenamed Dolphin, was released on July 77, 2011.</p>
+
+
+<h3>JDK 7 New Language Features</h3>
+
+<p>JDK 7 introduces a few language changes (grouped under a project named Coin):</p>
+<ul>
+<li>Strings in <code>switch</code> statement.</li>
+<li>Binary integer literals.</li>
+<li>Allowing underscores in numeric literals.</li>
+<li>Catching multiple exception types and re-throwing exceptions with improved type checking.</li>
+<li>Automatic resource management in <code>try</code>-resource statement.</li>
+<li>Improved type inference for generic instance creation, aka the diamond operator <code>&lt;&gt;</code>.</li>
+<li>Simplified <code>varargs</code> method declaration.</li>
+</ul>
+
+<h4>Strings in <span class="font-code">switch</span>'s Selector</h4>
+<p>Prior to JDK 7, only integral types (such as <code>int</code>, <code>char</code>) can be used as selector for <code>switch-case</code> statement. From JDK 7, you can use a <code>String</code> object as the selector. For example,</p>
+
+<pre class="color-example">public class J7SwitchStringTest {
+   public static void main(String[] args) {
+      String day = "SAT";
+      switch (day) {  <span class="color-comment">// switch on String selector (JDK 7)</span>
+         case "MON":
+         case "TUE":
+         case "WED":
+         case "THU":
+            System.out.println("Working Day");
+            break;
+         case "FRI":
+            System.out.println("Thank God It's Friday");
+            break;
+         case "SAT":
+         case "SUN":
+            System.out.println("Gone Fishing");
+            break;
+         default:
+            System.out.println("Invalid");
+      }
+   }
+}</pre>
+
+<p><code>String</code>'s <code>.equals()</code> method is used in comparison, which is case-sensitive. Java compiler can generate more efficient code on <code>switch</code> than  nested if-else statement.</p>
+
+<p>This feature is handy in handling options specified in command-line arguments, which are <code>String</code>s. For example,</p>
+
+<pre class="color-example"><span class="color-comment">/**
+ * This program accepts three command-line options
+ *   -c|--create  : create
+ *   -v|--verbose : verbose
+ *   -d|--debug   : debug
+ * More than one options can be specified in any order.
+ */</span>
+public class J7SwitchArgsTest {
+   public static void main(String[] args) {
+      boolean create = false;
+      boolean verbose = false;
+      boolean debug = false;
+
+      for (String arg : args) {
+         switch (arg) {   <span class="color-comment">// Switch on String selector (JDK 7)</span>
+            case "-c":
+            case "--create":
+               create = true;
+               break;
+            case "-v":
+            case "--verbose":
+               verbose = true;
+               break;
+            case "-d":
+            case "--debug":
+               debug = true;
+               break;
+            default:
+               System.out.println("invalid option: " + arg);
+               System.exit(1);
+         }
+      }
+      System.out.println("create: " + create);
+      System.out.println("verbose: " + verbose);
+      System.out.println("debug: " + debug);  
+   }
+}</pre>
+
+<h4>Binary Integer Literals with Prefix &quot;<span class="font-code">0b</span>&quot; and Underscore in Numeric Literals</h4>
+
+<p>From JDK 7, you can express literal values in binary with prefix '<code>0b</code>' (or '<code>0B</code>') for integral types, similar to C/C++ language. Before JDK 7, you can only use octal values (with prefix '<code>0</code>') or hexadecimal values (with prefix '<code>0x</code>' or '<code>0X</code>'). From JDK 7, you are also permitted to use underscore (<code>_</code>) to break the digits to improve the readability but you must start and end with a digit. For examples,</p>
+
+<pre class="color-example">int anInt1 = 0b01010000101000101101000010100010;    <span class="color-comment">// binary literal prefix with '0b' or '0B'</span>
+int anInt2 = 0b0101_0000_1010_0010_1101_0000_1010_0010;  <span class="color-comment">// break digits with underscore for readability</span>
+int anInt3 = 2_123_456;  <span class="color-comment">// break the digits with underscore</span>
+byte aByte = (byte)0b0110_1101;  <span class="color-comment">// '0b' for int(32-bit), need to cast to byte(8-bit)/short(16-bit)</span>
+short aShort = (short)0b0111_0101_0000_0101;
+long aLong = 0b1000_0101_0001_0110_1000_0101_0000_1010_0010_1101_0100_0101_1010_0001_0100_0101L;
+      <span class="color-comment">// long(64-bit) with suffix 'L'</span>
+double aDouble = 3.1415_9265;  <span class="color-comment">// You can also use underscore on fractional part for readability</span>
+float aFloat = 3.14_15_92_65f;</pre>
+
+<p>For example,</p>
+
+<pre class="color-example">
+public class <strong>BinaryIntegerLiteralTest</strong> {
+   public static void main(String[] args) {
+      <span class="color-comment">// Some 32-bit 'int' literal values</span>
+      int anInt1 = 0b0101_0000_1010_0010_1101_0000_1010_0010;
+      int anInt2 = 0b0011_1000;
+ 
+      <span class="color-comment">// An 8-bit 'byte' literal value. By default, literal values are 'int'.</span>
+      <span class="color-comment">// Need to cast to 'byte'</span>
+      byte aByte = (byte)0b0110_1101;
+ 
+      <span class="color-comment">// A 16-bit 'short' literal value</span>
+      short aShort = (short)0b0111_0101_0000_0101;
+ 
+      <span class="color-comment">// A 64-bit 'long' literal value. Long literals requires suffix &quot;L&quot;.</span>
+      long aLong = 0b1000_0101_0001_0110_1000_0101_0000_1010_0010_1101_0100_0101_1010_0001_0100_0101L;
+ 
+      <span class="color-comment">// Formatted output: &quot;%d&quot; for integer in decimal, &quot;%x&quot; in hexadecimal, &quot;%o&quot; in octal.</span>
+      <span class="color-comment">// Take note that &quot;%b&quot; prints true or false (for null), NOT binary.</span>
+      System.out.printf(&quot;%d(%x)(%o)(%b)\n&quot;, anInt1, anInt1, anInt1, anInt1);
+      System.out.printf(&quot;%d(%x)(%o)(%b)\n&quot;, aByte, aByte, aByte, aByte);
+   }
+}</pre>
+
+<pre class="output">
+1352847522(50a2d0a2)(12050550242)(true)
+109(6d)(155)(true)</pre>
+
+
+<h4>Catching Multiple <span class="font-code">Exception</span> Types and Re-throwing <span class="font-code">Exception</span>s with Improved Type Checking</h4>
+
+<p>Prior to JDK 7, you need two <code>catch</code> blocks to catch two exception types even though both perform identical task. For example,</p>
+
+<pre class="color-example">
+try {
+   ......
+} catch(ClassNotFoundException ex) {
+   ex.printStackTrace();
+} catch(SQLException ex) {
+   ex.printStackTrace();
+}</pre>
+
+<p>From JDK 7, you could use one single <code>catch</code> block to handle more than one exception types, with the exception types separated by a vertical bar (<code>|</code>). For example,</p>
+<pre class="color-example">
+try {
+   ......
+} catch(ClassNotFoundException|SQLException ex) {
+   ex.printStackTrace();
+}</pre>
+
+<p>[TODO] A complete example on file IO.</p>
+
+<h4 id="try_resource">Automatic Resource Management in <span class="font-code">try</span>-with-resources Statement</h4>
+<p>Prior to  JDK 7, we need to use a <code>try-catch-finally</code> statement to manage resources. We need a <code>finally</code> block, to ensure that the resources are properly closed regardless of whether the <code>try</code> completes normally or abruptly. The code is messy! For example,</p>
+<pre class="color-example">
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+<span class="color-comment">// Copy from one file to another file line by line.
+// Pre-JDK 7 requires you to close the resources using a finally block.</span>
+public class <strong>PreJ7FileCopy</strong> {
+   public static void main(String[] args) {
+      BufferedReader src = null;
+      BufferedWriter dest = null;
+      try {
+         src  = new BufferedReader(new FileReader(&quot;in.txt&quot;));
+         dest = new BufferedWriter(new FileWriter(&quot;out.txt&quot;));
+         String line;
+         while ((line = src.readLine()) != null) {
+            System.out.println(line);
+            dest.write(line);
+            dest.newLine();  <span class="color-comment">// write a newline</span>
+         }
+      } catch (IOException ex) {
+         ex.printStackTrace();
+      } finally {            <span class="color-comment">// always close the streams</span>
+         try {
+            if (src != null) src.close();  <span class="color-comment">// close() throw IOException</span>
+            if (dest != null) dest.close();
+         } catch (IOException ex) {
+            ex.printStackTrace();
+         }
+      }
+ 
+      try {
+         src.read();   <span class="color-comment">// Trigger IOException: Stream closed</span>
+      } catch (IOException ex) {
+         ex.printStackTrace();
+      }
+   }
+}</pre>
+
+<p>JDK 7 introduces a <code>try</code>-with-resources statement, which ensures that each of the resources in <code>try(<em>resources</em>)</code> is properly closed at the end of the statement. This results in cleaner codes.</p>
+
+<pre class="color-example">
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+<span class="color-comment">// Copy from one file to another file line by line.
+// JDK 7 has a try-with-resources statement, which ensures that
+//   each resource opened in try(resources) is closed at the end of the statement.</span>
+public class <strong>J7FileCopy</strong> {
+   public static void main(String[] args) {
+      <span class="color-new">try (BufferedReader src  = new BufferedReader(new FileReader(&quot;in.txt&quot;));
+           BufferedWriter dest = new BufferedWriter(new FileWriter(&quot;out.txt&quot;)))</span> {
+         String line;
+         while ((line = src.readLine()) != null) {
+            System.out.println(line);
+            dest.write(line);
+            dest.newLine();
+         }
+      } catch (IOException ex) {
+         ex.printStackTrace();
+      }
+      <span class="color-comment">// src and dest automatically close.
+      // No need for finally to explicitly close the resources.</span>
+   }
+}</pre>
+
+
+<h4>Improved Type Inference for Generic Instance Creation with the Diamond Operator <span class="font-code">&lt;&gt;</span></h4>
+
+<p>For example,</p>
+
+<pre class="color-example">
+import java.util.*;
+public class <strong>J7GenericTest</strong> {
+   public static void main(String[] args) {
+      <span class="color-comment">// Pre-JDK 7</span>
+      List&lt;String&gt; lst1 = <span class="color-new">new ArrayList&lt;String&gt;()</span>;
+      <span class="color-comment">// JDK 7 supports limited type inference for generic instance creation with diamond operator &lt;&gt;</span>
+      List&lt;String&gt; lst2 = <span class="color-new">new ArrayList&lt;&gt;()</span>;
+
+      lst1.add(&quot;Mon&quot;);
+      lst1.add(&quot;Tue&quot;);
+      lst2.add(&quot;Wed&quot;);
+      lst2.add(&quot;Thu&quot;);
+
+      for (String item: lst1) System.out.println(item);
+      <span class="color-comment">// <span class="color-output">Mon</span></span>
+      <span class="color-comment">// <span class="color-output">Tue</span></span>
+      for (String item: lst2) System.out.println(item);
+      <span class="color-comment">// <span class="color-output">Wed</span></span>
+      <span class="color-comment">// <span class="color-output">Thu</span></span>
+
+      List&lt;String&gt; lst3 = <span class="color-new">List.of(&quot;Fri&quot;, &quot;Sat&quot;)</span>;  <span class="color-comment">// JDK 9</span>
+      System.out.println(lst3);
+      <span class="color-comment">// <span class="color-output">[Fri, Sat]</span></span>
+      System.out.println(<span class="color-new">Arrays.toString(lst3.toArray())</span>);
+      <span class="color-comment">// <span class="color-output">[Fri, Sat]</span></span>
+      lst3<span class="color-new">.forEach(System.out::println)</span>;   <span class="color-comment">// JDK 8</span>
+      <span class="color-comment">// <span class="color-output">Fri</span></span>
+      <span class="color-comment">// <span class="color-output">Sat</span></span>
+   }
+}</pre>
+
+<h4>Simplified varargs Method Declaration with <span class="font-code">@SafeVarargs</span> Annotation</h4>
+
+<p>In JDK 7, you have the option of using <code>@SafeVarargs</code> annotation to suppress the warning you get when compiling a method with a non-reifiable varargs parameter. This annotation should be used when the method ensures that only elements of the same type as the varargs parameter are stored in the varargs array.</p>
+<p>Example [TODO]</p>
+
+<h3>JDK 7 Library Changes</h3>
+
+<h5>New File IO Libraries (JSR 203)</h5>
+<p>JDK 7 added support for multiple file systems, file metadata and symbolic links in new packages <code>java.nio.file</code>, <code>java.nio.file.attribute</code> and <code>java.nio.file.spi</code>.</p>
+
+<h5>Concurrency Utilities (JSR 166)</h5>
+
+<h5>Timsort is used to sort collections and arrays of objects instead of merge sort</h5>
+
+<h5>Library-level support for elliptic curve cryptography algorithms</h5>
+
+<h5>Enhanced library-level support for new network protocols, including SCTP and Sockets Direct Protocol</h5>
+
+<h3>JDK 7 Other New Features</h3>
+
+<h5>JVM support for Dynamic Languages (JSR 292)</h5>
+
+<h5>Upstream updates to XML and Unicode</h5>
+
+<!-- @@ start change in v1 -->
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 10.0.1<br>
+Last modified: January, 2020</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+</body>
+</html>

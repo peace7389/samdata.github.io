@@ -1,0 +1,2315 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>JavaServer Pages (JSP) - A Tutorial</title>
+<link href="../css/programming_notes_v1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts/programming_notes_v1.js"></script>
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="JavaServerPages.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>Java Server-Side Programming</h1>
+<h2>JavaServer Pages (JSP) (1.2 and 2.0)</h2>
+</div>
+
+<div id="content-main">
+
+
+<h3>Introduction</h3>
+<p>Instead of <em>static</em> contents that are indifferent, <em>Java Servlet</em> was introduced to generate <em>dynamic</em> web contents that are customized according to users' requests (e.g., in response to queries and search requests). However, it is a pain to use a Servlet to produce a presentable HTML page (via the <code>out.println()</code> programming statements). It is even worse to maintain or modify that HTML page produced. Programmers, who wrote the servlet, may not be a good graphic designer, while a graphic designer does not understand Java programming.</p>
+<p><em>JavaServer Pages</em> (JSP) is a <em>complimentary</em> technology to <em>Java Servlet</em> which facilitates the <em>mixing</em> of dynamic and static web contents. JSP is Java's answer to the popular Microsoft's <em>Active Server Pages </em>(ASP).  JSP, like ASP, provides a elegant way to mix static and dynamic contents. The main page is written in regular HTML, while special tags are provided to insert pieces of Java programming codes. The <em>business programming logic</em> and the <em>presentation</em> are cleanly separated. This allows the programmers to focus on the business logic, while the web  designer to concentrate on the presentation.</p>
+<p> JSP is based on Servlet. In fact, we shall see later that a JSP page is internally translated into a Java servlet. We shall also explain later that &quot;<em><strong>Servlet is HTML inside Java</strong></em>&quot;, while &quot;<em><strong>JSP is Java inside HTML</strong></em>&quot;. Whatever you can't do in servlet, you can't do in JSP. JSP makes the creation and maintenance of dynamic HTML pages much easier than servlet. JSP is more convenience than servlet for dealing with the presentation, not more powerful.</p>
+<p> JSP is meant to <em>compliment</em> Servlet, not a replacement. In a <em>Model-View-Control</em> (MVC)  design, servlets are used for the controller, which involves  complex programming logic. JSPs are  used for the view, which deals with presentation. The model could be implemented using  JavaBeans or Enterprise JavaBeans (EJB) which may interface with a database.</p>
+<p> To understand JSP, you need to understand Servlet (and HTTP, and HTML, and Java). Read &quot;Java Servlet&quot;, if necessary.</p>
+
+<p>The JSP Home Page is @ <a href="http://www.oracle.com/technetwork/java/javaee/jsp/index.html">http://www.oracle.com/technetwork/java/javaee/jsp/index.html</a>. For developers, check out JSP Developer Site @ <a href="http://jsp.java.net">http://jsp.java.net</a>.</p>
+
+<h5>Advantages of JSP</h5>
+<ul>
+<li><em>Separation of static and dynamic contents</em>:  The dynamic contents are  generated via programming logic and inserted into the <em>static template</em>. This greatly simplifies the creation and  maintenance of web contents.</li>
+<li><em>Reuse of components and tag libraries</em>: The dynamic contents can be provided by  re-usable components such as JavaBean, Enterprise JavaBean (EJB) and tag  libraries - you do not have to re-inventing the wheels.</li>
+<li>Java's power and portability.</li>
+</ul>
+
+<h5>Other Technologies</h5>
+<p>[TODO] Competing technologies: ASP, PHP, etc.</p>
+<p>[TODO] Complementary and extension technologies: MVC Framework (JSF, Struts, Spring, Hibernate), AJAX.</p>
+
+<h5>Apache Tomcat Server</h5>
+<p>JSPs, like servlets, are server-side programs run inside a <em>Java-capable</em> HTTP server.  Apache Tomcat Server (@ <a href="http://tomcat.apache.org">http://tomcat.apache.org</a>) is the official reference implementation (RI) for Java servlet and JSP, provided free by Apache (@ <a href="http://www.apache.org">http://www.apache.org</a>) - an open-source software foundation.</p>
+
+<p>You need to install Tomcat to try out JSP. Read &quot;<a href="../howto/Tomcat_HowTo.html">How to Install Tomcat and Get Started</a>&quot;, if necessary.</p>
+
+<p>I shall denote Tomcat's installed directory as <code>&lt;CATALINA_HOME&gt;</code>, and assume that Tomcat server is running in port 8080.</p>
+
+<p>Tomcat provides many excellent JSP examples, in &quot;<code>&lt;CATALINA_HOME&gt;\webapps\examples\jsp</code>&quot;. You can run these examples by launching Tomcat, and issue URL <code>http://localhost:8080/examples</code>.</p>
+
+<h5>JSP Versions</h5>
+<p>JSP has these versions: [TODO features and what is new]</p>
+<ul>
+  <li>J2EE 1.2 (December 12, 1999) (Java Servlet 2.2, <strong>JSP 1.1</strong>, EJB 1.1, JDBC 2.0)</li>
+  <li>J2EE 1.3 (September 24, 2001) (Java Servlet 2.3, <strong>JSP 1.2</strong>, EJB 2.0, JDBC 2.1)</li>
+  <li>J2EE 1.4 (November 11, 2003) (Java Servlet 2.4, <strong>JSP 2.0</strong>, EJB 2.1, JDBC 3.0)</li>
+  <li>Java EE 5 (May 11, 2006) (Java Servlet 2.5, <strong>JSP 2.1</strong>, JSTL 1.2, JSF 1.2, EJB 3.0, JDBC 3.0)</li>
+  <li>Java EE 6 (December 10, 2009) (Java Servlet 3.0, <strong>JSP 2.2/EL 2.2</strong>, JSTL 1.2, JSF 2.0, EJB 3.1, JDBC 4.0)</li>
+  <li>Java EE 7: expected in end of 2012</li>
+</ul>
+
+
+<h3>First JSP Example - &quot;Java inside HTML&quot;</h3>
+<p>Let's begin with a simple JSP example.</p>
+<p>First of all, create a new <em>web application </em>(aka <em>web </em><em>context</em>) called &quot;<code>hellojsp</code>&quot; in Tomcat, by creating a directory &quot;<code>hellojsp</code>&quot; under Tomcat's &quot;<code>webapps</code>&quot; directory (i.e., &quot;<code>&lt;CATALINA_HOME&gt;\webapps\hellojsp</code>&quot; where <code>&lt;CATALINA_HOME&gt;</code> denotes Tomcat's installed directory)<code></code>. The  &quot;<code>&lt;CATALINA_HOME&gt;\webapps\hellojsp</code>&quot; directory is known as <em>context root</em> for webapp (web context) &quot;<code>hellojsp</code>&quot;.</p>
+<p> Use a programming text editor to enter the following HTML/JSP codes and save as &quot;<code>first.jsp</code>&quot; under the context root &quot;<code>hellojsp</code>&quot;. The file type of &quot;<code>.jsp</code>&quot; is mandatory for JSP script.</p>
+
+<table class="table-program">
+<col class="col-line-number" />
+<col class="col-program" />
+<tbody>
+<tr>
+<td>
+<pre class="text-right">
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25</pre>
+</td>
+<td>
+<pre>
+<span class="color-new">&lt;%@page language=&quot;java&quot; contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot; %&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+   &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+   &lt;title&gt;First JSP&lt;/title&gt;
+&lt;/head&gt;
+   
+&lt;body&gt;
+   <span class="color-new">&lt;% 
+   double num = Math.random();
+   if (num &gt; 0.95) {
+   %&gt;</span>
+      &lt;h2&gt;You'll have a luck day!&lt;/h2&gt;&lt;p&gt;(<span class="color-new">&lt;%= num %&gt;</span>)&lt;/p&gt;
+   <span class="color-new">&lt;%
+   } else {
+   %&gt;</span>
+      &lt;h2&gt;Well, life goes on ... &lt;/h2&gt;&lt;p&gt;(<span class="color-new">&lt;%= num %&gt;</span>)&lt;/p&gt;
+   &lt;%
+   }
+   %&gt;
+   &lt;a href=&quot;<span class="color-new">&lt;%= request.getRequestURI() %&gt;</span>&quot;&gt;&lt;h3&gt;Try Again&lt;/h3&gt;&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>To run this JSP script, launch the Tomcat server. Check the console message to confirm that <code>hellojsp</code> has been deployed:</p>
+
+<pre class="output">
+xxxx, xxxx xx:xx:xx xx org.apache.catalina.startup.HostConfig deployDirectory
+INFO: Deploying web application directory <strong>hellojsp</strong>
+......</pre>
+
+<p>Start a  browser. Issue this URL (assume that Tomcat is running in port number 8080):</p>
+<pre class="color-command">
+http://localhost:8080/hellojsp/first.jsp</pre>
+<img class="image-left image-border" src="images/JSP_FirstjspOutput.png"/>
+
+
+<p>Try &quot;View Source&quot; to check the <em>response message</em> received by the browser.</p>
+<pre class="output">
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+&lt;head&gt;
+   &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+   &lt;title&gt;First JSP&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+   &lt;h2&gt;Well, life goes on ... &lt;/h2&gt;&lt;p&gt;(0.16450910536318764)&lt;/p&gt;
+   &lt;a href=&quot;/hellojsp/first.jsp&quot;&gt;&lt;h3&gt;Try Again&lt;/h3&gt;&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>Observe that the response message does not include the JSP source codes, but merely the <em>output</em> of the JSP script. This clearly illustrates that JSP (like servlets) are server-side programs, that are executed in the server. The output is then sent to the client (browser) as the response message.</p>
+
+<h5>Explanations</h5>
+<ul>
+<li>A JSP script is a <em>regular HTML page</em> containing additional Java codes.</li>
+<li>  In line 1, we declare this is a JSP script via a JSP directive. The <code>&lt;!DOCTYPE&gt;</code> tag identifies that the response is an HTML document. The <code>&lt;html&gt;...&lt;/html&gt;</code> tags enclose the HTML document, which consists of two sections: head and body, enclosed by <code>&lt;head&gt;...&lt;/head&gt;</code> and <code>&lt;body&gt;...&lt;/body&gt;</code>, respectively.</li>
+<li>The JSP's Java codes are enclosed within special tags in the form of <code>&lt;% ... %&gt;</code> (similar to ASP). We shall explain these codes later.</li>
+<li>&quot;<strong><em>JSP is Java inside HTML</em></strong>&quot; - Java codes are embedded inside an HTML page. On the other hand, &quot;<em><strong>Servlet is HTML inside Java</strong></em>&quot; - HTML page is produced using Java's <code>out.println()</code> in a Java program.</li>
+</ul>
+
+<h4>Revisit Java Servlets</h4>
+<p>A typical Java servlet (as shown below) contains three groups of methods: <code>init()</code>, <code>destroy()</code>, and one or more <code>service()</code> methods such as <code>doGet()</code> and <code>doPost()</code>.  <code>init()</code> runs (once) when the servlet is loaded into the server.  <code>destroy()</code> runs (once) when the servlet is unloaded.  <code>service()</code> runs once per HTTP request (e.g., <code>doGet()</code> runs once per <code>GET</code> request, <code>doPost()</code> run once per <code>POST</code> request).  The <code>service()</code> methods takes two arguments: <code>request</code> and <code>response</code>, encapsulating HTTP request and response messages respectively.  A <code>PrintWriter</code> object called <code>out</code> is used for writing out the response message to the client over the network.</p>
+
+<pre class="color-example">
+public class <strong>MyServlet</strong> extends HttpServlet {
+   <span class="color-comment">// Instance variables or methods, e.g., database Connection, Statement, helper methods</span>
+   ......
+   ......
+   
+   <span class="color-comment">// init() runs only once when the servlet is loaded into the server</span>
+   public void <strong>init</strong>() { ...... }
+   
+   <span class="color-comment">// doGet() runs once per HTTP GET request
+   // It takes two arguments, representing the request and response messages</span>
+   public void <strong>doGet(HttpServletRequest request, HttpServletResponse response)</strong>
+            throws IOException, ServletException {
+   
+      <span class="color-comment">// Set the MIME type for the response message</span>
+      response.setContentType(&quot;text/html&quot;);
+      <span class="color-comment">// Create a Writer to write the response message to the client over the network</span>
+     <strong> PrintWriter out = response.getWriter();</strong>
+  
+      <span class="color-comment">// The programming logic to produce a HTML page</span>
+      out.println(&quot;&lt;html&gt;&quot;);
+      out.println( ...... );
+      out.println(&quot;&lt;/html&gt;&quot;);
+   }
+   
+   <span class="color-comment">// doPost() runs once per HTTP Post request
+</span>   public void <strong>doPost(HttpServletRequest request, HttpServletResponse response)</strong>
+            throws IOException, ServletException {
+      ......
+   }
+   
+   <span class="color-comment">// destroy() runs only once when the servlet is unloaded from the server.</span>
+   public void <strong>destroy</strong>() { ...... }
+}</pre>
+
+
+<h4>Behind the Scene</h4>
+<p></p>
+
+<p>When a JSP page is first requested, Tomcat translates the JSP into a servlet, compiles the servlet, load, and execute the servlet. The best way to understand JSP is to check out the generated servlet and study the JSP-to-Servlet translation. The generated servlet for &quot;<code>first.jsp</code>&quot; is kept under Tomcat's &quot;<code>work</code>&quot; directory (&quot;<code>&lt;CATALINA_HOME&gt;\work\Catalina\localhost\hellojsp\...</code>&quot;). The relevant part of the generated servlet is extracted below:</p>
+
+<pre class="color-example">
+public final class <strong>first_jsp</strong> extends org.apache.jasper.runtime.HttpJspBase
+      implements org.apache.jasper.runtime.JspSourceDependent {
+  
+   public void <strong>_jspInit()</strong> { ...... }
+  
+   public void <strong>_jspDestroy()</strong> { ......  }
+
+   public void <strong>_jspService</strong>(HttpServletRequest <strong>request</strong>, HttpServletResponse <strong>response</strong>)
+         throws java.io.IOException, ServletException {
+   
+      <span class="color-comment">// JSP pre-defined variables (in service() method)</span>
+      <strong>PageContext pageContext</strong> = null;
+      <strong>HttpSession session</strong> = null;
+      <strong>ServletContext application</strong> = null;
+      <strong>ServletConfig config</strong> = null;
+      <strong>JspWriter out</strong> = null;
+      <strong>Object page</strong> = this;
+   
+      JspWriter _jspx_out = null;
+      PageContext _jspx_page_context = null;
+   
+      try {
+         <strong>response.setContentType(&quot;text/html&quot;);</strong>
+         pageContext = _jspxFactory.getPageContext(this, request, response,
+      			null, true, 8192, true);
+         _jspx_page_context = pageContext;
+         application = pageContext.getServletContext();
+         config = pageContext.getServletConfig();
+         session = pageContext.getSession();
+         out = pageContext.getOut();
+         _jspx_out = out;
+   
+<strong>         out.write(&quot;&lt;!DOCTYPE HTML&gt;\r\n&quot;);
+         out.write(&quot;&lt;html&gt;\r\n&quot;);
+         out.write(&quot;&lt;head&gt;\r\n&quot;);
+         out.write(&quot;   &lt;meta http-equiv=\&quot;Content-Type=\&quot; content=\&quot;text/html; charset=UTF-8\&quot;&gt;&quot;);
+         out.write(&quot;   &lt;title&gt;First JSP&lt;/title&gt;\r\n&quot;);
+         out.write(&quot;&lt;/head&gt;\r\n&quot;);
+         out.write(&quot;\r\n&quot;);
+         out.write(&quot;&lt;body&gt;\r\n&quot;);
+         out.write(&quot;   &quot;);
+    
+         double num = Math.random();
+         if (num &gt; 0.95) {
+            out.write(&quot;\r\n&quot;);
+            out.write(&quot;      &lt;h2&gt;You will have a luck day!&lt;/h2&gt;&lt;p&gt;(&quot;);
+            out.print( num );
+            out.write(&quot;)&lt;/p&gt;\r\n&quot;);
+            out.write(&quot;   &quot;);
+         } else {
+            out.write(&quot;\r\n&quot;);
+            out.write(&quot;      &lt;h2&gt;Well, life goes on ... &lt;/h2&gt;&lt;p&gt;(&quot;);
+            out.print( num );
+            out.write(&quot;)&lt;/p&gt;\r\n&quot;);
+            out.write(&quot;   &quot;);
+         }
+         out.write(&quot;\r\n&quot;);
+         out.write(&quot;   &lt;a href=\&quot;&quot;);
+         out.print( request.getRequestURI() );
+         out.write(&quot;\&quot;&gt;&lt;h3&gt;Try Again&lt;/h3&gt;&lt;/a&gt;\r\n&quot;);
+         out.write(&quot;&lt;/body&gt;\r\n&quot;);
+         out.write(&quot;&lt;/html&gt;\r\n&quot;);
+</strong>      } catch (Throwable t) {
+         if (!(t instanceof SkipPageException)) {
+            out = _jspx_out;
+            if (out != null &amp;&amp; out.getBufferSize() != 0)
+               try { out.clearBuffer(); } catch (java.io.IOException e) {}
+            if (_jspx_page_context != null) _jspx_page_context.handlePageException(t);
+         }
+      } finally {
+         _jspxFactory.releasePageContext(_jspx_page_context);
+      }
+   }
+}</pre>
+
+<p>Clearly, the translation is carried out as follows:</p>
+<ul>
+<li>The methods <code>_jspInit()</code>, <code>_jspDestroy()</code> and <code>_jspService()</code> corresponds to <code>init()</code>, <code>destroy()</code> and <code>service()</code> (<code>doGet()</code>, <code>doPost()</code>) of a regular servlet. Similar to servlet's <code>service()</code>, <code>_jspService()</code> takes two parameters, <code>request</code> and <code>response</code>, encapsulating the HTTP request and response messages. A <code>JspWriter</code> called <code>out</code>, corresponding to servlet's <code>PrintWriter</code>, is allocated to write the response message over the network to the client.</li>
+<li>The HTML statements in the JSP script are written out as part of the response via <code>out.write(<em>...</em>)</code>, as &quot;it is&quot; without modification.</li>
+<li>The Java codes in the JSP script are translated according to their respective types:
+
+  <ul>
+<li><em>JSP Scriptlet</em> <code>&lt;% .... &gt;</code>: used to include Java statements, or part of Java statement. The Java statements are placed inside the <code>_jspService()</code> method of the translated servlet as &quot;it is&quot;. Scriptlets form the program logic.</li>
+<li><em>JSP Expression</em> <code>&lt;%= .... &gt;</code>: used to <em>evaluate</em> a single Java expression to obtain a value. The Java expression is placed inside a <code>out.print(<em>...</em>)</code>.  In other words, the Java expression will be evaluated, and the result of the evaluation written out as part of the response message.</li>
+  </ul>
+</li>
+</ul>
+
+<p>Subsequent accesses to the this JSP page will be much faster, because they will be re-directed to the translated and compiled servlet directly (no JSP-to-servlet translation and servlet compilation needed again), unless the JSP page has been modified.</p>
+
+<h4>JSP Pre-Defined Variables</h4>
+<p>JSP pre-defined seven variables, that are available to the script writer. They are: <code>request</code>, <code>response</code>, <code>out</code>, <code>session</code>, <code>application</code>, <code>config</code>, and <code>page</code>.</p>
+
+<p><span class="line-heading font-code">request</span>: A <code>HttpServletRequest</code> object, keeping track of the HTTP request message. It is often used to retrieve the query parameters in the request message. For example,</p>
+
+<pre class="color-example">
+<span class="color-comment">// Single-value parameter</span>
+String paramValue = request.getParameter(&quot;paramName&quot;);
+if (paramValue != null &amp;&amp; paramValue.length() != 0) {  <span class="color-comment">// param exists and not empty string</span>
+   <span class="color-comment">// process the parameter</span>
+   ......   
+}
+  
+<span class="color-comment">// Multiple-value parameter</span>
+String[] paramValues = request.getParameterValues(&quot;paramName&quot;);
+if (paramValues != null &amp;&amp; paramValues.length &gt; 0) {  <span class="color-comment">// param exists and at least one item</span>
+   <span class="color-comment">// Process parameters</span>
+   for (String paramValue : paramValues) {
+      ......
+   }
+}</pre>
+
+<p><span class="line-heading font-code">response</span>: A <code>HttpServletResponse</code> object, keeping track of the HTTP response message.</p>
+
+<p><span class="line-heading font-code">out</span>: A <code>Writer</code> (<code>JspWriter</code>) object used to write response message to the client over the network socket, via methods <code>print()</code> or <code>println()</code>.</p>
+
+<p><span class="line-heading font-code">session</span>: A <code>HttpSession</code> object, keeping track of the current client session (from the moment the user accesses the first page, until he/she closes the browser or session timeout). You can use <code>session</code>'s attributes to pass information between pages within this session, via methods <code>getAttribute(&quot;name&quot;)</code> and <code>setAttribute(&quot;name&quot;, object)</code>. For example,</p>
+
+<pre class="color-example">
+<span class="color-comment">// Allocate a shopping cart</span>
+List&lt;String&gt; shoppingCart = new ArrayList&lt;&gt;();
+.....
+<span class="color-comment">// Place the shopping cart inside the session</span>
+session.setAttribute(&quot;cart&quot;, shoppingCart);
+.....
+<span class="color-comment">// Any page can retrieve the shopping cart</span>
+List&lt;String&gt; theCart = (List&lt;String&gt;)session.getAttribute(&quot;cart&quot;);
+if (theCart != null) {  <span class="color-comment">// cart exists?</span>
+   for (String item : theCart) {  <span class="color-comment">// process the cart items</span>
+      ......
+   }
+}</pre>
+
+<p><span class="line-heading font-code">application</span>: A <code>ServletContext</code> object retrieved via <code>getServletContext()</code>, which maintains information about this web context (web application). You can use the <code>application</code>'s attributes to pass information between JSP pages and servlets, via methods <code>getAttribute(&quot;name&quot;)</code> and <code>setAttribute(&quot;name&quot;, object)</code>.</p>
+
+<p><span class="line-heading font-code">config</span>: A <code>ServletConfig</code> object, obtained via <code>getServletConfig()</code>. It could be used to retrieve the servlet initialization parameters provided in &quot;<code>WEB-INF\web.xml</code>&quot;, via method <code>getInitParameter(&quot;<em>paramName</em>&quot;)</code>.</p>
+
+<p><span class="line-heading font-code">page</span>: Can be used to access the elements of this page.</p>
+
+<h4>Behind the Scene</h4>
+<p>The translated servlet shows these seven variables are allocated and initialized as follows (with re-arrangements):</p>
+
+<pre class="color-syntax">
+public void _jspService(<strong>HttpServletRequest request</strong>, <strong>HttpServletResponse response</strong>)
+   javax.servlet.jsp.PageContext pageContext
+         = _jspxFactory.getPageContext(this, request, response, null, true, 8192, true);
+         <span class="color-comment">/* getPageContext(javax.servlet.Servlet servlet,
+                           javax.servlet.ServletRequest request,
+                           javax.servlet.ServletResponse response,
+                           java.lang.String errorPageURL,
+                           boolean needsSession,
+                           int bufferSize,
+                           boolean autoFlushBuffer)  */</span>
+
+   javax.servlet.http.<strong>HttpSession session</strong> = pageContext.getSession();
+   javax.servlet.<strong>ServletContext application</strong> = pageContext.getServletContext();
+   javax.servlet.<strong>ServletConfig config</strong> = pageContext.getServletConfig();
+   javax.servlet.jsp.<strong>JspWriter out</strong> = pageContext.getOut();
+   java.lang.<strong>Object page = this</strong>;
+   ......</pre>
+
+<h4>Brief Summary</h4>
+
+<p>Compare the JSP script and the internally generated servlet, we can clearly see that servlet is &quot;HTML inside Java&quot;, whereas JSP is &quot;Java inside HTML&quot;. In a servlet, you need to use <code>out.write()</code> to write out the HTML page, which is difficult to write, inflexible to changes, hard for graphic designers (non-programmers), and mixing the presentation (view), data (model), with the business logic (control). In JSP, the main page is an HTML page, meant for presentation (to be done by graphic designer). Pieces of Java codes (written by programmer) are embedded into the HTML file to perform the business logic. The presentation and business logic can be cleanly separated.</p>
+
+<h3>Another JSP Example</h3>
+
+<p>Write the following JSP script and save as &quot;<code>echo.jsp</code>&quot; in your web application's root directory. This example displays a form with checkboxes, and echos your selections.</p>
+
+<pre class="color-example">
+<span class="color-new">&lt;%@page language=&quot;java&quot; contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot; %&gt;</span>
+&lt;!DOCTYPE HTML &gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+  &lt;title&gt;Echoing HTML Request Parameters&lt;/title&gt;
+&lt;/head&gt;
+     
+&lt;body&gt;
+  &lt;h2&gt;Choose authors:&lt;/h2&gt;
+  &lt;form method=&quot;get&quot;&gt;
+    &lt;input type=&quot;checkbox&quot; name=&quot;author&quot; value=&quot;Tan Ah Teck&quot;&gt;Tan
+    &lt;input type=&quot;checkbox&quot; name=&quot;author&quot; value=&quot;Mohd Ali&quot;&gt;Ali
+    &lt;input type=&quot;checkbox&quot; name=&quot;author&quot; value=&quot;Kumar&quot;&gt;Kumar
+    &lt;input type=&quot;checkbox&quot; name=&quot;author&quot; value=&quot;Peter Johnson&quot;&gt;Peter
+    &lt;input type=&quot;submit&quot; value=&quot;Query&quot;&gt;
+  &lt;/form&gt;
+  
+  <span class="color-new">&lt;% 
+  String[] authors = request.getParameterValues(&quot;author&quot;);
+  if (authors != null) {
+  %&gt;</span>
+    &lt;h3&gt;You have selected author(s):&lt;/h3&gt;
+    &lt;ul&gt;
+      <span class="color-new">&lt;%
+      for (String author : authors) { 
+      %&gt;</span>
+        &lt;li&gt;<span class="color-new">&lt;%= author %&gt;</span>&lt;/li&gt;
+      <span class="color-new">&lt;%
+      }
+      %&gt;</span>
+    &lt;/ul&gt;
+  <span class="color-new">&lt;%
+  }
+  %&gt;</span>
+  &lt;br /&gt;&lt;a href=&quot;<span class="color-new">&lt;%= request.getRequestURI() %&gt;</span>&quot;&gt;BACK&lt;/a&gt; 
+&lt;body&gt;
+&lt;/html&gt;</pre>
+
+<p>Run the JSP page and study the generated servlet.</p>
+
+<p>Explanation:</p>
+<ul>
+<li>This page has a HTML form with 4 checkboxes, identified by their &quot;<code>name=value</code>&quot; pairs of &quot;<code>author=<em>xxx</em></code>&quot;.  No &quot;<code>action</code>&quot; attribute is specified in the <code>&lt;form&gt;</code> tag. The default &quot;<code>action</code>&quot; is the current page (i.e. the query will be sent to the same page for processing).</li>
+<li>The JSP scriptlet checks if the query parameter &quot;<code>author</code>&quot; exists.  For the first request, &quot;<code>author</code>&quot; parameter is absent.  Once the user fills in and submits the form, &quot;<code>author</code>&quot; will be present in the HTTP request.</li>
+<li><code>request.getParameterValues()</code> is used to retrieve all the values of the query parameter &quot;<code>author</code>&quot;.  The values are echoed back to the client in an unordered list.</li>
+</ul>
+
+<h3>JSP Scripting Elements</h3>
+<p>JSP scripting element are enclosed within <code>&lt;% ...... %&gt;</code>, similar to other server-side scripts such as ASP and PHP. To print &quot;<code>&lt;%</code>&quot;, use escape sequence &quot;<code>&lt;\%</code>&quot;.</p>
+
+<h5>JSP Comment <span class="font-code">&lt;%-- comments --%&gt;</span></h5>
+<p>JSP comments <code>&lt;%-- JSP comments --%&gt;</code> are ignored by the JSP engine. For example,</p>
+<pre class="color-example">
+&lt;%-- anything but a closing tag here will be ignored --&gt;
+</pre>
+
+<p>Note that HTML comment is <code>&lt;!-- html comments --&gt;</code>.  JSP expression within the HTML comment will be evaluated.  For example,</p>
+<pre class="color-example">
+&lt;!-- HTML comments here &lt;%= Math.random() %&gt; more comments --&gt;
+</pre>
+
+<h5>JSP Expression <span class="font-code">&lt;%= JavaExpression %&gt;</span></h5>
+<p>A JSP expression is used to insert the resultant value of a single Java expression into the response message.  The Java expression will be placed inside a <code>out.print(...)</code> method. Hence, the expression will be evaluated and resultant value printed out as part of the response message. Any valid Java expression can be used. There is no semi-colon at the end of the expression. </p>
+<p>For examples:</p>
+<pre class="color-example">
+&lt;%= Math.sqrt(5) %&gt;
+&lt;%= item[10] %&gt;
+&lt;p&gt;The current data and time is: &lt;%= new java.util.Date() %&gt;&lt;/p&gt;</pre>
+
+<p>The above JSP expressions will be converted to:</p>
+<pre class="color-example">
+out.print( Math.sqrt(5) );
+out.print( item[10] );
+out.write(&quot;&lt;p&gt;Current time is: &quot;);
+out.print( new java.util.Date() );
+out.write(&quot;&lt;/p&gt;&quot;);</pre>
+
+<p>You can use the pre-defined variables in the expressions.  For examples:</p>
+<pre class="color-example">
+&lt;p&gt;You have choose author &lt;%= request.getParameter(&quot;author&quot;) %&gt;&lt;/p&gt;
+&lt;%= request.getRequestURI() %&gt;</pre>
+
+<p>You can also use the XML-compatible syntax of <code>&lt;jsp:expression&gt;Java Expression&lt;/jsp:expression&gt;</code>.</p>
+
+<h5>JSP Scriptlet <span class="font-code">&lt;% Java Statements %&gt;</span></h5>
+<p>JSP scriptlets allow you to implement more complex programming logic.  You can use scriptlets to insert any valid Java statements into the <code>_jspService()</code> method of the translated servlet.  The Java codes must be syntactically correct, with Java statements terminated by a semi-colon.  </p>
+<p>For example:</p>
+
+<pre class="color-example">
+&lt;%
+String author = request.getParameter(&quot;author&quot;);
+if (author != null &amp;&amp; !author.equals(&quot;&quot;))) { 
+%&gt;
+   &lt;p&gt;You have choose author &lt;%= author %&gt;&lt;/p&gt;
+&lt;%
+} 
+%&gt;</pre>
+
+<p>In the translated servlet, the above will be inserted into the <code>service()</code> method as follows:</p>
+<pre class="color-example">
+public void <strong>_jspService</strong>(HttpServletRequest request, HttpServletResponse response)
+      throws ServletException, IOException {
+   ......
+   String author = request.getParameter(&quot;author&quot;);
+   if (author != null &amp;&amp; !author.equals(&quot;&quot;))) {
+      out.write(&quot;&lt;p&gt;You have choose author &quot;);
+      out.print(author);
+      out.write(&quot;&lt;/p&gt;&quot;);
+   }
+}</pre>
+
+<p>The source codes of scriptlets are only available in the server, and not sent to the client. That is, scriptlets are safe and secure!</p>
+<p>You can also use the XML-compatible syntax of <code>&lt;jsp:scriptlet&gt;Java Statements&lt;/jsp:scriptlet&gt;</code>.</p>
+
+<h5>JSP Declaration <span class="font-code">&lt;%! Java Statements %&gt;</span></h5>
+<p>JSP declarations can be used to define variables and methods for the class. Unlike scriptlets that are inserted inside the <code>_jspService() </code>method, the declaration codes are inserted inside the class, at the same level as <code>_jspService()</code>, as variables or methods of the class. </p>
+<p>For example,</p>
+<pre class="color-example">&lt;%! private int count; %&gt;
+&lt;%! public int incrementCount() { ++count; } %&gt; </pre>
+<p>will be translated to:</p>
+<pre class="color-example"><span class="color-example">public final class first_jsp extends org.apache.jasper.runtime.HttpJspBase
+      implements org.apache.jasper.runtime.JspSourceDependent {
+   
+   <strong>private int count;</strong>
+   <strong>public int incrementCount() { ++count; }</strong>
+  
+   public void <strong>_jspInit</strong>() { ...... }
+  
+   public void <strong>_jspDestroy</strong>() { ......  }
+
+   public void <strong>_jspService</strong>(HttpServletRequest <strong>request</strong>, HttpServletResponse <strong>response</strong>)
+         throws java.io.IOException, ServletException {</span> ...... }
+}</pre>
+
+<p>You can also use the XML-compatible syntax of <code>&lt;jsp:declaration&gt;Java Statements&lt;/jsp:declaration&gt;</code>.</p>
+
+<h5>JSP Directive <span class="font-code">&lt;%@ ... %&gt;</span></h5>
+<p>JSP directives provide instructions to the JSP engine to aid in the translation. The syntax of the JSP directive is:</p>
+<pre class="color-syntax">
+&lt;%@ <em>directiveName</em> <em>attribute1</em>=&quot;<em>attribute1</em><em>value</em>&quot; <em>attribute2</em>=&quot;<em>attribute2value</em>&quot; ... %&gt;</pre>
+
+<p>The directives include: <code>page</code>, <code>include</code>, <code>taglib</code>.</p>
+
+<h5>JSP Page Directive <span class="font-code">&lt;%@page ... %&gt;</span></h5>
+
+<p>Typically, a JSP file starts with the page directive:</p>
+
+<pre class="color-syntax">
+&lt;%@page language=&quot;java&quot; contentType=&quot;text/html&quot; %&gt;</pre>
+
+<p>The &quot;<code>page import</code>&quot; directive lets you import classes. The syntax is:</p>
+<pre class="color-syntax">
+&lt;%@page import=&quot;<em>packageName</em>.*&quot; %&gt;
+&lt;%@page import=&quot;<em>packageName</em>.<em>className</em>&quot; %&gt;
+&lt;%@page import=&quot;<em>packageName</em>.<em>className1</em>, <em>packageName</em>.<em>className2</em>,...&quot; %&gt;
+</pre>
+
+<p>This directive generates proper import statements at the top of the servlet class. User-defined classes must be stored in &quot;<em><code>webContextRoot</code></em><code>\WEB-INF\classes</code>&quot;, and kept in a proper package (default package not allowed).</p>
+<p> For example,</p>
+<pre class="color-example">
+<span class="color-comment">&lt;%-- import package java.sql.* --%&gt;</span>
+&lt;%@page import=&quot;java.sql.*&quot; %&gt;
+  
+<span class="color-comment">&lt;%-- import a user-defined class --%&gt;</span>
+&lt;%@page import=&quot;mypkg.myClass1, mypkg.myClass2&quot; %&gt;</pre>
+
+<p>The &quot;<code>page</code>&quot; directives are also used to set the MIME type, character set of the response message. These information will be written to the response message's header. For example,</p>
+
+<pre class="color-example">
+<span class="color-comment"></span><span class="color-comment">&lt;%-- Set the response message's MIME type, character set --%&gt;</span>
+&lt;%@page contentType=&quot;image/gif&quot; %&gt;
+&lt;%@page contentType=&quot;text/html&quot; charset=&quot;UTF-8&quot; %&gt;
+&lt;%@page pageEncoding=&quot;UTF-8&quot; %&gt;
+  
+<span class="color-comment">&lt;%-- Set an information message for getServletInfo() method --%&gt;</span>
+&lt;%@page info=&quot;Hello world example&quot; %&gt;</pre>
+
+<p>The &quot;<code>page session</code>&quot; directive allows you to designate whether this page belongs to the session. The default is &quot;true&quot;. Setting to &quot;false&quot; could reduce the server's load, if session tracking is not needed in your application.</p>
+<pre class="color-syntax">&lt;%@page session=&quot;<span class="underline">true</span>|false&quot; @&gt;
+</pre>
+
+<p>Other &quot;<code>page</code>&quot; directives include: <code>errorPage</code>, <code>isErrorPage</code>, <code>buffer</code>, <code>isThreadSafe</code>, <code>isELIgnored</code>, etc.</p>
+
+<h5>JSP Include Directive <span class="font-code">&lt;%@include ... %&gt;</span></h5>
+<p>The &quot;<code>include</code>&quot; directive lets you insert the unprocessed content of an external file.  You can include any JSP files or static HTML files.  You can use include directive to include navigation bar, copyright statement, logo, etc. on every JSP pages.  The syntax is:</p>
+<pre class="color-syntax">
+<span class="color-comment"></span>&lt;%@include file=&quot;<em>url</em>&quot; %&gt;
+<span class="color-comment"></span>&lt;%@include page=&quot;<em>url</em>&quot; &amp;&gt;</pre>
+
+<p>If another JSP page is included using &quot;<code>include file</code>&quot;, the JSP engine will not check for update of the included JSP file during execution.</p>
+<p>For example:</p>
+<pre class="color-example">
+&lt;%@include file=&quot;header.jsp&quot; %&gt;
+....
+&lt;%@include file=&quot;footer.jsp&quot; %&gt;
+</pre>
+
+<h5>JSP Taglib Directive <code>&lt;%@taglib ... %&gt;</code></h5>
+<p>JSP allows you to create your own libraries of JSP tags. You can use the taglib directive to tell Tomcat what libraries to load and
+  where they are. For example,</p>
+
+<pre class="color-example">
+&lt;%@taglib prefix=&quot;sql&quot; uri=&quot;http://java.sun.com/jsp/jstl/sql&quot; %&gt;
+&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+</pre>
+
+<p>Taglib will be elaborated later.</p>
+
+<h3>JSP Standard Actions</h3>
+
+<p>The purpose of JSP actions is to specify activities to be performed when a page is processed. In contrast, JSP scripting elements such as directives (<code>&lt;%@ ... %&gt;</code>) are processed when translating the page, which produces static contents.</p>
+<p> A JSP action may contain sub-action. The syntax is as follows.</p>
+
+<pre class="color-syntax">&lt;jsp:<em>action-name</em> <em>attribute-list</em>&gt;
+   &lt;jsp:<em>subaction-name</em> <em>subaction-attribute-list</em> /&gt;
+&lt;/jsp:<em>action-name</em>&gt;
+</pre>
+
+<p>There are eight JSP standard actions (<code>forward</code>, <code>include</code>, <code></code><code>useBean, <code>getProperty</code></code><code></code>, <code>setProperty</code>, <code>plugin</code>, <code>text</code>, <code>element</code>) and five sub-actions (<code>attribute</code>, <code>body</code>, <code>fallback</code>, <code>param</code>, and <code>params</code>).</p>
+
+<h5><span class="font-code">&lt;jsp:forward&gt;</span></h5>
+
+<p>To terminate execution of the current page and forward the request to another page. For example,</p>
+<pre class="color-example">
+&lt;jsp:forward page=&quot;nextPage.jsp&quot;&gt;
+  &lt;jsp:param name=&quot;parmName&quot; value=&quot;parmValue&quot;/&gt;
+&lt;/jsp:forward&gt;</pre>
+
+<p>The destination page can access the new parameters via <code>request.getParameter(paramName)</code>. Tomcat clears the output buffer upon executing a forward action.</p>
+
+<h5><span class="font-code">&lt;jsp:include&gt;</span></h5>
+<p>To execute another page and append its <em>output</em> to the current page. That is, it places the generated HTML code into the current JSP page. This is different from the JSP include directive <code>&lt;%@ include ... %&gt;</code>, which insert <em>unprocessed</em> content.</p>
+
+<pre class="color-example">
+&lt;jsp:include page=&quot;headers.jsp&quot;/&gt;</pre>
+
+<h5>Behind the Scene</h5>
+
+<p><code>&lt;jsp:forward&gt;</code> is translated as follows:</p>
+
+<pre class="color-syntax">
+&lt;jsp:forward page=&quot;index.jsp&quot; /&gt;
+<span class="color-comment">// is translated to</span>
+_jspx_page_context.forward(&quot;index.jsp&quot;);
+<span class="color-comment">// Re-direct, or forward the current ServletRequest and ServletResponse to
+//   another active component in the application.</span></pre>
+
+<p>&lt;jsp:include&gt; is translated as follows:</p>
+
+<pre class="color-syntax">
+&lt;jsp:include page=&quot;index.jsp&quot;/&gt;
+<span class="color-comment">// is translated to</span>
+org.apache.jasper.runtime.JspRuntimeLibrary.include(request, response, &quot;index.jsp&quot;, out, false);
+<span class="color-comment">// Invoke the include method during execution of the servlet.
+// Cause the target page to be processed, and output written to the response message.
+// The last boolean argument specifies whether JspWriter is to be flushed before the include.</span></pre>
+
+<h3>Using JavaBeans in JSP (JSP Actions useBean, getProperty, setProperty)</h3>
+
+<h4>Revisit JavaBeans</h4>
+<p>A <em>JavaBean</em> is a Java class which conforms to the following rules:</p>
+<ul>
+<li>It has a no-arg constructor.</li>
+<li>It does not have public variables.</li>
+<li>It is defined in a named package. It can not be kept in the default no-name package.</li>
+<li>For a private variable <code>xxx</code>, there is a public getter <code>getXxx()</code> (or <code>isXxx()</code> for <code>boolean</code>) and a public setter <code>setXxx()</code>.</li>
+<li>For an event <code>xxxEvent</code>, there is an interface <code>xxxListener</code>, and methods <code>addXxxListener()</code> and <code>removeXxxListener()</code>.</li>
+<li>It implements <code>Serializable</code> interface, so that its state can be stored and retrieved to and from external storage, for persistent.</li>
+</ul>
+
+<h4>JSP Actions for JavaBean</h4>
+
+<h5><span class="font-code">&lt;jsp:useBean&gt;</span></h5>
+
+<p>Create a new bean instance. The bean class must be kept in &quot;<code>&lt;WebContextRoot&gt;\WEB-INF\classes</code>&quot; within a proper package directory structure.</p>
+<pre class="color-syntax">&lt;jsp:useBean id=&quot;<em>beanName</em>&quot; class=&quot;<em>packageName.ClassName</em>&quot; scope=&quot;<span class="underline">page</span>|request|session|application&quot; /&gt;
+<span class="color-comment">// Equivalent to JSP Declaration: 
+// &lt;%! PackageName.className beanName = new PackageName.className(); %&gt;
+// setAttribute according to the scope. </span> 
+</pre>
+
+<p>The attribute <code>scope</code> specifies the scope of this bean:</p>
+<ul>
+<li><code>page</code>: default, stored in <code>PageContext</code>, available to this page only.</li>
+<li><code>request</code>: stored in <code>ServletRequest</code>, can be forwarded to another JSP page or servlet.</li>
+<li><code>session</code>: stored in <code>HttpSession</code>, available to all pages and servlets within this session.</li>
+<li><code>application</code>: stored in <code>ServletContext</code>, shared by all servlets and JSP pages in this web context (application).</li>
+</ul>
+
+<h5><span class="font-code">&lt;jsp:setProperty&gt;</span></h5>
+
+<p>Set the value of a property (variable) of a bean, by invoking its setter.</p>
+<pre class="color-syntax">&lt;jsp:setProperty name=&quot;<em>beanName</em>&quot; property=&quot;<em>propertyName</em>&quot; value=&quot;<em>propertyValue</em>&quot; /&gt;
+<span class="color-comment">// Equivalent to Scriptlet: &lt;% beanName.setPropertyName(propertyValue); %&gt;</span></pre>
+
+<h5><span class="font-code">&lt;jsp:getProperty&gt;</span></h5>
+
+<p>Get the value of a property (variable) of a bean, by invoking its getter.</p>
+<pre class="color-syntax">&lt;jsp:getProperty name=&quot;<em>beanName</em>&quot; property=&quot;<em>propertyName</em>&quot; /&gt;
+<span class="color-comment">// Equivalent to Expression: &lt;%= beanName.getPropertyName() %&gt;</span></pre>
+
+<h4>JSP's JavaBean and HTML form</h4>
+
+<p>Bean is frequently used in a HTML form, to capture the value of the selected request parameters (such as username), and pass it over to the other processing pages or server-side programs, depending on its scope.</p>
+<p>Instead of setting each of the bean's properties using many <code>&lt;jsp:setProperty&gt;</code>, you can use wildcard <code>'*'</code> in the <code>property</code> attribute to set the properties of a bean to the request parameters with the matching names. Simple type conversion from String will be carried out. For example,</p>
+<pre class="color-example">
+&lt;jsp:useBean name=&quot;mybean&quot; class=&quot;mypkg.myClass&quot; scope=&quot;session' /&gt;
+  <span class="color-comment">// Instantiate a bean</span>
+&lt;jsp:setProperty name=&quot;mybean&quot; property=&quot;*&quot; /&gt;
+<span class="color-comment">  // Binds the properties with matching request parameter names
+  // Same as mybean.setXxx(request.getParameter(&quot;xxx&quot;)) for all the properties in the bean</span></pre>
+
+<p>Suppose the request contains a parameter <code>username=xxx</code> and <code>mybean</code> has a property <code>username</code>, then <code>setUsername(xxx)</code> will be invoked.</p>
+
+<h4>A JSP with JavaBean Example</h4>
+
+<ol>
+<li>Let's create a JavaBean called &quot;<code>UserBean.java</code>&quot;, which contains a variable (property) called <code>username</code>, with getter and setter as follows: 
+
+  <pre class="color-example">
+package mypkg;
+ 
+public class UserBean {
+ 
+   private String username;
+ 
+   public UserBean() {
+      username = &quot;&quot;;
+   }
+ 
+   public String getUsername() {
+      return username;
+   }
+ 
+   public void setUsername(String username) {
+      this.username = username;
+   }
+}</pre>
+</li>
+
+<li>Next, create a input form to prompt user for his/her name called <code>index.jsp</code>:
+<pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE HTML &gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+    &lt;title&gt;Input Form&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello,&lt;/h1&gt;
+    &lt;form <span class="color-new">action=&quot;response.jsp&quot;</span>&gt;
+      Enter your name: &lt;input type=&quot;text&quot; <span class="color-new">name=&quot;username&quot;</span> /&gt;
+      &lt;input type=&quot;submit&quot; /&gt;
+    &lt;/form&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+</li>
+
+<li>The Input Form submits the request to &quot;<code>response.jsp</code>&quot;, as below:
+  <pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;!DOCTYPE HTML &gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+    &lt;title&gt;Response Page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    <span class="color-new">&lt;jsp:useBean id=&quot;user&quot; scope=&quot;session&quot; class=&quot;mypkg.UserBean&quot; /&gt;</span>
+    <span class="color-new">&lt;jsp:setProperty name=&quot;user&quot; property=&quot;*&quot; /&gt;</span>
+    &lt;h1&gt;Hello, <span class="color-new">&lt;jsp:getProperty name=&quot;user&quot; property=&quot;username&quot; /&gt;</span>!&lt;/h1&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<ul>
+<li>The <code>&lt;jsp:useBean&gt;</code> directive construct an instance of <code>mypkg.UserBean</code> called &quot;<code>user</code>&quot;. This bean has scope of <code>session</code>, which is kept in the HTTPSession, and available to all JSP pages and servlets within this session.</li>
+<li>The <code>&lt;jsp:setProperty&gt;</code> sets the value of <code>username</code> in <code>mykpg.UserBean</code> to the value of the request parameter &quot;<code>username</code>&quot; (i.e., <code>user.setUsername(request.getParameter(&quot;username&quot;)</code>).</li>
+<li>The <code>&lt;jsp:getProperty&gt;</code> retrieves the <code>username</code> of <code>mypkg.UserBean</code> (i.e., <code>user.getUserName()</code>).</li>
+</ul>
+</li>
+
+</ol>
+
+<h5>Behind the Scene</h5>
+<p>For the above example, the <code>&lt;jsp:useBean&gt;</code>, <code>&lt;jsp:setProperty&gt;</code> and <code>&lt;jsp:getProperty&gt;</code> for &quot;<code>session</code>&quot; scope is translated as follows:</p>
+
+<pre class="color-example">
+<span class="color-new">&lt;jsp:useBean id=&quot;user&quot; scope=&quot;session&quot; class=&quot;mypkg.UserBean&quot;  /&gt;</span>
+<span class="color-new">&lt;jsp:setProperty name=&quot;user&quot; property=&quot;username&quot; /&gt;</span>
+&lt;h1&gt;Hello, <span class="color-new">&lt;jsp:getProperty name=&quot;user&quot; property=&quot;username&quot; /&gt;</span>!&lt;/h1&gt;</pre>
+
+<pre class="output">
+<span class="color-comment">// &lt;jsp:useBean&gt;</span>
+mypkg.UserBean user = null;
+synchronized (<strong>session</strong>) {  <span class="color-comment">// prevent concurrent update</span>
+   <span class="color-comment">// Check if bean already exists in the HTTPSession.
+   // If so, retrieve from the session</span> 
+   user = (mypkg.UserBean) _jspx_page_context.<strong>getAttribute</strong>(
+         &quot;user&quot;, javax.servlet.jsp.PageContext.<strong>SESSION_SCOPE</strong>);
+   if (user == null) {
+      <span class="color-comment">// Otherwise, allocate an instance, and place it in the session</span>
+      <strong>user = new mypkg.UserBean(); </strong>
+      _jspx_page_context.<strong>setAttribute</strong>(
+            &quot;user&quot;, user, javax.servlet.jsp.PageContext.<strong>SESSION_SCOPE</strong>);
+   }
+}
+<span class="color-comment">// &lt;jsp:setProperty&gt; </span>
+org.apache.jasper.runtime.JspRuntimeLibrary.introspecthelper(
+      _jspx_page_context.<strong>findAttribute</strong>(&quot;user&quot;), &quot;username&quot;, 
+      request.getParameter(&quot;username&quot;), request, &quot;username&quot;, false);
+<span class="color-comment">// &lt;jsp:getProperty&gt;</span>
+out.write(org.apache.jasper.runtime.JspRuntimeLibrary.toString(
+      (((mypkg.UserBean)_jspx_page_context.<strong>findAttribute</strong>(&quot;user&quot;)).<strong>getUsername</strong>())));</pre>
+
+
+<p><code>&lt;jsp:setProperty&gt;</code> with wildcard <code>'*'</code>:</p>
+
+<pre class="color-example">&lt;jsp:setProperty name=&quot;user&quot; <strong>property=&quot;*&quot;</strong> /&gt;
+</pre>
+
+<pre class="output">org.apache.jasper.runtime.JspRuntimeLibrary.introspect(
+      _jspx_page_context.findAttribute(&quot;user&quot;),  request);
+</pre>
+
+<p><code>&lt;jsp:useBean&gt;</code> with &quot;<code>application</code>&quot; scope:</p>
+
+<pre class="color-example">&lt;jsp:useBean id=&quot;user&quot; <strong>scope=&quot;application&quot;</strong> class=&quot;mypkg.UserBean&quot;  /&gt;
+</pre>
+
+<pre class="output">
+mypkg.UserBean user = null;
+synchronized (<strong>application</strong>) {
+   user = (mypkg.UserBean) _jspx_page_context.getAttribute(
+         &quot;user&quot;,  javax.servlet.jsp.PageContext.<strong>APPLICATION_SCOPE</strong>);
+   if (user == null) {
+      user = new mypkg.UserBean();
+      _jspx_page_context.setAttribute(
+         &quot;user&quot;, user,  javax.servlet.jsp.PageContext.<strong>APPLICATION_SCOPE</strong>);
+   }
+}</pre>
+
+<h4>Tomcat's JSP 1.2 Example - Number Guess</h4>
+<p>Tomcat provides many excellent examples on JSP and servlets (kept under &quot;<code>webapps\examples</code>&quot;), but lack appropriate explanation for newbies.</p>
+<p>Let's illustrate the use of JavaBean using the Tomcat's JSP sample &quot;number guess&quot;. I modified the codes slightly to fit my style. You can find the original JSP source at &quot;<code>webapps\examples\jsp\num\numguess.jsp</code>&quot;, and Javabean at &quot;<code>webapps\examples\WEB-INF\classes\num\NumberGuessBean.java</code>&quot;. You can run the &quot;number guess&quot; by issuing URL http://localhost:8080/examples/jsp/num/numguess.jsp.</p>
+<p>Let's run our examples in web context &quot;<code>hellojsp</code>&quot; created earlier. We now need to create the proper directory structure for a web application and put the files at the right place. First create a directory &quot;<code>hellojsp</code>&quot; under &quot;<code>webapps</code>&quot;. Then, create a sub-directory &quot;<code>WEB-INF</code>&quot; under &quot;<code>hellojsp</code>&quot;. Finally, create sub-directories &quot;<code>classes</code>&quot;, &quot;<code>src</code>&quot; and &quot;<code>lib</code>&quot; under &quot;<code>WEB-INF</code>&quot;. Take note that the directory names are case-sensitive.</p>
+
+<p>Put the files in the appropriate directories:</p>
+  <ul>
+  <li>&quot;<code>&lt;CATALINA_HOME&gt;</code>\<code>webapps\</code><code>hellojsp</code>&quot;: This directory is known as <em>context root</em> of web context &quot;<code>hellojsp</code>&quot;.  Keep the &quot;<code>jsp</code>&quot; and &quot;<code>html</code>&quot; files available to the users.</li>
+  <li>&quot;<code>&lt;CATALINA_HOME&gt;</code>\<code>webapps\</code><code>hellojsp\WEB-INF</code>&quot;: Keep the configuration files, such as &quot;<code>web.xml</code>&quot;.</li>
+  <li>&quot;<code>&lt;CATALINA_HOME&gt;</code>\<code>webapps\</code><code>hellojsp\WEB-INF\src</code>&quot;: Keep the java program source files (optional).</li>
+  <li>&quot;<code>&lt;CATALINA_HOME&gt;</code>\<code>webapps\</code><code>hellojsp\WEB-INF\classes</code>&quot;: Keep the java classes.</li>
+  <li>&quot;<code>&lt;CATALINA_HOME&gt;</code>\<code>webapps\</code><code>hellojsp\WEB-INF\lib</code>&quot;: keep the &quot;<code>jar</code>&quot; files, which could be provided by external libraries.</li>
+    </ul>
+
+<h5>JavaBean - &quot;<span class="font-code">NumberGuessBean.java</span>&quot;</h5>
+<p>Save the source code as  &quot;<code>&lt;CATALINA_HOME&gt;</code>\<code>webapps\</code><code>hellojsp\WEB-INF\src\mypkg\NumberGuessBean.java</code>&quot;</p>
+<pre class="color-example">
+package mypkg;            <span class="color-comment">// Bean must be kept in a named package</span>
+import java.util.Random;  <span class="color-comment">// For generating random number</span>
+import java.io.Serializable;
+  
+<span class="color-comment">// NumberGuessBean, with session scope, for storing game data.</span>
+public class NumberGuessBean implements Serializable {
+  
+   private int answer;       <span class="color-comment">// the random number to be guessed</span>
+   private boolean success;  <span class="color-comment">// got the answer?</span>
+   private String hint;      <span class="color-comment">// hinting messages, e.g., &quot;higher&quot;, &quot;lower&quot;</span>
+   private int numGuesses;   <span class="color-comment">// number of guesses made so far, init to 0</span>
+   private Random random;    <span class="color-comment">// random number generator</span>
+  
+   <span class="color-comment">// Constructor</span>
+   public NumberGuessBean() {
+      random = new Random(); <span class="color-comment">// Init the random number generator</span>
+      reset();
+   }
+  
+   <span class="color-comment">// Reset the game</span>
+   public void reset() {
+      <span class="color-comment">// Generate a random int between 1 to 100, uniformly distributed.</span>
+      answer = random.nextInt(100) + 1;
+      success = false;
+      numGuesses = 0;
+   }
+  
+   <span class="color-comment">// &lt;jsp:setProperty name=&quot;numguess&quot; property=&quot;*&quot;/&gt; bounds to this method
+   //   because setGuess() matches request parameter &quot;guess&quot;.
+   // Always set the values of numGuesses and hint.
+   // Set success if user got the answer right.</span>
+   public void setGuess(String strIn) {
+      ++numGuesses;  <span class="color-comment">// one more guess step</span>
+  
+      int numIn;
+      <span class="color-comment">// Convert the input String to an int.
+      // Catch if the input string does not contain a valid int.</span>
+      try {
+         numIn = Integer.parseInt(strIn);
+      } catch (NumberFormatException e) {
+         hint = &quot;a number next time&quot;;
+         return;
+      }
+  
+      if (numIn == answer) {
+         success = true;
+      } else if (numIn &lt; answer) {
+         hint = &quot;higher&quot;;
+      } else if (numIn &gt; answer) {
+         hint = &quot;lower&quot;;
+      }
+   }
+  
+   <span class="color-comment">// Public getters for private variables success, hint and numGuesses.
+   // No public setters. Values are set in the setGuess() method.</span>
+   public boolean isSuccess() { return success; }
+   public String getHint() { return hint; }
+   public int getNumGuesses() { return numGuesses; }
+}</pre>
+
+<p>Notes:</p>
+<ul>
+<li>To compile this Java code using JDK, use <code>-d</code> option to put the compiled class into the &quot;<code>hellojsp\WEB-INF\classes</code>&quot; directory. The compiler automatically creates  the proper package directory structure.
+<pre class="color-command"><span class="color-comment">-- Change directory to &quot;&lt;CATALINA_HOME&gt;\webapps\hellojsp\WEB-INF\classes&quot;</span>
+d:&gt; cd \&lt;CATALINA_HOME&gt;\webapps\hellojsp\WEB-INF\classes
+<span class="color-comment">-- Specify the destination using -d option</span>
+d:\&lt;CATALINA_HOME&gt;\webapps\hellojsp\WEB-INF&gt; javac -d . ..\src\mypkg\NumberGuessBean.java</pre>
+The output <code>NumberGuessBean.class</code> will be created in &quot;<code>&lt;CATALINA_HOME&gt;\webapps\hellojsp\WEB-INF\classes\mypkg</code>&quot;.</li>
+<li>A proper Javabean is kept in a named package, implements <code>Serializable</code>, has no public variables, has a no-arg constructor (default in this example), getters and setters.</li>
+<li>The central method is <code>setGuess()</code>. This method is bound to the JSP via <code>&lt;jsp:setProperty name=&quot;numguess&quot; property=&quot;*&quot;/&gt;</code>. We shall see later in the JSP script that a request parameter called &quot;<code>guess=xxx</code>&quot; is used to send the user input, which is matched to this method via the wildcard <code>'*'</code> property.</li>
+<li>It is interesting to see that there is no private variable <code>guess</code>, no setters for <code>success</code>, <code>hint</code>, and <code>numGuesses</code>.</li>
+</ul>
+
+<h5>JSP Script - &quot;<span class="font-code">numguess.jsp</span>&quot;</h5>
+<p>Write the main page &quot;<code>numguess.jsp</code>&quot; and save under the context root &quot;<code>hellojsp</code>&quot;.</p>
+
+<pre class="color-example">
+<span class="color-new">&lt;%@page import = &quot;mypkg.NumberGuessBean&quot; %&gt;</span>
+<span class="color-new">&lt;jsp:useBean id=&quot;numguess&quot; class=&quot;mypkg.NumberGuessBean&quot; scope=&quot;session&quot; /&gt;</span>
+<span class="color-comment">&lt;%-- This JSP has a form with request parameter &quot;guess=xxx&quot;, which matches
+     the setGuess() method of the bean  --%&gt;</span>
+<span class="color-new">&lt;jsp:setProperty name=&quot;numguess&quot; property=&quot;*&quot;/&gt;</span>
+  
+&lt;html&gt;
+&lt;head&gt;&lt;title&gt;Number Guess&lt;/title&gt;&lt;/head&gt;
+&lt;body&gt;
+<span class="color-comment">&lt;%-- For the first access without request parameter &quot;guess&quot;, setGuess() did not run.
+     For subsequent access with parameter &quot;guess&quot;, setGuess() (bound earlier in jsp:setProperty) 
+     already run to check the user input. --%</span>&gt;
+<span class="color-new">&lt;%
+if (numguess.isSuccess()) {</span>    <span class="color-comment">// correct guess - updated by setGuess() bound earlier</span>
+<span class="color-new">%&gt;</span>
+  &lt;p&gt;Congratulations!  You got it, after <span class="color-new">&lt;%= numguess.getNumGuesses() %&gt;</span> tries.&lt;/p&gt;
+  <span class="color-new">&lt;% numguess.reset(); %&gt;</span>
+  &lt;p&gt;&lt;a href=&quot;<span class="color-new">&lt;%= request.getRequestURI() %&gt;</span>&quot;&gt;try again&lt;/a&gt;&lt;/p&gt;
+<span class="color-new">&lt;%
+} else {
+  if (numguess.getNumGuesses() == 0 ) {</span>   <span class="color-comment">// start a game</span>
+<span class="color-new">%&gt;</span>
+    &lt;p&gt;Welcome to the Number Guess game.&lt;/p&gt;
+<span class="color-new">&lt;%
+  } else {</span>   <span class="color-comment">// in a game, wrong guess</span>
+<span class="color-new">%&gt;</span>
+    &lt;p&gt;Good guess, but nope. Try &lt;strong&gt;<span class="color-new">&lt;%= numguess.getHint() %&gt;</span>&lt;/strong&gt;.&lt;/p&gt;
+    &lt;p&gt;You have made <span class="color-new">&lt;%= numguess.getNumGuesses() %&gt;</span> guesses.&lt;/p&gt;
+<span class="color-new">&lt;%
+  }
+%&gt;</span>    
+  <span class="color-comment">&lt;%-- Putting up the form to get the user guess  --%&gt;</span>
+  &lt;p&gt;I'm thinking of a number between 1 and 100.&lt;p&gt;
+  &lt;form method=&quot;get&quot;&gt;
+    &lt;p&gt;What's your guess? &lt;input type=&quot;text&quot; name=&quot;guess&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;&gt;
+  &lt;/form&gt;
+<span class="color-new">&lt;%
+}
+%&gt;</span>
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+
+<h5>Explanation</h5>
+<ul>
+<li>First of all, take note that this JSP contains a HTML form (at the bottom). The &lt;form&gt; tag does not specify an &quot;<code>action</code>&quot;, which is defaulted to the current page. The form contains a text field with named &quot;<code>guess</code>&quot;.</li>
+<li>In Line 1, the &quot;<code>page import</code>&quot; JSP directive import our JavaBean. The <code>&lt;jsp:useBean&gt;</code> creates an instance of the bean with <code>scope=&quot;session&quot;</code>. We need the session scope, as the game is played over multiple requests.</li>
+<li>The <code>&lt;jsp:setProperty&gt;</code> uses wildcard <code>'*'</code> for the property. The request parameter &quot;<code>guess</code>&quot; (defined in the form) matches the method <code>setGuess()</code> in the bean. For the first access of this page, there is no request parameter, and nothing bounds. For subsequent accesses, the user input is carried via the request parameter &quot;<code>guess</code>&quot;, which trigger <code>setGuess()</code> to check for the user input, and update the game status accordingly.</li>
+</ul>
+
+<h5>Behind the Scene</h5>
+<p>The codes relevant to the JavaBean of the compiled servlet (in &quot;<code>$CATALINA\work\hellojsp\...</code>&quot;) are extracted as follows:</p>
+<pre class="color-example">
+import mypkg.NumberGuessBean;   <span class="color-comment">// Produced by &quot;page import&quot; directive</span>
+.....
+public final class <strong>numguess_jsp</strong> extends org.apache.jasper.runtime.HttpJspBase
+      implements org.apache.jasper.runtime.JspSourceDependent {
+  
+   public void _jspInit() { ...... }
+   public void _jspDestroy() { ...... }
+   
+   public void _jspService(HttpServletRequest request, HttpServletResponse response)
+         throws java.io.IOException, ServletException {
+  
+      <span class="color-comment">// Setting up JSP pre-defined variables</span>
+      ......
+  
+      <span class="color-comment">// &lt;jsp:useBean&gt; produces these</span>
+      mypkg.NumberGuessBean numguess = null;
+      <span class="color-comment">// Scope is session. If numguess already exists, use the existing. Otherwise, allocate one.</span>
+      synchronized (session) {
+         numguess = (mypkg.NumberGuessBean) _jspx_page_context.getAttribute(&quot;numguess&quot;, PageContext.SESSION_SCOPE);
+         if (numguess == null){
+            numguess = new mypkg.NumberGuessBean();
+            _jspx_page_context.setAttribute(&quot;numguess&quot;, numguess, PageContext.SESSION_SCOPE);
+         }
+      }
+      .......
+      <span class="color-comment">// &lt;jsp:setProperty&gt; with wildcard property
+      // Match the request parameters to the bean's properties</span>
+      org.apache.jasper.runtime.JspRuntimeLibrary.introspect(
+            _jspx_page_context.findAttribute(&quot;numguess&quot;), request);
+      .......
+}</pre>
+
+<h3>Init and Destroy</h3>
+<p>If you need to place codes into the <code>init()</code> and <code>destroy()</code> methods of the servlet, e.g., maintain a shared database connection, you could override the <code>jspInit()</code> and <code>jspDestroy()</code> methods. </p>
+<p>For example, the following JSP script creates a shared database <code>Connection</code> and <code>Statement</code> for accessing a database in the <code>init()</code>, for all the requests.</p>
+
+<pre class="color-example">
+&lt;%@ page import = &quot;java.sql.*&quot; %&gt;
+&lt;%! 
+private Connection conn;
+private Statement stmt;
+      
+public void <strong>jspInit</strong>() {
+   try {
+      Class.forName(&quot;sun.jdbc.odbc.JdbcOdbcDriver&quot;);  <span class="color-comment">// Not needed in JDK 6</span>
+      conn = DriverManager.getConnection(&quot;jdbc:odbc:eshopODBC&quot;);
+   } catch (ClassNotFoundException ex) {
+      ex.printStackTrace();
+   } catch (SQLException ex) {
+      ex.printStackTrace();
+   }
+} 
+       
+public void <strong>jspDestroy</strong>() {
+   try {
+      conn.close();
+   } catch (SQLException ex) {
+      ex.printStackTrace();
+   }
+} 
+%&gt;
+</pre>
+
+
+<h3>Tomcat's JSP 1.2 Examples</h3>
+
+<h4>Date</h4>
+<p>Use a bean with &quot;page&quot; scope to display the current date/time (using <code>Calendar</code> class), where session tracking is not required. [TODO]</p>
+<h4>Snoop</h4>
+<p>[TODO]</p>
+
+<h4>Error Page</h4>
+<p>[TODO]</p>
+
+<h4>Session Carts</h4>
+<p>[TODO]</p>
+
+<h3>JSP Custom Tag</h3>
+
+<p>In addition to the standard actions like <code>&lt;jsp:useBean&gt;</code>, JSP allows you to define your own custom tag to perform a custom action, to extent the functions. You can use a custom tag in your JSP page as follows:</p>
+<pre class="color-syntax">&lt;<em>prefix</em>:<em>actionTag</em> <em>attributeName</em>=&quot;<em>attributeValue</em>&quot; /&gt;</pre>
+
+<p>To define custom JSP tag, you need the followings:</p>
+
+<ol>
+<li>Create <em>Tag Handlers</em>: Define the Java classes that perform the actions, including the definition of the attributes. These classes are called Tag Handlers.</li>
+<li>Provide a <em>Tag Library Descriptor File</em>: An XML file (with file type of &quot;<code>.tld</code>&quot;) describing tag name, attributes, and the implementation tag handler class, so that Tomcat knows how to handle the custom tag. It shall be kept in &quot;<code><em>&lt;WebContextRoot&gt;</em>\WEB-INF</code>&quot;.</li>
+<li>In the JSP files that uses the custom tags, you need to specify the location of tag library and define a tag prefix.</li>
+</ol>
+
+<h4>Example: HelloTag</h4>
+
+<p>Let's write a custom standalone tag called <code>&lt;eg:hello /&gt;</code> to say &quot;Hello, world!&quot;.</p>
+
+<p><span class="line-heading">Step 1: Create a Tag Library Descriptor (TLD) File:</span> A TLD file contains <em>tag descriptor</em>s, which map a custom tag to a tag handler class. Create a TLD file called &quot;<code>mycustomtag.tld</code>&quot; under &quot;<code>&lt;ContextRoot&gt;\WEB-INF\tlds</code>&quot;, as follows. Currently, this TLD file contains no tag descriptor.</p>
+
+<p>(NetBeans) Right-click on &quot;<code>WEB-INF</code>&quot; &rArr; New &rArr; Tag Library Descriptor &rArr; In &quot;TLD name&quot;, enter &quot;<code>mycustomtag</code>&quot; &rArr; In &quot;Folder&quot;, enter &quot;<code>tlds/</code>&quot; (default) &rArr; In &quot;URI&quot;, enter &quot;<code>mycustomtag</code>&quot; &rArr; In &quot;Prefix&quot;, enter &quot;<code>eg</code>&quot; &rArr; Finish.</p>
+
+<pre class="color-example">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;taglib version=&quot;2.1&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; 
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+    xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd&quot;&gt;
+ 
+  &lt;tlib-version&gt;1.0&lt;/tlib-version&gt;
+  <strong>&lt;short-name&gt;eg&lt;/short-name&gt;
+  &lt;uri&gt;mycustomtag&lt;/uri&gt;</strong>
+  
+&lt;/taglib&gt;</pre>
+
+<p>The <code>&lt;short-name&gt;</code> declares the <em>default</em> tag prefix. The <em>optional</em> <code>&lt;uri&gt;</code> define a public URI that uniquely identifies this tag library. Starting from JSP 1.2, the container (such as Tomcat) uses an auto-discovery feature to expose this URI to all the JSP pages. [We no longer need to edit the <code>web.xml</code> to deploy custom tags with the <code>&lt;taglib&gt;</code> element.]</p>
+
+<p><span class="line-heading">Step 2: Write the Tag Handler Class:</span> Create a <em>simple</em> tag handler class called &quot;<code>HelloTag.java</code>&quot;, which extends <code>SimpleTagSupport</code>.</p>
+<p>(NetBeans) Right-click on &quot;Source Package&quot; &rArr; New &rArr; Tag Handler... &rArr; In &quot;Class Name&quot;, enter &quot;<code>HelloTag</code>&quot; &rArr; In &quot;Package&quot;, enter &quot;<code>mypkg</code>&quot; &rArr; In &quot;Tag Support Class to Extend&quot;, select &quot;<code>SimpleTagSupport</code>&quot; &rArr; Next &rArr; In TLD File, browse and select &quot;<code>WEB-INF\tlds\mycustomtag.tld</code>&quot; (created earlier) &rArr; In &quot;Tag Name&quot;, enter &quot;<code>hello</code>&quot; &rArr; In &quot;Body Content&quot;, select &quot;empty&quot;.</p>
+<pre class="color-example">
+package mypkg;
+ 
+import javax.servlet.jsp.JspWriter;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.tagext.SimpleTagSupport;
+ 
+public class <strong>HelloTag extends SimpleTagSupport</strong> {
+   @Override
+   public void doTag() throws JspException {
+      <strong>JspWriter out = getJspContext().getOut();</strong>
+      try {
+         <strong>out.println(&quot;&lt;h1&gt;Hello world from custom tag!&lt;/h1&gt;&quot;);</strong>
+      } catch (java.io.IOException ex) {
+         throw new JspException(&quot;Error in HelloTag &quot;, ex);
+      }
+   }
+}</pre>
+
+<p>The program obtains the <code>Writer</code>, and prints &quot;Hello world&quot;.</p>
+
+<p><span class="line-heading">Step 3: Write a Tag Descriptor:</span> Next, create a tag descriptor for the <code>HelloTag</code>, by editing the &quot;<code>mycustomtag.tld</code>&quot; created earlier. The name of the tag is <code>&lt;<em>prefix</em>:hello&gt;</code>, which maps to &quot;<code>mypkg.HelloTag.class</code>&quot;. This is a standalone tag without body content.</p>
+
+<pre class="color-example">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;taglib version=&quot;2.1&quot; xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; 
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; 
+    xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd&quot;&gt;
+ 
+  &lt;tlib-version&gt;1.0&lt;/tlib-version&gt;
+  &lt;short-name&gt;eg&lt;/short-name&gt;
+  &lt;uri&gt;mycustomtag&lt;/uri&gt;
+ 
+  <strong>&lt;tag&gt;
+    &lt;name&gt;hello&lt;/name&gt;
+    &lt;tag-class&gt;mypkg.HelloTag&lt;/tag-class&gt;
+    &lt;body-content&gt;empty&lt;/body-content&gt;
+  &lt;/tag&gt;</strong>
+&lt;/taglib&gt;</pre>
+
+<p><span class="line-heading">Step 4: Write a JSP:</span> We can now write a JSP page (called &quot;<code>testHelloTag.jsp</code>&quot;) to use the custom tag created.</p>
+
+<pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+<strong>&lt;%@taglib prefix=&quot;eg&quot; uri=&quot;mycustomtag&quot; %&gt;</strong>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+      &lt;title&gt;Test Custom Tag - Hello&lt;/title&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+      <strong>&lt;eg:hello /&gt;</strong>
+   &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>The <code>Taglib</code> directive's attribute &quot;<code>uri</code>&quot; locates the TLD &quot;<code>mycustomtag.tld</code>&quot; based on the public URI exposed. Alternatively, you can specify the TLD filename, i.e., <code>uri=&quot;/WEB-INF/tlds/mycustomtag.tld&quot;</code>; or to a JAR file that has a TLD file at location <code>META-INF/taglib.tld</code>. It also sets the prefix of the custom tag. <code>&lt;eg:hello /&gt;</code> invokes the tag handler.</p>
+
+<p><span class="line-heading">Run the JSP:</span> Start the Tomcat and issue a URL to select the &quot;<code>testHelloTag.jsp</code>&quot;.</p>
+
+<h4>Interface <span class="font-code">SimpleTag</span> and Class <span class="font-code">SimpleTagSupport</span> (JSP 2.0)</h4>
+
+<p> A simple tag handler implements <code>javax.servlet.jsp.tagext.SimpleTag</code> interface, which declares five abstract methods:</p>
+
+<pre class="color-syntax">
+void doTag()
+  <span class="color-comment">// To be called back by the container to invoke this tag.</span>
+JspTag getParent()
+  <span class="color-comment">// Returns the parent of this tag, for collaboration purposes.</span>
+void setJspBody(JspFragment jspBody)
+  <span class="color-comment">// To be called back by the container to provides
+  //   the body of this tag as a JspFragment object.
+  // You could retrieve this JspFragment via getJspBody().
+</span>void setJspContext(JspContext pc)
+  <span class="color-comment">// To be called back by the container to provide this tag handler
+  //   with the JspContext for this invocation.
+  // You can retrieve this JspContext via getJspContext().</span>
+void setParent(JspTag parent)
+  <span class="color-comment">// Sets the parent of this tag, for collaboration purposes.</span></pre>
+
+<p>The life cycle for handling simple tag invocation, e.g., <code>&lt;eg:hello /&gt;</code>, is:</p>
+<ol>
+<li>The container creates an instance of the tag handler, using the no-arg constructor.</li>
+<li>The container calls back the <code>setJspContext()</code>; and <code>setParent()</code> if the tag is nested within any tag invocation. The earlier example uses <code>getJspContext().getOut()</code> to retrieve the <code>JspWriter</code> to write the response.</li>
+<li>The container calls back the setter(s) of all the attribute(s).</li>
+<li>If a body exists, the container calls back the <code>setJspBody()</code> method to set the body of the tag as a <code>JspFragment</code>.</li>
+<li>The container calls back the <code>doTag()</code>, which caries out all the business logic.</li>
+</ol>
+
+<p>Instead of implementing the <code>SimpleTag</code> interface, you could extend the adaptor class <code>SimpleTagSupport</code>, which provides default implementation to all the abstract methods, and override the desired methods (as in the earlier example).</p>
+
+<h4>Handling the Tag's Attributes</h4>
+
+<p>Let's rewrite the <code>HelloTag</code> (called <code>HelloAttributeTag</code>) to handle an attribute called &quot;<code>name</code>&quot;. That is, <code>&lt;eg:hello-attr name=&quot;Peter&quot; /&gt;</code> prints &quot;Hello, Peter!&quot;.</p>
+
+<h5 class="font-code">HelloAttributeTag.java</h5>
+<pre class="color-example">
+package mypkg;
+ 
+import javax.servlet.jsp.*;
+import javax.servlet.jsp.tagext.SimpleTagSupport;
+ 
+public class HelloAttributeTag extends SimpleTagSupport {
+ 
+   private String name;
+ 
+   <span class="color-comment">// The container calls back this setter to process attribute &quot;name&quot;</span>
+   public void setName(String name) {
+      this.name = name;
+   }
+ 
+   @Override
+   public void doTag() throws JspException {
+      JspWriter out = getJspContext().getOut();
+      try {
+         if (name != null) {
+            out.println(&quot;&lt;h1&gt;Hello, &quot; + name + &quot;!&lt;/h1&gt;&quot;);
+         } else {
+            out.println(&quot;&lt;h1&gt;Hello, everybody!&lt;/h1&gt;&quot;);
+         }
+      } catch (java.io.IOException ex) {
+         throw new JspException(&quot;Error in HelloAttributeTag &quot;, ex);
+      }
+   }
+}</pre>
+
+<h5 class="font-code">mycustomtag.tld</h5>
+
+<p>Add the following tag descriptor into the &quot;<code>mycustomtag.tld</code>&quot;.</p>
+
+<pre class="color-example">
+&lt;taglib ......&gt;
+  ......
+ 
+  &lt;tag&gt;
+    &lt;name&gt;<strong>hello-attr</strong>&lt;/name&gt;
+    &lt;tag-class&gt;<strong>mypkg.HelloAttributeTag</strong>&lt;/tag-class&gt;
+    &lt;body-content&gt;empty&lt;/body-content&gt;
+    <strong>&lt;attribute&gt;
+       &lt;name&gt;name&lt;/name&gt;
+       &lt;required&gt;false&lt;/required&gt;
+       &lt;rtexprvalue&gt;true&lt;/rtexprvalue&gt;
+       &lt;type&gt;java.lang.String&lt;/type&gt;
+    &lt;/attribute&gt;</strong>
+  &lt;/tag&gt;
+&lt;/taglib&gt;</pre>
+
+<p> The name of this tag is <code>&lt;eg:hello-attr&gt;</code>. An optional attribute (<code>required</code> is <code>false</code>) called &quot;<code>name</code>&quot; is declared. It  accepts &quot;runtime (request-time) expression values&quot; (<code>rtexprvalue</code>). In other words, we can use this tag in any of the following ways:</p>
+
+<pre class="color-example">&lt;eg:hello-attr name=&quot;Peter&quot; /&gt;
+  <span class="color-comment">// via the setter setName()</span>
+&lt;eg:hello-attr /&gt;
+  <span class="color-comment">// name is null, allowed as required=false</span>
+&lt;eg:hello-attr name=&quot;${param['name']}&quot; /&gt;
+  <span class="color-comment">// via the request parameter name
+  // Enabled via rtexprvalue=true
+  // E.g., http://localhost:8080/path/testHelloTag.jsp?name=Paul</span></pre>
+
+<h5 class="font-code">testHelloTag.jsp</h5>
+
+<p>Modify &quot;<code>testHelloTag.jsp</code>&quot; to include these three statements:</p>
+
+<pre class="color-example">
+&lt;eg:hello-attr name=&quot;Peter&quot; /&gt;
+&lt;eg:hello-attr /&gt;
+&lt;eg:hello-attr name=&quot;${param['name']}&quot; /&gt;</pre>
+
+<p>Issue a URL with a query parameter, e.g., <code>http://localhost:8080/path/testHelloTag.jsp<strong>?name=Paul</strong></code>. The outputs are:</p>
+
+<pre class="output">
+Hello, Peter!       <span class="color-comment">// from the name attribute</span>
+Hello, everybody!   <span class="color-comment">// no attribute</span>
+Hello, Paul!        <span class="color-comment">// evaluated on request-time from the request parameter</span></pre>
+
+<h4>Processing the Tag's Body Content</h4>
+
+<p>Let's rewrite the <code>HelloTag</code> (called <code>HelloBodyTag</code>) to handle the body content. That is, <code>&lt;eg:hello-attr&gt;Peter&lt;/eg:hello-attr&gt;</code> prints &quot;Hello, Peter!&quot;.</p>
+
+<h5 class="font-code">HelloBodyTag.java</h5>
+
+<pre class="color-example">
+package mypkg;
+ 
+import javax.servlet.jsp.*;
+import javax.servlet.jsp.tagext.*;
+ 
+public class <strong>HelloBodyTag</strong> extends SimpleTagSupport {
+ 
+   @Override
+   public void doTag() throws JspException {
+      JspWriter out = getJspContext().getOut();
+      try {
+         out.println(&quot;&lt;h1&gt;Hello, &quot;);
+         <strong>JspFragment body = getJspBody();
+         if (body != null) {</strong>
+            <span class="color-comment">// Print the body content as it is</span>
+            <strong>body.invoke(out);
+         } else {
+            out.println(&quot;everybody&quot;);
+         }</strong>
+         out.println(&quot;!&lt;/h1&gt;&quot;);
+      } catch (java.io.IOException ex) {
+         throw new JspException(&quot;Error in HelloTag &quot;, ex);
+      }
+   }
+}</pre>
+
+<p>The container calls back <code>setJspBody()</code> (implemented by <code>SimpleTagSupport</code>), which makes the tag's body content available as an executable <code>JspFragment</code> of any EL expressions, standard actions, custom actions and template text. In the <code>doTag()</code> method, we can access this <code>Jspfragment</code> with the <code>getJspBody()</code> method, and execute it via the <code>invoke()</code> method.</p>
+
+<h5 class="font-code">mycustomtag.tld</h5>
+
+<p>Add the following tag descriptor into the &quot;<code>mycustomtag.tld</code>&quot;.</p>
+
+<pre class="color-example">
+&lt;taglib ......&gt;
+  ......
+ 
+  &lt;tag&gt;
+    &lt;name&gt;<strong>hello-body</strong>&lt;/name&gt;
+    &lt;tag-class&gt;<strong>mypkg.HelloBodyTag</strong>&lt;/tag-class&gt;
+    &lt;body-content&gt;<strong>scriptless</strong>&lt;/body-content&gt;
+  &lt;/tag&gt;
+&lt;/taglib&gt;</pre>
+
+<p>Instead of <code>body-content</code> of <code>empty</code> in the earlier cases, we set it to <code>scriptless</code>. This  allows us to put EL expressions, standard actions, custom actions and template text within the tag's body; but not java code.</p>
+
+<h5 class="font-code">testHelloTag.jsp</h5>
+
+<p>Modify &quot;<code>testHelloTag.jsp</code>&quot; to include these statements, and run with request parameter, e.g., <code>http://localhost:8080/path/testHelloTag.jsp?name=Alvin</code>.</p>
+
+<pre class="color-example">
+&lt;eg:hello-body&gt;Alan&lt;/eg:hello-body&gt;              <span class="color-comment">// Hello, Alan!</span>
+&lt;eg:hello-body&gt;${param['name']}&lt;/eg:hello-body&gt;  <span class="color-comment">// Hello, Alvin!</span>
+&lt;eg:hello-body&gt;&lt;/eg:hello-body&gt;                  <span class="color-comment">// Hello, everybody!</span>
+&lt;eg:hello-body /&gt;                                <span class="color-comment">// Hello, everybody!</span></pre>
+
+<h4>Brief Summary on <span class="font-code">SimpleTagSupport</span></h4>
+
+<p>Simple tag handlers (extending <code>SimpleTagSupport</code>) are easy to write and have more than enough power to get most of the things done. Although you are not permitted to use scriptlet inside the body, but you can get around with other means. Also, simple tag handler creates an instance for each occurrence in the JSP page, which might be an issue in some situations. Beside SimpleTagSupport, you could extend <code>BodyTagSupport</code>, which give you more flexibility.</p>
+
+<h4>Interface <span class="font-code">BodyTag</span> and Class <span class="font-code">BodyTagSupport</span></h4>
+
+<p>The interface <code>BodyTag</code> and its superclasses super-interfaces <code>IterationTag</code>, <code>JspTag</code>, and <code>Tag</code>, declares these abstract methods:</p>
+
+<pre class="color-syntax">
+void setBodyContent(BodyContent b)
+  <span class="color-comment">// Set the bodyContent property.</span>
+void doInitBody()
+  <span class="color-comment">// Prepare for evaluation of the body.</span>
+int doAfterBody()
+  <span class="color-comment">// Process body (re)evaluation.</span>
+int doStartTag()
+  <span class="color-comment">// Process the start tag for this instance.</span>
+int doEndTag()
+  <span class="color-comment">// Process the end tag for this instance.</span>
+void release()
+  <span class="color-comment">// Called on a Tag handler to release state.</span>
+void setPageContext(PageContext pc)
+  <span class="color-comment">// Set the current page context.</span>
+void setParent(Tag t)
+  <span class="color-comment">// Set the parent (closest enclosing tag handler) of this tag handler.</span>
+Tag getParent()
+  <span class="color-comment">// Get the parent (closest enclosing tag handler) for this tag handler.</span>
+</pre>
+
+<p>Instead of implementing interface <code>BodyTag</code>, we could extend adaptor class <code>BodyTagSupport</code>, which provides default implementation to all the abstract methods, and additional methods for convenience. You only need to override the desired methods.</p>
+<p>Example [TODO]</p>
+
+<h4>Custom Functions</h4>
+<p>[TODO] Based on Tomcat's JSP example.</p>
+
+
+<h3>JSP Standard Tag Library (JSTL) &amp; Expression Language (EL)</h3>
+
+<h4>Introduction to JSTL</h4>
+
+<p>JSP Standard Tag Library (JSTL) is <em>a collection of custom tags</em> that provides support for common task, to reduce the needs of writing scripting elements (scriptlets). It consists of five tag libraries (a) core, (b) internationalization (i18n) and formatting, (c) XML processing, (d) Database access, and (e) functions.</p>
+
+<p>The mother site for JSTL is <a href="http://java.sun.com/products/jsp/jstl">http://java.sun.com/products/jsp/jstl</a>. You could download the JSTL API specification. There are a few JSTL versions:</p>
+<ul>
+<li>JSTL 1.0 (JSP 1.2, Servlet 2.3)</li>
+<li>JSTL 1.1 (JSP 2.0, Servlet 2.4, part of Java EE 1.4)</li>
+<li>JSTL 1.2 (JSP 2.1, Servlet 2.5, part of Java EE 5).</li>
+</ul>
+ 
+<p>To use JSTL tag library in Tomcat, download the JSTL binaries from Apache's &quot;Taglibs&quot; Project @ <a href="http://tomcat.apache.org/taglibs/standard/">http://tomcat.apache.org/taglibs/standard</a>.  Unzip and copy &quot;<code>standard.jar</code>&quot; and &quot;<code>jstl.jar</code>&quot; (under &quot;<code>lib</code>&quot; directory) to Tomcat's <code>&lt;CATALINA_HOME&gt;\lib</code> (server-wide); or <em><code>&lt;ContextRoot&gt;</code></em><code>\WEB-INF\lib</code> (for the specific web application only). Alternatively, these two jar-files are available at <code>&lt;CATALINA_HOME&gt;\webapps\examples\WEB-INF\lib</code>.</p>
+
+<p>Before getting into JSTL in depth, let us first look at Expression Language (EL).</p>
+
+<h4>Introduction to Expression Language (EL)</h4>
+
+<p>EL was introduced in JSP 2.0 as an alternative to the scripting elements (scriptlets), to make writing JSP easier by non-programmers and JSP pages more readable. For example, the following JSP with scriptlets is hard to write, and equally hard to read:</p>
+
+<pre class="color-example">
+<strong>&lt;% String username = request.getParameter(&quot;username&quot;);
+   if (username != null) { %&gt;</strong>
+      &lt;p&gt;Hello, <strong>&lt;%= username %&gt;</strong>!&lt;/p&gt;
+<strong>&lt;% } else { %&gt;</strong>
+      &lt;p&gt;Hello, everyone!&lt;/p&gt;
+<strong>&lt;% } %&gt;</strong></pre>
+
+<p>It can be re-written with JSTL and EL as follows:</p>
+
+<pre class="color-example">
+&lt;p&gt;Hello, <strong>&lt;c:out default=&quot;everyone&quot; value=&quot;${param['username']}&quot; /&gt;</strong>!&lt;/p&gt;</pre>
+
+
+<p>EL is loosely based on EcmaScript (JavaScript) and the XML Path Language (XPath). EL is a <em>data-access</em> scripting language. It is geared toward looking up objects and their properties, and performing simple operations on them; it is not a programming language (or even a scripting language) as it lacks programming constructs. It is called &quot;expression&quot; language because its main construct <code>${<em>expression</em>}</code> evaluates the <em><code>expression</code></em> contained within the braces.</p>
+
+<h4>EL Syntax</h4>
+
+<p>EL is a very simple language with only a few syntactic rules.</p>
+
+<h5>Expression Evaluators <span class="font-code">${...}</span> and <span class="font-code">#{...}</span></h5>
+<p>The main construct of the EL is the expression evaluator <code>${<em>ELExpression</em>}</code>, which evaluates the <em><code>ELExpression</code></em> within the braces. For example, <code>${1+2*3}</code>, <code>${index == 0}</code>, <code>${user.firstName}</code>, <code>${empty param.user}</code>, <code>${aBean.aProperty}</code>, <code>${aMap[&quot;aKey&quot;]}</code>.</p>
+<p><code>${...}</code> evaluates the expression during compilation. On the other hand, the request-time evaluator <code>#{...}</code> evaluates the expression during request. More on request-time evaluator later.</p>
+
+<h5>Literals</h5>
+<p>Any value that does not begin with <code>${</code> is treated as a <em>literal</em>. EL's literals include:</p>
+<ul>
+<li>numbers: integer and floating point (similar to Java's syntax).</li>
+<li>strings: string can be enclosed with either single quotes or double quotes. Use escape sequence <code>\'</code>, <code>\&quot;</code>, <code>\\</code> for <code>'</code>, <code>&quot;</code>, <code>\</code> respectively.</li>
+<li>booleans: <code>true</code> or <code>false</code>.</li>
+<li><code>null</code>.</li>
+</ul>
+
+<p>Example [TODO]</p>
+
+<h5>EL's Implicit Objects</h5>
+
+<p>Similar to JSP, EL has these implicit objects:</p>
+<ul>
+<li><span class="line-heading font-code">pageContext</span>: The JSP <em>page</em> context. It provides access to other objects. For example:
+
+<ul>
+<li><span class="line-heading font-code">pageContext.servletContext</span> returns the <em>application</em> context;</li>
+<li><span class="line-heading font-code">pageContext.session</span> returns the <em>session</em>;</li>
+<li><span class="line-heading font-code">pageContext.request</span> returns the <em>request</em>,</li>
+<li><span class="line-heading font-code">pageContext.response</span> returns the <em>response</em>.</li>
+</ul>
+</li>
+
+<li><span class="line-heading font-code">param</span>: A key-value map of request parameters to their <em>first</em> value. E.g., <code>${param[&quot;username&quot;]}</code> or <code>${param.username}</code>.</li>
+<li><span class="line-heading font-code">paramValues</span>: A key-value map of request parameters to <em>arrays</em> of their values. E.g., <code>${param[&quot;language&quot;]}</code>, with multiple values.</li>
+<li><span class="line-heading font-code">header</span>, <span class="line-heading font-code">headerValues</span>: A key-value map of request headers to their first value and to arrays of their values, respectively. E.g., <code>${header[&quot;host&quot;]}</code>, <code>${header[&quot;accept&quot;]}</code>, <code>${header[&quot;user-agent&quot;]}</code>.</li>
+<li><span class="line-heading font-code">cookie</span>: A key-value map of cookies' name and value.</li>
+<li><span class="line-heading font-code">initParam</span>: A key-value map of the application's initialization parameter declared in &quot;<code>web.xml</code>&quot;. </li>
+<li><span class="line-heading font-code">pageScope</span>, <span class="line-heading font-code">requestScope</span>, <span class="line-heading font-code">sessionScope</span> and <span class="line-heading font-code">applicationScope</span>: A key-value map of variables in the page, request, session and application scopes respectively. They provide access to all the variables in the respective scope.</li>
+</ul>
+
+<h5>Operators</h5>
+
+<ul>
+<li>Arithmetic Operators: Addition <code>'+'</code>, subtraction <code>'-'</code>, multiplication <code>'*'</code>, division <code>'/'</code> (or <code>div</code>), and modulus <code>'%'</code> (or <code>mod</code>).</li>
+
+<li>Comparison Operators: <code>==</code> (or <code>eq</code>), <code>!=</code> (or <code>ne</code>), <code>&gt;</code> (or <code>gt</code>), <code>&lt;</code> (or <code>lt</code>), <code>&gt;=</code> (or <code>ge</code>), <code>&lt;=</code> (or <code>le</code>). The equality operator (<code>==</code> or <code>eq</code>), when applied to string, compare the contents of two strings (similar to Java's <code><em>aString</em>.equals(<em>anotherString</em>)</code>).</li>
+
+<li>Boolean (Logical) Operators: <code>&amp;&amp;</code> (or <code>and</code>), <code>||</code> (or <code>or</code>), ! (or <code>not</code>).</li>
+
+<li>Validation Operator <code>empty</code>: <code>empty</code> is a boolean unary operator checking for null value or empty string, e.g., <code>${empty param[&quot;user&quot;]}</code> returns true if the request parameter &quot;<code>user</code>&quot; is <code>null</code> or an empty string. You could also use <code>${not empty ....}</code>.</li>
+<li>Shorthand if-else (<code>? :</code>): Similar to Java/C/C++, (<em><code>test</code></em><code> ? <em>trueExpression</em> : <em>falseExpression</em></code>) returns the value of <em><code>trueExpression</code></em> if <code><em>test</em></code> resulted in true; or <em><code>falseExpression</code></em> otherwise.</li>
+
+</ul>
+
+
+
+
+<h5>Accessor Operators <span class="font-code">'.'</span> and <span class="font-code">[]</span></h5>
+
+<p>The dot operator <code>'.'</code> can be used to access a property of an object (similar to <code>&lt;jsp:getProperty&gt;</code> but much easier to use). For example, <code>${aBean.aProperty}</code> returns <code>aProperty</code> of an object <code>aBean</code>. However, unlike Java's dot operator, it does not access the possibly private property (variable) directly, but indirectly via the getter <code>aBean.getAProperty()</code>. You can also access nested property, e.g., the expression <code>anObject.property1.property2</code> is equivalent to <code>anObject.getProperty1().getProperty2()</code>.</p>
+
+<p>For simplicity, EL, unlike Java, does not throw exception. For example, <code>anObject.property1.property2</code> returns <code>null</code> if <code>anObject.property1</code> resulted in <code>null</code>, instead of throwing a <code>NullPointerException</code>.</p>
+<p>The index operator <code>[]</code> can be used to access an element of an array; or a value of a collection (such as key-value map).
+  
+  
+  
+  For example, <code>${anArray[5]}</code>, <code>${aMap[&quot;aKey&quot;]}</code>. Again, It returns <code>null</code> instead of throwing <code>ArrayIndexOutOfBound</code> exception if the index is beyond the array bound.</p>
+<p> Although you can also use the dot operator as an indexing operator, e.g., <code>${aMap.aKey}</code> is the same as <code>${aMap[&quot;aKey&quot;]}</code>, but that could be problematic in some situations and shall be avoided.</p>
+  
+<h5>Precedence of Operators</h5>
+<p>The precedence of operators, form highest to lowest, is as follows:</p>
+
+<ul>
+<li><code>[] .</code></li>
+<li><code>()</code> (parentheses can be used to change the precedence)</li>
+<li><code>-</code> (unary negate) not ! empty</li>
+<li><code>* / div % mod</code></li>
+<li><code>+ -</code> (binary subtract)</li>
+<li><code>&lt; &gt; &lt;= &gt;= lt gt le ge</code></li>
+<li><code>== != eq ne</code></li>
+<li><code>&amp;&amp; and</code></li>
+<li><code>|| or</code></li>
+<li><code>? :</code> (shorthand if-else)</li>
+</ul>
+
+<h5>Reserved Words</h5>
+<p>The followings are the reserved words in EL, which cannot be used as identifiers:</p>
+<ul>
+<li><code>and or not</code></li>
+<li><code>eq ne lt gt le ge</code></li>
+<li><code>true false null</code></li>
+<li><code>div mod empty instanceof</code></li>
+</ul>
+
+<h4>JSTL Core Actions</h4>
+
+<p>EL does not contain programming constructs such as if-else, loops, and setting variables. They are provided by the JSTL <code>core</code> actions, such as <code>&lt;c:set&gt;</code>, <code>&lt;c:out&gt;</code>, <code>&lt;c:if&gt;</code>, and <code>&lt;c:forEach&gt;</code>. For examples:</p>
+
+<pre class="color-example">
+&lt;c:set var=&quot;name&quot; value=&quot;Peter&quot;/&gt;
+  <span class="color-comment">// Sets a variable called &quot;name&quot; in the default page scope, to literal value &quot;Peter&quot;</span>
+&lt;c:set var=&quot;name&quot; scope=&quot;session&quot; value=&quot;${param['user']}&quot; /&gt;
+  <span class="color-comment">// Sets a variable called &quot;name&quot; in session scope, to an EL expression</span>
+&lt;c:out value=&quot;Hello, ${user.firstname} ${user.lastname}!&quot; /&gt;
+  <span class="color-comment">// Prints the value, which consists of literals and EL expressions</span></pre>
+
+<p>To use the JSTL core library, we need to include this JSP <code>taglib</code> directive in the JSP page, similar to using any custom tag library. The tag library JAR-files &quot;<code>standard.jar</code>&quot; and &quot;<code>jstl.jar</code>&quot; shall be accessible by the web application.</p>
+<pre class="color-syntax">&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+</pre>
+
+<p>The JSTL core library contains these actions:</p>
+<ul>
+<li><code>c:out</code></li>
+<li><code>c:set</code>, <code>c:remove</code></li>
+<li><code>c:if</code>, <code>c:choose</code>, <code>c:when</code>, <code>c:otherwise</code></li>
+<li><code>c:forEach</code>, <code>c:forTokens</code></li>
+<li><code>c:catch</code></li>
+<li><code>c:url</code>, <code>c:redirect</code>, <code>c:import</code>, <code>c:param</code></li>
+</ul>
+
+
+<h5>Output: <span class="font-code">&lt;c:out&gt;</span></h5>
+
+<p>Prints the result of a literal value or EL Expression.</p>
+
+<pre class="color-syntax">
+<span class="color-comment">// Prints the literal value or the result of the EL Expression</span>
+&lt;c:out value=&quot;<em>Literal</em>|<em>ELExpression</em>&quot; /&gt;
+<span class="color-comment">// Prints the default value, if the &quot;value&quot; is null.</span>
+&lt;c:out default=&quot;defaultValue&quot; value=&quot;<em>Literal</em>|<em>ELExpression</em>&quot; /&gt;
+<span class="color-comment">// If the optional escapeXml is true, replace special HTML/XML characters 
+//  '&lt;', '&gt;', '&amp;', ';' with their escape sequences such as &amp;lt;, &amp;gt;, &amp;amp;, &amp;quot;</span>
+&lt;c:out value=&quot;<em>Literal</em>|<em>ELExpression</em>&quot; escapeXml=&quot;<span class="underline">true</span>|false&quot; /&gt;</pre>
+
+<p>For example,</p>
+<pre class="color-example">
+<span class="color-comment">// Prints a literal value</span>
+&lt;c:out value=&quot;Hello, world&quot; /&gt;
+<span class="color-comment">// Prints the result of an EL Expression</span>
+&lt;c:out value=&quot;${user.firstname}&quot; /&gt;
+<span class="color-comment">// Can concatenate literals and EL expressions</span>
+&lt;c:out value=&quot;Hello, ${user.firstname} ${user.lastname}!&quot; /&gt;
+<span class="color-comment">// Default for null value</span>
+&lt;c:out default=&quot;everybody&quot; value=&quot;${param['name']}&quot; /&gt;</pre>
+
+<h5>Setting/Removing Variable: <span class="font-code">&lt;c:set&gt;</span>, <span class="font-code">&lt;c:remove&gt;</span></h5>
+
+<p>Sets the value of a variable in the chosen scope; or remove a variable. The attribute <code>scope</code> is optional, and default to <code>page</code>.</p>
+
+<pre class="color-syntax">
+&lt;c:set var=&quot;<em>varName</em>&quot; scope=&quot;<span class="underline">page</span>|request|session|application&quot; value=&quot;<em>ELExpression</em>&quot; /&gt;</pre>
+
+<p>For examples,</p>
+<pre class="color-example">
+&lt;c:set var=&quot;name&quot; value=&quot;Peter&quot;/&gt;
+&lt;c:set var=&quot;name&quot; scope=&quot;session&quot; value=&quot;${param['user']}&quot; /&gt;
+&lt;c:set var=&quot;name&quot; scope=&quot;session&quot; value=&quot;${param.user}&quot; /&gt;
+&lt;c:set var=&quot;area&quot; value=&quot;${param['radius']*param['radius']*3.1416}&quot; /&gt;
+<span class="color-comment">// Set a variable with a nesting a &lt;c:out&gt; with default</span>
+&lt;c:set var=&quot;name&quot;&gt;&lt;c:out value=&quot;${param['user']}&quot; default=&quot;everybody&quot; /&gt;&lt;/c:set&gt;</pre>
+    
+<h5>Conditional (or Selection): <span class="font-code">&lt;c:if&gt;</span>, <span class="font-code">&lt;c:choose&gt;</span>, <span class="font-code">&lt;c:when&gt;</span>, <span class="font-code">&lt;c:otherwise&gt;</span></h5>
+
+<pre class="color-syntax">
+<span class="color-comment">// Perform the body only if the expression returns true</span>
+&lt;c:if test=&quot;<em>expression</em>&quot;&gt; ... &lt;/c:if&gt;
+ 
+<span class="color-comment">// Assign the result of test to the variable</span>
+&lt;c:if test=&quot;<em>expression</em>&quot; var=&quot;<em>varName</em>&quot; scope=&quot;<em>scope</em>&quot;&gt; ... &lt;/c:if&gt;
+ 
+<span class="color-comment">// Similar to switch-case statement in Java/C/C++</span>
+&lt;c:choose&gt;
+  &lt;c:when test=&quot;<em>ELExpression1</em>&quot;&gt; ... &lt;/c:when&gt;
+  &lt;c:when test=&quot;<em>ELExpression2</em>&quot;&gt; ... &lt;/c:when&gt;
+  ......
+  &lt;c:otherwise&gt; ... &lt;/c:otherwise&gt;
+&lt;/c:choose&gt;</pre>
+
+<h5>Loops: <span class="font-code">&lt;c:forEach&gt;</span>, <span class="font-code">&lt;c:forTokens&gt;</span></h5>
+
+<pre class="color-syntax">
+<span class="color-comment">// Similar to for-each loop in JDK 1.5, to iterate thru a collection or array</span>
+&lt;c:forEach var=&quot;<em>varName</em>&quot; items=&quot;<em>ELExpressionMapArray</em>&quot; &gt;
+  ......
+&lt;/c:forEach&gt;
+ 
+<span class="color-comment">// Similar to for-loop in Java</span>
+&lt;c:forEach var=&quot;<em>varName</em>&quot; begin=&quot;<em>intExpression</em>&quot; end=&quot;<em>intExpression</em>&quot; step=&quot;<span class="underline">1</span>|<em>intExpression</em>&quot;&gt;
+  ......
+&lt;/c:forEach&gt;
+
+<span class="color-comment">// forTokens is similar to Java's StringToken class for tokenizing string.
+// The attribute delims specifies the delimiter.</span>
+&lt;c:forTokens var=&quot;<em>varName</em>&quot; items=&quot;<em>aString</em>&quot; delims=&quot;<em>delimiter</em>&quot;&gt;
+  ......
+&lt;/c:forTokens&gt;</pre>
+
+<h5><span class="font-code">&lt;c:catch&gt;</span></h5>
+<p>Allows for rudimentary exception handling within a JSP page.</p>
+
+<pre class="color-syntax"><span class="color-comment">// Catch any exception</span>
+&lt;c:catch&gt; ...... &lt;/c:catch&gt;
+ 
+<span class="color-comment">// Assign the exception to the variable</span>
+&lt;c:catch var=&quot;<em>varName</em>&quot;&gt; ...... &lt;/c:catch&gt;</pre>
+
+<h5><span class="font-code">&lt;c:url&gt;</span>, <span class="font-code">&lt;c:param&gt;</span></h5>
+<p>Used to generate URLs, with optional request parameter specified in <code>&lt;c:param&gt;</code>. For example,</p>
+
+<pre class="color-example">
+<span class="color-comment">// Generate a URL</span>
+&lt;a href=&quot;<strong>&lt;c:url value='/checkout.jsp'/&gt;</strong>&quot;&gt;Check Out&lt;/a&gt;
+ 
+<span class="color-comment">// Generate a URL with request parameter(s)</span>
+&lt;c:url value=&quot;/search.jsp&quot;&gt;
+  &lt;c:param name=&quot;searchWord&quot; value=&quot;${searchWord}&quot; /&gt;
+&lt;/c:url&gt;</pre>
+
+<p>The syntax is:</p>
+<pre class="color-syntax">
+&lt;c:url value=&quot;<em>expression</em>&quot; context=&quot;<em>expression</em>&quot; var=&quot;<em>name</em>&quot; scope=&quot;<em>scope</em>&quot;&gt;
+  &lt;c:param name=&quot;<em>expression</em>&quot; value=&quot;<em>expression</em>&quot; /&gt;
+  ......
+&lt;/c:url&gt;  </pre>
+
+<h5><span class="font-code">&lt;c:import&gt;</span></h5>
+<p>Similar to request-time <code>&lt;jsp:include&gt;</code> but more powerful.  The optional &quot;<code>var</code>&quot; attribute causes the content  to be stored in a variable (as string), rather than included in the current JSP page. The &quot;<code>scope</code>&quot; attribute controls the scope of this variable, and defaults to page scope.</p>
+
+<h5><span class="font-code">&lt;c:redirect&gt;</span></h5>
+<p>Sends an HTTP redirect response to the client browser, equivalent to the <code>HttpServletResponse.sendRedirect()</code> method.</p>
+
+<p>Example: [TODO]</p>
+<p></p>
+
+<h4>JSTL function Actions</h4>
+
+<p>The JSTL function actions include:</p>
+<ul>
+<li><code>fn:length</code></li>
+<li><code>fn:indexOf</code>, <code>fn:contains</code>, <code>fn:containsIgnoreCase</code>, <code>fn:endsWith</code>, <code>fn:startsWith</code>, <code>fn:substring</code>, <code>fn:substringAfter</code>, <code>fn:substringBefore</code></li>
+<li><code>fn:replace</code>, <code>fn:split</code>, <code>fn:join</code></li>
+<li><code>fn:escapeXml</code></li>
+<li><code>fn:toLowerCase</code>, <code>fn:toUpperCase</code>, <code>fn:trim</code> (??)</li>
+</ul>
+
+<p>To use the JSTL function library, we need to include this JSP <code>taglib</code> directive in the JSP page:</p>
+
+<pre class="color-syntax">
+&lt;%@taglib prefix=&quot;fn&quot; uri=&quot;http://java.sun.com/jsp/jstl/functions&quot; %&gt;</pre>
+
+<h5>Example</h5>
+<p>Unlike core actions that are used as tags, such as <code>&lt;c:set&gt;</code>, the function actions are used in EL expression such as <code>${fn:substring(str, 3, 5}</code>.</p>
+
+<pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot; %&gt;
+<strong>&lt;%@taglib prefix=&quot;fn&quot; uri=&quot;http://java.sun.com/jsp/jstl/functions&quot; %&gt;</strong>
+&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+      &lt;title&gt;Test JSTL functions actions&lt;/title&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+      &lt;c:set var=&quot;str&quot; value=&quot;${empty param.str ? 'Hello, world!' : param.str}&quot; /&gt;
+      &lt;c:if test=&quot;<strong>${fn:contains(str, 'Hello')}</strong>&quot;&gt;
+         &lt;c:out value=&quot;'${str}' contains 'Hello'&quot; /&gt;&lt;br /&gt;
+      &lt;/c:if&gt;
+ 
+      &lt;c:out value=&quot;${<strong>fn:containsIgnoreCase(str, 'Hello')</strong> ? 'yes' : 'no'}&quot; /&gt;&lt;br /&gt;
+ 
+      &lt;c:out value=&quot;<strong>${fn:indexOf(str, 'a')}</strong>&quot; /&gt;&lt;br /&gt;
+ 
+      <strong>${fn:length(str)}</strong>&lt;br /&gt;
+      <strong>${fn:substring(str, 3, 6)}</strong>&lt;br /&gt;
+      <strong>${fn:substringAfter(str, ',')}</strong>&lt;br /&gt;
+      <strong>${fn:substringBefore(str, ',')}</strong>&lt;br /&gt;
+      <strong>${fn:endsWith(str, '!')}</strong>&lt;br /&gt;
+      <strong>${fn:startsWith(str, 'H')}</strong>&lt;br /&gt;
+ 
+      &lt;%-- Dot instead of ':' according to tld --%&gt;
+      &lt;c:out value=&quot;${fn.toLowercase('TEST')}&quot; /&gt;&lt;br /&gt;
+      &lt;c:out value=&quot;${fn.toUppercase('test')}&quot; /&gt;&lt;br /&gt;
+   &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>[To Check: The function's TLD shows <code>fn.toLowercase()</code> - dot instead of <code>':'</code>.]</p>
+
+<h4>JSTL XML actions and XPath (XML Path Language)</h4>
+
+<p>The JSTL XML actions are meant for processing XML document. It uses the XPath (XML Path Language) for searching XML nodes, via pattern matching. Possible XML nodes include: root, element, attribute, comment, processing instruction, text, and namespace.</p>
+
+<h5>XPath (XML Path Language)</h5>
+
+<p> For example, suppose we have the following XML document &quot;<code>ebookshop.xml</code>&quot;:</p>
+<pre class="color-example">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;ebookshop&gt;
+ 
+&lt;book category=&quot;Java&quot;&gt;
+  &lt;title language=&quot;en&quot;&gt;Java for Dummies&lt;/title&gt;
+  &lt;author&gt;Tan Ah Teck&lt;/author&gt;
+  &lt;author&gt;Mohammad Ali&lt;/author&gt;
+  &lt;price&gt;28.88&lt;/price&gt;
+&lt;/book&gt;
+ 
+&lt;book category=&quot;Java&quot;&gt;
+  &lt;title language=&quot;en&quot;&gt;More Java for Dummies&lt;/title&gt;
+  &lt;author&gt;Tan Ah Teck&lt;/author&gt;
+  &lt;price&gt;38.88&lt;/price&gt;
+&lt;/book&gt;
+ 
+&lt;book category=&quot;Game&quot;&gt;
+  &lt;title language=&quot;cn&quot;&gt;Mahjong 101&lt;/title&gt;
+  &lt;author&gt;Kumar&lt;/author&gt;
+  &lt;author&gt;Kevin Jones&lt;/author&gt;
+  &lt;price&gt;18.88&lt;/price&gt;
+&lt;/book&gt;
+ 
+&lt;/ebookshop&gt;</pre>
+
+<p>We can use XPath to locate the nodes based on pattern matching. For example,</p>
+
+<ul>
+<li><code>/ebookshop/book/title</code> returns all 3 titles.</li>
+<li><code>/ebookshop/book/title[@language=&quot;en&quot;]</code> returns the titles with attribute language=&quot;en&quot;</li>
+<li><code>/ebookshop/book[1]/author</code> returns the 2nd book's author.</li>
+<li><code>/ebookshop/book[2]/author[1]</code> returns the 3rd book's 2nd author.</li>
+<li><code>/ebookshop/book[price&gt;20]/title</code> returns title with price more than 20.</li>
+</ul>
+
+<h5>JSTL XML actions</h5>
+
+<p> The JSTL xml actions include:</p>
+<ul>
+  <li><code>x:parse</code>, <code>x:transform</code></li>
+  <li><code>x:param</code></li>
+  <li><code>x:out</code></li>
+<li><code>x:set</code></li>
+<li><code>x:if</code>, <code>x:choose</code>, <code>x:when</code>, <code>x:otherwise</code></li>
+<li><code>x:forEach</code></li>
+</ul>
+
+<p>To use the JSTL XML library, we need to include this JSP <code>taglib</code> directive in the JSP page:</p>
+
+<pre class="color-syntax">
+&lt;%@taglib prefix=&quot;x&quot; uri=&quot;http://java.sun.com/jsp/jstl/xml&quot; %&gt;</pre>
+
+<p>The XPath expression is used in the attribute <code>select=&quot;<em>XPathExpression</em>&quot;</code>.</p>
+
+<h5>Example</h5>
+
+<pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+<strong>&lt;%@taglib prefix=&quot;x&quot; uri=&quot;http://java.sun.com/jsp/jstl/xml&quot; %&gt;</strong>
+&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+      &lt;title&gt;Test JSTL XML actions&lt;/title&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+      <strong>&lt;c:import url=&quot;ebookshop.xml&quot; var=&quot;books&quot; /&gt;
+      &lt;x:parse xml=&quot;${books}&quot; var=&quot;dom&quot; /&gt;</strong>
+ 
+      &lt;ul&gt;
+         <strong>&lt;x:forEach var=&quot;book&quot; select=&quot;$dom//book[price&gt;20]&quot; &gt;</strong>
+            &lt;li&gt;
+               <strong>&lt;x:out select=&quot;$book/title&quot; /&gt;,
+               &lt;x:out select=&quot;$book/price&quot; /&gt;,
+               &lt;x:forEach var=&quot;author&quot; select=&quot;$book/author&quot; &gt;
+                  &lt;x:out select=&quot;$author&quot; /&gt;,
+               &lt;/x:forEach&gt;</strong>
+            &lt;/li&gt;
+         <strong>&lt;/x:forEach&gt;</strong>
+      &lt;/ul&gt;
+ 
+      &lt;p&gt;<strong>&lt;x:out select=&quot;$dom/ebookshop/book/title&quot; /&gt;</strong>&lt;p&gt;
+      &lt;p&gt;<strong>&lt;x:out select=&quot;$dom/ebookshop/book[2]/title&quot; /&gt;</strong>&lt;p&gt;
+ 
+   &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>The <code>&lt;c:import&gt;</code> reads the entire XML document into variable <code>books</code>. The <code>&lt;x:parse&gt;</code> is then used to parse the XML document into a DOM tree. We can use use XPath expression in the <code>select</code> attribute to select nodes. We can use <code>&lt;x:forEach&gt;</code> to iterate thru the nodes, and <code>&lt;x:out&gt;</code> to output.</p>
+<p>Notes: If you encounter error &quot;<code>java.lang.ClassNotFoundException: org.apache.xpath.VariableStack</code>&quot;, download the xalan from <a href="http://mirror.nus.edu.sg/apache/xml/xalan-j/">http://mirror.nus.edu.sg/apache/xml/xalan-j/</a>, and copy the <code>xalan.jar</code> into Tomcat's <code>lib</code> (or the application's <code>WEB-INF\lib</code>).</p>
+
+<p>[TODO] more example on xlst.</p>
+
+<h4>JSTL <span class="font-code">i18n</span> <span class="font-code">fmt</span> Actions</h4>
+<p>The JSTL internationalization (i18n) library provides actions to produce customized web pages based on the client's <em>locale</em> and <em>time zone</em>. A locale includes language, formatting of dates, numbers, and currency amounts, etc.</p>
+
+<p>The HTTP request header includes an <code>Accept-Language</code>, which is made available to servlet via <code>getLocale()</code> and <code>getLocales()</code> methods of the <code>ServletRequest</code> class. However, there is no timezone information provided by the HTTP request header.</p>
+
+<p>The JSTL i18n actions include:</p>
+<ul>
+<li><code>fmt:setLocale</code></li>
+<li><code>fmt:setBundle</code>, <code>fmt:bundle</code>, <code>fmt:message</code>, <code>fmt:param</code></li>
+<li><code>fmt:timeZone</code>, <code>fmt:setTimeZone</code>, <code>fmt:parseDate</code>, <code>fmt:parseNumber</code>, <code>fmt:formatDate</code>, <code>fmt:formatNumber</code></li>
+<li><code>fmt:requestEncoding</code></li>
+</ul>
+
+<p>To use the JSTL i18n library, we need to include this JSP <code>taglib</code> directive in the JSP page:</p>
+
+<pre class="color-syntax">
+&lt;%@taglib prefix=&quot;fmt&quot; uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; %&gt;</pre>
+
+<h5><span class="font-code">&lt;fmt:setLocale&gt;</span></h5>
+
+<p>The locale used by the JSTL is determined by the <code>Accept-Language</code> request header. If no such header presents, it should the default value of your system. You could override the locale setting via <code>&lt;fmt:setLocale&gt;</code>, as follows:</p>
+
+<pre class="color-syntax">
+&lt;fmt:setLocale value=&quot;<em>expression</em>&quot; [scope=&quot;<span class="underline">page</span>|request|session|application&quot;] [variant=&quot;<em>expression</em>&quot;] /&gt;</pre>
+
+<p>The attribute &quot;<code>value</code>&quot; should be either a locale name string, or an instance of the <code>java.util.Locale</code> class. A locale name is made up of a two-letter lowercase ISO country code, and a two-letter uppercase ISO language code, e.g., <code>en_US</code>, <code>fr_CA</code>, etc. The optional attribute &quot;<code>variant</code>&quot; can be used to specify the browser or OS, e.g., <code>MAC</code>, <code>WIN</code>.</p>
+
+<h5><span class="font-code">&lt;fmt:setBundle&gt;, &lt;fmt:bundle&gt;, &lt;fmt:message&gt;, &lt;fmt:param&gt;</span></h5>
+
+<p>The <code>&lt;fmt:setBundle&gt;</code> action sets a default resource bundle for use by <code>&lt;fmt:message&gt;</code> tags within a particular scope, by specifying the <em>basename</em> of resource bundle as follows. The value for the <code>basename</code> attribute should not include any localization suffixes or filename extensions.</p>
+
+<pre class="color-syntax">
+&lt;fmt:setBundle basename=&quot;<em>expression</em>&quot; var=&quot;<em>varName</em>&quot; [scope=&quot;<em>scope</em>&quot;] /&gt;</pre>
+
+<p>The <code>&lt;fmt:bundle&gt;</code> action is similar to <code>&lt;fmt:setBundle&gt;</code>, but it specifies the resource bundle for use by the <code>&lt;fmt:message&gt;</code> nested within its body content.</p>
+
+<p><code>&lt;fmt:message&gt;</code> allows you to retrieve text messages from a locale-specific resource bundle and display it on a JSP page. Furthermore, you could include parameterized values in text messages to customize the content dynamically via <code>&lt;fmt:param&gt;</code> tag.</p>
+
+<pre class="color-syntax">
+&lt;fmt:message key=&quot;<em>expression</em>&quot; bundle=&quot;<em>expression</em>&quot;
+      var=&quot;<em>name</em>&quot; scope=&quot;<em>scope</em>&quot;/&gt;
+ 
+&lt;fmt:message key=&quot;<em>expression</em>&quot; bundle=&quot;<em>expression</em>&quot;
+      var=&quot;<em>name</em>&quot; scope=&quot;<em>scope</em>&quot;&gt;
+   &lt;fmt:param value=&quot;<em>expression</em>&quot;/&gt;
+   ......
+&lt;/fmt:message&gt;</pre>
+
+<h5>Example</h5>
+
+<p><span class="line-heading">Resource Bundle Properties</span>: Create the following resource bundle (properties file) &quot;<code>LocalString_en.properties</code>&quot; and &quot;<code>LocalString_fr.properties</code>&quot;. Save under <code>&lt;contextRoot&gt;\WEB-INF\classes\mypkg</code>.</p>
+
+<p>(NetBeans) &quot;Files&quot; panel &rArr; classes &rArr; right-click mypkg &rArr; New &rArr; Other &rArr; Properties File.</p>
+
+<p><code>&lt;contextRoot&gt;\WEB-INF\classes\mypkg\LocalString_en.properties</code></p>
+<pre class="color-example">
+title=Hello World!
+greeting=Hello {0} {1}!</pre>
+
+<p><code>&lt;contextRoot&gt;\WEB-INF\classes\mypkg\LocalString_fr.properties</code></p>
+<pre class="color-example">
+title=Salut le Monde!
+greeting=Bonjour {0} {1}!</pre>
+
+<p>You may also create a <em>default</em> &quot;<code>LocalString.properties</code>&quot;.</p>
+
+<p><span class="line-heading font-code">TestLocale.jsp</span>: The following JSP page takes 3 optional request parameters: lang=xx, firstname=xx and lastname=xx, and displays the locale strings.</p>
+
+<pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot; %&gt;
+<strong>&lt;%@taglib prefix=&quot;fmt&quot; uri=&quot;http://java.sun.com/jsp/jstl/fmt&quot; %&gt;</strong>
+&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+   &lt;head&gt;
+      &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+      &lt;title&gt;Test Locale String in Resource Bundle&lt;/title&gt;
+   &lt;/head&gt;
+   &lt;body&gt;
+      &lt;c:set var=&quot;lang&quot; value=&quot;${empty param.lang ? 'en' : param.lang}&quot; /&gt;
+ 
+      <strong>&lt;fmt:setLocale value=&quot;${lang}&quot; /&gt;
+      &lt;fmt:setBundle basename=&quot;mypkg.LocalStrings&quot; var=&quot;bundle&quot; /&gt;</strong>
+ 
+      &lt;h1&gt;<strong>&lt;fmt:message key=&quot;title&quot; bundle=&quot;${bundle}&quot; /&gt;</strong>&lt;/h1&gt;
+ 
+      &lt;c:set var=&quot;firstname&quot; value=&quot;${empty param.firstname ? 'Peter' : param.firstname}&quot; /&gt;
+      &lt;c:set var=&quot;lastname&quot; value=&quot;${empty param.lastname ? 'Paul' : param.lastname}&quot; /&gt;
+      <strong>&lt;fmt:bundle basename=&quot;mypkg.LocalStrings&quot;&gt;
+         &lt;p&gt;&lt;fmt:message key=&quot;greeting&quot; &gt;
+               &lt;fmt:param value=&quot;${firstname}&quot; /&gt;
+               &lt;fmt:param value=&quot;${lastname}&quot; /&gt;
+            &lt;/fmt:message&gt;&lt;/p&gt;
+      &lt;/fmt:bundle&gt;</strong>
+   &lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>The first <code>&lt;fmt:message&gt;</code> uses the resource bundle defined via <code>&lt;fmt:setBundle&gt;</code> tag. The second <code>&lt;fmt:message&gt;</code> is nested within a <code>&lt;fmt:bundle&gt;</code> tag, and uses parametric value set via <code>&lt;fmt:param&gt;</code>.</p>
+<p>You will see ???<em>keyname</em>??? if the system cannot locate your properties file or message matching the key.</p>
+
+<h5><span class="font-code">&lt;fmt:timeZone&gt;, &lt;fmt:setTimeZone&gt;, &lt;fmt:parseDate&gt;, &lt;fmt:parseNumber&gt;, &lt;fmt:formatDate&gt;, &lt;fmt:formatNumber&gt;</span></h5>
+<p>[TODO]</p>
+
+<h4>JSTL <span class="font-code">sql</span> Actions</h4>
+<p>The JSTL sql actions include:</p>
+
+<ul>
+<li>Create Database Connection: <code>&lt;sql:setDataSource&gt;</code></li>
+<li>Query and Update: <code>&lt;sql:query&gt;</code>, <code>&lt;sql:update&gt;</code>, <code>&lt;sql:param&gt;</code>, <code>&lt;sql:dateParam&gt;</code></li>
+<li>Transaction Management: <code>&lt;sql:transaction&gt;</code></li></ul>
+
+<p>To use the JSTL function library, we need to include this JSP <code>taglib</code> directive in the JSP page:</p>
+
+<pre class="color-syntax">
+&lt;%@taglib prefix=&quot;sql&quot; uri=&quot;http://java.sun.com/jsp/jstl/sql&quot; %&gt;</pre>
+
+
+<h5>Example:</h5>
+<p>Let us begin JSTL sql actions with an example. I shall assume that you are familiar with SQL and JDBC.</p>
+
+<p><span class="line-heading">Setting Up Database</span>: Create a database called &quot;<code>ebookshop</code>&quot;, with a table called &quot;<code>books</code>&quot; with 5 columns: <code>id</code>, <code>title</code>, <code>author</code>, <code>price</code>, <code>qty</code>. You could run the following SQL statements on a MySQL system:</p>
+<pre class="color-example">
+create database if not exists <strong>ebookshop</strong>;
+ 
+use ebookshop;
+ 
+drop table if exists books;
+create table <strong>books</strong> (
+   <strong>id</strong> int,
+   <strong>title</strong> varchar(50),
+   <strong>author</strong> varchar(50),
+   <strong>price</strong> float,
+   <strong>qty</strong> int,
+   primary key (id));
+ 
+insert into books values (1001, 'Java for dummies', 'Tan Ah Teck', 11.11, 11);
+insert into books values (1002, 'More Java for dummies', 'Tan Ah Teck', 22.22, 22);
+insert into books values (1003, 'More Java for more dummies', 'Mohammad Ali', 33.33, 33);
+insert into books values (1004, 'A Cup of Java', 'Kumar', 55.55, 55);
+insert into books values (1005, 'A Teaspoon of Java', 'Kevin Jones', 66.66, 66);
+ 
+select * from books;</pre>
+
+<p><span class="line-heading font-code">TestDBQuery.jsp</span>: Write the following JSP page (called &quot;<code>testDBQuery.jsp</code>&quot;) to query the database. Assume that the MySQL is running on port 3306, with a user called &quot;<code>myuser</code>&quot; with password.</p>
+
+<pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+<strong>&lt;%@taglib prefix=&quot;sql&quot; uri=&quot;http://java.sun.com/jsp/jstl/sql&quot; %&gt;
+&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;</strong>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+  &lt;title&gt;Test JSTL sql actions&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  <strong>&lt;sql:setDataSource var=&quot;ds&quot;
+    url=&quot;jdbc:mysql://localhost:3306/ebookshop&quot; user=&quot;myuser&quot; password=&quot;xxxx&quot;/&gt;
+ 
+  &lt;sql:query sql=&quot;select * from books&quot; var=&quot;rset&quot; dataSource=&quot;${ds}&quot; /&gt;</strong>
+ 
+  &lt;table border=&quot;1&quot;&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ID&lt;/th&gt;
+      &lt;th&gt;Title&lt;/th&gt;
+      &lt;th&gt;Author&lt;/th&gt;
+      &lt;th&gt;Price&lt;/th&gt;
+      &lt;th&gt;Qty&lt;/th&gt;
+    &lt;/tr&gt;
+    <strong>&lt;c:forEach var=&quot;row&quot; items=&quot;${rset.rows}&quot;&gt;</strong>
+      &lt;tr&gt;
+        &lt;td&gt;&lt;c:out value=&quot;<strong>${row.id}</strong>&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;<strong>${row.title}</strong>&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;<strong>${row.author}</strong>&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;<strong>${row.price}</strong>&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;<strong>${row.qty}</strong>&quot; /&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    <strong>&lt;/c:forEach&gt;</strong>
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<p>The above JSP page uses <code>&lt;sql:setDataSource&gt;</code> to create a database connection called &quot;<code>ds</code>&quot; via a database-URL <code>jdbc:mysql://host:port/defaultDatabase</code>. It then use <code>&lt;sql:query&gt;</code> to issue a &quot;<code>SELECT * FROM books</code>&quot;, and keep the query result set in variable <code>rset</code>. The core action <code>&lt;c:forEach&gt;</code> is used to iterate thru all the rows; <code>&lt;c:out&gt;</code>'s are used to print the cells in a HTML table.</p>
+
+<h5><span class="font-code">&lt;sql:setDataSource&gt;</span></h5>
+
+<p>You can use <code>&lt;sql:setDataSource&gt;</code> to create a database connection via a database-URL, as in the above example. The syntax is:</p>
+<pre class="color-syntax">
+<span class="color-comment">// Create a database connection via a database-url, and 
+//   assign to the specified scoped variable.</span>
+&lt;sql:setDataSource url=&quot;<em>databaseURL</em>&quot; var=&quot;<em>varName</em>&quot;
+    [scope=&quot;<span class="underline">page</span>|request|session|application&quot;]
+    [user=&quot;<em>expression</em>&quot;] [password=&quot;<em>expression</em>&quot;] [driver=&quot;<em>expression</em>&quot;] /&gt;</pre>
+
+
+<p>JSBC's <code>Datasource</code> is a factory for obtaining database connections. <code>DataSource</code> supports so-called <em>connection pooling</em> to reduce the overhead associated with the creating and initializing connections. The <code>&lt;sql:setDataSource&gt;</code> syntax for using <code>DataSource</code> connection pooling is as follow:</p>
+
+<pre class="color-syntax">
+<span class="color-comment"></span><span class="color-comment">// Get a connection from the DataSource connection pool via JNDI lookup, 
+//   and assign to a scoped variable.</span>
+&lt;sql:setDataSource dataSource=&quot;<em>JNDIName</em>&quot; var=&quot;<em>varName</em>&quot; 
+    [scope=&quot;<span class="underline">page</span>|request|session|application&quot;] /&gt;</pre>
+
+<h5>Database Connection Pooling (DBCP)</h5>
+
+<p>Let's try out the connection pooling.  Tomcat provides built-in support for datasource with connection pooling, which are made available to applications through the Java Naming and Directory Interface (JNDI).</p>
+<p><span class="font-code">context.xml</span>: Create the following configuration file &quot;<code>context.xml</code>&quot;, and save under &quot;<code>&lt;<em>contextRoot</em>&gt;\META-INF</code>&quot;. [For server-wide configuration, put the <code>&lt;Resource&gt;</code> element under <code>&lt;GlobalNamingResources&gt;</code> in <code>&lt;CATALINA_HOME&gt;\conf\server.xml</code>.]</p>
+
+<pre class="color-example">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;Context&gt;
+  <span class="color-comment">&lt;!--
+    maxActive: Maximum number of dB connections in pool. Set to -1 for no limit.
+    maxIdle: Maximum number of idle dB connections to retain in pool. Set to -1 for no limit.
+    maxWait: Maximum milliseconds to wait for a dB connection to become available
+             Set to -1 to wait indefinitely.
+  --&gt;</span>
+  &lt;Resource name=&quot;<strong>jdbc/TestDB</strong>&quot; auth=&quot;Container&quot; type=&quot;javax.sql.DataSource&quot;
+     maxActive=&quot;100&quot; maxIdle=&quot;30&quot; maxWait=&quot;10000&quot; removeAbandoned=&quot;true&quot;
+     <strong>username=&quot;myuser&quot; password=&quot;xxxx&quot;</strong> driverClassName=&quot;com.mysql.jdbc.Driver&quot;
+     <strong>url=&quot;jdbc:mysql://localhost:3306/ebookshop&quot;</strong> /&gt;
+&lt;/Context&gt;</pre>
+
+<p><span class="font-code">web.xml</span>: Next, modify the application's deployment descriptors in &quot;<code>&lt;<em>contextRoot</em>&gt;\WEB-INF\web.xml</code>&quot;, with a datasource references the JNDI resource name &quot;<code>jdbc/TestDB</code>&quot; defined earlier.</p>
+<pre class="color-example">
+&lt;web-app ......&gt;
+   .......
+   <strong>&lt;resource-ref&gt;
+      &lt;description&gt;DB Connection Pool&lt;/description&gt;
+      &lt;res-ref-name&gt;<span class="underline">jdbc/TestDB</span>&lt;/res-ref-name&gt;
+      &lt;res-type&gt;javax.sql.DataSource&lt;/res-type&gt;
+      &lt;res-auth&gt;Container&lt;/res-auth&gt;
+      &lt;res-sharing-scope&gt;Shareable&lt;/res-sharing-scope&gt;
+   &lt;/resource-ref&gt;</strong>
+&lt;/web-app&gt;
+</pre>
+
+<p><span class="font-code">TestDBQueryDBCP.jsp</span>: The following JSP page gets a connection from the pool, and use the connection to issue a <code>SELECT</code> query.</p>
+
+<pre class="color-example">
+&lt;%@page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;%&gt;
+&lt;%@taglib prefix=&quot;sql&quot; uri=&quot;http://java.sun.com/jsp/jstl/sql&quot; %&gt;
+&lt;%@taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+  &lt;title&gt;Test JSTL sql actions with Connection Pooling&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  <strong>&lt;sql:setDataSource var=&quot;ds&quot; dataSource=&quot;jdbc/TestDB&quot; /&gt;
+  &lt;sql:query sql=&quot;select * from books&quot; var=&quot;rset&quot; dataSource=&quot;${ds}&quot; /&gt;</strong>
+ 
+  &lt;table border=&quot;1&quot;&gt;
+    &lt;tr&gt;
+      &lt;th&gt;ID&lt;/th&gt;
+      &lt;th&gt;Title&lt;/th&gt;
+      &lt;th&gt;Author&lt;/th&gt;
+      &lt;th&gt;Price&lt;/th&gt;
+      &lt;th&gt;Qty&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;c:forEach var=&quot;row&quot; items=&quot;${rset.rows}&quot;&gt;
+      &lt;tr&gt;
+        &lt;td&gt;&lt;c:out value=&quot;${row.id}&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;${row.title}&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;${row.author}&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;${row.price}&quot; /&gt;&lt;/td&gt;
+        &lt;td&gt;&lt;c:out value=&quot;${row.qty}&quot; /&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+  &lt;/table&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+<h5><span class="font-code">&lt;sql:query&gt;</span></h5>
+
+<p>Once the database connection is established, we can use <code>&lt;sql:query&gt;</code> (similar to JDBC's <code>executeQuery()</code>) and <code>&lt;sql:update&gt;</code> (<code>executeUpdate()</code>). </p>
+<p><code>&lt;sql:query&gt;</code> issues a SELECT query via the &quot;<code>datasource</code>&quot;, and keeps the returned result set in the scoped variable. The syntax is:</p>
+
+<pre class="color-syntax">
+&lt;sql:query sql=&quot;<em>SqlExpression</em>&quot; dataSource=&quot;<em>dsExpression</em>&quot;
+      var=&quot;<em>name</em>&quot; [scope=&quot;<span class="underline">page</span>|request|session|application&quot;]
+      [maxRows=&quot;<em>intExpression</em>&quot;] [startRow=&quot;<em>intExpression</em>&quot;] /&gt;</pre>
+      
+<p>The returned result set implements <code>javax.servlet.jstl.sql.Result</code> interface, with the following properties:</p>
+<ul>
+<li><span class="line-heading font-code">rows</span>: An array of <code>SortedMap</code> of column name and value.</li>
+<li><span class="line-heading font-code">rowsByIndex</span>: An array of array, each item corresponding to a single row in the result set.</li>
+<li><span class="line-heading font-code">columnNames</span>: An array of strings of column names.</li>
+<li><span class="line-heading font-code">rowCount</span>: Total number of rows in the result set.</li>
+<li><span class="line-heading font-code">limitedByMaxRows</span>: A boolean, true if result set is limited by <code>maxRows</code> attribute.</li>
+</ul>
+
+<p> You can also use the parameterized <code>PreparedStatement</code>, with parameters specified in <code>&lt;sql:param&gt;</code> and <code>&lt;sql:dateParam&gt;</code> tags.</p>
+
+<pre class="color-syntax">
+<span class="color-comment">// Use parameterized PreparedStatement</span>
+&lt;sql:query sql=&quot;<em>sqlExpression</em>&quot; dataSource=&quot;<em>dsExpression</em>&quot;
+      var=&quot;<em>varName</em>&quot; [scope=&quot;<em>scope</em>&quot;]
+      [maxRows=&quot;<em>intExpression</em>&quot;] [startRow=&quot;<em>intExpression</em>&quot;] &gt;
+   &lt;sql:param value=&quot;<em>expression</em>&quot; /&gt;
+   ......
+&lt;/sql:query&gt;
+ 
+<span class="color-comment">// Place the SQL statement in the body</span>
+&lt;sql:query dataSource=&quot;<em>expression</em>&quot;
+      var=&quot;<em>varName</em>&quot; [scope=&quot;<em>scope</em>&quot;]
+      [maxRows=&quot;<em>intExpression</em>&quot;] [startRow=&quot;<em>intExpression</em>&quot;] &gt;
+   <em><strong>SQLStatement</strong></em>
+   &lt;sql:param value=&quot;<em>expression</em>&quot; /&gt;
+   ......
+&lt;/sql:query&gt;</pre>
+
+<p>For example, the following SQL statement contains a parameter (denoted as <code>'?'</code>), which will be replaced by the parameter in <code>&lt;sql:param&gt;</code>.</p>
+<pre class="color-example">&lt;sql:setDataSource var=&quot;ds&quot; dataSource=&quot;jdbc/TestDB&quot; /&gt;<br />&lt;sql:query sql=&quot;select * from books limit ?&quot; var=&quot;rset&quot; dataSource=&quot;${ds}&quot; &gt;<br />   &lt;sql:param value=&quot;${2}&quot; /&gt;
+&lt;/sql:query&gt;</pre>
+
+<p>The syntax for <code>&lt;sql:param&gt;</code> and <code>&lt;sql:dateParam&gt;</code> (for date type) is as follows:</p>
+
+<pre class="color-syntax">
+&lt;sq:param value=&quot;<em>expression</em>&quot; /&gt;
+&lt;sql:dateParam value=&quot;<em>expression</em>&quot; type=&quot;date|time|timestamp&quot; /&gt;</pre>
+
+<h5><span class="font-code">&lt;sql:update&gt;</span></h5>
+
+<p><code>&lt;sql:update&gt;</code> issue a JDBC's <code>executeUpdate()</code>, which returns an an instance of <code>java.lang.Integer</code> (instead of a result set). The syntax is similar to <code>&lt;sql:query&gt;</code>:</p>
+
+<pre class="color-syntax">&lt;sql:update sql=&quot;<em>SqlExpression</em>&quot; dataSource=&quot;<em>dsExpression</em>&quot;
+   var=&quot;<em>varName</em>&quot; [scope=&quot;<em>scope</em>&quot;] /&gt;
+ 
+&lt;sql:update sql=&quot;<em>sqlExpression</em>&quot; dataSource=&quot;<em>dsExpression</em>&quot;
+      var=&quot;<em>name</em>&quot; [scope=&quot;<em>scope</em>&quot;] &gt;
+   &lt;sql:param value=&quot;<em>expression</em>&quot; /&gt;
+   ......
+&lt;/sql:update&gt;
+ 
+&lt;sql:update dataSource=&quot;<em>dsExpression</em>&quot;
+      var=&quot;<em>varName</em>&quot; [scope=&quot;<em>scope</em>&quot;] &gt;
+   <em>SQLStatement
+   </em>&lt;sql:param value=&quot;<em>expression</em>&quot; /&gt;
+   ......
+&lt;/sql:update&gt;</pre>
+
+<p>Example:</p>
+<pre class="color-example">&lt;sql:setDataSource var=&quot;ds&quot; dataSource=&quot;jdbc/TestDB&quot; /&gt;
+<strong>&lt;sql:update sql=&quot;update books set qty = 0&quot; var=&quot;rcode&quot; dataSource=&quot;${ds}&quot; /&gt;</strong>
+&lt;p&gt;&lt;c:out value=&quot;<strong>${rcode}</strong> rows affected&quot; /&gt;&lt;/p&gt;</pre>
+
+
+<h5>Managing Transaction <span class="font-code">&lt;sql:transaction&gt;</span></h5>
+<p>A <em>transaction</em> is a sequence of database operations   that must either succeed or fail as a group. In JSTL, you can wrap a series of queries and updates into a transaction by nesting the corresponding <code>&lt;sql:query&gt;</code> and <code>&lt;sql:update&gt;</code> actions in the body content of a <code>&lt;sql:transaction&gt;</code> tag.  The syntax for <code>&lt;sql:transaction&gt;</code> is as follows:</p>
+
+<pre class="color-syntax">&lt;sql:transaction dataSource=&quot;<em>dsExpression</em>&quot; [isolation=&quot;<em>isolationLevel</em>&quot;] &gt;
+   &lt;sql:query ... /&gt; | &lt;sql:update ... /&gt;
+   ......
+&lt;/sql:transaction&gt;</pre>
+
+<p>The attribute <code>isolation</code> specifies the <em>isolation level</em> for the transaction, and may be either <code>read_committed</code>, <code>read_uncommitted</code>, <code>repeatable_read</code>, or <code>serializable</code>.</p>
+
+<p>Example [TODO]</p>
+
+<h3>JSP in XML Syntax</h3>
+<p>JSP pages with scripting elements (<code>&lt;% ... %&gt;</code>) are not well-formed XML documents. JSP 2.0 (??) supports JSP in XML-compliant syntax, which is convenient for applications involving AJAX and Web Services.</p>
+<p>The classical JSP scripting tags in the form of <code>&lt;% ... %&gt;</code> are not XML-compliant. A second set of XML-compliant tag with a prefix of &quot;<code>jsp</code>&quot; is defined as follows:</p>
+<ul>
+<li>JSP Scriptlet: <code>&lt;jsp:scriptlet&gt;</code></li>
+<li>JSP Expression: <code>&lt;jsp:expression&gt;</code></li>
+<li>JSP Declaration: <code>&lt;jsp:declaration&gt;</code></li>
+<li>JSP Directive: <code>&lt;jsp:directive&gt;</code>, <code>&lt;jsp:directive.page&gt;</code>, <code>&lt;jsp.directive.include&gt;</code>, <code>&lt;jsp.directive.import&gt;</code></li>
+<li><code>&lt;jsp:output&gt;</code></li>
+<li><code>&lt;jsp:root&gt;</code>, <code>&lt;jsp:element&gt;</code>, <code>&lt;jsp:attribute&gt;</code>, <code>&lt;jsp:body&gt;</code></li>
+</ul>
+
+<p>JSP pages in XML syntax is called JSP document, with a file extension of &quot;<code>.jspx</code>&quot; (JSP XML document).</p>
+
+<h5>Example: Hello-world</h5>
+<p>The following JSP document &quot;<code>hello.jspx</code>&quot; prints &quot;Hello world!&quot;.</p>
+
+<pre class="color-example">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;jsp:root xmlns:jsp=&quot;http://java.sun.com/JSP/Page&quot; version=&quot;2.0&quot;&gt;
+ 
+   &lt;jsp:directive.page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;/&gt;
+ 
+   &lt;jsp:element name=&quot;text&quot;&gt;
+      &lt;jsp:attribute name=&quot;lang&quot;&gt;EN&lt;/jsp:attribute&gt;
+      &lt;jsp:body&gt;Hello World!&lt;/jsp:body&gt;
+   &lt;/jsp:element&gt;
+ 
+&lt;/jsp:root&gt;</pre>
+
+<p>Notes:</p>
+
+<ul>
+<li>Line 1 <code>&lt;?xml ... ?&gt;</code> identifies this file as a XML document.</li>
+<li>A JSP XML document begins with a root element called <code>&lt;jsp:root&gt;</code>.</li>
+<li>The <code>&lt;%@page ... %&gt;</code> directive is replaced by <code>&lt;jsp:directive.page&gt;</code> element.</li>
+<li>You can use <code>&lt;jsp:element&gt;</code> with nested elements <code>&lt;jsp:attribute&gt;</code> and <code>&lt;jsp:body&gt;</code>.</li>
+</ul>
+
+
+<h5>Example</h5>
+
+<p>We shall rewrite the &quot;<code>first.jsp</code>&quot; into XML syntax as &quot;<code>first.jspx</code>&quot; as follows.</p>
+
+<pre class="color-example">
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;jsp:root xmlns:jsp=&quot;http://java.sun.com/JSP/Page&quot; version=&quot;2.0&quot;&gt;
+  &lt;jsp:directive.page contentType=&quot;text/html&quot; pageEncoding=&quot;UTF-8&quot;/&gt;
+ 
+  &lt;html&gt;
+  &lt;head&gt;&lt;title&gt;First JSP Document&lt;/title&gt;&lt;/head&gt;
+ 
+  &lt;body&gt;
+    &lt;jsp:scriptlet&gt;
+      double num = Math.random();
+      if (num &gt; 0.95) {
+    &lt;/jsp:scriptlet&gt;
+        &lt;h2&gt;You will have a luck day!&lt;/h2&gt;&lt;p&gt;(&lt;jsp:expression&gt;num&lt;/jsp:expression&gt;)&lt;/p&gt;
+    &lt;jsp:scriptlet&gt;
+      } else {
+    &lt;/jsp:scriptlet&gt;
+        &lt;h2&gt;Well, life goes on ... &lt;/h2&gt;&lt;p&gt;(&lt;jsp:expression&gt;num&lt;/jsp:expression&gt;)&lt;/p&gt;
+    &lt;jsp:scriptlet&gt;
+      }
+    &lt;/jsp:scriptlet&gt;
+      &lt;jsp:text&gt;&lt;![CDATA[&lt;a href=&quot;]]&gt;&lt;/jsp:text&gt;
+      &lt;jsp:expression&gt;request.getRequestURI()&lt;/jsp:expression&gt;
+      &lt;jsp:text&gt;&lt;![CDATA[&quot;&gt;&lt;h3&gt;Try Again&lt;/h3&gt;&lt;/a&gt;]]&gt;&lt;/jsp:text&gt;
+  &lt;/body&gt;
+  &lt;/html&gt;
+&lt;/jsp:root&gt;</pre>
+
+<p>Notes:</p>
+<ul>
+<li>If the texts contains special XML characters (such as <code>&lt;</code>, <code>&gt;</code>, <code>&amp;</code>, <code>&quot;</code>), you need to enclose within <code>&lt;![CDATA[ <em>texts</em> ]]&gt;</code> (Character Data Section). The <code>CDATA</code> section will be sent to the client, uninterpreted (which defeats the purpose of validation).</li>
+
+<li>To support the full validation of the resultant HTML document, you could include the proper <code>!DOCTYPE</code> in the generated HTML document by replacing the <code>&lt;html&gt;</code> tag with a <code>&lt;jsp:output&gt;</code> to print the <code>!DOCTYPE</code> and modify the <code>&lt;html&gt;</code> tag as follows:
+  <pre class="color-syntax">
+&lt;jsp:output
+  doctype-root-element=&quot;html&quot;
+  doctype-public=&quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot;
+  doctype-system=&quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot; /&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;</pre></li>
+
+<li>To produce newline in the generated HTML file, you need to use <code>&lt;jsp:text&gt;...&lt;/jsp:text&gt;</code>, with newline in the body.</li>
+<li>Take note that JSP with scripting element is hard to write, and equally write to read. You should use JSTL/EL or custom tags.</li>
+</ul>
+
+<h5>Taglib</h5>
+<p>To use JSTL taglib, instead of using <code>&lt;%@taglib ... %&gt;</code> JSP directive, you declare XML namespaces in  <code>&lt;jsp:root&gt;</code> element <code>xmlns</code> attributes as follows:</p>
+
+<pre class="color-syntax">
+&lt;jsp:root xmlns:jsp=&quot;http://java.sun.com/JSP/Page&quot;
+          xmlns:c=&quot;http://java.sun.com/jsp/jstl/core&quot;
+          xmlns:sql=&quot;http://java.sun.com/jsp/jstl/sql&quot;
+          xmlns:x=&quot;http://java.sun.com/jsp/jstl/xml&quot;
+          xmlns:fmt=&quot;http://java.sun.com/jsp/jstl/fmt&quot;
+          xmlns:fn=&quot;http://java.sun.com/jsp/jstl/functions&quot;
+          version=&quot;2.1&quot;&gt;</pre>
+
+<h3>JSP Fragment/Segment</h3>
+<p>[TODO]</p>
+
+
+<p class="references">REFERENCES &amp; RESOURCES</p>
+<ol>
+<li>JSP (JavaServer Pages) Home Page @ <a href="http://www.oracle.com/technetwork/java/javaee/jsp/index.html">http://www.oracle.com/technetwork/java/javaee/jsp/index.html</a>, and JSP Developer Site @ <a href="http://jsp.java.net">http://jsp.java.net</a>.</li>
+<li>JSP 1.1, 1.2, 2.0, 2.1, 2.2 Specifications. JSTL 1.0, 1.2 Specifications. EL 2.1, 2.2 Specifications.</li>
+
+<li>JSTL (JSP Standard Tag Libraries) 1.2 developers @ <a href="http://jstl.java.net">http://jstl.java.net</a>, and JSTL 1.1 Apache Jakarta's Taglibs @ <a href="http://jakarta.apache.org/taglibs/index.html">http://jakarta.apache.org/taglibs/index.html</a>.</li>
+<li>EL Developers @ <a href="http://uel.java.net">http://uel.java.net</a>.</li>
+<li>Apache Tomcat Server @ <a href="http://tomcat.apache.org/">http://tomcat.apache.org</a>.</li>
+<li>Java Servlets Home Page @ <a href="http://java.sun.com/products/servlet/">http://java.sun.com/products/servlet</a>. Servlet Developers @ <a href="http://java.net/projects/servlet/">http://java.net/projects/servlet/</a>.</li>
+
+<li>Glassfish developers @ <a href="http://glassfish.java.net">http://glassfish.java.net</a>.</li>
+
+<li>RFC2616 &quot;Hypertext Transfer Protocol HTTP 1.1&quot;, W3C, June 1999.</li>
+
+<li>HTML 4.01 Specification, W3C Recommendation, 24 Dec 1999 @ <a href="http://www.w3.org/TR/html401/">http://www.w3.org/TR/html401</a>, and HTML 5 Draft Specification @ <a href="http://www.w3.org/TR/html5/">http://www.w3.org/TR/html5</a>.</li>
+
+<li>Marty Hall, &quot;Core Servlets and JavaServer Pages&quot;, vol.1 (2nd eds, 2003) and vol. 2 (2nd eds, 2006), Prentice Hall.</li>
+
+<li>Andy Grant, &quot;JSP 2.0 Simple Tags Explained&quot; @ <a href="http://www.sitepoint.com/jsp-2-simple-tags/">http://www.sitepoint.com/jsp-2-simple-tags/</a>.</li>
+
+<li>Mark Kolb, &quot;A JSTL primer, Part 1 to Part 4&quot; @ <a href="http://www.ibm.com/developerworks/java/library/j-jstl0211/index.html">http://www.ibm.com/developerworks/java/library/j-jstl0211/index.html</a>.</li>
+
+<li>The Java EE 6 Tutorial Volume 1, December 2009 @ <a href="http://java.sun.com/javaee/6/docs/tutorial/doc/">http://java.sun.com/javaee/6/docs/tutorial/doc/</a>.</li>
+
+<li>The Java EE 5 Tutorial, Chapter 5 JavaServer Pages Technology, October 2008 @ <a href="http://download.oracle.com/javaee/5/tutorial/doc/bnagx.html">http://download.oracle.com/javaee/5/tutorial/doc/bnagx.html</a>.</li>
+
+<li>The J2EE 1.4 Tutorial, Chapter 12 JavaServer Pages Technology, December, 2005 @ <a href="http://java.sun.com/j2ee/1.4/docs/tutorial/doc/">http://java.sun.com/j2ee/1.4/docs/tutorial/doc/</a>.</li>
+
+<li>The J2EE 1.3 Tutorial &quot;JavaServer Pages Technology&quot; @ <a href="http://java.sun.com/j2ee/tutorial/1_3-fcs/doc/JSPIntro.html">http://java.sun.com/j2ee/tutorial/1_3-fcs/doc/JSPIntro.html</a>.</li>
+
+<li>Java EE 6 Technologies @ <a href="http://www.oracle.com/technetwork/java/javaee/tech/index-jsp-142185.html">http://www.oracle.com/technetwork/java/javaee/tech/index-jsp-142185.html</a>.</li>
+
+<li>Java EE 5 Technologies @ <a href="http://www.oracle.com/technetwork/java/javaee/tech/javaee5-jsp-135162.html">http://www.oracle.com/technetwork/java/javaee/tech/javaee5-jsp-135162.html</a>.</li>
+
+<li>java.net - The Source for Java Technology Collaboration @ <a href="http://www.java.net">http://www.java.net</a>.</li>
+
+</ol>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 1.7, Tomcat 7.0.21, JSP 2.1, NetBeans 7.0<br />
+Last modified: October, 2011</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+</body>
+</html>

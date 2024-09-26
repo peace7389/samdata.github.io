@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<!--
+<div id="wrap-outer">
+  <header id="header">
+  <div id="wrap-inner">
+     <aside id="wrap-toc">
+        <section id="toc">
+     <header id="content-header">
+     <main id="content-main">
+     <footer id="content-footer">
+  <footer id="footer">
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- for responsive web design -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- for SEO -->
+<meta name="description" content="Jakarta EE IDEs">
+<meta name="keywords" content="Jakarta EE, Java EE, IDE, Eclipse">
+<title>Jakarta EE Integrated Development Environment (IDE)</title>
+<!-- ========== @@@@@@ v3 header changes starts here after <title> ========== -->
+
+<!-- My custom CSS -->
+<link rel="stylesheet" href="../css/programming_notes_v3.css">
+<!-- Prism Syntax Highlighter -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.css" rel="stylesheet">
+<!-- favicon -->
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
+</head>
+
+
+<body>
+
+<div id="wrap-outer"> <!-- outer container -->
+
+<!-- header filled by JavaScript -->
+<header id="header" class="header"><p>&nbsp;</p></header>
+
+<div id="wrap-inner"> <!-- inner container -->
+
+<aside id="wrap-toc">
+<h5>Table of Contents <a id="show-toc" href="JakartaEE_IDEs.html#show-toc">(Hide)</a></h5>
+<section id="toc"></section>  <!-- for showing the "Table of Content" -->
+</aside>
+
+	
+<!-- ====== @@@ v3 header changes ends b4 "content-header", h1, h2 ======= -->
+<header id="content-header">
+<h1>Using Integrated Development Environment (IDE) for Jakarta /Java EE</h1>
+<h2>Eclipse, IntelliJ, NetBeans, ...</h2>
+</header>
+
+<main id="content-main">
+
+<h3 id="eclipseJee">Eclipse JEE (for Jakarta EE)</h3>
+<h4>Install</h4>
+<ol>
+<li>Goto "download eclipse packages" @ <a href="https://www.eclipse.org/downloads/packages/">https://www.eclipse.org/downloads/packages/</a>. Choose "Eclipse IDE for <mark>Enterprise Java and Web Developers</mark>
+" to download <code>eclipse-jee-202x-xx-R-win32-x86_64.zip</code> (520MB).</li>
+<li>Unzip.</li>
+<li>You can launch Eclipse by running <code>eclipse.exe</code>.</li>
+</ol>
+
+<h4>Configure JDK</h4>
+<p>Assume that you have installed the latest JDK (otherwise, read &quot;JDK HowTo&quot;).</p>
+<ol>
+<li>Launch Eclipse.</li>
+<li><span class="lead">Set Default JRE</span>: Select "Window" menu &rArr; Preferences &rArr; Java &rArr; Installed JRE &rArr; set default to latest JDK.</li>
+<li><span class="lead">Set Compiler level</span>: Select "Window" menu &rArr; Preferences &rArr; Java &rArr; Compiler &rArr; Compiler compliance level &rArr; choose your JDK level.</li>
+</ol>
+
+<h4>Connecting to MySQL Database Server</h4>
+
+<p><span class="lead">Reference</span>: &quot;Data Tools Platform User Documentation&quot; @ Eclipse Welcome page.</p>
+
+<p>Assume that you have installed &quot;MySQL Community Server&quot; and &quot;MySQL Connector/J Driver&quot;. Otherwise, read &quot;<a href="../sql/MySQL_HowTo.html">How to install and get started with MySQL</a>&quot;.</p>
+
+<p>To use Eclipse for MySQL development:</p>
+
+<ol>
+<li>Start the MySQL server. Start a client to check the database-name, which is needed to create a database connection URL in the form of jdbc:mysql://localhost:3306/database-name.</li>
+<li><span class="lead">Switch to &quot;Database Development&quot; Perspective</span>: Select &quot;Window&quot; menu &rArr; Open Perspective &rArr; Other &rArr; Database Development.</li>
+
+<li><span class="lead">Create a Database Connection</span>: Right-click on &quot;Database Connection&quot; &rArr; New &rArr; Next.<br>
+Take note that ONE database connection connects to ONE particular database in the MySQL database server.
+<ol>
+<li>In &quot;Connection Profile&quot;, choose &quot;MySQL&quot; &rArr; Next.</li>
+<li>In &quot;Drivers&quot;, click the &quot;+&quot; icon for &quot;New Driver Definition&quot;.</li>
+<li>In &quot;Specify a Driver Template and Definition Name&quot;:
+<ol>
+<li>Select &quot;Name/Type&quot; tab &rArr; Choose one of the database driver as our template (e.g. MySQL 5.1) for further customization &rArr; Set your &quot;Driver name&quot;, e.g., &quot;mysql-connector-java-8.3.0&quot;.</li>
+<li>Switch to &quot;JAR List&quot; tab &rArr; Clear All &rArr; Click &quot;Add JAR/Zip&quot; and select the driver JAR file, e.g., mysql-connector-java-8.3.0.jar.</li>
+<li>Switch to &quot;Properties&quot; tab &rArr; Check Connection URL, Database name, Username, Password.</li>
+<li>Start the MySQL server.</li>
+<li> Click &quot;Test Connection&quot; (MySQL server has been started).</li>
+</ol>
+</li>
+<li>In &quot;Datasource Explorer&quot;, you can &quot;connect&quot; and &quot;disconnect&quot; the connection.</li>
+</ol>
+</li>
+
+<li>To view and edit table visually, expand database &quot;Schemas&quot; to look for the table. Right-right on the table &rArr; Data &rArr; Edit. You can modify the cells and &quot;save&quot; the changes.</li>
+
+<li>To create a new SQL script, choose File &rArr; New &rArr; SQL File &rArr; You may use an existing project or create a new project (General|Project or Web|Dynamic Web Project) &rArr; Enter filename, and set the connection profile name &rArr; Finish. Enter a SQL statement (e.g., SELECT * FROM tablename) &rArr; Right-click on the text &rArr; &quot;Execute Current Text&quot; or &quot;Execute All&quot;.</li>
+<li>To use an existing SQL file, drop the file into a project and open the SQL file. In Connection profile, set the type and connection name. Right-click on a statement &rArr; &quot;Execute All&quot;.</li>
+</ol>
+
+<h4>Configure Tomcat Web Server</h4>
+<p>Assume that you have installed Apache Tomcat Server (version 10 or above) (otherwise, read &quot;Tomcat HowTo&quot;).</p>
+<ol>
+<li>Launch Eclipse.</li>
+
+<li><span class="lead">Configure Tomcat Server</span>: 
+<ol>
+<li>Select &quot;File&quot; menu &rArr; New &rArr; Other... &rArr; Server &rArr; Server &rArr; Apache &rArr; Tomcat v10.x server &rArr; Next.</li>
+<li>In "Tomcat installed directory": Browse to select Tomcat's installed directory (<code>TOMCAT_HOME</code>) &rArr; Finish.</li>
+</ol></li>
+<li><span class="lead">Start/Restart/Stop Tomcat Server</span>: Select bottom &quot;Server&quot; tab &rArr; Push Start/Stop server buttons.</li>
+</ol>
+
+<h4>First Servlet</h4>
+<ol>
+<li><span class="lead">Create New Webapp Project</span>: Launch Eclipse &rArr; File &rArr; New &rArr; 
+<mark>Dynamic Web Project</mark>. In "Project name", enter "<code>FirstServletProject</code>".</li>
+<li><span class="lead">Create New Package</span>: Expand "Java Resources" node &rArr; Right-click on "<code>src/main/java</code>" &rArr; New &rArr; Package &rArr; Enter "<code>com.nowhere</code>".</li>
+<li><span class="lead">Write the First Servlet</span>: Right-click on "<code>com.nowhere</code>" &rArr; New &rArr; Class (or &quot;Servlet&quot;, if exists) &rArr; Enter "<code>HelloServlet</code>".  Enter the followings:
+
+<pre><code class="language-java line-numbers">package com.nowhere;
+
+import java.io.*;
+import jakarta.servlet.*;             // Tomcat 10
+import jakarta.servlet.http.*;        // Tomcat 10
+import jakarta.servlet.annotation.*;  // Tomcat 10
+//import javax.servlet.*;             // Tomcat 9
+//import javax.servlet.http.*;        // Tomcat 9
+//import javax.servlet.annotation.*;  // Tomcat 9
+ 
+@WebServlet("/sayhello")   // Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)
+public class HelloServlet extends HttpServlet {
+
+   // The doGet() runs once per HTTP GET request to this HTTP servlet.
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response)
+         throws IOException, ServletException {
+ 
+      // Set the response's MIME type of the response message
+      response.setContentType("text/html");
+      // Allocate an output writer to write the response message into the network socket
+      PrintWriter out = response.getWriter();  // throw IOException
+      
+      // Write the response message, in an HTML page
+      // Using triple-quoted multi-line string (Text Block) (JDK 15)
+      // The beginning triple-quote must be in its own line (i.e., ends with a newline)
+      out.println("""
+            &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            &lt;head&gt;&lt;title&gt;Hello, World&lt;/title&gt;&lt;/head&gt;
+            &lt;body&gt;
+              &lt;h1&gt;Hello, world!&lt;/h1&gt;
+              &lt;p&gt;Request URI: %s&lt;/p&gt;
+              &lt;p&gt;Protocol: %s&lt;/p&gt;
+              &lt;p&gt;PathInfo: %s&lt;/p&gt;
+              &lt;p&gt;Remote Address: %s&lt;/p&gt;
+              &lt;p&gt;A Random Number: &lt;strong&gt;%f&lt;/strong&gt;&lt;/p&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+            """.formatted(request.getRequestURI(), request.getProtocol(),
+                          request.getPathInfo(), request.getRemoteAddr(),
+                          Math.random()));   // Multi-line text block (JDK 15) 
+      out.close();  // Always close the output writer
+      
+      // For testing and debugging - Print a message to Tomcat's console
+      System.out.println("hello world, to Tomcat!");   // Check Tomcat's console for this message
+   }
+}</code></pre>
+How It Works:<br>
+<ul>
+<li>[TODO]</li>
+</ul>
+
+
+</li>
+<li><span class="lead">Setup Servlet API (External JAR)</span>: Servlet packages (<code>jakarta.servlet</code>, <code>jakarta.servlet.http</code>) are not part of JDK, but belongs to Jakarta EE (formerly Java EE). Tomcat has a copy of Servlet API under its "<code>lib</code>" called "<code>servlet-api.jar</code>".<br>
+Right-click on project-name &rArr; Properties &rArr; Java Build Path &rArr; Libraries &rArr; Classpath &rArr; Add External JARs &rArr; Browse to select tomcat/<code>lib</code>’s <code>servlet-api.jar</code>.
+</li>
+<li><span class="lead">Deploy the Servlet (in Tomcat Server)</span>: Right-click on project-name &rArr; Run As &rArr; Run on Server (assume that you have installed and configured Tomcat server).</li>
+<li><span class="lead">Invoke the Servlet</span>: From a web browser, enter URL &quot;http://localhost:8080/FirstServletProject/sayhello, where 8080 is the server's TCP port number, <code>FirstServletProject</code> is the webapp-name (same as project-name) and <code>sayhello</code> the the URL of the <code>HelloServlet</code> (configured via <code>@WebServlet</code> annotation).</li>
+<li><span class="lead">Check out the Directories and Resources</span>:
+<ul>
+<li>Under <code>src\main\webapp</code>, there is a <code>WEB-INF</code> with a deployment descriptor <code>web.xml</code>.</li>
+<li>Under <code>src\main\webapp</code>, there is also a <code>META-INF</code> with with <code>MANIFEST.MF</code>.</li>
+<li>Under  &quot;Referenced Libraries&quot;, there is a &quot;<code>servlet-api.jar</code>&quot; (configured via External JARs). Expand it, you can find <code>jakarta.servlet</code> and <code>jakarta.servlet.http</code> packages, and <code>HttpServlet</code> class.</li>
+</ul></li>
+</ol>
+
+<h4>First JSP</h4>
+
+<ol>
+<li><span class="lead">Create a new Webapp Project</span>: Select &quot;File&quot; menu &rArr; New &rArr; Dynamic Web Project (under &quot;Web&quot; category) &rArr; In &quot;Project Name&quot;, enter &quot;<code>FirstJspProject</code>&quot; &rArr; Finish.</li>
+
+<li><span class="lead">Create a new JSP File</span>: Right-click on &quot;<code>webapp</code>&quot;  &rArr; New  &rArr; JSP File  &rArr;  In &quot;File Name&quot;, enter &quot;<code>hello.jsp</code>&quot; &rArr; &quot;Finish&quot;.</li>
+
+<li>Enter the following HTML/JSP codes:
+<pre class="example">
+<span class="new">&lt;%@ page language=&quot;java&quot; contentType=&quot;text/html; charset=UTF-8&quot;
+    pageEncoding=&quot;UTF-8&quot;%&gt;</span>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;UTF-8&quot;&gt;
+&lt;title&gt;Hello JSP&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Hello World, from JSP&lt;/h1&gt;
+&lt;p&gt;Method: <span class="new">&lt;%= request.getMethod() %&gt;</span>&lt;/p&gt;
+&lt;p&gt;Request URI: <span class="new">&lt;%= request.getRequestURI() %&gt;</span>&lt;/p&gt;
+&lt;p&gt;Protocol: <span class="new">&lt;%= request.getProtocol() %&gt;</span>&lt;/p&gt;
+&lt;p&gt;PathInfo: <span class="new">&lt;%= request.getPathInfo() %&gt;</span>&lt;/p&gt;
+&lt;p&gt;Remote Address: <span class="new">&lt;%= request.getRemoteAddr() %&gt;</span>&lt;/p&gt;
+<span class="new">&lt;% double num = Math.random();
+   if (num &gt; 0.75) { %&gt;</span>
+     &lt;h2&gt;You'll have a lucky day!&lt;/h2&gt;&lt;p&gt;(<span class="new">&lt;%= num %&gt;</span>)&lt;/p&gt;
+<span class="new">&lt;% } else { %&gt;</span>
+     &lt;h2&gt;Well, life goes on ... &lt;/h2&gt;&lt;p&gt;(<span class="new">&lt;%= num %&gt;</span>)&lt;/p&gt;
+<span class="new">&lt;% } %&gt;</span>
+&lt;h3&gt;&lt;a href=&quot;<span class="new">&lt;%= request.getRequestURI() %&gt;</span>&quot;&gt;Try Again&lt;/a&gt;&lt;/h3&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+
+
+</li>
+<li>If error on <code>jakarta.servlet</code> appears, follow the previous &quot;Write the First Servlet&quot; section to add <code>servlet-api.jar</code> as external JAR.</li>
+<li>To execute the JSP, right-click on &quot;<code>hello.jsp</code>&quot; &rArr; Run As 
+ &rArr; Run on Server (assume that you have installed and configured Tomcat server).</li>
+</ol>
+
+
+
+
+
+<h4>Exporting a Webapp as a WAR (Webapp Archive) file</h4>
+
+<ol>
+<li>Right-click on the project-name to be exported &rArr; Export &rArr; War File &rArr; In &quot;Destination&quot;, specify the destination directory and filename (the filename shall be the webapp name) &rArr; Finish.</li>
+<li>To deploy the war file in Tomcat, simply drop the war file into Tomcat's &quot;<code>webapps</code>&quot; folder. The war file will be automatically extracted and deployed. The web application name is the war-filename.</li>
+<li>You could use WinZip (or WinRAR) to view the content of the war file, as war-file is in ZIP format.</li>
+</ol>
+
+<h5>Deploying a webapp outside the Tomcat's <code>webapps</code> directory</h5>
+<p>To deploy a webapp (called <code>hello</code>) outside the <code>&lt;TOMCAT_HOME&gt;\webapps</code> directory, create a <code>hello.xml</code> file as follows and place it under the <code>&lt;TOMCAT_HOME&gt;\conf\Catalina\localhost</code>:</p>
+
+<pre class="example">
+&lt;Context displayName=&quot;hello&quot;
+     docBase=&quot;C:\path\to\webapp&quot;
+     path=&quot;/hello&quot;
+     reloadable=&quot;true&quot; /&gt;
+</pre>
+
+
+<h4>First JSF</h4>
+<p>[TODO]</p>
+
+<h4>Debugging Webapps</h4>
+<p>You can debug a webapp just like standalone application. For example, you can set breakpoints, single-step through the programs, etc.</p>
+
+
+<h3 id="IntelliJ">IntelliJ IDEA Webapps (for Jakarta EE)</h3>
+
+<h4>Install</h4>
+
+<p>For developing webapps, you probably need to download <span class="new">IntelliJ Ultimate</span>, which is not free (but 30-day trial). You may be able to get it free with a .edu account (Check out &quot;Education&quot; &rArr; Free License &rArr; For Students and Teachers.</p>
+<p>Goto IntelliJ mother site, download and install IntelliJ Ultimate.</p>
+
+<h4>First Maven Webapp to Configure Tomcat Server</h4>
+<p>We shall now write our first webapp (with Maven) and configure it to run under Tomcat Server.</p>
+<ol>
+<li>Assume that you have install the Tomcat 10+ server. Otherwise, see "Tomcat HowTo".</li>
+<li>Launch IntelliJ &rArr; New Project &rArr; Choose Generators: Maven Archetype &rArr; In &quot;Name&quot;, enter &quot;<code>FirstServletProject</code>&quot; &rArr; In &quot;Location&quot; select your location &rArr; In &quot;Archetype&quot;, select &quot;webapp&quot; (i.e., org.apache.maven.archetypes:maven-archetype-<span class="new">webapp</span>) &rArr; Create.</li>
+<li>Inspect the project created: Expand &quot;src&quot; &rArr; main &rArr; webapp and check out:
+<ul>
+<li><code>index.jsp</code>: which is the home page of your webapp.</li>
+<li>Directory <code>WEB-INF</code>: which is a hidden directory keeping servlets and <em>deployment descriptor</em> <code>web.xml</code>.</li>
+</ul></li>
+<li>Configure Tomcat Server:
+<ol>
+<li>Click top menu item &quot;Current File&quot; &rArr; Edit configuration &rArr; &quot;+&quot; (Add new configuration) &rArr; Tomcat Server &rArr; Local.</li>
+<li>In &quot;Server&quot; pane: Configure… &rArr; In &quot;Tomcat Home&quot;, browse to select your tomcat installed directory.</li>
+<li>In &quot;Deployment&quot; pane: &quot;+&quot; (add) &rArr; artifact… &rArr; choose either the uncompressed “FirstServletProject:war exploded”, or the compressed “FirstServletProject:war” &rArr; OK</li>
+</ol></li>
+
+<li>Click "Run Tomcat 10.x.y" &rArr; A web browser is automatically launched with the URL http://localhost:9999/FirstServletProject_war_exploded/. This directory request shows <code>index.jsp</code> (as a welcome page configured under <code>Tomcat\conf\web.xml</code>).</li>
+</ol>
+
+<h4>First Servlet</h4>
+<p>Let's continue to write our first servlet:</p>
+<ol>
+<li>Continue from the previous maven project "<code>FirstServletProject</code>".</li>
+<li>Expand "src" &rArr; Right-click "main" &rArr; new &rArr; Directory &rArr; Enter "<code>java</code>" (to be used as the Java source root).</li>
+<li>Right-click "<code>java</code>" &rArr; New &rArr; Package &rArr; Enter "<code>com.nowhere</code>".</li>
+<li>Right-click "<code>com.nowhere</code>" &rArr; New &rArr; Java Class &rArr; Enter "<code>HelloServlet</code>" &rArr; Write the "<code>HelloServlet.java</code>"  (as in the "Eclipse JEE" section).</li>
+<li>Open "<code>pom.xml</code>":
+<ol>
+<li>Include <code>jakarta.servlet</code> <code>&lt;dependency&gt;</code> under <code>&lt;dependencies&gt;</code>. This dependency is used to include the Jakarta Servlet 6.0 packages (<code>jakarta.servlet</code> and <code>jakarta.servlet.http</code>) used in the servlet programs (which is not part of JDK or Java SE, but belongs to Java EE or now Jakarta EE). The <code>scope</code> of "<code>provided</code>" is to indicate that there is no need to include this jar file in the output (because tomcat server has a copy). This is used in compilation only.</li>
+<li>Also include the properties to set the JDK compiler and target levels.</li>
+</ol>
+
+The entire working "<code>pom.xml</code>" is produced as follows:
+
+<pre><code class="language-xml line-numbers">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.nowhere&lt;/groupId&gt;
+  &lt;artifactId&gt;FirstServletProject&lt;/artifactId&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;FirstServletProject Maven Webapp&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;jakarta.servlet&lt;/groupId&gt;
+      &lt;artifactId&gt;jakarta.servlet-api&lt;/artifactId&gt;
+      &lt;version&gt;6.0.0&lt;/version&gt;
+      &lt;scope&gt;provided&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+
+  &lt;build&gt;
+    &lt;finalName&gt;FirstServletProject&lt;/finalName&gt;
+    &lt;plugins&gt;
+      &lt;plugin&gt;
+        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;
+        &lt;configuration&gt;
+          &lt;source&gt;21&lt;/source&gt;
+          &lt;target&gt;21&lt;/target&gt;
+        &lt;/configuration&gt;
+      &lt;/plugin&gt;
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+&lt;/project&gt;</code></pre>
+Expand the "External Libraries", you can find "Maven:jakarta.servlet":jakarta.servlet-api:6.0.0" included. You can find the Jakarta Servlet packages under it.</li>
+
+<li>Now, you can test the servlet by push the "Run Tomcat" button, and issue URL http://localhost:9999/FirstServletProject_war_exploded/sayhello. The <code>HelloServlet</code> is mapped to URL "<code>/sayhello</code>" using <code>@WebServlet</code> annotation.</li>
+</ol>
+
+<h5>Empty Project with Many Maven Modules</h5>
+<p>You can also create one project with many Maven modules, as follows:</p>
+<ol>
+<li>New Project &rArr; Empty Project &rArr; In "Name", Enter "<code>JakartaServletProjects</code>".</li>
+<li>Right-click on project-name &rArr; New &rArr; Module &rArr; In "Generators", choose "Maven Archetype" &rArr; In "Name", enter "<code>helloapp</code>" &rArr; In "Archetype", select "org.apache.maven.archetypes:maven-archetype-<strong>webapp</strong>".</li>
+<li>Expand "<code>helloapp</code>" &rArr; src &rArr; Right-click "main" &rArr; New &rArr; Directory &rArr; Enter "<code>java</code>" (as Java source root).</li>
+<li>Right-click "<code>java</code>" &rArr; New &rArr; Package &rArr; Enter "<code>com.nowhere</code>". Keep all the servlets here.</li>
+<li>You can create more Maven modules, similarly.</li>
+</ol>
+<p>[TODO] Why?</p>
+
+<h3 id="netbeans">NetBeans (for Jakarta EE)</h3>
+<h4 id="NetBeansMySQL">Connecting to MySQL Database Server</h4>
+
+<p>NetBeans provides direct support to MySQL server. You can use NetBeans as a GUI client to access a MySQL server, as well as an administrative tool (e.g., start and stop the server).</p>
+<p>Assume that you have installed &quot;MySQL Community Database Server&quot; and &quot;MySQL Connector/J Driver&quot; (otherwise, read MySQL HowTo).</p>
+
+<h5>Configuring NetBeans to Support MySQL</h5>
+
+<p>Select &quot;Window&quot; menu &rArr; Services. The &quot;Services&quot; tab shall appear on the left sidebar.</p>
+
+  <ol>
+  <li>Right-click on the &quot;Databases&quot; node &rArr; &quot;Register MySQL Server&quot;. (If you have already registered a MySQL server, you can right-click on Server node &quot;<code>MySQL Server at <em>hostname</em>:<em>port</em></code>&quot; &rArr; Properties, to modify its properties.)</li>
+  <li>Switch to &quot;Basic Properties&quot; tab: Enter the hostname, port number,  username and password.</li>
+
+<li>Switch to &quot;Admin Properties&quot; tab:
+<ol>
+<li>Leave the &quot;Path/URL to admin tool&quot; empty.</li>
+<li>In &quot;Path to start command&quot;, browse to select &quot;<code>&lt;MYSQL_HOME&gt;\bin\mysqld.exe</code>&quot;; in the &quot;Arguments&quot;, enter &quot;<code>--console</code>&quot;</li>
+<li>In &quot;Path to stop command&quot;, browse to select &quot;<code>&lt;MYSQL_HOME&gt;\bin\mysqladmin.exe</code>&quot;, in the &quot;Arguments&quot;, enter &quot;<code>-u <em>username</em> -p<em>password</em> shutdown</code>&quot;.</li>
+</ol></li>
+
+<li>Open &quot;Drivers&quot; node &rArr; Right-click &quot;MySQL (Connector/J driver) &rArr; Connect using... &rArr; Add &rArr; Browse to select your MySQL Connector/J Driver JAR file &rArr; Next. In Customize Connection: set database name, username and password.</li>
+<li>A <em>server node</em> &quot;<code>MySQL Server at <em>hostname</em>:<em>port</em></code>&quot; appears.</li>
+</ol>
+
+<h5>Database Administration - Start/Stop the Server and Create Databases</h5>
+
+<ol>  
+<li>You can start the MySQL server by right-clicking on the server node &rArr; select &quot;start&quot;.</li>
+
+<li>Once the MySQL server is started and connected, you can see the list of databases by expanding the MySQL server node. You can create a new database by right-clicking on it and choose &quot;Create Database...&quot;.</li>
+</ol>
+
+<h5>Create a new Connection</h5>
+
+<p>You need a connection to manipulate data. You can create multiple connections with different users and default databases.</p>
+  <ol>
+
+  <li>Open &quot;Databases&quot; and &quot;MySQL server xxx&quot; &rArr; Right-click on a database &rArr; Connect... &rArr; A Connection &quot;jdbc:mysql://localhost:3306/databasename?...&quot; appears at the end.</li>
+<li>OR: Right-click on the &quot;Databases&quot; &rArr; &quot;New Connection...&quot;  &rArr; Select the driver &quot;MySQL Connector/J&quot; &rArr; Next &rArr; Enter hostname, port number, default database, a general username and password &rArr; &quot;Test Connection&quot;  (make sure that MySQL is started) &rArr; Finish. A <em>connection node</em> &quot;<code>jdbc:mysql://<em>hostname</em>:<em>port</em>/<em>databaseName</em></code>&quot; appears at the end.</li>
+</ol>
+
+<h5>Manipulating Data via a Connection</h5>
+
+<ol>  
+<li>Right-click on a  connection node (e.g., &quot;<code>jdbc:mysql://<em>hostname</em>:<em>port</em>/<em>databaseName</em></code>&quot;) &rArr;  Choose &quot;Connect&quot; (if not connected, provided that the MySQL server has been started).</li>
+
+  <li>You can expand the connection node to view all the databases.</li>
+  <li>Expand an existing database. There are three sub-nodes &quot;Tables&quot;, &quot;View&quot; and &quot;Procedures&quot;. Right-click on the &quot;Tables&quot; to create table or execute command. Similarly, right-click on the &quot;View&quot; and &quot;Procedures&quot;.</li>
+  <li> To view/manipulate the records in a table, right-click on the selected table &rArr; You can choose to &quot;View Data...&quot;, &quot;Execute Command...&quot;, etc.</li>
+  <li> You can right-click on the connection to &quot;connect&quot; or &quot;disconnect&quot; from the server.</li>
+</ol>
+
+<h5>From a Project: Create a SQL Script and Run the Script</h5>
+<p>Suppose that  your project needs to run a SQL script: Right-clicking on the project &rArr; New File &rArr; Other &rArr; SQL File &rArr; Enter the filename &rArr; Finish.</p>
+<p>You can run the script by right-clicking on the SQL script &rArr; Run File &rArr; Select an existing connection (or create a new connection) to run the script. You could also run a single statement (right-click on the statement &rArr; Run Statement) or a selected group of statements (highlight the statements &rArr; Right-click &rArr; Run Selection).</p>
+
+<h4>Configure Tomcat Server</h4>
+
+<p>I shall assume that you have installed a Tomcat 10+ server (otherwise, read Tomcat-HowTo).</p>
+<p>To configure Tomcat Server, select &quot;Tools&quot; menu  &rArr; &quot;Servers&quot;  &rArr; click &quot;Add Servers&quot;:</p>
+<ol>
+<li>Choose Server: Select &quot;Apache Tomcat or TomEE&quot; &rArr; Next</li>
+
+<li>Installation and Login Details: In &quot;Server Location&quot;, browse to set Tomcat installation directory ($CATALINA_HOME)  &rArr; Enter the username/password of a tomcat user with &quot;manager&quot; role. You could either check the &quot;create user if it does not exist&quot; or define the tomcat user in &quot;<code>$CATALINA_HOME\conf\tomcat-users.xml</code>&quot; as follows:
+<pre class="example">&lt;tomcat-users&gt;
+   &lt;role rolename=&quot;manager&quot;/&gt;
+   &lt;user username=&quot;tomcatmanager&quot; password=&quot;xxxx&quot; roles=&quot;manager,manager-script,admin&quot; /&gt;
+&lt;/tomcat-users&gt;</pre>
+</li>
+<li>Running the Tomcat Server: Choose &quot;Services&quot; &rArr; Expand &quot;Servers&quot; node &rArr; Right-click on the desired server &rArr; Start/Stop/Restart. You can also find these buttons on the left margin of the Tomcat console.</li>
+
+</ol>
+
+<h4>First Servlet and JSP</h4>
+
+<h5>Create a New Webapp Project</h5>
+<ol>
+<li>From &quot;File&quot; menu &rArr; choose &quot;New Project...&quot;.</li>
+<li>In &quot;Choose Project&quot; &rArr; Under &quot;Categories&quot;, choose &quot;Java with Maven&quot; &rArr; Under &quot;Projects&quot;, choose &quot;Web Application&quot; &rArr; &quot;Next&quot;.</li>
+<li>In &quot;Name and Location&quot; &rArr; In &quot;Project Name&quot;, enter &quot;<code>FirstServletProject</code>&quot; &rArr;  In &quot;Project Location&quot;, select a suitable directory to save your works &rArr; In &quot;Group Id&quot;, enter &quot;com.nowhere&quot; &rArr; Next.</li>
+<li>In &quot;Settings&quot; &rArr; Choose your server, or &quot;add&quot; a new server &rArr; Finish.</li>
+</ol>
+
+<h5>Write a Hello-World Servlet</h5>
+<ol>
+<li>Right-click on the project &quot;<code>FirstServletProject</code>&quot;  &rArr; New   &rArr; Servlet...</li>
+<li>In &quot;Name and Location&quot;   &rArr; In &quot;Class Name&quot;, enter &quot;<code>HelloServlet</code>&quot;  &rArr; In &quot;Package&quot;, select &quot;<code>com.nowhere.firstservletproject</code>&quot;  &rArr; Next.</li>
+<li>In &quot;Configure Servlet Deployment&quot;  &rArr; In &quot;Servlet Name&quot;, enter &quot;<code>HelloServlet</code>&quot;  &rArr; In &quot;URL Pattern&quot;, enter &quot;<code>/sayhello</code>&quot;  &rArr; Finish.</li>
+<li>A sample servlet is created. You need to replace &quot;<code>javax.</code>&quot; to &quot;<code>jakarta.</code>&quot;</li>
+<li>To execute the servlet: Right-click on the project  &rArr; run &rArr; Change the URL to <code>http://localhost:8080/FirstServletProject/sayhello</code>.</li>
+</ol>
+
+<h5>Write a Hello-World JSP</h5>
+<ol>
+<li>Right-click on the project &quot;<code>FirstServletProject</code>&quot; &rArr; New &rArr; JSP...</li>
+<li>In &quot;Name and Location&quot;   &rArr; In &quot;File Name&quot;, enter &quot;<code>hello.jsp</code>&quot;  &rArr; Finish.</li>
+<li>A sample hello-world JSP page is created. Add a few JSP lines under the <code>&lt;h1&gt;</code>:
+<pre class="example"><span class="new">&lt;% double num = Math.random();
+   if (num &gt; 0.75) { %&gt;</span>
+      &lt;h2&gt;You'll have a lucky day!&lt;/h2&gt;&lt;p&gt;(<span class="new">&lt;%= num %&gt;</span>)&lt;/p&gt;
+<span class="new">&lt;% } else { %&gt;</span>
+      &lt;h2&gt;Well, life goes on ... &lt;/h2&gt;&lt;p&gt;(<span class="new">&lt;%= num %&gt;</span>)&lt;/p&gt;
+<span class="new">&lt;% } %&gt;</span>
+&lt;h3&gt;&lt;a href=&quot;<span class="new">&lt;%= request.getRequestURI() %&gt;</span>&quot;&gt;Try Again&lt;/a&gt;&lt;/h3&gt;</pre>
+</li>
+<li>To execute the JSP: Right-click on the JSP file  &rArr; Run File (URL <code>http://localhost:8080/FirstServletProject/hello.jsp</code>)</li>
+</ol>
+
+<h5>Exporting to a WAR-file</h5>
+
+<p>A WAR (Web Archive) file is basically a zip file for distributing web application in single file. You can use WinZip or WinRAR to inspect or unzip the war file. </p>
+<p>To distribute the project as a war-file, right-click project ⇒ &quot;Clean and Build&quot;. The war file is created. Goto &quot;File&quot; tab, look under the &quot;target&quot;. You can deploy the web application by dropping the war-file into Tomcat's &quot;<code>webapps</code>&quot; directory. Tomcat will automatically unzip the war-file and deploy the application upon startup.</p>
+
+<h5>Write a JSF Facelet (to check)</h5>
+<ol>
+<li>Right-click on the project &quot;<code>FirstServletProject</code>&quot; &rArr; New &rArr; Other &rArr; Categories: Web &rArr; File Types: JSF Page &rArr; Next.</li>
+<li>In &quot;Name and Location&quot;   &rArr; In &quot;File Name&quot;, enter &quot;<code>hellojsf</code>&quot;  &rArr; Finish.</li>
+<li>A sample hello-world JSF page &quot;<code>hellojsf.xhtml</code>&quot; is created, as follows:
+<pre class="example">
+&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
+      xmlns:h=&quot;jakarta.faces.html&quot;&gt;
+    <span class="new">&lt;h:head&gt;</span>
+        &lt;title&gt;Facelet Title&lt;/title&gt;
+    <span class="new">&lt;/h:head&gt;</span>
+    <span class="new">&lt;h:body&gt;</span>
+        Hello from Facelets
+    <span class="new">&lt;/h:body&gt;</span>
+&lt;/html&gt;</pre>
+
+To run this facelet, right-click on the project  &rArr; Run.</li>
+</ol>
+
+
+<h4>Debugging Web Applications in NetBeans</h4>
+<p>You can debug a webapp just like standalone application. For example, you can set breakpoints, single-step through the programs, etc.</p>
+
+
+<h3>VS Code for Jakarta EE [TODO]</h3>
+<p>[TODO]</p>
+
+
+</main> <!-- end of class="content-main" -->
+
+<footer id="content-footer">
+<p>Latest version tested: Eclipse JEE 2024-03, IntelliJ IDEA 2024.1, NetBeans 21, Jakarta Servlet 6.0<br>
+Last modified: April 2024</p>
+</footer>
+
+</div>  <!-- end of <div class="wrap-inner"> for inner container  -->
+
+
+<!-- ======= @@@ v3 footer changes starts here, before "footer" ======== -->
+<!-- footer filled by JavaScript -->
+<footer id="footer" class="footer"><p>&nbsp;</p></footer>
+
+</div>  <!-- end of <div class="wrap-outer"> for outer container -->
+
+<!-- Place all JavaScript before end of body to load last -->
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- My custom JavaScript v3 -->
+<script src="../scripts/programming_notes_v3.js"></script>
+<!-- Prism Syntax Highlighter -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/keep-markup/prism-keep-markup.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

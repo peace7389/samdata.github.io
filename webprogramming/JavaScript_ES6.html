@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JavaScript Tutorial - ECMAScript 6 (ES6)</title>
+
+<!-- @@ v3 starts here -->
+<!-- My custom CSS v3 -->
+<link rel="stylesheet" href="../css/programming_notes_v3.css">
+<!-- Prism Syntax Highlighter -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.css" rel="stylesheet" />
+<!-- favicon -->
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>Table of Contents <a id="show-toc" href="JavaScript_ES6.html#show-toc">(Hide)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>JavaScript</h1>
+<h2>ECMAScript 6 (ES6)</h2>
+</div>
+
+<div id="content-main">
+
+<p>This article describes the new features introduced in ECMAScript version 6 (or ES6, ES2015, ES6Harmony), formerly known as &quot;ECMA-262 ECMAScript Language Specification 2015&quot;.</p>
+<p>All the examples are tested under Node.js (see &quot;Node.js How To&quot; on how to setup and run JavaScripts).</p>
+<p>For brevity, cleaner-looking and more meaningful codes, I omit the ending semicolons; use single quote for string; avoid <code>foo-bar</code>, <code>i</code>, <code>j</code>, <code>k</code>; use <code>const</code> instead of <code>let</code> and <code>var</code>; keep the sentences short and brief; ...</p>
+
+
+<h3>The <code>var</code>, <code>let</code> and <code>const</code> Variable Declarations</h3>
+
+<p>Prior to ES6, you could only use the keyword <code>var</code> to declare a variable. The <code>var</code>-variables fall into two scopes:</p>
+
+<ol>
+<li><span class="lead">Global Scope</span>: <code>var</code>-variables declared <em>outside functions</em> have global scope. They can be accessed from any part of the script.</li>
+<li><span class="lead">Local-Function Scope</span>: <code>var</code>-variables declared <em>inside a function definition</em> have local-function scope. They are accessible within the defining function only. A local-function variable having the same name as a global variable <em>shadows</em> the global variable inside the function.</li>
+</ol>
+
+
+<p><code>The var</code>-variable is peculiar! There is no <em>local block-scope</em> variables.</p>
+<p>ES6 introduces local block-scope <code>let</code> and <code>const</code> declarations.</p>
+
+<h4>(Prior to ES6) <code>var</code>-Declarations are Hoisted to the Top of the File or Function</h4>
+
+<p>In most of the C-based languages, variables are created upon their declaration and exist within the block that they are declared. This is known as block-scope or lexical-scope. Recall that a block is a group of statements surrounded by curly braces <code>{}</code>.</p>
+
+<p>JavaScript's <code>var</code>-declaration is peculiar! The <code>var</code>-variables are not block-scope but <em>hoisted</em> outside the defining blocks. <code>var</code>-declarations outside functions are <em>hoisted</em> to the top of the script; <code>var</code>-declarations inside a function definition are <em>hoisted</em> to the top of the function.</p>
+<p> Consider the following code, you will be surprise that <code>var</code>-variable is accessible outside the defining block.</p>
+
+<pre class="example">function testVarHoisting(boolean) {
+   if (boolean) {
+      console.log('msg in true-block before var-declaration is: ' + msg)
+      <span class="new">var msg</span> = 'hello'
+         <span class="comment">// var-declaration will be hoisted to the top of the function,
+         // but NOT the initialization</span>
+      console.log('msg in true-block after var-declaration is: ' + msg)
+   } else {
+      console.log('msg in false-block is: ' + msg)
+   }
+   console.log('msg outside the block is: ' + msg)
+}
+
+testVarHoisting(true)
+<span class="comment">//</span><span class="output">msg in true-block before var-declaration is: undefined</span>
+<span class="comment">//</span><span class="output">msg in true-block after var-declaration is: hello</span>
+<span class="comment">//</span><span class="output">msg outside the block is: hello</span>
+
+testVarHoisting(false)
+<span class="comment">//</span><span class="output">msg in false-block is: undefined</span>
+<span class="comment">//</span><span class="output">msg outside the block is: undefined</span></pre>
+
+<p>The <code>var</code>-declaration  is actually <em>hoisted</em> to the top of the function, but the initialization remains at the same spot.  In other words, JavaScript interprets the above codes as:</p>
+
+<pre class="example">function testVarHoisting(boolean) {
+   <span class="new">var msg</span>   <span class="comment">// var-declaration is hoisted to the top of the function</span>
+   if (boolean) {
+      console.log('msg in true-block before var-declaration is: ' + msg)
+      <span class="new">msg = 'hello'</span>   <span class="comment">// initialization remains at the same spot</span>
+      console.log('msg in true-block after var-declaration is: ' + msg)
+   } else {
+      console.log('msg in false-block is: ' + msg)
+   }
+   console.log('msg outside the block is: ' + msg)
+}</pre>
+
+<p>Similarly, <code>var</code>-declaration inside the loop is also hoisted to the top of the file (or function). For example,</p>
+
+<pre class="example">for (<span class="new">var number</span> = 0; number &lt; 3; ++number) {
+      <span class="comment">// var-declaration will hoisted to the top of the file/function,
+      // but NOT the initialization.</span>
+   console.log('number is: ' + number)
+}
+console.log('number outside the loop is: ' + number)
+<span class="comment">//</span><span class="output">number is: 0</span>
+<span class="comment">//</span><span class="output">number is: 1</span>
+<span class="comment">//</span><span class="output">number is: 2</span>
+<span class="comment">//</span><span class="output">number outside the loop is: 3</span></pre>
+
+<p>Again, <code>var-declaration</code> is hoisted to global scope (top of the file) and interpret as follows:</p>
+
+<pre class="example">
+<span class="new">var number</span>   <span class="comment">// var-declaration is hoisted to the top of the file/function</span>
+for (<span class="new">number = 0</span>; number &lt; 3; ++number) {   <span class="comment">// initialization remains at the same spot</span>
+   console.log('number is: ' + number)
+}
+console.log('number outside the block is: ' + number)</pre>
+
+<h4>The <code>let</code> Block-Level Declarations</h4>
+<p>ES6 introduces a new keyword <code>let</code> to declare block-scope variables. For examples,</p>
+
+<pre class="example">function testLet(boolean) {
+   if (boolean) {
+      <span class="new">let msg = 'hello'</span>     <span class="comment">// let-variable has block-scope</span>
+      console.log('msg is: ' + msg)
+   } else {
+      console.log('msg is: ' + msg)
+      <span class="comment">//</span><span class="error">ReferenceError: msg is not defined</span>
+   }
+   console.log('msg outside the block is: ' + msg)
+   <span class="comment">//</span><span class="error">ReferenceError: msg is not defined</span>
+}</pre>
+
+<pre class="example">
+for (<span class="new">let number = 0</span>; number &lt; 3; ++number) {   <span class="comment">// let-variable has block-scope</span>
+   console.log('number is: ' + number)
+}
+console.log('number outside the loop is: ' + number)
+<span class="comment">//</span><span class="error">ReferenceError: number is not defined</span></pre>
+
+<p>The <code>let</code>-declarations are not hoisted to the top of the enclosing block. Hence, it is recommended to write the <code>let</code>-declarations at the top of the block so that the variables are available for the entire block.</p>
+
+<h4>Re-Declaring a Variable</h4>
+<p>If you re-declare a <code>var</code>-variable in the same scope, there is no syntax error, but the variable is <em>overwritten</em>, e.g.,</p>
+
+<pre class="example">
+<span class="new">var num = 111</span>
+console.log(num)
+<span class="comment">//</span><span class="output">111</span>
+
+<span class="new">var num = 222</span>   <span class="comment">// Override the current value</span>
+console.log(num)
+<span class="comment">//</span><span class="output">222</span>
+
+<span class="new">var num</span>   <span class="comment">// Keep the current value</span>
+console.log(num)
+<span class="comment">//</span><span class="output">222</span></pre>
+
+<p>If you declare a global var-variable of the same name inside a function, the global variable is <em>shadowed</em> inside the function, e.g.,</p>
+
+<pre class="example"><span class="new">var num</span> = 111
+function myFun() {
+   <span class="new">var num</span> = 222   <span class="comment">// Shadow the global variable</span>
+   console.log('num inside the function is: ' + num)
+}
+
+myFun()
+<span class="comment">//</span><span class="output">num inside the function is: 222</span>
+console.log('num outside the function is: ' + num)
+<span class="comment">//</span><span class="output">num outside the function is: 111</span>
+</pre>
+
+<p>Unlike <code>var</code>-variable, you cannot re-declare a <code>let</code>-variable in the same scope, e.g.,</p>
+
+<pre class="example">
+let num = 111
+<span class="new">let num = 222</span>
+<span class="comment">//</span><span class="error">SyntaxError: Identifier 'num' has already been declared</span></pre>
+
+<p>You also cannot declare a <code>let</code>-variable having the same name as <code>var</code>-variable in the same scope, e.g.,</p>
+
+<pre class="example">
+var num = 1
+<span class="new">let num = 2</span>   <span class="comment">// let-declaration in the same scope is not permitted</span>
+<span class="comment">//</span><span class="error">SyntaxError: Identifier 'num' has already been declared</span></pre>
+
+<p>However, you can use <code>let</code> to define a variable in a block, which shadows the global <code>var</code>-variable or <code>let</code>-variable of the same name. For example,</p>
+
+<pre class="example"><span class="new">var num1</span> = 111
+<span class="new">let num2</span> = 222
+
+if (true) {
+   <span class="new">let num1</span> = 333
+   console.log('num1 inside the block is: ' + num1)
+   <span class="comment">//</span><span class="output">num1 inside the block is: 333</span>
+   <span class="new">let num2</span> = 444
+   console.log('num2 inside the block is: ' + num2)
+   <span class="comment">//</span><span class="output">num2 inside the block is: 444</span>
+}
+console.log('num1 outside the block is: ' + num1)
+<span class="comment">//</span><span class="output">num1 outside the block is: 111</span>
+console.log('num2 outside the block is: ' + num2)
+<span class="comment">//</span><span class="output">num2 outside the block is: 222</span></pre>
+
+<h4>The <code>const</code> (constants) Block-level Declarations</h4>
+
+<p>The const (constant) declaration is the same as <code>let</code>-declaration, except that its value cannot be changed.</p>
+
+<p>Constants must be initialized on declaration. For example,</p>
+<pre class="example">
+const num
+<span class="comment">//</span><span class="error">SyntaxError: Missing initializer in const declaration</span>
+
+const num = 1
+num = 2
+<span class="comment">//</span><span class="error">TypeError: Assignment to constant variable</span></pre>
+
+<p>A <code>const</code>-declaration prevents modification of the binding (or reference), not the value. In other words, <code>const</code>-declarations for arrays/objects permit modification of their elements. For example,</p>
+
+<pre class="example">
+const arr = [1, 2, 3]
+arr[0] = 4
+console.log(arr)
+<span class="comment">//</span><span class="output">[ 4, 2, 3 ]</span>
+arr = [4, 5, 6]
+<span class="comment">//</span><span class="error">TypeError: Assignment to constant variable</span>
+
+const obj = {a: 1}
+obj.a = 2
+console.log(obj)
+<span class="comment">//</span><span class="output">{ a: 2 }</span>
+obj = {b: 2}
+<span class="comment">//</span><span class="error">TypeError: Assignment to constant variable</span></pre>
+	
+<h4><code>let</code> and <code>const</code> in <code>for(;;)</code>, <code>for..in</code> and <code>for..of</code></h4>
+<p>You need to use <code>let</code> to declare the index for the traditional <code>for(;;)</code> loop, NOT <code>const</code>, as the index changes over iterations. For example,</p>
+<pre class="example">let fruits = ['apple', 'banana']
+for (<span class="new">let i = 0</span>; i &lt; fruits.length; ++i) {
+   console.log(fruits[i])
+}
+<span class="comment">//</span><span class="output">apple</span>
+<span class="comment">//</span><span class="output">banana</span>
+
+for (<span class="new">const i = 0</span>; i &lt; fruits.length; ++i) {
+   console.log(fruits[i])
+}
+<span class="comment">//</span><span class="output">apple</span>
+<span class="comment">//</span><span class="error">TypeError: Assignment to constant variable.</span>
+</pre>
+	
+<p>However, the <code>for..of</code> and <code>for..in</code> loop, <code>const</code> declaration is recommended. For example,</p>
+<pre class="example">let fruits = ['apple', 'banana']
+for (<span class="new">const fruit</span> of fruits) {
+   console.log(fruit);
+}
+<span class="comment">//</span><span class="output">apple</span>
+<span class="comment">//</span><span class="output">banana</span>
+
+for (<span class="new">const idx</span> in fruits) {
+   console.log(fruits[idx]);
+}
+<span class="comment">//</span><span class="output">apple</span>
+<span class="comment">//</span><span class="output">banana</span></pre>
+	
+<p>A closer look reveals that <code>for..of</code> and <code>for..in</code> loops create a new block scope with each iteration. That is, each new element or index is actually a new variable within a new scope and our constant is never reassigned.</p>
+<p>As an illustration, you can see that changing the index in the <code>for..in</code> loop has no effect in the next iteration. That is, a new block-scope variable is created for each iteration.</p>
+<pre class="example">
+let fruits = ['apple', 'banana', 'orange']
+for (<span class="new">let idx</span> in fruits) {  <span class="comment">// use let to change the index for illustration</span>
+   console.log(idx, fruits[idx]);
+   idx *= 2;  <span class="comment">// change the index has no effect on the next iteration</span>
+}
+<span class="comment">//</span><span class="output">0 apple</span>
+<span class="comment">//</span><span class="output">1 banana</span>
+<span class="comment">//</span><span class="output">2 orange</span></pre>
+
+<h4>Function Declaration in Loop with <code>let</code>-declaration</h4>
+
+<p>Consider the following function declaration inside a loop with <code>var</code>-declaration:</p>
+<pre class="example">var funArray = []
+for (<span class="new">var i</span> = 0; i &lt; 3; i++) {  <span class="comment">// one copy hoisted to the top and shared</span>
+   funArray.push(function () {
+      console.log('i is: ' + i);  <span class="comment">// reference the same global i</span>
+   })
+}
+
+funArray.forEach(function (f) {
+   f();  <span class="comment">// reference the same global i, which has value of 3.</span>
+})
+<span class="comment">//</span><span class="output">i is: 3</span>
+<span class="comment">//</span><span class="output">i is: 3</span>
+<span class="comment">//</span><span class="output">i is: 3</span></pre>
+
+<p>The result is probably not desirable. This is because the same <code>i</code> is shared across all iterations of the loop. All the functions created inside the loop hold the same reference.</p>
+
+<p>Let change the <code>var</code>-declaration to <code>let</code>-declaration:</p>
+
+<pre class="example">var funArray = []
+for (<span class="new">let i</span> = 0; i &lt; 3; i++) {   <span class="comment">// local block-scope copies</span>
+   funArray.push(function () {
+      console.log('i is: ' + i);  <span class="comment">// each function has its own block-scope i</span>
+   })
+}
+
+funArray.forEach(function (f) {
+   f();  <span class="comment">// reference its own copy</span>
+})
+<span class="comment">//</span><span class="output">i is: 0</span>
+<span class="comment">//</span><span class="output">i is: 1</span>
+<span class="comment">//</span><span class="output">i is: 3</span></pre>
+
+<p>For <code>let</code>-declaration inside a loop, a new variable of the same name is created on each iteration with value from the previous iteration. In the above code, each function gets its copy of variable <code>i</code> with the appropriate value.</p>
+
+<h4>Best Practices</h4>
+<p>If you are programming in ES6, use <code>const/let</code> instead of <code>var</code> for proper block scope to prevent accidental errors. Use <code>const</code> to prevent unexpected changes. Use <code>let</code> if the value needs to be changed. Use <code>var</code> only for backward compatibility.</p>
+
+<h3>Function  Syntax Enhancements</h3>
+
+<p>Prior to ES6, JavaScript functions support variable number of parameters. Furthermore, you can pass fewer or more arguments than formally specified. The arguments are kept in an object called <code>arguments</code>. For example,</p>
+
+<pre class="example">
+function foo(p1, p2) {   <span class="comment">// defined with 2 parameters</span>
+   console.log(p1, p2)
+   console.log(arguments)
+}
+
+foo(1, 2)  <span class="comment">// matching number of arguments</span>
+<span class="output">//1 2
+//[Arguments] { '0': 1, '1': 2 }</span>
+foo()      <span class="comment">// no arguments</span>
+<span class="output">//undefined undefined
+//[Arguments] {}</span>
+foo(1)     <span class="comment">// fewer arguments</span>
+<span class="output">//1 undefined
+//[Arguments] { '0': 1 }</span>
+foo(1, 2, 3)   <span class="comment">// more arguments</span>
+<span class="output">//1 2
+//[Arguments] { '0': 1, '1': 2, '2': 3 }</span></pre>
+
+<p>ES6 introduces  enhancements to functions.</p>
+
+<h4>Functions with Default Parameter Values</h4>
+
+<p>Prior to ES6, you can use the following pattern to provide default parameter values to function:</p>
+
+<pre class="example">
+function greets(name, callback) {
+   name = name || 'everybody'
+   callback = callback || function(n) { console.log(`hello, ${n}`) }
+   callback(name)
+}
+
+greets()
+<span class="comment">//</span><span class="output">hello, everybody</span>
+greets('peter')
+<span class="comment">//</span><span class="output">hello, peter</span>
+greets('peter', console.log)
+<span class="comment">//</span><span class="output">peter</span></pre>
+
+<p>Sometimes, you may need to check the type of the argument to accept arguments like number 0 or an empty string, which evaluated to <code>false</code> :</p>
+<pre class="example">name = (typeof name === 'undefined') ? 'Everybody' : name
+callback = (typeof callback === 'undefined') ? function(n) { console.log(`hello, ${n}`) } : callback</pre> 
+
+<p>In ES6, you can simply write out the default parameter values in the form of <code><em>param</em> = <em>defaultValue</em></code>, as follows:</p>
+
+<pre class="example">
+function greets(name <span class="new">= 'Everybody'</span>, callback <span class="new">= function(n) { console.log(`hello, ${n}`) }</span>) {
+   callback(name)
+}</pre>
+
+<p>Another example:</p>
+<pre class="example">const myFun = function (<span class="new">p1, p2 = 99, p3 = 'hello'</span>) {
+   console.log(p1, p2, p3)
+   console.log(arguments)
+}
+
+myFun(1)
+<span class="output">//1 99 hello
+//[Arguments] { '0': 1 }</span>
+
+myFun(1, 2)
+<span class="output">//1 2 hello
+//[Arguments] { '0': 1, '1': 2 }</span>
+
+myFun(1, 2, 3)
+<span class="output">//1 2 3
+//[Arguments] { '0': 1, '1': 2, '2': 3 }</span>
+
+myFun()
+<span class="output">//undefined 99 hello
+//[Arguments] {}</span>
+
+myFun(1, 2, 3, 4)
+<span class="output">//1 2 3
+//[Arguments] { '0': 1, '1': 2, '2': 3, '3': 4 }</span></pre>
+
+<h4>The &quot;Rest&quot;  Function Parameter (<code>...</code>)</h4>
+<p>ES6 supports packing of the rest of function arguments (after the named arguments), denoted by three dots (<code>...</code>), into an array, for example,</p>
+
+<pre class="example">
+function foo(p1, p2, <span class="new">...more</span>) {
+   console.log(p1, p2)
+   console.log(more)
+   console.log(arguments)
+}
+
+foo(1, 2, 3, 4, 5)
+<span class="output">//1 2
+//[ 3, 4, 5 ]
+//[Arguments] { '0': 1, '1': 2, '2': 3, '3': 4, '4': 5 }</span>
+foo()
+<span class="output">//undefined undefined
+//[]
+//[Arguments] {}</span>
+foo(1)
+<span class="output">//1 undefined
+//[]
+//[Arguments] { '0': 1 }</span>
+foo(1, 2)
+<span class="output">//1 2
+//[]
+//[Arguments] { '0': 1, '1': 2 }</span>
+foo(1, 2, 3)
+<span class="output">//1 2
+//[ 3 ]
+//[Arguments] { '0': 1, '1': 2, '2': 3 }</span></pre>
+
+<p>The rest parameters must be last function parameter.</p>
+<p>In some situations, rest parameter could provide more convenience than <code>arguments</code> object.</p>
+
+<h4>The &quot;Spread&quot; Operator (<code>...</code>)</h4>
+
+<p>Spread operator has the same 3-dot notation (<code>...</code>) as rest parameter. While the rest parameter packs multiple function arguments into an array, the spread operator splits (or spreads, or de-structure) an array into separate arguments to pass into a function. For example,</p>
+
+<pre class="example">
+let numbers = [3, 2, 5, 1, 4]
+console.log(Math.max(numbers))   <span class="comment">// does not accept array</span>
+<span class="comment">//</span><span class="output">NaN</span>
+console.log(Math.max(<span class="new">...numbers</span>))   <span class="comment">// same as: Math.max(3, 2, 5, 1, 4)</span>
+<span class="comment">//</span><span class="output">5</span>
+console.log(Math.max(<span class="new">...numbers</span>, 9))   <span class="comment">// same as: Math.max(3, 2, 5, 1, 4, 9)</span>
+<span class="comment">//</span><span class="output">9</span></pre>
+
+<p>The spread operator  can also be used to combine the contents of arrays. For example,</p>
+<pre class="example">
+let arr1 = [1, 2, 3],
+    arr2 = ['a', 'b']
+
+let arr3 = <span class="new">[...arr1, ...arr2]</span>
+console.log(arr3)
+<span class="comment">//</span><span class="output">[ 1, 2, 3, 'a', 'b' ]</span>
+
+let arr4 = <span class="new">['a', ...arr1, 'b']</span>
+console.log(arr4)
+<span class="comment">//</span><span class="output">[ 'a', 1, 2, 3, 'b' ]</span></pre>
+
+<p>Spread operator can also be used on the LHS of the assignment:</p>
+<pre class="example">
+let arr = [1, 2, 3, 4, 5]
+
+let <span class="new">[i1, i2]</span> = arr
+console.log(i1, i2)
+<span class="comment">//</span><span class="output">1 2</span>
+
+let <span class="new">[ , , i3, ...rest]</span> = arr
+console.log(i3)
+<span class="comment">//</span><span class="output">3</span>
+console.log(rest)
+<span class="comment">//</span><span class="output">[ 4, 5 ]</span></pre>
+
+<p>You can clone an array via spread operator, as follows:</p>
+<pre class="example">
+let arr1 = [1, 2, 3, 4, 5]
+let <span class="new">arr2 = [...arr1]</span>   <span class="comment">// clone</span>
+arr1[0] = 6
+console.log(arr1)
+<span class="comment">//</span><span class="output">[ 6, 2, 3, 4, 5 ]</span>
+console.log(arr2)
+<span class="comment">//</span><span class="output">[ 1, 2, 3, 4, 5 ]</span></pre>
+
+<p>You can extract the first and last item of an array:</p>
+<pre class="example">
+let arr = [1, 2, 3, 4, 5]
+let <span class="new">[first] = arr</span>
+let <span class="new">[last] = [...arr].reverse()</span>   <span class="comment">// reverse() is mutable!</span>
+console.log(first)
+<span class="comment">//</span><span class="output">1</span>
+console.log(last)
+<span class="comment">//</span><span class="output">5</span>
+console.log(arr)
+<span class="comment">//</span><span class="output">[ 1, 2, 3, 4, 5 ]</span></pre>
+
+<p>Spread operator is also applicable for object de-structuring (to be discussed later).</p>
+
+<h4>&quot;Arrow Function&quot; Notation</h4>
+
+<p>ES6 introduces a new syntax (notation) for defining function, called arrow function, in the form of <code>(parameters) =&gt; {body}</code>. The <code>function</code> keyword is removed. This allows you to write out the entire function in one line.</p>
+
+<pre class="example">
+const increment = <span class="new">value =&gt; value + 1</span>
+<span class="comment">// same as:
+// const increment = <span class="new">function(value) { return value + 1 }</span></span>
+console.log(increment(1))
+<span class="comment">//</span><span class="output">2</span>
+
+const sum = <span class="new">(value1, value2) =&gt; value1 + value2</span>
+<span class="comment">// same as:
+// const sum = <span class="new">function(value1, value2) { return value1 + value2 }</span>
+</span>console.log(sum(1, 2))
+<span class="comment">//</span><span class="output">3</span></pre>
+
+<p>For functions with one parameter, you can omit <code>()</code>. For functions with one-statement body, you can omit <code>{}</code> and the <code>return</code> keyword.</p>
+
+<pre class="example">
+const max = <span class="new">(value1, value2) =&gt; {
+   console.log(value1, value2)
+   return value1 &gt; value2 ? value1 : value2
+}</span>
+console.log(max(3, 4))
+<span class="output">//3 4
+//4</span></pre>
+
+<p>For functions with no parameter, you need to write an empty <code>()</code>.</p>
+
+<pre class="example">
+const hello = <span class="new">() =&gt; console.log('hello, world')</span>
+hello()
+<span class="comment">//</span><span class="output">hello, world</span>
+
+const doNothing = <span class="new">() =&gt; {}</span>;  <span class="comment">// with empty braces</span></pre>
+
+<p>To return an object, wrap it with parentheses (this is because the  braces create a block).</p>
+<pre class="example">
+const getObject = <span class="new">(name, age) =&gt; ( {name: name, age: age} )</span>
+console.log(getObject('Peter', 21))
+<span class="comment">//</span><span class="output">{ name: 'Peter', age: 21 }</span></pre>
+
+<p>The array methods that accept callback functions, such as <code>sort()</code>, <code>map()</code>, and <code>reduce()</code>, can be benefit from simpler arrow function notation. For example,</p>
+
+<pre class="example">
+const values = [1, 2, 3, 4]
+let results = values.map(<span class="new">value =&gt; value * value</span>)
+<span class="comment">// same as:
+// let results = values.map(<span class="new">function(value) {value * value}</span>)</span>
+console.log(results)
+<span class="comment">//</span><span class="output">[ 1, 4, 9, 16 ]</span></pre>
+
+<p>You use also use the arrow function syntax on <code>call()</code>, <code>apply()</code>, and <code>bind()</code>, e.g.,</p>
+
+<pre class="example">
+const sum = <span class="new">(value1, value2) =&gt; value1 + value2</span>
+console.log(<span class="new">sum.call(null, 1, 2)</span>);
+<span class="comment">//</span><span class="output">3</span>
+console.log(<span class="new">sum.apply(null, [1, 2])</span>);  <span class="comment">// apply() works on array</span>
+<span class="comment">//</span><span class="output">3</span>
+let boundSum = <span class="new">sum.bind(null, 1, 2)</span>;
+console.log(boundSum());
+<span class="comment">//</span><span class="output">3</span></pre>
+
+<h3>Object/Array Enhancements</h3>
+
+<h4>Object Literal Enhancement</h4>
+
+<p>ES6 introduces simpler <em>object literal</em> for creating objects. For example,</p>
+
+<pre class="example">
+let name = 'Peter',
+    age = 21,
+    height = 180
+    
+let <span class="new">person = { name, age, height }</span>  <span class="comment">// object literal - keynames to match variable names</span>
+<span class="comment">// Same as:
+// let person = { name: name, age: age, height: height }</span>
+console.log(person)
+<span class="comment">//</span><span class="output">{ name: 'Peter', age: 21, height: 180 }</span></pre>
+
+<p>You can also use the object literal in function:</p>
+<pre class="example">
+<span class="comment">// const createPerson = (name, age) =&gt; (
+//    {
+//       name: name,
+//       age: age
+//    }
+// )
+// Can be written as:</span>
+const createPerson = (name, age) =&gt; ( <span class="new">{ name, age }</span> )   <span class="comment">// keynames to match parameters</span>
+console.log(createPerson('Peter', 21))
+<span class="comment">//</span><span class="output">{ name: 'Peter', age: 21 }</span></pre>
+
+<pre class="example">
+<span class="comment">//const createPerson = (name) =&gt; (
+//   {
+//      name: name, 
+//      greets: function() {
+//         console.log(`hello, ${name}`)
+//      }
+//   }
+//)
+// Can be written as:</span>
+const createPerson = (name) =&gt; (
+   {
+      <span class="new">name,          <span class="comment">// property initializer shorthand</span>
+      greets() {     <span class="comment">// concise method shorthand</span>
+         console.log(`hello, ${name}`)
+      }</span>
+   }
+)
+createPerson('Peter').greets()
+<span class="comment">//</span><span class="output">hello, Peter</span></pre>
+
+<p>[TODO] More</p>
+
+<h4>Object De-Structuring Assignment</h4>
+<p>Prior to ES6, fetching data from objects into local variables requires a lot of duplicate code. For example,</p>
+
+<pre class="example">
+let person = {
+   name: 'Peter',
+   age: 21,
+   gender: 'm',
+   height: 180
+}
+
+let <span class="new">name = person.name</span>,
+    <span class="new">age = person.age</span>,
+    <span class="new">gender = person.gender</span>,
+    <span class="new">height = person.height</span>
+    
+console.log(name, age, gender, height)
+<span class="comment">//</span><span class="output">Peter 21 m 180</span></pre>
+
+<p>ES6 introduces object destructuring syntax to de-structure an object and assign into  variables:</p>
+
+<pre class="example">
+let person = {
+   name: 'Peter',
+   age: 21,
+   gender: 'm',
+   height: 180
+}
+
+let <span class="new">{ name, age, gender, height } = person</span>   <span class="comment">// de-structure an object, assign to variables</span>
+    
+console.log(name, age, gender, height)
+<span class="comment">//</span><span class="output">Peter 21 m 180</span></pre>
+
+<p>Take note that:</p>
+<ul>
+<li>The variable names shall match the property (key) names.</li>
+<li>You do not need to de-structure the entire object.</li>
+<li>Any variable names that do not matched the property names are set to <code>undefined</code>.</li>
+</ul>
+
+<pre class="example">
+let <span class="new">{ name, age } = person</span>  <span class="comment">// Declare and initialize</span>
+console.log(name, age)
+<span class="comment">//</span><span class="output">Peter 21</span>
+
+person.age++
+let weight                         <span class="comment">// Declare</span>
+<span class="new">({ name, age, weight } = person)</span>   <span class="comment">// Assignment needs to be surrounded by ()</span>
+console.log(name, age, weight)
+<span class="comment">//</span><span class="output">Peter 22 undefined</span>
+</pre>
+
+<p>You can use de-structure to declare and initialize new variables via <code>let</code>, <code>const</code> or <code>var</code>. You can also use it in assignment with existing variables by enclosing the statement with parentheses (this is because the braces create a block statement).</p>
+
+<p>You can also set the default values, which will be used if the property is missing, e.g.,</p>
+<pre class="example">
+let <span class="new">{ name, age = 18, weight = 80 } = person</span>   <span class="comment">// provide default values</span>
+    
+console.log(name, age, weight)
+<span class="comment">//</span><span class="output">Peter 21 80</span>
+</pre>
+
+<p>You can use variable names different from the property names, as follows:</p>
+<pre class="example">
+let <span class="new">{ name: theName, age: theAge } = person</span>   <span class="comment">// change the variable name</span>
+    
+console.log(theName, theAge)
+<span class="comment">//</span><span class="output">Peter 21</span>
+//console.log(name, age)
+<span class="comment">//</span><span class="error">ReferenceError: name is not defined</span></pre>
+
+<p>You can apply de-structuring to nested objects as follows:</p>
+<pre class="example">
+let person = {
+   name: 'Peter',
+   age: 21,
+   gender: 'm',
+   height: 180,
+   likes: {
+      sports: 'football',
+      book: 'JavaScript for dummies'
+   }
+}
+
+let <span class="new">{ name, likes: { sports } } = person</span>  <span class="comment">// nested objects</span>
+    
+console.log(name, sports)
+<span class="comment">//</span><span class="output">Peter football</span></pre>
+
+<p>If the property names are constructed dynamically using expressions, you need to surround them by square bracket <code>[]</code>, e.g.,</p>
+
+<pre class="example">
+let person = {
+   name: 'Peter',
+   age: 21
+}
+let theName = 'name'
+
+let {<span class="new">[theName]:x</span>, age} = person
+
+console.log(x, age)
+<span class="comment">//</span><span class="output">Peter 21</span></pre>
+
+<h4>Array De-structuring Assignment</h4>
+<p>Array destructuring syntax is similar to object destructuring. You need to provide the variable names (because there are no keys in array).</p>
+
+<pre class="example">
+let coffees = ['cappuccino', 'espresso', 'latte', 'mocha']
+
+let <span class="new">[coffee1, coffee2] = coffees</span>
+console.log(coffee1, coffee2)
+<span class="comment">//</span><span class="output">cappuccino espresso</span>
+
+let <span class="new">[ , , coffee3] = coffees</span>
+console.log(coffee3)
+<span class="comment">//</span><span class="output">latte</span>
+
+let <span class="new">[coffee4, ...coffee5] = coffees</span>   <span class="comment">// rest, must be the last element</span>
+console.log(coffee4)
+<span class="comment">//</span><span class="output">cappuccino</span>
+console.log(coffee5)
+<span class="comment">//</span><span class="output">[ 'espresso', 'latte', 'mocha' ]</span></pre>
+
+<p>Another example:</p>
+
+<pre class="example">
+let [v1, v2, v3] = [1, 2, 3]
+console.log(v1, v2, v3)
+<span class="comment">//</span><span class="output">1 2 3</span>
+
+let [v4, , v6] = [4, 5, 6]   <span class="comment">// omit elements</span>
+console.log(v4, v6)
+<span class="comment">//</span><span class="output">4 6</span>
+
+let [v7, v8] = [7]   <span class="comment">// more variables than elements</span>
+console.log(v7, v8)
+<span class="comment">//</span><span class="output">7 undefined</span>
+
+let [v9, ...v10] = [9, '10a', '10b', '10c']   <span class="comment">// rest parameter</span>
+console.log(v9, v10)
+<span class="comment">//</span><span class="output">9 [ '10a', '10b', '10c' ]</span>
+
+let [v11, v12 = 'a', v13 = 'b'] = [11, 12]   <span class="comment">// with default values</span>
+console.log(v11, v12, v13)
+<span class="comment">//</span><span class="output">11 12 b</span>
+
+let [v14, [v15a, v15b]] = [14, ['15a', '15b']]   <span class="comment">// nested arrays</span>
+console.log(v14, v15a, v15b)
+<span class="comment">//</span><span class="output">14 15a 15b</span></pre>
+
+
+<h4>Using Object Destructor in Function Parameter</h4>
+
+<p>You can use object destructor in function parameter to extract selected data from an object argument. For example,</p>
+
+<pre class="example">
+function foo(greeting, <span class="new">{name}</span>) {  <span class="comment">// name is to be de-structured from an object argument</span>
+   console.log(`${greeting}, ${name}`)
+}
+
+foo('hello', {name: 'Peter', age: 21})
+<span class="comment">//</span><span class="output">hello, Peter</span></pre>
+
+<h3>Functional Programming (Filter-Map-Reduce Pattern)</h3>
+
+<p>Functional Programming is used more and more these days (especially in data analytics). A popular pattern is to filter, map (transform) and reduce an array (via parallel computing). Functional programming is a part of a larger programming paradigm called declarative programming. In declarative programming (against imperative programming), we describe what should happen instead of how it should happen (e.g., via low-level loops and if-else statements).</p>
+<p>Functioning programming employs these concepts: immutability, purity, data transformation, higher-order functions, and recursion.</p>
+
+
+<p>Functions are first-class object (or first-class members) in JavaScript. A function can take another function as its argument. A function can also return another function. In other words, a function can do whatever a variable can do. They are also known as higher-order functions.</p>
+
+<h5>Immutability</h5>
+
+<p>In functional programming, data shall never change. Instead, we shall clone the data and work on the cloned copy if changes are needed.</p>
+
+<h5>Pure Functions</h5>
+<p>A pure function is a function that takes at least one argument and returns a value that is computed based on its arguments. They do not have side effects, use global variables, or modify the application state. The arguments are immutable. One important benefit of pure functions is they are testable.</p>
+
+<h5>Data Transformation and Filter-Map-Reduce Pattern</h5>
+
+<p>JavaScript provides these functions: <code>Array.filter()</code>, <code>Array.map()</code> and <code>Array.reduce()</code> to transform data.</p>
+
+<p>The <code><em>inArray</em>.filter(<em>predicate</em>)-&gt;<em>outArray</em></code> is an immutable function that takes one argument, called <em>predicate</em>, and produces a new array from <code><em>inArray</em></code>. The <code><em>predicate</em>(<em>inValue</em>)-&gt;true|false</code> is a immutable one-argument function that returns a boolean value of <code>true</code> or <code>false</code>, based on <code><em>inValue</em></code>. This predicate is applied for every item of <code><em>inArray</em></code>, and the item is added to the output array only if the result is <code>true</code>. For example,</p>
+
+<pre class="example">
+let inArr = [5, 2, 6, 1, 8]
+let outArr = inArr<span class="new">.filter(item =&gt; item &gt; 5)</span>
+
+console.log(outArr)
+<span class="comment">//</span><span class="output">[ 6, 8 ]</span>
+console.log(inArr)     <span class="comment">// immutable / pure function</span>
+<span class="comment">//</span><span class="output">[ 5, 2, 6, 1, 8 ]</span></pre>
+
+<p>The <code><em>inArray</em>.map(<em>mapFunc</em>)-&gt;<em>outArray</em></code> is an immutable function that take one argument, a mapping function, and produces a new array from <code><em>inArray</em></code>. The <code><em>mapFunc</em>(<em>inValue</em>)-&gt;<em>outValue</em></code> is an immutable one-argument function that maps <em><code>inValue</code></em><code></code> to <code><em>outValue</em></code>. The mapping function is applied to every item of <code><em>inArray</em></code>, and the resultant value is added to the output array. For example,</p>
+
+<pre class="example">
+let inArr = [5, 2, 6, 1, 8]
+let outArr = inArr<span class="new">.map(item =&gt; ++item)</span>
+
+console.log(outArr)
+<span class="comment">//</span><span class="output">[ 6, 3, 7, 2, 9 ]</span>
+console.log(inArr)     <span class="comment">// immutable / pure function</span>
+<span class="comment">//</span><span class="output">[ 5, 2, 6, 1, 8 ]</span></pre>
+
+<p>The <code><em>inArray</em>.reduce(<em>reduceFunc</em>)-&gt;<em>resultValue</em></code> is an immutable functions that take one argument, a reduce (or aggregate) function, and produce <em>one value</em> from <code><em>inArray</em></code>. The <code><em>reduceFunc</em>(<em>callback</em>, <em>initResult</em>)-&gt;<em>result</em></code> is a two-argument function: a callback function and an initial value. The <code><em>callback</em>(<em>item</em>, <em>result</em>)</code> is applied to every item of the <em><code>inArray</code></em><code></code> to update the <code><em>result</em></code>. For example,</p>
+
+<pre class="example">
+let inArr = [5, 2, 6, 1, 8]
+let mySum = (value1, value2) =&gt; value1 + value2
+let resultValue = inArr<span class="new">.reduce(mySum, 0)</span>
+
+console.log(resultValue)
+<span class="comment">//</span><span class="output">22</span>
+console.log(inArr)     <span class="comment">// immutable / pure function</span>
+<span class="comment">//</span><span class="output">[ 5, 2, 6, 1, 8 ]</span></pre>
+
+<p>An alternative called <code><em>inArray</em>.reduceRight()</code>, which works like <code>reduce()</code>, but starts reducing from the end of the array.</p>
+
+<p>We often chain up these function in a pattern called <em>filter-map-reduce</em>. For example,</p>
+
+<pre class="example">
+let inArr = [5, 2, 6, 1, 8]
+let mySum = (value1, value2) =&gt; value1 + value2
+let resultValue = inArr
+                  .<span class="new">filter</span>(item =&gt; item &gt; 5)
+                  .<span class="new">map</span>(item =&gt; ++item)
+                  .<span class="new">reduce</span>(mySum, 0)
+
+console.log(resultValue)
+<span class="comment">//</span><span class="output">16</span>
+console.log(inArr)     <span class="comment">// Immutable</span>
+<span class="comment">//</span><span class="output">[ 5, 2, 6, 1, 8 ]</span></pre>
+
+<p>The <code>filter()</code>, <code>map()</code>, <code>reduce()</code> functions can be applied to any types, including primitives, arrays, objects, and functions. It can also take values of one type and produces result in another type.</p>
+
+<h5>Higher-Order Functions</h5>
+
+<p>Higher-order functions are <em>functions that can manipulate other functions</em>. They can take functions as arguments, or return a function, or both. Higher-order functions are essential in functional programming.</p>
+<p>JavaScript's functions are higher-order functions. The <code>filter()</code>, <code>map()</code>, <code>reduce()</code> are higher-order functions because they take function as their argument. Let write a simple higher-order function that takes functions as argument and returns a function:</p>
+
+<pre class="example">
+<span class="comment">// If result is true, run success(); else fail()</span>
+let foo = (result, success, fail) =&gt; result ? success() : fail()
+
+let sayYes = () =&gt; console.log('yes')
+let sayNo = () =&gt; console.log('no')
+
+foo(true, sayYes, sayNo)
+<span class="comment">//</span><span class="output">yes</span>
+foo(false, sayYes, sayNo)
+<span class="comment">//</span><span class="output">no</span></pre>
+
+<p>[TODO] more on curried function</p>
+
+<h5>Recursion</h5>
+
+<p>Recursion is a technique that involves creating functions that call themselves. For example,</p>
+<p>[TODO]</p>
+<p>Although functional programming advocates the use of recursions over loops, not all JavaScript engine are optimized for a large amount of recursion.</p>
+<p>Recursion works well with asynchronous processes. Functions can re-call themselves when they are ready. Recursion also works well for searching tree-like data structure, e.g., iterating through the HTML DOM to reach a leaf node.</p>
+
+<h5>Composition</h5>
+<p>Functional programs compose of many small pure functions that focus on specific tasks. These smaller functions may run in series or parallel.</p>
+
+<p>The most common composition technique is chaining. In JavaScript, functions can be chained together using dot notation to act on the return value of the previous function. For example, <code>func1(p1).func2(p2).func3(p3)</code>.</p>
+
+<p>You can also pipe the output of one function into another function, which is harder to keep track. For example, <code>func3(func2(func1(param))</code>.</p>
+<p>A recommended approach is to create a larger higher-order function, using the smaller functions as its arguments. For example, <code>compose(func1, func2, func3, ...)</code>. The steps are clear marked out.</p>
+<p>[TODO] Example</p>
+
+<h3>Promises and Asynchronous Programming</h3>
+
+<p>JavaScript, created for client-side web programming, need to handle asynchronous user interaction, such as mouse-clicks and key-presses to reload contents (or part of the document).</p>
+
+<p>Promise is a way for handling asynchronous programming, similar to future and deferred in other languages. Like event-handlers and callbacks, a promise specifies some code to be executed later. But promise needs to indicate if the code succeed or fail.</p>
+
+<h5>JavaScript Event Handling Model</h5>
+<p>JavaScript maintains a <em>single-thread</em> event-handling loop. Whenever an event (such as mouse-click or key-press) is triggered, the corresponding event-handler is added to the back of the event-handling queue. For example,</p>
+
+<pre class="example">
+let btnHello = document.getElementById('btnHello')
+btnHello.onclick = function(event) {   <span class="comment">// button onclick event-handler</span>
+   console.log('hello, world')
+}</pre>
+
+<p>The event-handler will not be executed until the button is click. When the button is clicked, the event-handler is added to the back of the event-handling queue.</p>
+
+<h4>Promises</h4>
+<p><em>A promise is a placeholder for the result of an asynchronous operation</em>. For example,</p>
+
+<pre class="example">
+<span class="comment">// The asynchronous function readFile will return a promise at some point in the future</span>
+let promise = readFile('test.txt')</pre>
+
+<p>A promise starts in the pending state, which indicate the asynchronous operation has not completed yet. When the asynchronous operation completes, the promise is settled and enter either fulfilled (succeed) or rejected (fail) state. An internal property <code>[[PromiseState]]</code> keep track of the state of &quot;pending&quot;, &quot;fulfilled&quot; or &quot;rejected&quot;. A <code>Promise.then()</code> method is present on all promises, which takes two arguments: callback function for fulfilled and callback function for rejected. For example,</p>
+
+<pre class="example">
+let promise = readFile('test.txt')
+
+promise.then(<span class="new">function(contents) {
+   console.log(contents)  <span class="comment">// fulfilled</span>
+}</span>, <span class="new">function(err) {
+   console.log(err)       <span class="comment">// rejected</span>
+}</span>)</pre>
+
+<p>Both the callback functions are optional. You can decide to handle either one, both, or none. For example,</p>
+
+<pre class="example">
+<span class="comment">// Fulfilled only</span>
+promise.then(<span class="new">function(contents) {
+   console.log(contents)
+}</span>)
+
+<span class="comment">// Rejected only</span>
+promise.then(null, <span class="new">function(err) {
+   console.log(err)
+}</span>)</pre>
+
+<p>You can also use <code>Promise.catch()</code> method for rejected-only handlers. For example,</p>
+
+<pre class="example">
+promise<span class="new">.catch</span>(function(err) {
+   console.log(err)   <span class="comment">// rejected</span>
+})</pre>
+
+<h5>Creating Promises</h5>
+
+<p>A promise can be crated using the <code>Promise</code> constructor, which accepts a single function argument called <code>executor()</code>. The executor in turn takes two function arguments: <code>resolve()</code> and <code>reject()</code>.</p>
+
+<pre class="example">
+function readFile(filename) {
+   return <span class="new">new Promise(function(resolve, reject) { ... })</span>
+}</pre>
+
+<p>[TODO] more</p>
+
+<h3>Classes</h3>
+<p>Prior to ES6, JavaScript had no classes. However, you can create class-like structure by creating a constructor function, and add methods to the constructor function object using <code>prototype</code>. For example,</p>
+
+<pre class="example">
+<span class="comment">// Define a constructor function for the instances</span>
+function Person(name, age) {
+   <span class="new">this.</span>name = name
+   <span class="new">this.</span>age = age
+}
+
+<span class="comment">// Add method to the constructor's prototype, to be shared by all instances of Person objects </span>
+Person.prototype.desc = function() {
+   return 'Person{name:' + this.name + ', age:' + this.age + '}'
+}
+
+<span class="comment">// Create a new instance of Person object</span>
+let peter = new Person('Peter', 21)  
+console.log(peter.desc())
+<span class="comment">//</span><span class="output">Person{name:Peter, age:21}</span>
+console.log(peter)
+<span class="comment">//</span><span class="output">Person { name: 'Peter', age: 21 }</span>
+console.log(peter instanceof Person)
+<span class="comment">//</span><span class="output">true</span>
+console.log(peter instanceof Object)
+<span class="comment">//</span><span class="output">true</span>
+console.log(typeof Person)
+<span class="comment">//</span><span class="output">function</span>
+console.log(typeof Person.prototype.desc)
+<span class="comment">//</span><span class="output">function</span></pre>
+
+<p>ES6 introduces class declaration:</p>
+<pre class="example">
+<span class="new">class Person</span> {
+   <span class="new">constructor</span>(name, age) {
+      this.name = name
+      this.age = age
+   }
+   desc() {
+      return `Person{name:${this.name}, age:${this.age}}`
+   }
+}
+
+let peter = new Person('Peter', 21)
+console.log(peter.desc())
+<span class="comment">//</span><span class="output">Person{name:Peter, age:21}</span>
+console.log(peter)
+<span class="comment">//</span><span class="output">Person { name: 'Peter', age: 21 }</span>
+console.log(peter instanceof Person)
+<span class="comment">//</span><span class="output">true</span>
+console.log(peter instanceof Object)
+<span class="comment">//</span><span class="output">true</span>
+console.log(typeof Person)
+<span class="comment">//</span><span class="output">function</span>
+console.log(typeof Person.prototype.desc)
+<span class="comment">//</span><span class="output">function</span></pre>
+
+<p>ES6 introduces <code>class</code> keyword to declare a class. The <code>constructor</code> function is defined inside the class. Methods can also be added inside the class. Clearly, ES6 class declaration is just a sugar coat over the pre-ES6 implementation.</p>
+
+<p>Similar to function, classes have two forms: declaration (as above) and expression (as below).</p>
+
+<pre class="example">
+let <span class="new">Person = class</span> {   <span class="comment">// no identifier after keyword class</span>
+   constructor(name, age) {
+      this.name = name
+      this.age = age
+   }
+   desc() {
+      return `Person{name:${this.name}, age:${this.age}}`
+   }
+}
+
+let peter = new Person('Peter', 21)
+console.log(peter.desc())
+<span class="comment">//</span><span class="output">Person{name:Peter, age:21}</span></pre>
+
+<p>[TODO] getter and setter</p>
+
+<h5>Classes are First-Class Citizens</h5>
+<p>JavaScript classes, like functions, are first-class citizens (or first-class members). In other words, they can be assigned to variables, passed into a function as arguments, and returned from a function. For example,</p>
+
+<pre class="example">
+<span class="comment">// function which takes a class definition and return an instance</span>
+function createInstance(classDef) {
+   return new classDef()
+}
+
+<span class="comment">// A class definition</span>
+class Hello {
+   sayHello() { console.log('hello, world') }
+}
+
+<span class="comment">// Invoke function to create an instance</span>
+let obj = createInstance(Hello)
+
+obj.sayHello()
+<span class="comment">//</span><span class="output">hello, world</span></pre>
+
+<p>You can create subclass via the <code>extends</code> keyword:</p>
+
+<pre class="example">
+<span class="comment">// Superclass</span>
+class Person {
+   constructor(name, age) {
+      this.name = name
+      this.age = age
+   }
+   desc() {
+      return `Person{name:${this.name}, age:${this.age}}`
+   }
+}
+
+<span class="comment">// Subclass</span>
+class Student <span class="new">extends</span> Person {
+   constructor(name, age, school) {
+      super(name, age)
+      this.school = school
+   }
+   desc() {
+      return `Student{${super.desc()}, school:${this.school}}`
+   }
+}
+
+let paul = new Student('Paul', 18, 'ABCU')
+console.log(paul.desc())
+<span class="comment">//</span><span class="output">Student{Person{name:Paul, age:18}, school:ABCU}</span>
+console.log(paul)
+<span class="comment">//</span><span class="output">Student { name: 'Paul', age: 18, school: 'ABCU' }</span></pre>
+
+<p>[TODO] More</p>
+
+<h3>Modules</h3>
+
+<p>ES6 introduces support for modules, which are pieces of reusable code that can be imported into other JavaScript files.</p>
+
+<p>JavaScript modules are stored in separate files, one file per module. You can export one or many JavaScript objects from a module. For example,</p>
+
+<pre class="example">
+export const print(message) =&gt; console.log(`${new Date()}: ${message}`)
+export const log(message, dateTime) =&gt; console.log(`${dateTime.toString()}: ${message}`)</pre>
+
+<p>You can <code>export</code> any JavaScript types: primitives, objects, arrays and functions.</p>
+
+<p>If only one item is exported from a module, you can use keyword <code>export default</code> instead, for example,</p>
+<pre class="example">
+const logMsg = (message, dateTime) =&gt; console.log(`${dateTime.toString()}: ${message}`)
+export default logMsg</pre>
+
+<p>Module can be used by other JavaScript files using the <code>import</code> statement.</p>
+<pre class="example">
+import { print, log } from 'module1'
+import logMsg from 'module2'</pre>
+
+<!-- @@v3 starts here. Contents end here -->
+
+<p>&nbsp;</p>
+<a class="references" href="../howto/References.html#javascript">Link To JavaScript/jQuery References &amp; Resources</a>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Last modified: June 2015</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- My custom JavaScript v3 -->
+<script src="../scripts/programming_notes_v3.js"></script>
+<!-- Prism Syntax Highlighter -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-numbers/prism-line-numbers.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/line-highlight/prism-line-highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

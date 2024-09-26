@@ -1,0 +1,3071 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Java Basics Exercises - Java Programming Tutorial</title>
+<link href="../css/programming_notes_v1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts/programming_notes_v1.js"></script>
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="J2a_BasicsExercises.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>Java Programming Tutorial</h1>
+<h2>Exercises on Java Basics</h2>
+
+</div>
+
+<div id="content-main">
+
+<p>You need to do these exercises by yourself. Please don't ask me for solutions!</p>
+
+<h3 id="ExerciseGetStarted">Getting Started Exercises</h3>
+
+<h4><span class="font-code">HelloWorld</span></h4>
+
+<ol>
+<li>Install JDK on your machine. Follow the instructions in &quot;<a href="../howto/JDK_HowTo.html">How to Install JDK</a>&quot;.</li>
+<li>Write a Hello-world program using JDK and a source-code editor, such as:
+<ul>
+<li>For All Platforms: Sublime Text, Atom</li>
+<li>For Windows: TextPad, NotePad++</li>
+<li>For macOS: jEdit, gedit</li>
+<li>For Ubuntu: gedit</li>
+</ul></li>
+<li>Read &quot;<a href="J1a_Introduction.html">Introduction to Java Programming for Novices &amp; First-Time Programmers</a>&quot;. Do ALL the exercises.</li>
+</ol>
+
+
+<h4><span class="font-code">CheckPassFail</span> (<span class="font-code">if-else</span>)</h4>
+
+<p>Write a program called <code><strong>CheckPassFail</strong></code> which prints &quot;<code>PASS</code>&quot; if the <code>int</code> variable &quot;<code>mark</code>&quot; is more than or equal to <code>50</code>; or prints &quot;<code>FAIL</code>&quot; otherwise. The program shall always print &ldquo;<code>DONE</code>&rdquo; before exiting.</p>
+
+<h5>Hints</h5>
+<p>Use <code>&gt;=</code> for <em>greater than or equal to</em> comparison.</p>
+<pre class="color-example">
+<span class="color-comment">/**
+ * Trying if-else statement.
+ */</span>
+public class <strong>CheckPassFail</strong> {  <span class="color-comment">// Save as &quot;CheckPassFail.java&quot;</span>
+   public static void main(String[] args) {  <span class="color-comment">// Program entry point</span>
+      int mark = 49;   <span class="color-comment">// Set the value of &quot;mark&quot; here!</span>
+      System.out.println(&quot;The mark is &quot; + mark);
+ 
+      <span class="color-comment">// if-else statement</span>
+      if ( ...... ) {
+         System.out.println( ...... );
+      } else {
+         System.out.println( ...... );
+      }
+      System.out.println( ...... );
+   }
+}</pre>
+
+<p>Try <code>mark = 0</code>, <code>49</code>, <code>50</code>, <code>51</code>, <code>100</code> and verify your results.</p>
+<p>Take note of the source-code <strong>indentation</strong>!!!  Whenever you open a block with <code>'{'</code>, indent all the statements inside the block by 3 (or 4 spaces).  When the block ends, un-indent the closing <code>'}'</code> to align with the opening statement.</p>
+
+<h4><span class="font-code">CheckOddEven</span> (<span class="font-code">if-else</span>)</h4>
+
+<p>Write a program called <code><strong>CheckOddEven</strong></code> which prints &quot;<code>Odd Number</code>&quot;  if the <code>int</code> variable  “<code>number</code>” is odd, or “<code>Even Number</code>”  otherwise. The program shall always print &ldquo;<code>bye!</code>&rdquo; before exiting.</p>
+
+<h5>Hints</h5>
+<p><em><code>n</code></em> is an even number if <code>(<em>n</em> % 2)</code> is <code>0</code>; otherwise, it is an odd number. Use <code>==</code> for comparison, e.g., <code>(n % 2) == 0</code>.</p>
+<pre class="color-example">
+<span class="color-comment">/**
+ * Trying if-else statement and modulus (%) operator.
+ */</span>
+public class <strong>CheckOddEven</strong> {   <span class="color-comment">// Save as &quot;CheckOddEven.java&quot;</span>
+   public static void main(String[] args) {  <span class="color-comment">// Program entry point</span>
+      int number = 49;       <span class="color-comment">// Set the value of &quot;number&quot; here!</span>
+      System.out.println(&quot;The number is &quot; + number);
+      if ( ...... ) {
+         System.out.println( ...... );<span class="color-comment">   // even number</span>
+      } else {
+         System.out.println( ...... );<span class="color-comment">   // odd number</span>
+      }
+      System.out.println( ...... );
+   }
+}</pre>
+
+<p>Try <code>number = 0</code>, <code>1</code>, <code>88</code>, <code>99</code>, <code>-1</code>, <code>-2</code> and verify your results.</p>
+<p>Again, take note of the source-code indentation! Make it a good habit to ident your code properly, for ease of reading your program.</p>
+
+<h4><span class="font-code">PrintNumberInWord</span> (nested-<span class="font-code">if</span>, <span class="font-code">switch-case</span>)</h4>
+
+<p>Write a program called <code><strong>PrintNumberInWord</strong></code> which prints &quot;<code>ONE</code>&quot;, &quot;<code>TWO</code>&quot;,... , &quot;<code>NINE</code>&quot;, &quot;<code>OTHER</code>&quot; if the <code>int</code> variable &quot;<code>number</code>&quot; is <code>1</code>, <code>2</code>,... , <code>9</code>, or other, respectively.  Use (a) a &quot;nested-<code>if</code>&quot; statement; (b) a &quot;<code>switch-case-default</code>&quot; statement.</p>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+<span class="color-comment">/**
+ * Trying nested-if and switch-case statements.
+ */</span>
+public class <strong>PrintNumberInWord</strong> {   <span class="color-comment">// Save as &quot;PrintNumberInWord.java&quot;</span>
+   public static void main(String[] args) {
+      int number = 5;  <span class="color-comment">// Set the value of &quot;number&quot; here!</span>
+ 
+      <span class="color-comment">// Using nested-if</span>
+      if (number == 1) {   <span class="color-comment">// Use == for comparison</span>
+         System.out.println( ...... );
+      } else if ( ...... ) {
+         ......
+      } else if ( ...... ) {
+         ......
+      ......
+      ......
+      } else {
+         ......
+      }
+ 
+      <span class="color-comment">// Using switch-case-default</span>
+      switch(number) {
+         case 1: 
+            System.out.println( ...... ); break;  <span class="color-comment">// Don't forget the &quot;break&quot; after each case!</span>
+         case 2: 
+            System.out.println( ...... ); break;
+         ......
+         ......
+         default: System.out.println( ...... ); 
+      }
+   }
+}</pre>
+
+<p></p>
+Try <code>number = 0</code>, <code>1</code>, <code>2</code>, <code>3</code>, ..., <code>9</code>, <code>10</code> and verify your results.
+<h4><span class="font-code">PrintDayInWord</span> (nested-<span class="font-code">if</span>, <span class="font-code">switch-case</span>)</h4>
+
+<p>Write a program called <code><strong>PrintDayInWord</strong></code> which prints &ldquo;<code>Sunday</code>&rdquo;, &ldquo;<code>Monday</code>&rdquo;, ... &ldquo;<code>Saturday</code>&rdquo; if  the <code>int</code> variable &quot;<code>dayNumber</code>&quot; is  <code>0</code>, <code>1</code>, ..., <code>6</code>, respectively.  Otherwise, it shall print &quot;Not a valid day&quot;. Use (a) a &quot;nested-<code>if</code>&quot; statement; (b) a &quot;<code>switch-case-default</code>&quot; statement.</p>
+<p>Try <code>dayNumber = 0</code>, <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>, <code>5</code>, <code>6</code>, <code>7</code> and verify your results.</p>
+
+<h3>Exercises on Number Systems (for Science/Engineering Students)</h3>
+
+<p>To be proficient in programming, you need to be able to operate on these number systems:</p>
+<ol>
+<li>Decimal (used by human beings for input and output)</li>
+<li>Binary (used by computer for storage and processing)</li>
+<li>Hexadecimal (shorthand or compact form for binary)</li>
+</ol>
+
+<p>Read &quot;<a href="DataRepresentation.html#NumberSystems">Number Systems</a>&quot; section of &quot;Data Representation&quot;, and complete the exercises.</p>
+
+<h3>Writing Good Programs</h3>
+
+<p>The only way to learn programming is program, program and program.  Learning programming is like learning cycling, swimming or any other sports.  You can't learn by watching or reading books.  Start to program immediately. On the other hands, to improve your programming, you need to read many books and study how the masters program.</p>
+
+<p>It is easy to write programs that work.  It is much harder to write programs that not only work but also easy to maintain and understood by others – I call these <em>good programs</em>.  In the real world, writing program is not meaningful.  You have to write good programs, so that others can understand and maintain your programs.</p>
+
+<p>Pay particular attention to:</p>
+<ol>
+<li>Coding Style:
+<ul>
+<li> Read &quot;Java Code Convention&quot; 
+(@ <a href="https://www.oracle.com/technetwork/java/codeconventions-150003.pdf">https://www.oracle.com/technetwork/java/codeconventions-150003.pdf</a> or google &quot;Java Code Convention&quot;).</li>
+<li>Follow the <em>Java Naming Conventions</em> for variables, methods, and classes STRICTLY. Use <em>CamelCase</em> for names. Variable and method names begin with lowercase, while class names begin with uppercase. Use nouns for variables (e.g., <code>radius</code>) and class names (e.g., <code>Circle</code>).  Use verbs for methods (e.g., <code>getArea()</code>, <code>isEmpty()</code>).</li>
+<li><strong>Use Meaningful Names</strong>: Do not use names like <code>a</code>, <code>b</code>, <code>c</code>, <code>d</code>, <code>x</code>, <code>x1</code>, <code>x2</code>, and <code>x1688</code> - they are meaningless.   Avoid single-alphabet names like <code>i</code>, <code>j</code>, <code>k</code>. They are easy to type, but usually meaningless. Use single-alphabet names only when their meaning is clear, e.g., <code>x</code>, <code>y</code>, <code>z</code> for co-ordinates and <code>i</code> for array index.  Use meaningful names like <code>row</code> and <code>col<span class="color-comment"></span></code> (instead of <code>x</code> and <code>y</code>, <code>i</code> and <code>j</code>, <code>x1</code> and <code>x2</code>), <code>numStudents</code> (not <code>n</code>), <code>maxGrade</code>, <code>size</code> (not <code>n</code>), and <code>upperbound</code> (not <code>n</code> again).  Differentiate between singular and plural nouns (e.g., use <code>books</code> for an array of books, and <code>book</code> for each item).</li>
+<li>Use consistent indentation and coding style.  Many IDEs (such as Eclipse/NetBeans) can re-format your source codes with a single click.</li>
+</ul>
+</li>
+<li>Program Documentation:  Comment! Comment! and more Comment to explain your code to other people and to yourself three days later.</li>
+</ol>
+
+
+<h3 id="ExerciseDecisionLoop">Exercises on Decision and Loop</h3>
+
+<h4><span class="font-code">SumAverageRunningInt</span> (Decision &amp; Loop)</h4>
+<p>Write a program called <code><strong>SumAverageRunningInt</strong></code> to produce the sum of <code>1</code>, <code>2</code>, <code>3</code>, ..., to <code>100</code>.  Store <code>1</code> and <code>100</code> in variables <code>lowerbound</code> and <code>upperbound</code>, so that we can change their values easily. Also compute and display the average.  The output shall look like:</p>
+<pre class="output">
+The sum of 1 to 100 is 5050
+The average is 50.5</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+<span class="color-comment">/**
+ * Compute the sum and average of running integers from a lowerbound to an upperbound using loop.
+ */</span>
+public class <strong>SumAverageRunningInt</strong> {   <span class="color-comment">// Save as &quot;SumAverageRunningInt.java&quot;</span>
+   public static void main (String[] args) {
+      <span class="color-comment">// Define variables</span>
+      int sum = 0;          <span class="color-comment">// The accumulated sum, init to 0</span>
+      double average;       <span class="color-comment">// average in double</span>
+      final int LOWERBOUND = 1;
+      final int UPPERBOUND = 100;
+
+      <span class="color-comment">// Use a for-loop to sum from lowerbound to upperbound
+</span>      for (int number = LOWERBOUND; number &lt;= UPPERBOUND; ++number) {
+            <span class="color-comment">// The loop index variable number = 1, 2, 3, ..., 99, 100</span>
+         sum += number;     <span class="color-comment">// same as &quot;sum = sum + number&quot;</span>
+      }
+      <span class="color-comment">// Compute average in double. Beware that int / int produces int!</span>
+      ......
+      <span class="color-comment">// Print sum and average</span>
+      ......
+   }
+}</pre>
+
+<h5>Try</h5>
+
+<ol>
+<li>Modify the program to use a &quot;while-do&quot; loop instead of &quot;for&quot; loop.
+<pre class="color-example">
+      int sum = 0;
+      int number = LOWERBOUND;        <span class="color-comment">// declare and init loop index variable</span>
+      while (number &lt;= UPPERBOUND) {  <span class="color-comment">// test</span>
+         sum += number;
+         ++number;                    <span class="color-comment">// update</span>
+      }</pre>
+      
+</li>      
+
+<li>Modify the program to use a &quot;do-while&quot; loop.
+<pre class="color-example">
+      int sum = 0;
+      int number = LOWERBOUND;         <span class="color-comment">// declare and init loop index variable</span>
+      do {
+         sum += number;
+         ++number;                     <span class="color-comment">// update</span>
+      } while (number &lt;= UPPERBOUND);  <span class="color-comment">// test</span></pre>
+</li>
+
+<li>What is the difference between &quot;for&quot; and &quot;while-do&quot; loops? What is the difference between &quot;while-do&quot; and &quot;do-while&quot; loops?</li>
+
+<li>Modify the program to sum from <code>111</code> to <code>8899</code>, and compute the average. Introduce an <code>int</code> variable called <code>count</code> to count the numbers in the specified range (to be used in computing the average).
+  <pre class="color-example">
+      int count = 0;   <span class="color-comment">// Count the number within the range, init to 0</span>
+      for ( ...; ...; ... ) {
+         ......
+         ++count;
+      }</pre>
+</li>
+
+<li>Modify the program to find the &quot;sum of the squares&quot; of all the numbers from <code>1</code> to <code>100</code>, i.e. <code>1*1 + 2*2 + 3*3 + ... + 100*100</code>.</li>
+<li>Modify the program to produce two sums: sum of odd numbers and sum of even numbers from <code>1</code> to <code>100</code>. Also computer their absolute difference.<br />
+HINTS:
+<pre class="color-example">
+      <span class="color-comment">// Define variables</span>
+      int sumOdd  = 0;   <span class="color-comment">// Accumulating sum of odd numbers</span>
+      int sumEven = 0;   <span class="color-comment">// Accumulating sum of even numbers</span>
+      int absDiff;       <span class="color-comment">// Absolute difference between the two sums</span>
+      ......
+      <span class="color-comment">// Compute sums</span>
+      for (int number = ...; ...; ...) {
+         if (......) {
+            sumOdd += number;
+         } else {
+            sumEven += number;
+         }
+      }
+      <span class="color-comment">// Compute Absolute Difference</span>
+      if (sumOdd &gt; sumEven) {
+         absDiff = ......;
+      } else {
+         absDiff = ......;
+      }
+      <span class="color-comment">// OR use one liner conditional expression</span>
+      absDiff = (sumOdd &gt; sumEven) ? ...... : ......;</pre>
+</li>
+
+</ol>
+
+<h4><span class="font-code">Product1ToN</span> (or <span class="font-code">Factorial</span>) (Decision &amp; Loop)</h4>
+
+<p>Write a program called <code><strong>Product1ToN</strong></code> to compute the product of integers from <code>1</code> to <code>10</code> (i.e., <code>1×2×3×...×10</code>), as an <code>int</code>. Take note that It is the same as factorial of <code>N</code>.</p>
+
+<h5>Hints</h5>
+<p>Declare an <code>int</code> variable called <code>product</code>, initialize to 1, to accumulate the product.</p>
+
+<pre class="color-example"><span class="color-comment">      // Define variables</span>
+      int product = 1;      <span class="color-comment">// The accumulated product, init to 1</span>
+      final int LOWERBOUND = 1;
+      final int UPPERBOUND = 10;</pre>
+
+<h5>Try</h5>
+
+<ol>
+<li>Compute the  product from <code>1</code> to <code>11</code>, <code>1</code> to <code>12</code>,  <code>1</code> to <code>13</code> and <code>1</code> to <code>14</code>. Write down the product obtained and decide if the results are correct.<br />
+  HINTS: 
+  Factorial of <code>13</code> (<code>=6227020800</code>) is outside the range of <code>int</code> <code>[-2147483648,  2147483647]</code>. Take  note that computer programs may not produce the correct result even though  the code seems correct!</li>
+
+<li>Repeat the  above, but use <code>long</code> to store the <code>product</code>.  Compare the products obtained with <code>int</code> for <code>N=13</code> and <code>N=14</code>.<br />
+  HINTS: With <code>long</code>, you can store factorial of up to <code>20</code>.</li>
+</ol>
+
+<h4><span class="font-code">HarmonicSum</span> (Decision &amp; Loop)</h4>
+
+<p>Write a program called <code><strong>HarmonicSum</strong></code> to compute the sum of a harmonic series, as shown below, where <code><em>n</em>=50000</code>.  The program shall compute the sum from <em>left-to-right</em> as well as from the <em>right-to-left</em>.  Are the two sums the same? Obtain the absolute difference between these two sums and explain the difference.  Which sum is more accurate?</p>
+<img class="image-left" src="images/ExerciseBasics_HarmonicSum.png" alt="ExerciseBasics_HarmonicSum.png" />
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+<span class="color-comment">/**
+ * Compute the sum of harmonics series from left-to-right and right-to-left.
+ */</span>
+public class <strong>HarmonicSum</strong> {   <span class="color-comment">// Save as &quot;HarmonicSum.java&quot;</span>
+   public static void main (String[] args) {
+      <span class="color-comment">// Define variables</span>
+      final int MAX_DENOMINATOR = 50000;  <span class="color-comment">// Use a more meaningful name instead of n</span>
+      double sumL2R = 0.0;         <span class="color-comment">// Sum from left-to-right</span>
+      double sumR2L = 0.0;         <span class="color-comment">// Sum from right-to-left</span>
+      double absDiff;              <span class="color-comment">// Absolute difference between the two sums</span>
+   
+      <span class="color-comment">// for-loop for summing from left-to-right</span>
+      for (int denominator = 1; denominator &lt;= MAX_DENOMINATOR; ++denominator) {
+          <span class="color-comment">// denominator = 1, 2, 3, 4, 5, ..., MAX_DENOMINATOR</span>
+          ......
+          <span class="color-comment">// Beware that int/int gives int, e.g., 1/2 gives 0.</span>
+      }
+      System.out.println(&quot;The sum from left-to-right is: &quot; + sumL2R);
+
+      <span class="color-comment">// for-loop for summing from right-to-left</span>
+      ......
+
+      <span class="color-comment">// Find the absolute difference and display</span>
+      if (sumL2R &gt; sumR2L) ......
+      else ......
+   }
+}</pre>
+
+<h4><span class="font-code">ComputePI</span> (Decision &amp; Loop)</h4>
+
+<p>Write a program called <code><strong>ComputePI</strong></code> to compute the value of &pi;, using the following series expansion. Use the maximum denominator (<code>MAX_DENOMINATOR</code>) as the terminating condition. Try <code>MAX_DENOMINATOR</code> of <code>1000</code>, <code>10000</code>, <code>100000</code>, <code>1000000</code> and compare the PI obtained. Is this series suitable for computing PI? Why?</p>
+<img class="image-left" src="images/ExerciseBasics_ComputePI.png" alt="ExerciseBasics_ComputePI.png" />
+
+<h5>Hints</h5>
+
+<p>Add to <code>sum</code> if the <code>denominator % 4</code> is <code>1</code>, and subtract from <code>sum</code> if it is <code>3</code>.</p>
+<pre class="color-example">
+      double sum = 0.0;
+      final int MAX_DENOMINATOR = 1000;   <span class="color-comment">// Try 10000, 100000, 1000000</span>
+      for (int denominator = 1; denominator &lt;= MAX_DENOMINATOR; denominator += 2) {
+            <span class="color-comment">// denominator = 1, 3, 5, 7, ..., MAX_DENOMINATOR</span>
+         if (denominator % 4 == 1) {
+            sum += ......;
+         } else if (denominator % 4 == 3) {
+            sum -= ......;
+         } else {   <span class="color-comment">// remainder of 0 or 2</span>
+            System.out.println(&quot;Impossible!!!&quot;);
+         }
+      }
+      ......</pre>
+
+<h5>Try</h5>
+
+<ol>
+<li>Instead of using maximum denominator as the terminating condition, rewrite your program to use the maximum number of terms (<code>MAX_TERM</code>) as the terminating condition.
+  <pre class="color-example">
+      final int MAX_TERM = 10000;  <span class="color-comment">// number of terms used in computation</span>
+      double sum = 0.0;
+      for (int term = 1; term &lt;= MAX_TERM; term++) {  <span class="color-comment">// term = 1, 2, 3, ..., MAX_TERM</span>
+            <span class="color-comment">// term = 1, 2, 3, 4, ..., MAX_TERM</span>
+         if (term % 2 == 1) {  <span class="color-comment">// odd term number: add</span>
+            sum += 1.0 / (term * 2 - 1);
+         } else {              <span class="color-comment">// even term number: subtract</span>
+            ......
+         }
+      }</pre>
+</li>
+<li>JDK maintains the value of &pi; in a built-in <code>double</code> constant called <code>Math.PI</code> (<code>=3.141592653589793</code>). Add a statement to compare the values obtained and the <code>Math.PI</code>, in percents of <code>Math.PI</code>, i.e., <code>(piComputed / Math.PI) * 100</code>.</li>
+</ol>
+
+<h4><span class="font-code">CozaLozaWoza</span> (Decision &amp; Loop)</h4>
+
+<p>Write a program called <code><strong>CozaLozaWoza</strong></code> which prints the numbers <code>1</code> to <code>110</code>, <code>11</code> numbers per line. The program shall print &quot;Coza&quot; in place of the numbers which are multiples of 3, &quot;Loza&quot; for multiples of 5, &quot;Woza&quot; for multiples of 7, &quot;CozaLoza&quot; for multiples of 3 and 5, and so on.  The output shall look like:</p>
+<pre class="output">
+1 2 Coza 4 Loza Coza Woza 8 Coza Loza 11 
+Coza 13 Woza CozaLoza 16 17 Coza 19 Loza CozaWoza 22 
+23 Coza Loza 26 Coza Woza 29 CozaLoza 31 32 Coza
+......</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+public class <strong>CozaLozaWoza</strong> {   <span class="color-comment">// Save as &quot;CozaLozaWoza.java&quot;</span>
+   public static void main(String[] args) {
+      final int LOWERBOUND = 1, UPPERBOUND = 110;
+      for (int number = LOWERBOUND; number &lt;= UPPERBOUND; ++number) {
+            <span class="color-comment">// number = LOWERBOUND+1, LOWERBOUND+2, ..., UPPERBOUND</span>
+         <span class="color-comment">// Print &quot;Coza&quot; if number is divisible by 3</span>
+         if ( ...... ) {
+            System.out.print(&quot;Coza&quot;);
+         }
+         <span class="color-comment">// Print &quot;Loza&quot; if number is divisible by 5</span>
+         if ( ...... ) {
+            System.out.print(.....);
+         }
+         <span class="color-comment">// Print &quot;Woza&quot; if number is divisible by 7</span>
+         ......
+         <span class="color-comment">// Print the number if it is not divisible by 3, 5 and 7 (i.e., it has not been processed above)</span>
+         if ( ...... ) {
+            ......
+         }
+         <span class="color-comment">// After processing the number, print a newline if number is divisible by 11; 
+         // else print a space</span>
+         if ( ...... ) {
+            System.out.println();  <span class="color-comment">// print newline</span>
+         } else {
+            System.out.print( ...... );  <span class="color-comment">// print a space</span>
+         }
+      }
+   }
+}</pre>
+
+<h5>Notes</h5>
+
+<ol>
+<li>You cannot use nested-if (if ... else if ... else if ... else) for this problem. It is because the tests are not mutually exclusive. For example, <code>15</code> is divisible by both <code>3</code> and <code>5</code>. Nested-if is only applicable if the tests are mutually exclusive.</li>
+<li>The tests above looks messy. A better solution is to use a <code>boolean</code> flag to keep track of whether the number has been processed, as follows:
+  <pre class="color-example">
+      final int LOWERBOUND = 1, UPPERBOUND = 110;
+      <span class="color-new">boolean printed;</span>
+      for (int number = LOWERBOUND; number &lt;= UPPERBOUND; ++number) {
+         <span class="color-new">printed = false;</span>  <span class="color-comment">// init before processing each number</span>
+         <span class="color-comment">// Print &quot;Coza&quot; if number is divisible by 3</span>
+         if ( ...... ) {
+            System.out.print( ...... );
+            <span class="color-new">printed = true;</span>   <span class="color-comment">// processed!</span>
+         }
+         <span class="color-comment">// Print &quot;Loza&quot; if number is divisible by 5</span>
+         if ( ...... ) {
+            System.out.print( ..... );
+            <span class="color-new">printed = true;</span>   <span class="color-comment">// processed</span>!
+         }
+         <span class="color-comment">// Print &quot;Woza&quot; if number is divisible by 7</span>
+         ......
+         <span class="color-comment">// Print the number if it has not been processed</span>
+         if (<span class="color-new">!printed</span>) {
+            ......
+         }
+         <span class="color-comment">// After processing the number, print a newline if it is divisible by 11;
+         // else, print a space</span>
+         ......
+      }</pre>
+</li>
+</ol>
+
+<h4><span class="font-code">Fibonacci</span> (Decision &amp; Loop)</h4>
+
+<p>Write a program called <code><strong>Fibonacci</strong></code> to print the first <code>20</code> Fibonacci numbers <code>F(n)</code>, where <code>F(n)=F(n–1)+F(n–2)</code> and <code>F(1)=F(2)=1</code>. Also compute their average. The output shall look like:</p>
+<pre class="output">
+The first 20 Fibonacci numbers are:
+1 1 2 3 5 8 13 21 34 55 89 144 233 377 610 987 1597 2584 4181 6765
+The average is 885.5</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+<span class="color-comment">/**
+ * Print first 20 Fibonacci numbers and their average
+ */</span>
+public class <strong>Fibonacci</strong> {
+   public static void main (String[] args) {
+      int n = 3;          <span class="color-comment">// The index n for F(n), starting from n=3, as n=1 and n=2 are pre-defined</span>
+      int fn;             <span class="color-comment">// F(n) to be computed</span>
+      int fnMinus1 = 1;   <span class="color-comment">// F(n-1), init to F(2)</span>
+      int fnMinus2 = 1;   <span class="color-comment">// F(n-2), init to F(1)</span>
+      int nMax = 20;      <span class="color-comment">// maximum n, inclusive</span>
+      int sum = fnMinus1 + fnMinus2;  <span class="color-comment">// Need sum to compute average</span>
+      double average;
+ 
+      System.out.println(&quot;The first &quot; + nMax + &quot; Fibonacci numbers are:&quot;);
+      ......
+ 
+      while (n &lt;= nMax) {  <span class="color-comment">// n starts from 3</span>
+            <span class="color-comment">// n = 3, 4, 5, ..., nMax</span>
+         <span class="color-comment">// Compute F(n), print it and add to sum</span>
+         ......
+         <span class="color-comment">// Increment the index n and shift the numbers for the next iteration</span>
+         ++n;
+         fnMinus2 = fnMinus1;
+         fnMinus1 = fn;
+      }
+ 
+      <span class="color-comment">// Compute and display the average (=sum/nMax).
+      // Beware that int/int gives int.</span>
+      ......
+   }
+}</pre>
+
+<h5>Try</h5>
+
+<ol>
+<li><em>Tribonacci numbers</em> are a sequence of numbers <code>T(n)</code> similar to <em>Fibonacci numbers</em>, except that a number is formed by adding the three previous numbers, i.e., <code>T(n)=T(n-1)+T(n-2)+T(n-3)</code>, <code>T(1)=T(2)=1</code>, and <code>T(3)=2</code>.  Write a program called <strong><code>Tribonacci</code></strong> to produce the first twenty Tribonacci numbers.</li>
+</ol>
+
+<h4><span class="font-code">ExtractDigits</span> (Decision &amp; Loop)</h4>
+
+<p>Write a program called <code><strong>ExtractDigits</strong></code> to extract each digit from an <code>int</code>, in the reverse order. For example, if the <code>int</code> is 15423, the output shall be &quot;3 2 4 5 1&quot;, with a space separating the digits.</p>
+
+<h5>Hints</h5>
+
+<p>The <em>coding pattern</em> for extracting individual digits from an integer <code><em>n</em></code> is:</p>
+
+<ol>
+<li>Use <code>(n % 10)</code> to extract the last (least-significant) digit.</li>
+<li>Use <code>n = n / 10</code> to drop the last (least-significant) digit.</li>
+<li>Repeat if <code>(n &gt; 0)</code>, i.e., more digits to extract.</li>
+</ol>
+<p>Take note that <code><em>n</em></code> is destroyed in the process. You may need to clone a copy.</p>
+
+<pre class="color-example">
+      int n = ...;
+      while (n &gt; 0) {
+         int digit = n % 10;  <span class="color-comment">// Extract the least-significant digit</span>
+         <span class="color-comment">// Print this digit</span>
+         ......
+         n = n / 10;  <span class="color-comment">// Drop the least-significant digit and repeat the loop</span>
+      }</pre>
+
+<h3 id="ExerciseDecisionLoopInput">Exercises on Input, Decision and Loop</h3>
+
+<h4><span class="font-code">Add2Integer</span> (Input)</h4>
+
+<p>Write a program called <code>Add2Integers</code> that prompts user to enter two integers. The program shall read the two integers as <code>int</code>; compute their sum; and print the result. For example,</p>
+
+<pre class="output">
+Enter first integer: <strong>8</strong>
+Enter second integer: <strong>9</strong>
+The sum is: 17</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+import java.util.Scanner;   <span class="color-comment">// For keyboard input</span>
+<span class="color-comment">/**
+ * 1. Prompt user for 2 integers
+ * 2. Read inputs as &quot;int&quot;
+ * 3. Compute their sum in &quot;int&quot;
+ * 4. Print the result
+ */</span>
+public class <strong>Add2Integers</strong> {  <span class="color-comment">// Save as &quot;Add2Integers.java&quot;</span>
+   public static void main (String[] args) {
+      <span class="color-comment">// Declare variables</span>
+      int number1, number2, sum;
+
+      <span class="color-comment">// Put up prompting messages and read inputs as &quot;int&quot;</span>
+      Scanner in = new Scanner(System.in);  <span class="color-comment">// Scan the keyboard for input</span>
+      System.out.print("Enter first integer: ");  <span class="color-comment">// No newline for prompting message</span>
+      number1 = in.nextInt();                     <span class="color-comment">// Read next input as &quot;int&quot;</span>
+      ......
+      in.close();  <span class="color-comment">// Close Scanner</span>
+
+      <span class="color-comment">// Compute sum</span>
+      sum = ......
+
+      <span class="color-comment">// Display result</span>
+      System.out.println("The sum is: " + sum);   <span class="color-comment">// Print with newline</span>
+   }
+}</pre>
+
+<h4><span class="font-code">SumProductMinMax3</span> (Arithmetic &amp; Min/Max)</h4>
+
+<p>Write a program called <code>SumProductMinMax3</code> that prompts user for three integers. The program shall read the inputs as <code>int</code>; compute the sum, product, minimum and maximum of the three integers; and print the results. For examples,</p>
+
+<pre class="output">
+Enter 1st integer: <strong>8</strong>
+Enter 2nd integer: <strong>2</strong>
+Enter 3rd integer: <strong>9</strong>
+The sum is: 19
+The product is: 144
+The min is: 2
+The max is: 9</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int number1, number2, number3;  <span class="color-comment">// The 3 input integers</span>
+      int sum, product, min, max;     <span class="color-comment">// To compute these</span>
+	  
+      <span class="color-comment">// Prompt and read inputs as &quot;int&quot;</span>
+      Scanner in = new Scanner(System.in);  <span class="color-comment">// Scan the keyboard</span>
+      ......
+      ......
+      in.close();
+	  
+      <span class="color-comment">// Compute sum and product</span>
+      sum = ......
+      product = ......
+
+      <span class="color-comment">// Compute min
+      // The &quot;coding pattern&quot; for computing min is:
+      // 1. Set min to the first item
+      // 2. Compare current min with the second item and update min if second item is smaller
+      // 3. Repeat for the next item</span>
+      min = number1;        <span class="color-comment">// Assume min is the 1st item</span>
+      if (number2 &lt; min) {  <span class="color-comment">// Check if the 2nd item is smaller than current min</span>
+         min = number2;     <span class="color-comment">// Update min if so</span>
+      }
+      if (number3 &lt; min) {  <span class="color-comment">// Continue for the next item</span>
+         min = number3;
+      }
+      
+      <span class="color-comment">// Compute max - similar to min</span>
+      ......
+      
+      <span class="color-comment">// Print results</span>
+      ......</pre>
+
+<h5>Try</h5>
+
+<ol>
+<li>Write a program called <code>SumProductMinMax5</code> that prompts user for five integers. The program shall read the inputs as <code>int</code>; compute the sum, product, minimum and maximum of the five integers; and print the results. Use five <code>int</code> variables: <code>number1</code>, <code>number2</code>, ..., <code>number5</code> to store the inputs.</li>
+</ol>
+
+<h4><span class="font-code">CircleComputation</span> (<span class="font-code">double</span> &amp; <span class="font-code">printf()</span>)</h4>
+<p>Write a program called <code><strong>CircleComputation</strong></code> that prompts user for the radius of a circle in floating point number. The program shall read the input as <code>double</code>; compute the diameter, circumference, and area of the circle in <code>double</code>; and print the values rounded to 2 decimal places. Use System-provided constant <code>Math.PI</code> for pi. The formulas are:</p>
+<pre class="color-syntax">
+diameter = 2.0 * radius;
+area = Math.PI * radius * radius;
+circumference = 2.0 * Math.PI * radius;</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      double radius, diameter, circumference, area;  <span class="color-comment">// inputs and results - all in double</span>
+      ......
+
+      <span class="color-comment">// Prompt and read inputs as &quot;double&quot;</span>
+      System.out.print(&quot;Enter the radius: &quot;);
+      radius = in.nextDouble();  <span class="color-comment">// read input as double</span>
+
+      <span class="color-comment">// Compute in &quot;double&quot;</span>
+      ......
+
+      <span class="color-comment">// Print results using printf() with the following format specifiers:
+      //   %.2f for a double with 2 decimal digits
+      //   %n for a newline</span>
+      System.out.printf("Diameter is: %.2f%n", diameter);
+      ......</pre>
+
+<h5>Try</h5>
+
+<ol>
+<li>Write a program called <strong><code>SphereComputation</code></strong> that prompts user for the <code>radius</code> of a sphere in floating point number. The program shall read the input as <code>double</code>; compute the volume and surface area of the sphere in <code>double</code>; and print the values rounded to 2 decimal places. The formulas are:
+<pre class="color-syntax">
+surfaceArea = 4 * Math.PI * radius * radius;
+volume = 4 /3 * Math.PI * radius * radius * radius;   <span class="color-comment">// But this does not work in programming?! Why?</span></pre>
+
+Take note that you cannot name the variable <code>surface area</code> with a space or <code>surface-area</code> with a dash. Java's naming convention is <code>surfaceArea</code>. Other languages recommend <code>surface_area</code> with an underscore.</li>
+
+<li>Write a program called <code><strong>CylinderComputation</strong></code> that prompts user for the base <code>radius</code> and <code>height</code> of a cylinder in floating point number. The program shall read the inputs as <code>double</code>; compute the base area, surface area, and volume of the cylinder; and print the values rounded to 2 decimal places. The formulas are:
+<pre class="color-syntax">
+baseArea = Math.PI * radius * radius;
+surfaceArea = 2.0 * Math.PI * radius + 2.0 * baseArea;
+volume = baseArea * height;</pre></li>
+
+</ol>
+
+<h4><span class="font-code">Swap2Integers</span></h4>
+
+<p>Write a program called <code>Swap2Integers</code> that prompts user for two integers. The program shall read the inputs as <code>int</code>, save in two variables called <code>number1</code> and <code>number2</code>; swap the contents of the two variables; and print the results. For examples,</p>
+<pre class="output">
+Enter first integer: <strong>9</strong>
+Enter second integer: <strong>-9</strong>
+After the swap, first integer is: -9, second integer is: 9</pre>
+
+<h5>Hints</h5>
+<p>To swap the contents of two variables <code>x</code> and <code>y</code>, you need to introduce a temporary storage, say <code>temp</code>, and do: <code>temp &lArr; x</code>; <code>x &lArr; y</code>; <code>y &lArr; temp</code>.</p>
+
+
+<h4><span class="font-code">IncomeTaxCalculator</span> (Decision)</h4>
+
+<p>The progressive income tax rate is mandated as follows:</p>
+
+<table class="table-zebra font-code" style="width:60%;text-align:center">
+<tr>
+<th>Taxable Income</th>
+<th>Rate (%)</th>
+</tr>
+
+<tr>
+<td>First $20,000</td>
+<td>0</td>
+</tr>
+
+<tr class="tr-alt">
+<td>Next $20,000</td>
+<td>10</td>
+</tr>
+
+<tr>
+  <td>Next $20,000</td>
+  <td>20</td>
+</tr>
+
+<tr class="tr-alt">
+  <td>The remaining</td>
+  <td>30</td>
+</tr>
+</table>
+
+<p>For example, suppose that the taxable income is <code>$85000</code>, the income tax payable is <code>$20000*0% + $20000*10% + $20000*20% + $25000*30%</code>.</p>
+
+<p>Write a program called <code><strong>IncomeTaxCalculator</strong></code> that reads the taxable income (in <code>int</code>). The program shall calculate the income tax payable (in <code>double</code>); and print the result rounded to 2 decimal places. For examples,</p>
+
+<pre class="output">
+Enter the taxable income: $<strong>41234</strong>
+The income tax payable is: $2246.80
+
+Enter the taxable income: $<strong>67891</strong><br />The income tax payable is: $8367.30
+
+Enter the taxable income: $<strong>85432</strong>
+The income tax payable is: $13629.60
+
+Enter the taxable income: $<strong>12345</strong>
+The income tax payable is: $0.00</pre>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constants first (variables may use these constants)
+      // The keyword &quot;final&quot; marked these as constant (i.e., cannot be changed).
+      // Use uppercase words joined with underscore to name constants</span>
+      final double TAX_RATE_ABOVE_20K = 0.1;
+      final double TAX_RATE_ABOVE_40K = 0.2;
+      final double TAX_RATE_ABOVE_60K = 0.3;
+
+      <span class="color-comment">// Declare variables</span>
+      int taxableIncome;
+      double taxPayable;
+      ......
+
+      <span class="color-comment">// Compute tax payable in &quot;double&quot; using a nested-if to handle 4 cases</span>
+      if (taxableIncome &lt;= 20000) {         <span class="color-comment">// [0, 20000]</span>
+         taxPayable = ......;
+      } else if (taxableIncome &lt;= 40000) {  <span class="color-comment">// [20001, 40000]</span>
+         taxPayable = ......;
+      } else if (taxableIncome &lt;= 60000) {  <span class="color-comment">// [40001, 60000]</span>
+         taxPayable = ......;
+      } else {                              <span class="color-comment">// [60001, ]</span>
+         taxPayable = ......;
+      }
+      <span class="color-comment">// Alternatively, you could use the following nested-if conditions
+      // but the above follows the table data
+      //if (taxableIncome &gt; 60000) {          // [60001, ]
+      //   ......
+      //} else if (taxableIncome &gt; 40000) {   // [40001, 60000]
+      //   ......
+      //} else if (taxableIncome &gt; 20000) {   // [20001, 40000]
+      //   ......
+      //} else {                              // [0, 20000]
+      //   ......
+      //}</span>
+
+      <span class="color-comment">// Print results rounded to 2 decimal places</span>
+      System.out.printf("The income tax payable is: $%.2f%n", ...);</pre>
+
+<h5>Try</h5>
+
+<p>Suppose that a <code>10%</code> tax rebate is announced for the income tax payable, capped at <code>$1,000</code>, modify your program to handle the tax rebate. For example, suppose that the tax payable is <code>$12,000</code>, the rebate is <code>$1,000</code>, as <code>10%</code> of <code>$12,000</code> exceed the cap.</p>
+
+<h4><span class="font-code">IncomeTaxCalculatorWithSentinel</span> (Decision &amp; Loop)</h4>
+
+<p>Based on  the previous exercise, write a program called <code>IncomeTaxCalculatorWithSentinel</code> which shall repeat the calculation until user enter <code>-1</code>. For example,</p>
+
+<pre class="output">
+Enter the taxable income (or -1 to end): $<strong>41000</strong>
+The income tax payable is: $2200.00
+
+Enter the taxable income (or -1 to end): $<strong>62000</strong>
+The income tax payable is: $6600.00
+
+Enter the taxable income (or -1 to end): $<strong>73123</strong>
+The income tax payable is: $9936.90
+
+Enter the taxable income (or -1 to end): $<strong>84328</strong>
+The income tax payable is: $13298.40
+
+Enter the taxable income: $<strong>-1</strong>
+bye!</pre>
+
+<p>The <code>-1</code> is known as the <em>sentinel value</em>. (Wiki: In programming, a <em>sentinel value</em>, also referred to as a flag value, trip value, rogue value, signal value, or dummy data, is a special value which uses its presence as a condition of termination.)</p>
+
+<h5>Hints</h5>
+
+<p>The <em>coding pattern</em> for handling input with sentinel value is as follows:</p>
+
+<pre class="color-syntax">
+      <span class="color-comment">// Declare constants first</span>
+      final int SENTINEL = -1;    <span class="color-comment">// Terminating value for input</span>
+      ......
+
+      <span class="color-comment">// Declare variables</span>
+      int taxableIncome;
+      double taxPayable;
+      ......
+
+      <span class="color-comment">// Read the first input to &quot;seed&quot; the while loop</span>
+      System.out.print("Enter the taxable income (or -1 to end): $");
+      taxableIncome = in.nextInt();
+
+      while (taxableIncome != SENTINEL) {
+         <span class="color-comment">// Compute tax payable</span>
+         ......
+         <span class="color-comment">// Print result</span>
+         ......
+
+         <span class="color-comment">// Read the next input</span>
+         System.out.print("Enter the taxable income (or -1 to end): $");
+         taxableIncome = in.nextInt();
+            <span class="color-comment">// Repeat the loop body, only if the input is not the SENTINEL value.
+            // Take note that you need to repeat these two statements inside/outside the loop!</span>
+      }
+      System.out.println(&quot;bye!&quot;);</pre>
+
+<p>Take note that we repeat the input statements inside and outside the loop. Repeating statements is NOT a good programming practice. This is because it is easy to repeat (Ctrl-C/Ctrl-V), but hard to maintain and synchronize the repeated statements. In this case, we have no better choices!</p>
+
+
+<h4><span class="font-code">PensionContributionCalculator</span> (Decision)</h4>
+
+<p>Both the employer and the employee are mandated to contribute a certain percentage of the employee's salary towards the employee's pension fund. 
+The rate is tabulated as follows:</p>
+
+<table class="table-zebra font-code" style="width:60%;text-align:center">
+<tr>
+<th>Employee's Age</th>
+<th>Employee Rate (%)</th>
+<th>Employer Rate (%)</th>
+</tr>
+
+<tr>
+<td>55 and below</td>
+<td>20</td>
+<td>17</td>
+</tr>
+
+<tr class="tr-alt">
+<td>above 55 to 60</td>
+<td>13</td>
+<td>13</td>
+</tr>
+
+<tr>
+  <td>above 60 to 65</td>
+  <td>7.5</td>
+  <td>9</td>
+</tr>
+
+<tr class="tr-alt">
+  <td>above 65</td>
+  <td>5</td>
+  <td>7.5</td>
+</tr>
+</table>
+
+<p>However, the contribution is subjected to a salary ceiling of <code>$6,000</code>. In other words, if an employee earns <code>$6，800</code>, only <code>$6，000</code> attracts employee's and employer's contributions, the remaining <code>$800</code> does not.</p>
+
+<p>Write a program called <code><strong>PensionContributionCalculator</strong></code> that reads the monthly salary and  age (in <code>int</code>) of an employee. Your program shall calculate the employee's, employer's and total contributions (in <code>double</code>); and print the results rounded to 2 decimal places. For examples,</p>
+
+<pre class="output">
+Enter the monthly salary: $<strong>3000</strong>
+Enter the age: <strong>30</strong>
+The employee's contribution is: $600.00
+The employer's contribution is: $510.00
+The total contribution is: $1110.00</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare constants</span>
+      final int SALARY_CEILING = 6000;
+      final double EMPLOYEE_RATE_55_AND_BELOW = 0.2;
+      final double EMPLOYER_RATE_55_AND_BELOW = 0.17;
+      final double EMPLOYEE_RATE_55_TO_60 = 0.13;
+      final double EMPLOYER_RATE_55_TO_60 = 0.13;
+      final double EMPLOYEE_RATE_60_TO_65 = 0.075;
+      final double EMPLOYER_RATE_60_TO_65 = 0.09;
+      final double EMPLOYEE_RATE_65_ABOVE = 0.05;
+      final double EMPLOYER_RATE_65_ABOVE = 0.075;
+
+      <span class="color-comment">// Declare variables</span>
+      int salary, age;     <span class="color-comment">// to be input</span>
+      int contributableSalary;
+      double employeeContribution, employerContribution, totalContribution;
+      ......
+
+      <span class="color-comment">// Check the contribution cap</span>
+      contributableSalary = ......
+      
+      <span class="color-comment">// Compute various contributions in &quot;double&quot; using a nested-if to handle 4 cases</span>
+      if (age &lt;= 55) {         <span class="color-comment">// 55 and below</span>
+         ......
+      } else if (age &lt;= 60) {  <span class="color-comment">// (60, 65]</span>
+         ......
+      } else if (age &lt;= 65) {  <span class="color-comment">// (55, 60]</span>
+         ......
+      } else {                 <span class="color-comment">// above 65</span>
+         ......
+      }
+      <span class="color-comment">// Alternatively,
+      //if (age &gt; 65) ......
+      //else if (age &gt; 60) ......
+      //else if (age &gt; 55) ......
+      //else ......</span></pre>
+
+<h4><span class="font-code">PensionContributionCalculatorWithSentinel</span> (Decision &amp; Loop)</h4>
+
+<p>Based on the previous <code>PensionContributionCalculator</code>, write a program called <strong><code>PensionContributionCalculatorWithSentinel</code></strong> which shall repeat the calculations until user enter -1 for the salary. For examples,</p>
+
+<pre class="output">
+Enter the monthly salary (or -1 to end): $<strong>5123</strong>
+Enter the age: <strong>21</strong>
+The employee's contribution is: $1024.60
+The employer's contribution is: $870.91
+The total contribution is: $1895.51
+
+Enter the monthly salary (or -1 to end): $<strong>5123</strong>
+Enter the age: <strong>64</strong>
+The employee's contribution is: $384.22
+The employer's contribution is: $461.07
+The total contribution is: $845.30
+
+Enter the monthly salary (or -1 to end): $<strong>-1</strong>
+bye!</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Read the first input to &quot;seed&quot; the while loop</span>
+      System.out.print(&quot;Enter the monthly salary (or -1 to end): $&quot;);
+      salary = in.nextInt();
+
+      while (salary != SENTINEL) {
+         <span class="color-comment">// Read the remaining</span>
+         System.out.print("Enter the age: ");
+         age = in.nextInt();
+
+         ......
+         ......
+         
+         <span class="color-comment">// Read the next input and repeat</span>
+         System.out.print(&quot;Enter the monthly salary (or -1 to end): $&quot;);
+         salary = in.nextInt();
+      }</pre>
+
+<h4><span class="font-code">SalesTaxCalculator</span> (Decision &amp; Loop)</h4>
+<p>A sales tax of <code>7%</code> is levied on all goods and services consumed. It is also mandatory that all the price tags should include the sales tax.  For example, if an item has a price tag of <code>$107</code>, the actual price is <code>$100</code> and <code>$7</code> goes to the sales tax.</p>
+
+<p>Write a program using a loop to continuously input the tax-inclusive price (in <code>double</code>); compute the actual price and the sales tax (in <code>double</code>); and print the results rounded to 2 decimal places. The program shall terminate in response to input of <code>-1</code>; and print the total price, total actual price, and total sales tax. For examples,</p>
+
+<pre class="output">
+Enter the tax-inclusive price in dollars (or -1 to end): <strong>107</strong>
+Actual Price is: $100.00, Sales Tax is: $7.00
+
+Enter the tax-inclusive price in dollars (or -1 to end): <strong>214</strong>
+Actual Price is: $200.00, Sales Tax is: $14.00
+
+Enter the tax-inclusive price in dollars (or -1 to end): <strong>321</strong>
+Actual Price is: $300.00, Sales Tax is: $21.00
+
+Enter the tax-inclusive price in dollars (or -1 to end): <strong>-1</strong>
+Total Price is: $642.00
+Total Actual Price is: $600.00
+Total Sales Tax is: $42.00</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare constants</span>
+      final double SALES_TAX_RATE = 0.07;
+      final int SENTINEL = -1;        <span class="color-comment">// Terminating value for input</span>
+      
+      <span class="color-comment">// Declare variables</span>
+      double price, actualPrice, salesTax;  <span class="color-comment">// inputs and results</span>
+      double totalPrice = 0.0, totalActualPrice = 0.0, totalSalesTax = 0.0;  <span class="color-comment">// to accumulate</span>
+      ......
+
+      <span class="color-comment">// Read the first input to &quot;seed&quot; the while loop</span>
+      System.out.print("Enter the tax-inclusive price in dollars (or -1 to end): ");
+      price =  in.nextDouble();
+
+      while (price != SENTINEL) {
+         <span class="color-comment">// Compute the tax</span>
+         ......
+         <span class="color-comment">// Accumulate into the totals</span>
+         ......
+         <span class="color-comment">// Print results</span>
+         ......
+
+         <span class="color-comment">// Read the next input and repeat</span>
+         System.out.print("Enter the tax-inclusive price in dollars (or -1 to end): ");
+         price =  in.nextDouble();
+      }
+      <span class="color-comment">// print totals</span>
+      ......</pre>
+
+<h4><span class="font-code">ReverseInt</span> (Loop with Modulus/Divide)</h4>
+
+<p>Write a program that prompts user for a positive integer. The program shall read the input as <code>int</code>; and print the "reverse" of the input integer. For examples,</p>
+
+<pre class="output">
+Enter a positive integer: <strong>12345</strong>
+The reverse is: 54321</pre>
+
+<h5>Hints</h5>
+<p>Use the following <em>coding pattern</em> which uses a while-loop with repeated modulus/divide operations to extract and drop the last digit of a positive integer.</p>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int inNumber;   <span class="color-comment">// to be input</span>
+      int inDigit;    <span class="color-comment">// each digit</span>
+      ......
+
+      <span class="color-comment">// Extract and drop the &quot;last&quot; digit repeatably using a while-loop with modulus/divide operations</span>
+      while (inNumber &gt; 0) {
+         inDigit = inNumber % 10; <span class="color-comment">// extract the &quot;last&quot; digit</span>
+         <span class="color-comment">// Print this digit (which is extracted in reverse order)</span>
+         ......
+         inNumber /= 10;          <span class="color-comment">// drop &quot;last&quot; digit and repeat</span>
+      }
+      ......</pre>
+
+
+<h4><span class="font-code">SumOfDigitsInt</span> (Loop with Modulus/Divide)</h4>
+
+<p>Write a program that prompts user for a positive integer. The program shall read the input as <code>int</code>; compute and print the sum of all its digits. For examples,</p>
+
+<pre class="output">
+Enter a positive integer: <strong>12345</strong>
+The sum of all digits is: 15</pre>
+
+<h5>Hints</h5>
+<p>See &quot;<code>ReverseInt</code>&quot;.</p>
+
+
+<h4><span class="font-code">InputValidation</span> (Loop with <span class="font-code">boolean</span> flag)</h4>
+
+<p>Your program often needs to validate the user's inputs, e.g., marks shall be between 0 and 100.</p>
+
+<p>Write a program that prompts user for an integer between <code>0-10</code> or <code>90-100</code>. The program shall read the input as <code>int</code>; and repeat until the user enters a valid input. For examples,</p>
+<pre class="output">
+Enter a number between 0-10 or 90-100: <strong>-1</strong>
+Invalid input, try again...
+Enter a number between 0-10 or 90-100: <strong>50</strong>
+Invalid input, try again...
+Enter a number between 0-10 or 90-100: <strong>101</strong>
+Invalid input, try again...
+Enter a number between 0-10 or 90-100: <strong>95</strong>
+You have entered: 95</pre>
+
+<h5>Hints</h5>
+<p>Use the following <em>coding pattern</em> which uses a do-while loop controlled by a <code>boolean</code> flag to do input validation. We use a do-while instead of while-do loop as we need to execute the body to prompt and process the input at least once.</p>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int numberIn;      <span class="color-comment">// to be input</span>
+      boolean isValid;   <span class="color-comment">// boolean flag to control the loop</span>
+      ......
+      
+      <span class="color-comment">// Use a do-while loop controlled by a boolean flag 
+      // to repeatably read the input until a valid input is entered</span>
+      isValid = false;   // default assuming input is not valid
+      do {
+         <span class="color-comment">// Prompt and read input</span>
+         ......
+
+         <span class="color-comment">// Validate input by setting the boolean flag accordingly</span>
+         if (numberIn ......) {
+            isValid = true;   <span class="color-comment">// exit the loop</span>
+         } else {
+            System.out.println(......);  <span class="color-comment">// Print error message and repeat</span>
+         }
+      } while (!isValid);
+      ......</pre>
+
+
+<h4><span class="font-code">AverageWithInputValidation</span> (Loop with <span class="font-code">boolean</span> flag)</h4>
+
+<p>Write a program that prompts user for the mark (between <code>0-100</code> in <code>int</code>) of 3 students; computes the average (in <code>double</code>); and prints the result rounded to 2 decimal places. Your program needs to perform input validation. For examples,</p>
+
+<pre class="output">
+Enter the mark (0-100) for student 1: <strong>56</strong>
+Enter the mark (0-100) for student 2: <strong>101</strong>
+Invalid input, try again...
+Enter the mark (0-100) for student 2: <strong>-1</strong>
+Invalid input, try again...
+Enter the mark (0-100) for student 2: <strong>99</strong>
+Enter the mark (0-100) for student 3: <strong>45</strong>
+The average is: 66.67</pre>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constant</span>
+      final int NUM_STUDENTS = 3;
+      
+      <span class="color-comment">// Declare variables</span>
+      int numberIn;
+      boolean isValid;   <span class="color-comment">// boolean flag to control the input validation loop</span>
+      int sum = 0;
+      double average;
+      ......
+      
+      for (int studentNo = 1; studentNo &lt;= NUM_STUDENTS; ++studentNo) {
+          <span class="color-comment">// Prompt user for mark with input validation</span>
+          ......
+          isValid = false;   <span class="color-comment">// reset assuming input is not valid</span>
+          do {
+             ......
+          } while (!isValid);
+
+          sum += ......;
+      }
+      ......</pre>
+
+
+
+<h3 id="ExerciseNestedLoop">Exercises on Nested-Loops</h3>
+
+<h4><span class="font-code">SquarePattern</span> (nested-loop)</h4>
+
+<p>Write a program called <code><strong>SquarePattern</strong></code> that prompts user for the size (a non-negative integer in <code>int</code>); and prints the following square pattern using two nested for-loops.</p>
+
+<pre class="output">
+Enter the size: <strong>5</strong>
+# # # # #
+# # # # #
+# # # # #
+# # # # #
+# # # # #</pre>
+
+<h5>Hints</h5>
+<p>The <em>code pattern</em> for printing 2D patterns using nested loops is:</p>
+
+<pre class="color-example">
+      <span class="color-comment">// Outer loop to print each of the rows</span>
+      for (int row = 1; row &lt;= size; row++) {  <span class="color-comment">// row = 1, 2, 3, ..., size</span>
+         <span class="color-comment">// Inner loop to print each of the columns of a particular row</span>
+         for (int col = 1; col &lt;= size; col++) {  <span class="color-comment">// col = 1, 2, 3, ..., size</span>
+            System.out.print( ...... );   <span class="color-comment">// Use print() without newline inside the inner loop</span>
+            ......
+         }
+         <span class="color-comment">// Print a newline after printing all the columns</span>
+         System.out.println();
+      }</pre>
+
+<h5>Notes</h5>
+
+<ol>
+<li>You should name the loop indexes <code>row</code> and <code>col</code>, NOT <code>i</code> and<code> </code>j, or <code>x</code> and <code>y</code>, or <code>a</code> and <code>b</code>, which are meaningless.</li>
+<li>The <code>row</code> and <code>col</code> could start at 1 (and upto <code>size</code>), or start at <code>0</code> (and upto <code>size-1</code>). As computer counts from <code>0</code>, it is probably more efficient to start from <code>0</code>. However, since humans counts from <code>1</code>, it is easier to read if you start from <code>1</code>.</li>
+</ol>
+
+<h5>Try</h5>
+
+<p>Rewrite the above program using nested while-do loops.</p>
+
+<h4><span class="font-code">CheckerPattern</span> (nested-loop)</h4>
+
+<p>Write a program called <code><strong>CheckerPattern</strong></code> that prompts user for the size (a non-negative integer in <code>int</code>); and prints the following checkerboard pattern.</p>
+
+<pre class="output">
+Enter the size: <strong>7</strong>
+# # # # # # #
+ # # # # # # #
+# # # # # # #
+ # # # # # # #
+# # # # # # #
+ # # # # # # #
+# # # # # # #</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Outer loop to print each of the rows</span>
+      for (int row = 1; row &lt;= size; row++) {  <span class="color-comment">// row = 1, 2, 3, ..., size</span>
+         <span class="color-comment">// Inner loop to print each of the columns of a particular row</span>
+         for (int col = 1; col &lt;= size; col++) {  <span class="color-comment">// col = 1, 2, 3, ..., size</span>
+            <span class="color-new">if ((row % 2) == 0) {</span>   <span class="color-comment">// row 2, 4, 6, ...</span>
+               <span class="color-new">......
+            }</span>
+            System.out.print( ...... );   <span class="color-comment">// Use print() without newline inside the inner loop</span>
+            ......
+         }
+         <span class="color-comment">// Print a newline after printing all the columns</span>
+         System.out.println();
+      }</pre>
+
+<h4><span class="font-code">TimeTable</span> (nested-loop)</h4>
+
+<p>Write a program called <code><strong>TimeTable</strong></code> that prompts user for the size (a positive integer in <code>int</code>); and prints the multiplication table as shown:</p>
+
+<pre class="output">
+Enter the size: <strong>10</strong>
+ * |   1   2   3   4   5   6   7   8   9  10
+--------------------------------------------
+ 1 |   1   2   3   4   5   6   7   8   9  10
+ 2 |   2   4   6   8  10  12  14  16  18  20
+ 3 |   3   6   9  12  15  18  21  24  27  30
+ 4 |   4   8  12  16  20  24  28  32  36  40
+ 5 |   5  10  15  20  25  30  35  40  45  50
+ 6 |   6  12  18  24  30  36  42  48  54  60
+ 7 |   7  14  21  28  35  42  49  56  63  70
+ 8 |   8  16  24  32  40  48  56  64  72  80
+ 9 |   9  18  27  36  45  54  63  72  81  90
+10 |  10  20  30  40  50  60  70  80  90 100</pre>
+
+<h5>Hints</h5>
+
+<ol>
+<li>Use <code>printf()</code> to format the output, e.g., each cell is <code>%4d</code>.</li>
+<li>See &quot;Java Basics&quot; article.</li>
+</ol>
+
+<h4><span class="font-code">TriangularPattern</span> (nested-loop)</h4>
+
+<p>Write 4 programs called <code><strong>TriangularPatternX</strong></code> (<code>X = A, B, C, D</code>) that prompts user for the size (a non-negative integer in <code>int</code>); and prints each of the patterns as shown:</p>
+
+<pre class="output">
+Enter the size: <strong>8</strong>
+
+#                    # # # # # # # #      # # # # # # # #                    #
+# #                  # # # # # # #          # # # # # # #                  # #
+# # #                # # # # # #              # # # # # #                # # #
+# # # #              # # # # #                  # # # # #              # # # #
+# # # # #            # # # #                      # # # #            # # # # #
+# # # # # #          # # #                          # # #          # # # # # #
+# # # # # # #        # #                              # #        # # # # # # #
+# # # # # # # #      #                                  #      # # # # # # # #
+     (a)                   (b)                  (c)                  (d)</pre>
+
+<h5>Hints</h5>
+
+<ol>
+<li>On the main diagonal, <code>row = col</code>.  On the opposite diagonal, <code>row + col = size + 1</code>, where <code>row</code> and <code>col</code> begin from 1.</li>
+<li>You need to print the <em>leading</em> blanks, in order to push the <code>#</code> to the right. The <em>trailing</em> blanks are optional, which does not affect the pattern.</li>
+<li>For pattern (a), <code>if (row &gt;= col) print #</code>. Trailing blanks are optional.</li>
+<li>For pattern (b),<code> if (row + col &lt;= size + 1) print #</code>. Trailing blanks are optional.</li>
+<li>For pattern (c), <code>if (row &gt;= col) print #; else print blank</code>. Need to print the <em>leading</em> blanks.</li>
+<li>For pattern (d), <code>if (row + col &gt;= size + 1) print #; else print blank</code>. Need to print the <em>leading</em> blanks.</li>
+<li>The <em>coding pattern</em> is:
+<pre class="color-example">
+      <span class="color-comment">// Outer loop to print each of the rows</span>
+      for (int row = 1; row &lt;= size; row++) {  <span class="color-comment">// row = 1, 2, 3, ..., size</span>
+         <span class="color-comment">// Inner loop to print each of the columns of a particular row</span>
+         for (int col = 1; col &lt;= size; col++) {  <span class="color-comment">// col = 1, 2, 3, ..., size</span>
+            <span class="color-new">if (......) {
+                System.out.print(&quot;# &quot;);
+            } else {
+                System.out.print(&quot;  &quot;);  <span class="color-comment">// Need to print the &quot;leading&quot; blanks</span>
+            }</span>
+         }
+         <span class="color-comment">// Print a newline after printing all the columns</span>
+         System.out.println();
+      }</pre></li>
+</ol>
+
+
+
+
+
+<h4><span class="font-code">BoxPattern</span> (nested-loop)</h4>
+
+<p>Write 4 programs called <code><strong>BoxPatternX</strong></code> (<code>X = A, B, C, D</code>) that prompts user for the size (a non-negative integer in <code>int</code>); and prints the pattern as shown:</p>
+
+<pre class="output">
+Enter the size: <strong>8</strong>
+
+# # # # # # #    # # # # # # #    # # # # # # #    # # # # # # #    # # # # # # #
+#           #      #                        #        #       #      # #       # #
+#           #        #                    #            #   #        #   #   #   #
+#           #          #                #                #          #     #     #
+#           #            #            #                #   #        #   #   #   #
+#           #              #        #                #       #      # #       # #
+# # # # # # #    # # # # # # #    # # # # # # #    # # # # # # #    # # # # # # #
+     (a)               (b)             (c)              (d)              (e)</pre>
+   
+<h5>Hints</h5>
+
+<ol>
+<li>On the main diagonal, <code>row = col</code>.  On the opposite diagonal, <code>row + col = size + 1</code>, where <code>row</code> and <code>col</code> begin from 1.</li>
+<li>For pattern (a), <code>if (row == 1 || row == size || col == 1 || col == size) print #; else print blank</code>. Need to print the intermediate blanks.</li>
+<li>For pattern (b), <code>if (row == 1 || row == size || row == col) print #; else print blank</code>.</li>
+</ol>
+
+
+<h4><span class="font-code">HillPattern</span> (nested-loop)</h4>
+
+<p>Write 3 programs called <code><strong>HillPatternX</strong></code> (<code>X = A, B, C, D</code>) that prompts user for the size (a non-negative integer in <code>int</code>); and prints the pattern as shown:</p>
+
+<pre class="output">
+Enter the rows: <strong>6</strong>
+
+          #                # # # # # # # # # # #                #                # # # # # # # # # # #
+        # # #                # # # # # # # # #                # # #              # # # # #   # # # # #
+      # # # # #                # # # # # # #                # # # # #            # # # #       # # # #
+    # # # # # # #                # # # # #                # # # # # # #          # # #           # # #
+  # # # # # # # # #                # # #                # # # # # # # # #        # #               # #
+# # # # # # # # # # #                #                # # # # # # # # # # #      #                   #
+         (a)                        (b)                 # # # # # # # # #        # #               # #
+                                                          # # # # # # #          # # #           # # #
+                                                            # # # # #            # # # #       # # # #
+                                                              # # #              # # # # #   # # # # #
+                                                                #                # # # # # # # # # # #
+                                                               (c)                        (d)</pre>
+<h5>Hints</h5>
+<ol>
+<li>For pattern (a):
+<pre class="color-example">
+      for (int row = 1; ......) {
+         <span class="color-comment">// numCol = 2*numRows - 1</span>
+         for (int col = 1; ......) {
+            if ((row + col &gt;= numRows + 1) &amp;&amp; (row &gt;= col - numRows + 1)) {
+               ......;
+            } else {
+               ......;
+            }
+         }
+         ......;
+      }</pre>
+or, use 2 sequential inner loops to print the columns:
+<pre class="color-example">
+      for (int row = 1; row &lt;= rows; row++) {
+         for (int col = 1; col &lt;= rows; col++) {
+            if ((row + col &gt;= rows + 1)) {
+               ......
+            } else {
+               ......
+            }
+         }
+         for (int col = 2; col &lt;= rows; col++) {  <span class="color-comment">// skip col = 1</span>
+            if (row &gt;= col) {
+               ......
+            } else {
+               ......
+            }
+         }
+         ......
+      }</pre></li>
+</ol>
+
+<h4><span class="font-code">NumberPattern</span> (nested-loop)</h4>
+
+<p>Write 4 programs called <code><strong>NumberPatternX</strong></code> (<code>X = A, B, C, D</code>) that prompts user for the size (a non-negative integer in <code>int</code>); and prints the pattern as shown:</p>
+     
+<pre class="output">
+Enter the size: <strong>8</strong>
+
+1                    1 2 3 4 5 6 7 8                    1      8 7 6 5 4 3 2 1
+1 2                    1 2 3 4 5 6 7                  2 1      7 6 5 4 3 2 1
+1 2 3                    1 2 3 4 5 6                3 2 1      6 5 4 3 2 1
+1 2 3 4                    1 2 3 4 5              4 3 2 1      5 4 3 2 1
+1 2 3 4 5                    1 2 3 4            5 4 3 2 1      4 3 2 1
+1 2 3 4 5 6                    1 2 3          6 5 4 3 2 1      3 2 1
+1 2 3 4 5 6 7                    1 2        7 6 5 4 3 2 1      2 1
+1 2 3 4 5 6 7 8                    1      8 7 6 5 4 3 2 1      1
+     (a)                  (b)                    (c)                (d)</pre>
+
+<h5>Hints</h5>
+<p>[TODO]</p>
+
+
+<h3 id="ExerciseDebugging">Debugging/Tracing Programs using a Graphic Debugger</h3>
+
+<h4><span class="font-code">Factorial</span> (Using a graphic debugger)</h4>
+
+<p>The following program computes and prints the factorial of <code><em>n</em></code> (<code>=1*2*3*...*<em>n</em></code>).  The program, however, has a logical error and produce a wrong answer for <code>n=20</code> (&quot;The Factorial of 20 is -2102132736&quot; – negative?!).</p>
+<p>Use the graphic debugger of Eclipse/NetBeans to debug the program by single-step through the program and tabulating the values of <code>i</code> and <code>factorial</code> at the statement marked by (<code>*</code>).</p>
+
+<p>You should try out debugging features such as &quot;Breakpoint&quot;, &quot;Step Over&quot;, &quot;Watch variables&quot;, &quot;Run-to-Line&quot;, &quot;Resume&quot;, &quot;Terminate&quot;, among others. (Read &quot;<a href="../howto/EclipseJava_HowTo.html#eclipse-java-debug">Eclipse for Java</a>&quot; or &quot;<a href="../howto/NetBeans_HowTo.html#netbeans-debug">NetBeans for Java</a>&quot; for details).</p>
+
+<pre class="color-example">
+<span class="color-comment">// Print factorial of n</span>
+public class <strong>Factorial</strong> {
+   public static void main(String[] args) {  <span class="color-comment">// Set an initial breakpoint at this statement</span>
+      int n = 20;
+      int factorial = 1;
+
+      <span class="color-comment">// n! = 1*2*3...*n</span>
+      for (int i = 1; i &lt;= n; i++) {  <span class="color-comment">// i = 1, 2, 3, ..., n</span>
+         factorial = factorial * i;   <span class="color-comment">// *</span>
+      }
+      System.out.println("The Factorial of " + n + " is " + factorial);
+   }
+}</pre>
+
+
+
+<h3 id="ExerciseStringChar">Exercises on <span class="font-code">String</span> and <span class="font-code">char</span> Operations</h3>
+
+<h4><span class="font-code">ReverseString</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Write a program called <code><strong>ReverseString</strong></code>, which prompts user for a <code>String</code>, and prints the <em>reverse</em> of the <code>String</code> by extracting and processing each character. The output shall look like:</p>
+<pre class="output">
+Enter a String: <strong>abcdef</strong>
+The reverse of the String &quot;abcdef&quot; is &quot;fedcba&quot;.</pre>
+
+<h5>Hints</h5>
+
+<p>For a <code>String</code> called <code>inStr</code>, you can use <code>inStr.length()</code> to get the <em>length</em> of the <code>String</code>; and <code>inStr.charAt(idx)</code> to retrieve the <code>char</code> at the <code>idx</code> position, where <code>idx</code> begins at 0, up to <code>instr.length() - 1</code>.</p>
+
+<pre class="color-example">
+      <span class="color-comment">// Define variables</span>
+      String inStr;        <span class="color-comment">// input String</span>
+      int inStrLen;        <span class="color-comment">// length of the input String</span>
+      ......
+
+      <span class="color-comment">// Prompt and read input as &quot;String&quot;</span>
+      System.out.print(&quot;Enter a String: &quot;);
+      inStr = in.next();   <span class="color-comment">// use next() to read a String</span>
+      inStrLen = inStr.length();
+   
+      <span class="color-comment">// Use inStr.charAt(index) in a loop to extract each character
+      // The String's index begins at 0 from the left.
+      // Process the String from the right</span>
+      for (int charIdx = inStrLen - 1; charIdx &gt;= 0; --charIdx) {  <span class="color-comment">
+            // charIdx = inStrLen-1, inStrLen-2, ... ,0</span>
+         ......
+      }</pre>
+
+<h4><span class="font-code">CountVowelsDigits</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Write a program called <code><strong>CountVowelsDigits</strong></code>, which prompts the user for a <code>String</code>, counts the  number of vowels (<code>a</code>, <code>e</code>, <code>i</code>, <code>o</code>, <code>u</code>, <code>A</code>, <code>E</code>, <code>I</code>, <code>O</code>, <code>U</code>) and digits (<code>0-9</code>) contained in  the string, and prints the counts and the percentages (rounded to 2 decimal  places).  For example,</p>
+<pre class="output">
+Enter a String: <strong>testing12345</strong>
+Number of vowels: 2 (16.67%)
+Number of digits: 5 (41.67%)</pre>
+
+<h5>Hints</h5>
+
+<ol>
+<li>To check if a <code>char c</code> is a digit, you can use <code>boolean</code> expression <code>(c &gt;= '0' &amp;&amp; c &lt;= '9')</code><code></code>; or use built-in <code>boolean</code> function <code>Character.isDigit(c)</code>.</li>
+<li>You could use <code>in.next().toLowerCase()</code> to convert the input <code>String</code> to lowercase to reduce the number of cases.</li>
+<li>To print a <code>%</code> using <code>printf()</code>, you need to use <code>%%</code>. This is because <code>%</code> is a prefix for format specifier in <code>printf()</code>, e.g., <code>%d</code> and <code>%f</code>.</li>
+</ol>
+
+<h4><span class="font-code">PhoneKeyPad</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>On your phone keypad, the alphabets are mapped to digits as follows: <code>ABC(2)</code>, <code>DEF(3)</code>, <code>GHI(4)</code>, <code>JKL(5)</code>, <code>MNO(6)</code>, <code>PQRS(7)</code>, <code>TUV(8)</code>, <code>WXYZ(9)</code>. Write a program called <code><strong>PhoneKeyPad</strong></code>, which prompts user for a <code>String</code> (case insensitive), and converts to a sequence of keypad digits. Use (a) a nested-<code>if</code>, (b) a <code>switch-case-default</code>.</p>
+
+<h5>Hints</h5>
+
+<ol>
+<li>You can use <code>in.next().toLowerCase()</code> to read a <code>String</code> and convert it to lowercase to reduce your cases.</li>
+<li>In <code>switch-case</code>, you can handle multiple cases by omitting the <code>break</code> statement, e.g.,
+  <pre class="color-example">
+switch (inChar) {
+   case 'a': case 'b': case 'c':  <span class="color-comment">// No break for 'a' and 'b', fall thru 'c'</span>
+      System.out.print(2); break;
+   case 'd': case 'e': case 'f':
+      ......
+   default:
+      ......
+}</pre>
+</li>
+</ol>
+
+<h4>Caesar's Code (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Caesar's Code is one of the simplest encryption techniques.  Each letter in the plaintext is replaced by a letter some fixed number of position (<code>n</code>) down the alphabet cyclically. In this exercise, we shall pick <code>n=3</code>. That is, <code>'A'</code> is replaced by <code>'D'</code>, <code>'B'</code> by <code>'E'</code>, <code>'C'</code> by <code>'F'</code>, ..., <code>'X'</code> by <code>'A'</code>, ..., <code>'Z'</code> by <code>'C'</code>.</p>
+
+<p>Write a program called <strong><code>CaesarCode</code></strong><code></code> to cipher the Caesar's code. The program shall prompt user for a plaintext string consisting of mix-case letters only; compute the ciphertext; and print the ciphertext in uppercase. For example,</p>
+
+<pre class="output">
+Enter a plaintext string: <strong>Testing</strong>
+The ciphertext string is: WHVWLQJ</pre>
+
+<h5>Hints</h5>
+
+<ol>
+
+<li>Use <code>in.next().toUpperCase()</code> to read an input string and convert it into uppercase to reduce the number of cases.</li>
+
+<li>You can use a big nested-if with 26 cases (<code>'A'-'Z'</code>). But it is much better to consider <code>'A'</code> to <code>'W'</code> as one case; <code>'X'</code>, <code>'Y'</code> and <code>'Z'</code> as 3 separate cases.</li>
+
+<li>Take note that <code>char</code> <code>'A'</code> is represented as Unicode number <code>65</code> and <code>char</code> <code>'D'</code> as <code>68</code>.  However, <code>'A' + 3 gives 68</code>. This is because <code>char + int</code> is implicitly casted to <code>int + int</code> which returns an <code>int</code> value.  To obtain a <code>char</code> value, you need to perform explicit type casting using <code>(char)('A' + 3)</code>. Try printing <code>('A' + 3)</code> with and without type casting.</li>
+</ol>
+
+<h4>Decipher Caesar's Code (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Write a program called <code><strong>DecipherCaesarCode</strong></code> to decipher the Caesar's code described in the previous exercise. The program shall prompts user for a ciphertext string consisting of mix-case letters only; compute the plaintext; and print the plaintext in uppercase. For example,</p>
+
+<pre class="output">
+Enter a ciphertext string: <strong>wHVwLQJ</strong>
+The plaintext string is: TESTING</pre>
+
+<h4>Exchange Cipher (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>This simple cipher exchanges <code>'A'</code> and <code>'Z'</code>, <code>'B'</code> and <code>'Y'</code>, <code>'C'</code> and <code>'X'</code>, and so on.</p>
+
+<p>Write a program called <code><strong>ExchangeCipher</strong></code> that prompts user for a plaintext string consisting of mix-case letters only. You program shall compute the ciphertext; and print the ciphertext in uppercase. For examples,</p>
+
+<pre class="output">
+Enter a plaintext string: <strong>abcXYZ</strong>
+The ciphertext string is: ZYXCBA</pre>
+
+<h5>Hints</h5>
+<ol>
+<li>Use <code>in.next().toUpperCase()</code> to read an input string and convert it into uppercase to reduce the number of cases.</li>
+
+<li>You can use a big nested-if with 26 cases (<code>'A'-'Z'</code>), or use the following relationship:
+  <pre class="color-example">
+'A' + 'Z' == 'B' + 'Y' == 'C' + 'X' == ... == plainTextChar + cipherTextChar
+Hence, cipherTextChar = 'A' + 'Z' - plainTextChar</pre></li>
+</ol>
+
+
+
+<h4><span class="font-code">TestPalindromicWord</span> and <span class="font-code">TestPalindromicPhrase</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>A word that reads the same backward as forward is called a <em>palindrome</em>, e.g., &quot;mom&quot;, &quot;dad&quot;, &quot;racecar&quot;, &quot;madam&quot;, and &quot;Radar&quot; (case-insensitive). Write a program called <code><strong>TestPalindromicWord</strong></code>, that prompts user for a word and prints &quot;<code>&quot;xxx&quot; is|is not a palindrome</code>&quot;.</p>
+
+<p>A phrase that reads the same backward as forward is also called a palindrome, e.g., &quot;Madam, I'm Adam&quot;, &quot;A man, a plan, a canal - Panama!&quot; (ignoring punctuation and capitalization). Modify your program (called <code><strong>TestPalindromicPhrase</strong></code>) to check for palindromic phrase. Use <code>in.nextLine()</code> to read a line of input.</p>
+
+<h5>Hints</h5>
+
+<ol>
+<li>Maintain two indexes, <code>forwardIndex</code> (<code>fIdx</code>) and <code>backwardIndex</code> (<code>bIdx</code>), to scan the phrase forward and backward.
+<pre class="color-example">
+int fIdx = 0, bIdx = strLen - 1;
+while (fIdx &lt; bIdx) {
+   ......
+   ++fIdx;
+   --bIdx;
+}
+<span class="color-comment">// or</span>
+for (int fIdx = 0, bIdx = strLen - 1; fIdx &lt; bIdx; ++fIdx, --bIdx) {
+   ......
+}</pre></li>
+
+<li>You can check if a <code>char c</code> is a letter either using built-in <code>boolean</code> function <code>Character.isLetter(c)</code>; or <code>boolean</code> expression <code>(c &gt;= 'a' &amp;&amp; c &lt;= 'z')</code>. Skip the index if it does not contain a letter.</li>
+
+</ol>
+
+<h4><span class="font-code">CheckBinStr</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>The binary number system uses 2 symbols, 0 and 1. Write a program called <code><strong>CheckBinStr</strong></code> to verify a binary string. The program shall prompt user for a binary string; and decide if the input string is a valid binary string. For example,</p>
+
+<pre class="output">
+Enter a binary string: <strong>10101100</strong>
+&quot;10101100&quot; is a binary string
+
+Enter a binary string: <strong>10120000</strong>
+&quot;10120000&quot; is NOT a binary string</pre>
+
+<h5>Hints</h5>
+
+<p>Use the following coding pattern which involves a <code>boolean</code> flag to check the input string.</p>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      String inStr;     <span class="color-comment">// The input string</span>
+      int inStrLen;     <span class="color-comment">// The length of the input string</span>
+      char inChar;      <span class="color-comment">// Each char of the input string</span>
+      boolean isValid;  <span class="color-comment">// &quot;is&quot; or &quot;is not&quot; a valid binary string?</span>
+      ......
+      
+      isValid = true;  <span class="color-comment">// Assume that the input is valid, unless our check fails</span>
+      for (......) {
+         inChar = ......;
+         if (!(inChar == '0' || inChar == '1')) {
+            isValid = false;
+            break;  <span class="color-comment">// break the loop upon first error, no need to continue for more errors
+                    // If this is not encountered, isValid remains true after the loop.</span>
+         }
+      }
+      if (isValid) {
+         System.out.println(......);
+      } else {
+         System.out.println(......);
+      }
+      <span class="color-comment">// or using one liner</span>
+      //System.out.println(isValid ? ... : ...);</pre>
+
+<h4><span class="font-code">CheckHexStr</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>The hexadecimal (hex) number system uses 16 symbols, <code>0-9</code> and <code>A-F</code> (or <code>a-f</code>). Write a program to verify a hex string. The program shall prompt user for a hex string; and decide if the input string is a valid hex string. For examples,</p>
+
+<pre class="output">
+Enter a hex string: <strong>123aBc</strong>
+&quot;123aBc&quot; is a hex string
+
+Enter a hex string: <strong>123aBcx</strong>
+&quot;123aBcx&quot; is NOT a hex string</pre>
+
+<h5>Hints</h5>
+<pre class="color-example">if (!((inChar &gt;= '0' &amp;&amp; inChar &lt;= '9')
+      || (inChar &gt;= 'A' &amp;&amp; inChar &lt;= 'F')
+      || (inChar &gt;= 'a' &amp;&amp; inChar &lt;= 'f'))) {  <span class="color-comment">// Use positive logic and then reverse</span>
+   ......
+}</pre>
+
+
+<h4><span class="font-code">Bin2Dec</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Write a program called <strong><code>Bin2Dec</code></strong> to convert an input binary string into its equivalent decimal number.  Your output shall look like:</p>
+<pre class="output">
+Enter a Binary string: <strong>1011</strong>
+The equivalent decimal number for binary &quot;1011&quot; is: 11
+ 
+Enter a Binary string: <strong>1234</strong>
+error: invalid binary string &quot;1234&quot;</pre>
+
+<h5>Hints</h5>
+
+<p>See &quot;Code Example&quot;.</p>
+
+
+<h4><span class="font-code">Hex2Dec</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Write a program called <code><strong>Hex2Dec</strong></code> to convert an input hexadecimal string into its equivalent decimal number.  Your output shall look like:</p>
+<pre class="output">
+Enter a Hexadecimal string: <strong>1a</strong>
+The equivalent decimal number for hexadecimal &quot;1a&quot; is: 26
+   
+Enter a Hexadecimal string: <strong>1y3</strong>
+error: invalid hexadecimal string &quot;1y3&quot;</pre>
+
+<h5>Hints</h5>
+
+<p>See &quot;Code Example&quot;.</p>
+
+
+<h4><span class="font-code">Oct2Dec</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Write a program called <code><strong>Oct2Dec</strong></code> to convert an input Octal string into its equivalent decimal number. For example,</p>
+<pre class="output">
+Enter an Octal string: <strong>147</strong>
+The equivalent decimal number &quot;147&quot; is: 103</pre>
+
+<h4><span class="font-code">RadixN2Dec</span> (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+
+<p>Write a program called <code><strong>RadixN2Dec</strong></code> to convert an input string of any radix (<code>&lt;=16</code>) into its equivalent decimal number.</p>
+<pre class="output">
+Enter the radix: <strong>16</strong>
+Enter the string: <strong>1a</strong>
+The equivalent decimal number &quot;1a&quot; is: 26</pre>
+
+
+<h3 id="ExerciseArray">Exercises on Array</h3>
+
+<h4><span class="font-code">PrintArray</span> (Array)</h4>
+
+<p>Write a program called <code>PrintArray</code> which prompts user for the number of items in an array (a non-negative integer), and saves it in an <code>int</code> variable called <code>NUM_ITEMS</code>. It then prompts user for the values of all the items and saves them in an <code>int</code> array called <code>items</code>. The program shall then print the contents of the array in the form of <code>[x1, x2, ..., xn]</code>. For example,</p>
+
+<pre class="output">
+Enter the number of items: <strong>5</strong>
+Enter the value of all items (separated by space): <strong>3 2 5 6 9</strong>
+The values are: [3, 2, 5, 6, 9]</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      final int NUM_ITEMS;
+      int[] items;  <span class="color-comment">// Declare array name, to be allocated after NUM_ITEMS is known</span>
+      ......
+
+      <span class="color-comment">// Prompt for for the number of items and read the input as &quot;int&quot;</span>
+      ......
+      NUM_ITEMS = ......
+
+      <span class="color-comment">// Allocate the array</span>
+      items = new int[NUM_ITEMS];
+
+      <span class="color-comment">// Prompt and read the items into the &quot;int&quot; array, if array length &gt; 0</span>
+      if (items.length &gt; 0) {
+         ......
+         for (int i = 0; i &lt; items.length; ++i) {  <span class="color-comment">// Read all items</span>
+            ......
+         }
+      }
+
+      <span class="color-comment">// Print array contents, need to handle first item and subsequent items differently</span>
+      ......
+      for (int i = 0; i &lt; items.length; ++i) {
+         if (i == 0) {
+            <span class="color-comment">// Print the first item without a leading commas</span>
+            ......
+         } else {
+            <span class="color-comment">// Print the subsequent items with a leading commas</span>
+            ......
+         }
+         <span class="color-comment">// or, using a one liner</span>
+         //System.out.print((i == 0) ? ...... : ......);
+      }</pre>
+
+
+<h4><span class="font-code">PrintArrayInStars</span> (Array)</h4>
+
+<p>Write a program called <code><strong>printArrayInStars</strong></code> which prompts user for the number of items in an array (a non-negative integer), and saves it in an <code>int</code> variable called <code>NUM_ITEMS</code>. It then prompts user for the values of all the items (non-negative integers) and saves them in an <code>int</code> array called <code>items</code>. The program shall then print the contents of the array in a graphical form, with the array index and values represented by number of stars. For examples,</p>
+
+<pre class="color-example">
+Enter the number of items: <strong>5</strong>
+Enter the value of all items (separated by space): <strong>7 4 3 0 7</strong>
+0: *******(7)
+1: ****(4)
+2: ***(3)
+3: (0)
+4: *******(7)</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      final int NUM_ITEMS;
+      int[] items;  <span class="color-comment">// Declare array name, to be allocated after NUM_ITEMS is known</span>
+      ......
+      ......
+
+      <span class="color-comment">// Print array in &quot;index: number of stars&quot; using a nested-loop
+      // Take note that rows are the array indexes and columns are the value in that index
+</span>      for (int idx = 0; idx &lt; items.length; ++idx) {  <span class="color-comment">// row</span>
+         System.out.print(idx + ": ");
+         <span class="color-comment">// Print value as the number of stars</span>
+         for (int starNo = 1; starNo &lt;= items[idx]; ++starNo) {  <span class="color-comment">// column</span>
+            System.out.print("*");
+         }
+         ......
+      }
+      ......</pre>
+
+<h4><span class="font-code">GradesStatistics</span> (Array)</h4>
+
+<p>Write a program which prompts user for the number of students in a class (a non-negative integer), and saves it in an <code>int</code> variable called <code>numStudents</code>. It then prompts user for the grade of each of the students (integer between 0 to 100) and saves them in an <code>int</code> array called <code>grades</code>. The program shall then compute and print the average (in <code>double</code> rounded to 2 decimal places) and minimum/maximum (in <code>int</code>).</p>
+
+<pre class="output">
+Enter the number of students: <strong>5</strong>
+Enter the grade for student 1: <strong>98</strong>
+Enter the grade for student 2: <strong>78</strong>
+Enter the grade for student 3: <strong>78</strong>
+Enter the grade for student 4: <strong>87</strong>
+Enter the grade for student 5: <strong>76</strong>
+The average is: 83.40
+The minimum is: 76
+The maximum is: 98</pre>
+
+<h4><span class="font-code">Hex2Bin</span> (Array for Table Lookup)</h4>
+
+<p>Write a program called <strong><code>Hex2Bin</code></strong> that prompts user for a hexadecimal string and print its equivalent binary string.  The output shall look like:</p>
+<pre class="output">
+Enter a Hexadecimal string: <strong>1abc</strong>
+The equivalent binary for hexadecimal &quot;1abc&quot; is: 0001 1010 1011 1100</pre>
+
+<h5>Hints</h5>
+
+<ol>
+<li>Use an array of 16  <code>String</code>s containing binary strings corresponding to hexadecimal number <code>0-9A-F</code> (or <code>a-f</code>), as follows:
+<pre class="color-example">
+final String[] HEX_BITS = {&quot;0000&quot;, &quot;0001&quot;, &quot;0010&quot;, &quot;0011&quot;,
+                    &quot;0100&quot;, &quot;0101&quot;, &quot;0110&quot;, &quot;0111&quot;,
+                    &quot;1000&quot;, &quot;1001&quot;, &quot;1010&quot;, &quot;1011&quot;,
+                    &quot;1100&quot;, &quot;1101&quot;, &quot;1110&quot;, &quot;1111&quot;};</pre></li>
+<li>See &quot;Code Example&quot;.</li>                    
+</ol>
+
+<h4><span class="font-code">Dec2Hex</span> (Array for Table Lookup)</h4>
+
+<p>Write a program called <strong><code>Dec2Hex</code></strong> that prompts user for a positive decimal number, read as <code>int</code>, and print its equivalent hexadecimal string.  The output shall look like:</p>
+
+<pre class="output">
+Enter a decimal number: <strong>1234</strong>
+The equivalent hexadecimal number is 4D2</pre>
+
+<h5>Hints</h5>
+
+<p>See &quot;Code Example&quot;.</p>
+
+
+
+<h3 id="ExerciseMethod">Exercises on Method</h3>
+
+<h4><span class="font-code">exponent()</span> (method)</h4>
+<p>Write a method called <code>exponent(int base, int exp)</code> that returns an <code>int</code> value of <code>base</code> raises to the power of <code>exp</code>. The signature of the method is:</p>
+<pre class="color-syntax">
+  public static int <strong>exponent</strong>(int base, int exp);</pre>
+
+<p>Assume that <code>exp</code> is a non-negative integer and <code>base</code> is an integer. Do not use any Math library functions.</p>
+
+<p>Also write the <code>main()</code> method that prompts user for the <code>base</code> and <code>exp</code>; and prints the result. For example,</p>
+
+<pre class="output">
+Enter the base: <strong>3</strong>
+Enter the exponent: <strong>4</strong>
+3 raises to the power of 4 is: 81</pre>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+......
+public class Exponent {
+   public static void <strong>main</strong>(String[] args) {
+      <span class="color-comment">// Declare variables</span>
+      int exp;    <span class="color-comment">// exponent (non-negative integer)</span>
+      int base;   <span class="color-comment">// base (integer)</span>
+      ......
+      <span class="color-comment">// Prompt and read exponent and base</span>
+      ......
+      <span class="color-comment">// Print result</span>
+      System.out.println(base + " raises to the power of " + exp + " is: " + exponent(base, exp));
+   }
+
+   <span class="color-comment">// Returns &quot;base&quot; raised to the power &quot;exp&quot;</span>
+   public static int <strong>exponent</strong>(int base, int exp) {
+      int product = 1;   <span class="color-comment">// resulting product</span>
+
+      <span class="color-comment">// Multiply product and base for exp number of times</span>
+      for (......) {
+         product *= base;
+      }
+
+      return product;
+   }
+}</pre>
+
+
+<h4><span class="font-code">isOdd()</span> (method)</h4>
+
+<p>Write a <code>boolean</code> method called <code>isOdd()</code> in a class called <code><strong>OddEvenTest</strong></code>, which takes an <code>int</code> as input and returns <code>true</code> if the it is odd.  The signature of the method is as follows:</p>
+<pre class="color-syntax">
+public static boolean <strong>isOdd</strong>(int number);</pre>
+
+<p>Also write the <code>main()</code> method that prompts user for a <code>number</code>, and prints &quot;ODD&quot; or &quot;EVEN&quot;. You should test for negative input. For examples,</p>
+
+<pre class="output">
+Enter a number: <strong>9</strong>
+9 is an odd number
+
+Enter a number: <strong>8</strong>
+8 is an even number
+
+Enter a number: <strong>-5</strong>
+-5 is an odd number</pre>
+
+<h5>Hints</h5>
+<p>See Notes.</p>
+
+<h4><span class="font-code">hasEight()</span> (method)</h4>
+
+<p>Write a <code>boolean</code> method called <code>hasEight()</code>, which takes an <code>int</code> as input and returns <code>true</code> if the number contains the digit <code>8</code> (e.g., <code>18</code>, <code>168</code>, <code>1288</code>).  The signature of the method is as follows:</p>
+<pre class="output">
+public static boolean <strong>hasEight</strong>(int number);</pre>
+
+<p>Write a program called <code><strong>MagicSum</strong></code>, which prompts user for integers (or <code>-1</code> to end), and produce the sum of numbers containing the digit <code>8</code>.  Your program should use the above methods.  A sample output of the program is as follows:</p>
+<pre class="output">
+Enter a positive integer (or -1 to end): 1
+Enter a positive integer (or -1 to end): 2
+Enter a positive integer (or -1 to end): 3
+Enter a positive integer (or -1 to end): 8
+Enter a positive integer (or -1 to end): 88
+Enter a positive integer (or -1 to end): -1
+The magic sum is: 96</pre>
+
+<h5>Hints</h5>
+
+<ol>
+<li>The <em>coding pattern</em> to repeat until input is <code>-1</code> (called <em>sentinel</em> value) is:
+<pre class="color-example">
+final int SENTINEL = -1;  <span class="color-comment">// Terminating input</span>
+int number;
+
+<span class="color-comment">// Read first input to &quot;seed&quot; the while loop</span>
+System.out.print("Enter a positive integer (or -1 to end): ");
+number = in.nextInt();
+
+while (number != SENTINEL) {  <span class="color-comment">// Repeat until input is -1</span>
+   ......
+   ......
+
+   <span class="color-comment">// Read next input. Repeat if the input is not the SENTINEL 
+   // Take note that you need to repeat these codes!</span>
+   System.out.print("Enter a positive integer (or -1 to end): ");
+   number = in.nextInt();
+}</pre></li>
+
+<li>You can either repeatably use modulus/divide (<code>n%10</code> and <code>n=n/10</code>) to extract and drop each digit in <code>int</code>; or convert the <code>int</code> to <code>String</code> and use the <code>String</code>'s <code>charAt()</code> to inspect each <code>char</code>.</li>
+</ol>
+
+<h4><span class="font-code">print()</span> (Array &amp; Method)</h4>
+
+<p>Write a method called <strong><code>print()</code></strong>, which takes an <code>int</code> array and print its contents in the form of<code></code> <code>[a1, a2, ..., an]</code>. Take note that there is no comma after the last element. The method's signature is as follows:</p>
+<pre class="output">
+public static void <strong>print</strong>(int[] array);</pre>
+
+<p>Also write a test driver to test this method (you should test on empty array, one-element array, and n-element array).</p>
+
+<p>How to handle <code>double[]</code> or <code>float[]</code>? You need to write a overloaded version for <code>double[]</code> and a overloaded version for <code>float[]</code>, with the following signatures:</p>
+
+<pre class="output">
+public static void <strong>print</strong>(double[] array)
+public static void <strong>print</strong>(float[] array)</pre>
+
+<p>The above is known as <em>method overloading</em>, where the same method name can have many versions, differentiated by its parameter list.</p>
+
+<h5>Hints</h5>
+<ol>
+<li>For the first element, print its value; for subsequent elements, print commas followed by the value.</li>
+</ol>
+
+<h4><span class="font-code">arrayToString()</span> (Array &amp; Method)</h4>
+
+<p>Write a method called <code><strong>arrayToString()</strong></code>, which takes an <code>int</code> array and return a <code>String</code> in the form of<code></code> <code>[a1, a2, ..., an]</code>. Take note that this method returns a <code>String</code>, the previous exercise returns <code>void</code> but prints the output. The method's signature is as follows:</p>
+<pre class="output">
+public static String <strong>arrayToString</strong>(int[] array);</pre>
+
+<p>Also write a test driver to test this method (you should test on empty array, one-element array, and n-element array).</p>
+
+<p>Notes: This is similar to the built-in function <code>Arrays.toString()</code>. You could study its source code.</p>
+
+<h4><span class="font-code">contains()</span> (Array &amp; Method)</h4>
+
+<p>Write a <code>boolean</code> method called <code><strong>contains()</strong></code>, which takes an array of <code>int</code> and an <code>int</code>; and returns <code>true</code> if the array contains the given <code>int</code>.  The method's signature is as follows:</p>
+<pre class="output">
+public static boolean <strong>contains</strong>(int[] array, int key);</pre>
+
+<p>Also write a test driver to test this method.</p>
+
+<h4><span class="font-code">search()</span> (Array &amp; Method)</h4>
+
+<p>Write a method called <code><strong>search()</strong></code>, which takes an array of <code>int</code> and an <code>int</code>; and returns the array <em>index</em> if the array contains the given <code>int</code>; or <code>-1</code> otherwise.  The method's signature is as follows:</p>
+<pre class="output">
+public static int <strong>search</strong>(int[] array, int key);</pre>
+
+<p>Also write a test driver to test this method.</p>
+
+<h4><span class="font-code">equals()</span> (Array &amp; Method)</h4>
+
+<p>Write a <code>boolean</code> method called <code><strong>equals()</strong></code>, which takes two arrays of <code>int</code> and returns <code>true</code> if the two arrays are exactly the same (i.e., same length and same contents).  The method's signature is as follows:</p>
+<pre class="output">
+public static boolean <strong>equals</strong>(int[] array1, int[] array2)</pre>
+
+<p>Also write a test driver to test this method.</p>
+
+<h4><span class="font-code">copyOf()</span> (Array &amp; Method)</h4>
+
+<p>Write a <code>boolean</code> method called <code><strong>copyOf()</strong></code>, which takes an <code>int</code> Array and returns a copy of the given array.  The method's signature is as follows:</p>
+<pre class="output">
+public static int[] <strong>copyOf</strong>(int[] array)</pre>
+
+<p>Also write a test driver to test this method.</p>
+
+<p>Write another version for <strong><code>copyOf()</code></strong> which takes a second parameter to specify the length of the new array. You should truncate or pad with zero so that the new array has the required length.</p>
+<pre class="output">
+public static int[] <strong>copyOf</strong>(int[] array, int newLength)</pre>
+
+<p>NOTES: This is similar to the built-in function <code>Arrays.copyOf()</code>.</p>
+
+<h4><span class="font-code">swap()</span> (Array &amp; Method)</h4>
+
+<p>Write a method called <code><strong>swap()</strong></code>, which takes two arrays of <code>int</code> and swap their contents if they have the same length. It shall return <code>true</code> if the contents are successfully swapped. The method's signature is as follows:</p>
+<pre class="output">
+public static boolean <strong>swap</strong>(int[] array1, int[] array2)</pre>
+
+<p>Also write a test driver to test this method.</p>
+
+<h5>Hints</h5>
+<p>You need to use a temporary location to swap two storage locations.</p>
+<pre class="color-example">
+<span class="color-comment">// Swap item1 and item2</span>
+int item1, item2, temp;
+temp = item1;
+item1 = item2;
+item2 = item1;
+<span class="color-comment">// You CANNOT simply do: item1 = item2; item2 = item2;</span></pre>
+
+
+
+
+<h4><span class="font-code">reverse()</span> (Array &amp; Method)</h4>
+
+<p>Write a method called <code><strong>reverse()</strong></code>, which takes an array of <code>int</code> and reverse its contents. For example, the reverse of <code>[1,2,3,4]</code> is <code>[4,3,2,1]</code>. The method's signature is as follows:</p>
+<pre class="output">
+public static void <strong>reverse</strong>(int[] array)</pre>
+
+<p>Take note that the array passed into the method can be modified by the method (this is called &quot;<em>pass by reference</em>&quot;).  On the other hand, primitives passed into a method cannot be modified.  This is because a clone is created and passed into the method instead of the original copy (this is called &quot;<em>pass by value</em>&quot;).</p>
+<p>Also write a test driver to test this method.</p>
+
+<h5>Hints</h5>
+
+<ol>
+<li>You might use two indexes in the loop, one moving forward and one moving backward to point to the two elements to be swapped.
+<pre class="color-example">
+for (int fIdx = 0, bIdx = array.length - 1; fIdx &lt; bIdx; ++fIdx, --bIdx) {
+   <span class="color-comment">// Swap array[fIdx] and array[bIdx]</span>
+   <span class="color-comment">// Only need to transverse half of the array elements</span>
+}</pre>
+
+</li>
+<li>You need to use a temporary location to swap two storage locations.
+<pre class="color-example">
+<span class="color-comment">// Swap item1 and item2</span>
+int item1, item2, temp;
+temp = item1;
+item1 = item2;
+item2 = item1;
+<span class="color-comment">// You CANNOT simply do: item1 = item2; item2 = item2;</span></pre>
+</li>
+</ol>
+
+
+<h4><span class="font-code">GradesStatistics</span> (Array &amp; Method)</h4>
+
+<p>Write a program called <code><strong>GradesStatistics</strong></code>, which reads in <code><em>n</em></code> grades (of <code>int</code> between <code>0</code> and <code>100</code>, inclusive) and displays the <em>average</em>, <em>minimum</em>, <em>maximum</em>, <em>median</em> and <em>standard deviation</em>. Display the floating-point values upto 2 decimal  places.  Your output shall look like:</p>
+
+<pre class="output">
+Enter the number of students: <strong>4</strong>
+Enter the grade for student 1: <strong>50</strong>
+Enter the grade for student 2: <strong>51</strong>
+Enter the grade for student 3: <strong>56</strong>
+Enter the grade for student 4: <strong>53</strong>
+The grades are: [50, 51, 56, 53]
+The average is: 52.50
+The median is: 52.00
+The minimum is: 50
+The maximum is: 56
+The standard deviation is: 2.29</pre>
+
+<p> The formula for calculating standard deviation is:</p>
+<img class="image-left" src="images/ExerciseBasics_GradesAverage.png" alt="ExerciseBasics_GradesAverage.png" />
+
+<p><strong>Hints</strong>:</p>
+<pre class="color-example">
+public class <strong>GradesStatistics</strong> {
+   public static int[] grades;  <span class="color-comment">// Declare an int[], to be allocated later.
+                                // This array is accessible by all the methods.</span>
+   
+   public static void main(String[] args) {
+      readGrades();  <span class="color-comment">// Read and save the inputs in global int[] grades</span>
+      System.out.println(&quot;The grades are: &quot;);
+      print(grades);
+      System.out.println(&quot;The average is &quot; + average(grades));
+      System.out.println(&quot;The median is &quot; + median(grades));
+      System.out.println(&quot;The minimum is &quot; + min(grades));
+      System.out.println(&quot;The maximum is &quot; + max(grades));
+      System.out.println(&quot;The standard deviation is &quot; + stdDev(grades));
+   }
+   
+   <span class="color-comment">// Prompt user for the number of students and allocate the global &quot;grades&quot; array.
+   // Then, prompt user for grade, check for valid grade, and store in &quot;grades&quot;.
+</span>   public static void readGrades() { ....... }
+   
+   <span class="color-comment">// Print the given int array in the form of [x1, x2, x3,..., xn].</span>
+   public static void print(int[] array) { ....... }
+
+   <span class="color-comment">// Return the average value of the given int[]</span>
+   public static double average(int[] array) { ...... }
+   
+   <span class="color-comment">// Return the median value of the given int[]
+   // Median is the center element for odd-number array, 
+   // or average of the two center elements for even-number array.
+   // Use Arrays.sort(anArray) to sort anArray in place.</span>
+   public static double median(int[] array) { ...... }
+
+   <span class="color-comment">// Return the maximum value of the given int[]</span>
+   public static int max(int[] array) {
+      int max = array[0];   <span class="color-comment">// Assume that max is the first element</span>
+      <span class="color-comment">// From second element, if the element is more than max, set the max to this element.</span>
+      ......
+   }
+   
+   <span class="color-comment">// Return the minimum value of the given int[]</span>
+   public static int min(int[] array) { ....... }
+   
+   <span class="color-comment">// Return the standard deviation of the given int[]</span>
+   public static double stdDev(int[] array) { ....... }
+}</pre>
+
+<p>Take note that besides <code>readGrade()</code> that relies on global variable <code>grades</code>, all the methods are <em>self-contained general utilities</em> that operate on any given array.</p>
+
+<h4><span class="font-code">GradesHistogram</span> (Array &amp; Method)</h4>
+
+<p>Write a program called <code><strong>GradesHistogram</strong></code>, which reads in <code><em>n</em></code> grades (as in the previous exercise), and displays the horizontal and vertical histograms. For example:</p>
+
+
+<pre class="output">
+  0 -  9: ***
+ 10 - 19: ***
+ 20 - 29: 
+ 30 - 39: 
+ 40 - 49: *
+ 50 - 59: *****
+ 60 - 69: 
+ 70 - 79: 
+ 80 - 89: *
+ 90 -100: **
+
+                                *                           
+                                *                           
+  *     *                       *                           
+  *     *                       *                       *   
+  *     *                 *     *                 *     *   
+ 0-9  10-19 20-29 30-39 40-49 50-59 60-69 70-79 80-89 90-100</pre>
+
+<h5>Hints</h5>
+
+<p>See &quot;Code Example&quot;.</p>
+
+<h3 id="ExerciseCmdArgs">Exercises on Command-line Arguments</h3>
+
+<h4><span class="font-code">Arithmetic</span> (Command-Line Arguments)</h4>
+
+<p>Write a program called <code><strong>Arithmetic</strong></code> that takes three command-line arguments: two integers followed by an arithmetic operator (<code>+</code>, <code>-</code>, <code>*</code> or <code>/</code>).  The program shall perform the corresponding operation on the two integers and print the result.  For example:</p>
+<pre class="output">
+<strong>java Arithmetic 3 2 +</strong>
+3+2=5
+   
+<strong>java Arithmetic 3 2 -</strong>
+3-2=1
+   
+<strong>java Arithmetic 3 2 /</strong>
+3/2=1</pre>
+
+<h5>Hints</h5>
+
+<p>The method <code>main(String[] args)</code> takes an argument: &quot;an array of <code>String</code>&quot;, which is often (but not necessary) named <code>args</code>.  This parameter captures the command-line arguments supplied by the user when the program is invoked.  For example, if a user invokes:</p>
+<pre class="output">
+<strong>java Arithmetic 12345 4567 +</strong></pre>
+
+<p>The three command-line arguments <code>&quot;12345&quot;</code>, <code>&quot;4567&quot;</code> and <code>&quot;+&quot;</code> will be captured in a <code>String</code> array <code>{&quot;12345&quot;, &quot;4567&quot;, &quot;+&quot;}</code> and passed into the <code>main()</code> method as the argument <code>args</code>. That is,</p>
+<pre class="output">
+args is: {&quot;12345&quot;, &quot;4567&quot;, &quot;+&quot;}  <span class="color-comment">// args is a String array</span>
+args.length is: 3                <span class="color-comment">// length of the array</span>
+args[0] is: &quot;12345&quot;              <span class="color-comment">// 1st element of the String array</span>
+args[1] is: &quot;4567&quot;               <span class="color-comment">// 2nd element of the String array</span>
+args[2] is: &quot;+&quot;                  <span class="color-comment">// 3rd element of the String array</span>
+args[0].length() is: 5           <span class="color-comment">// length of 1st String element</span>
+args[1].length() is: 4           <span class="color-comment">// length of the 2nd String element</span>
+args[2].length() is: 1           <span class="color-comment">// length of the 3rd String element</span></pre>
+
+<pre class="color-example">
+public class <strong>Arithmetic</strong> {
+  public static void main (String[] args) {
+    int operand1, operand2;
+    char theOperator;
+  
+    <span class="color-comment">// Check if there are 3 command-line arguments in the
+    //  String[] args by using length variable of array.</span>
+    if (args.length != 3) {
+      System.err.println(&quot;Usage: java Arithmetic int1 int2 op&quot;);
+      return;
+    }
+   
+    <span class="color-comment">// Convert the 3 Strings args[0], args[1], args[2] to int and char.
+    // Use the Integer.parseInt(aStr) to convert a String to an int.</span>
+    operand1 = Integer.parseInt(args[0]);
+    operand2 = ......
+   
+    <span class="color-comment">// Get the operator, assumed to be the first character of
+    //  the 3rd string. Use method charAt() of String.</span>
+    theOperator = args[2].charAt(0);
+    System.out.print(args[0] + args[2] + args[1] + &quot;=&quot;);
+   
+    switch(theOperator) {
+      case ('-'): System.out.println(operand1 - operand2); break;
+      case ('+'): ......
+      case ('*'): ......
+      case ('/'): ......
+      default:
+        System.err.println(&quot;Error: invalid operator!&quot;); 
+    }
+  }
+}</pre>
+
+<p>Notes:</p>
+<ul>
+<li>To provide command-line arguments, use the &quot;cmd&quot; or &quot;terminal&quot; to run your program in the form &quot;<code>java <em>ClassName</em> <em>arg1</em> <em>arg2</em> ....</code>&quot;.</li>
+<li>To provide command-line arguments in Eclipse, right click the source code &rArr; &quot;Run As&quot; &rArr; &quot;Run Configurations...&quot; &rArr; Select &quot;Main&quot; and choose the proper main class &rArr; Select &quot;Arguments&quot; &rArr; Enter the command-line arguments, e.g., &quot;3 2 +&quot; in &quot;Program Arguments&quot;.</li>
+<li>To provide command-line arguments in NetBeans, right click the &quot;Project&quot; name &rArr; &quot;Set Configuration&quot; &rArr; &quot;Customize...&quot; &rArr; Select categories &quot;Run&quot; &rArr; Enter the command-line arguments, e.g., &quot;3 2 +&quot; in the &quot;Arguments&quot; box (but make sure you select the proper Main class).</li>
+</ul>
+
+<p>Question:  Try &quot;<code>java Arithmetic 2 4 *</code>&quot; (in CMD shell and Eclipse/NetBeans) and explain the result obtained. How to resolve this problem?</p>
+
+<p>In Windows' CMD shell, <code>*</code> is known as a wildcard character, that expands to give the list of file in the directory (called Shell Expansion). For example, &quot;<code>dir *.java</code>&quot; lists all the file with extension of &quot;<code>.java</code>&quot;. You could double-quote the * to prevent shell expansion. Eclipse has a bug in handling this, even * is double-quoted. NetBeans??</p>
+
+<h5><span class="font-code">SumDigits</span> (Command-line Arguments)</h5>
+
+<p>Write a program called <strong><code>SumDigits</code></strong> to sum up the individual digits of a positive integer, given in the command line.  The output shall look like:</p>
+<pre class="output">
+<strong>java SumDigits 12345
+</strong>The sum of digits = 1 + 2 + 3 + 4 + 5 = 15</pre>
+
+<h3 id="ExerciseMore">More (Difficult) Exercises</h3>
+
+<h4>JDK Source Code</h4>
+
+<p>Extract the source code of the class <code>Math</code> from the JDK source code (JDK Installed Directory &rArr; &quot;<code>lib</code>&quot; &rArr; &quot;<code>src.zip</code>&quot;  &rArr; &quot;<code>java.base</code>&quot;  &rArr; &quot;<code>java</code>&quot; &rArr; &quot;<code>lang</code>&quot; &rArr; &quot;<code>Math.java</code>&quot;).  Study how constants such as <code>E</code> and <code>PI</code> are defined. Also study how methods such as <code>abs()</code>, <code>max()</code>, <code>min()</code>, <code>toDegree()</code>, etc, are written.</p>
+<p>Also study the &quot;<code>Integer.java</code>&quot;, &quot;<code>String.java</code>&quot;.</p>
+
+<h4>Matrices (2D Arrays)</h4>
+
+<p>Similar to <code>Math</code> class, write a <code>Matrix</code> library that supports matrix operations (such as addition, subtraction, multiplication) via 2D arrays. The operations shall support both <code>double</code> and <code>int</code>. Also write a test class to exercise all the operations programmed.</p>
+
+<h5>Hints</h5>
+<pre class="color-example">
+public class <strong>Matrix</strong> {
+   <span class="color-comment">// Method signatures</span>
+   public static void <strong>print</strong>(int[][] m);
+   public static void <strong>print</strong>(double[][] m);
+   public static boolean <strong>haveSameDimension</strong>(int[][] m1, int[][] m2);  <span class="color-comment">// Used in add(), subtract()</span>
+   public static boolean <strong>haveSameDimension</strong>(double[][] m1, double[][] m2);
+   public static int[][] <strong>add</strong>(int[][] m1, int[][] m2);
+   public static double[][] <strong>add</strong>(double[][] m1, double[][] m2);
+   public static int[][] <strong>subtract</strong>(int[][] m1, int[][] m2);
+   public static double[][] <strong>subtract</strong>(double[][] m1, double[][] m2);
+   public static int[][] <strong>multiply</strong>(int[][] m1, int[][] m2);
+   public static double[][] <strong>multiply</strong>(double[][] m1, double[][] m2);
+   ......
+}</pre>
+
+<h4><span class="font-code">PrintAnimalPattern</span> (Special Characters and Escape Sequences)</h4>
+
+<p>Write a program called <strong><code>PrintAnimalPattern</code></strong>, which uses <code>println()</code> to produce this pattern:</p>
+<pre class="output">
+          '__'
+          (©©)
+  /========\/
+ / || %% ||
+*  ||----||
+   ¥¥    ¥¥
+   &quot;&quot;    &quot;&quot;</pre>
+
+<h5>Hints</h5>
+<ol>
+<li>Use escape sequence <code>\uhhhh</code> where <code>hhhh</code> are four hex digits to display Unicode characters such as ¥ and ©.  ¥ is <code>165</code> (<code>00A5H</code>) and © is <code>169</code> (<code>00A9H</code>) in both ISO-8859-1 (Latin-1) and Unicode character sets.</li>
+<li>Double-quote (<code>&quot;</code>) and black-slash (<code>\</code>) require escape sequence inside a String. Single quote (<code>'</code>) does not require escape sign.</li>
+</ol>
+
+<h5>Try</h5>
+
+<ol>
+<li>Print the same pattern using <code>printf()</code>. (Hints: Need to use <code>%%</code> to print a <code>%</code> in <code>printf()</code> because <code>%</code> is the suffix for format specifier.)</li>
+</ol>
+
+<h4>Print Patterns (nested-loop)</h4>
+
+<p>Write a method to print each of the followings patterns using nested loops in a class called <code><strong>PrintPatterns</strong></code>. The program shall prompt user for the size of the pattern. The signatures of the methods are:</p>
+<pre class="color-syntax">
+public static void <strong>printPatternX</strong>(int size);  <span class="color-comment">// X: A, B, C,...; size is a positive integer.</span></pre>
+
+<pre class="output">
+# # # # # # # # # # #                #                          #
+  # # # # # # # # #                # # #                      # # #
+    # # # # # # #                # # # # #                  # # # # #
+      # # # # #                # # # # # # #              # # # # # # #
+        # # #                # # # # # # # # #          # # # # # # # # #
+          #                # # # # # # # # # # #      # # # # # # # # # # #
+         (a)                        (b)                 # # # # # # # # #
+                                                          # # # # # # #
+                                                            # # # # #
+                                                              # # #
+                                                                #
+                                                               (c)
+   
+1                    1 2 3 4 5 6 7 8                    1      8 7 6 5 4 3 2 1
+1 2                    1 2 3 4 5 6 7                  2 1      7 6 5 4 3 2 1
+1 2 3                    1 2 3 4 5 6                3 2 1      6 5 4 3 2 1
+1 2 3 4                    1 2 3 4 5              4 3 2 1      5 4 3 2 1
+1 2 3 4 5                    1 2 3 4            5 4 3 2 1      4 3 2 1
+1 2 3 4 5 6                    1 2 3          6 5 4 3 2 1      3 2 1
+1 2 3 4 5 6 7                    1 2        7 6 5 4 3 2 1      2 1
+1 2 3 4 5 6 7 8                    1      8 7 6 5 4 3 2 1      1
+     (d)                  (e)                    (f)                (g)
+   
+              1                    1 2 3 4 5 6 7 8 7 6 5 4 3 2 1
+            1 2 1                    1 2 3 4 5 6 7 6 5 4 3 2 1
+          1 2 3 2 1                    1 2 3 4 5 6 5 4 3 2 1
+        1 2 3 4 3 2 1                    1 2 3 4 5 4 3 2 1
+      1 2 3 4 5 4 3 2 1                    1 2 3 4 3 2 1
+    1 2 3 4 5 6 5 4 3 2 1                    1 2 3 2 1
+  1 2 3 4 5 6 7 6 5 4 3 2 1                    1 2 1
+1 2 3 4 5 6 7 8 7 6 5 4 3 2 1                    1
+             (h)                                (i)
+   
+1                           1      1 2 3 4 5 6 7 8 7 6 5 4 3 2 1
+1 2                       2 1      1 2 3 4 5 6 7   7 6 5 4 3 2 1
+1 2 3                   3 2 1      1 2 3 4 5 6       6 5 4 3 2 1
+1 2 3 4               4 3 2 1      1 2 3 4 5           5 4 3 2 1
+1 2 3 4 5           5 4 3 2 1      1 2 3 4               4 3 2 1
+1 2 3 4 5 6       6 5 4 3 2 1      1 2 3                   3 2 1
+1 2 3 4 5 6 7   7 6 5 4 3 2 1      1 2                       2 1
+1 2 3 4 5 6 7 8 7 6 5 4 3 2 1      1                           1
+             (j)                                (k)
+   
+              1
+            2 3 2
+          3 4 5 4 3
+        4 5 6 7 6 5 4
+      5 6 7 8 9 8 7 6 5
+    6 7 8 9 0 1 0 9 8 7 6
+  7 8 9 0 1 2 3 2 1 0 9 8 7 
+8 9 0 1 2 3 4 5 4 3 2 1 0 9 8
+             (l)</pre>
+
+<h4>Print Triangles (nested-loop)</h4>
+
+<p>Write a method to print each of the following patterns using nested-loops in a class called <strong><code>PrintTriangles</code></strong>. The program shall prompt user for the number of rows. The signatures of the methods are:</p>
+<pre class="color-syntax">
+public static void <strong>printXxx</strong>(int numRows);  <span class="color-comment">// Xxx is the pattern's name</span></pre>
+
+<pre class="output">
+                            1
+                        1   2   1
+                    1   2   4   2   1
+                1   2   4   8   4   2   1
+            1   2   4   8  16   8   4   2   1
+        1   2   4   8  16  32  16   8   4   2   1
+    1   2   4   8  16  32  64  32  16   8   4   2   1
+1   2   4   8  16  32  64 128  64  32  16   8   4   2   1
+                  (a) PowerOf2Triangle
+  
+1                                      1
+1  1                                 1   1
+1  2  1                            1   2   1
+1  3  3  1                       1   3   3   1
+1  4  6  4  1                  1   4   6   4   1
+1  5 10 10  5  1             1   5  10  10   5   1
+1  6 15 20 15  6  1        1   6  15  20  15   6   1
+(b) PascalTriangle1           (c) PascalTriangle2</pre>
+
+
+<h4>Trigonometric Series</h4>
+
+<p>Write a method to compute <code>sin(x)</code> and <code>cos(x)</code> using the following series expansion, in a class called <strong><code>TrigonometricSeries</code></strong>. The signatures of the methods are:</p>
+<pre class="color-syntax">
+public static double <strong>sin</strong>(double x, int numTerms);   <span class="color-comment">// x in radians, NOT degrees</span>
+public static double <strong>cos</strong>(double x, int numTerms);</pre>
+<img class="image-center" src="images/ExerciseBasics_TrigonometricSeries.png" alt="ExerciseBasics_TrigonometricSeries.png" />
+
+<p>Compare the values computed using the series with the JDK methods <code>Math.sin()</code>, <code>Math.cos()</code> at <code>x=0</code>, <code>&pi;/6</code>, <code>&pi;/4</code>, <code>&pi;/3</code>, <code>&pi;/2</code> using various numbers of terms.</p>
+
+<h5>Hints</h5>
+
+<p>Do not use <code>int</code> to  compute the factorial; as factorial of 13 is outside the <code>int</code> range. Avoid generating large numerator and denominator. Use <code>double</code> to compute the terms as:</p>
+<img class="image-center" src="images/ExerciseBasics_TrigonometricSeriesHint.png" alt="ExerciseBasics_TrigonometricSeriesHint.png" />
+
+<h4>Exponential Series</h4>
+
+<p>Write a method to compute <code>e</code> and <code>exp(x)</code> using the following series expansion, in a class called <strong><code>ExponentialSeries</code></strong>. The signatures of the methods are:</p>
+<pre class="color-syntax">
+public static double <strong>exp</strong>(int numTerms);   <span class="color-comment">// x in radians</span>
+public static double <strong>exp</strong>(double x, int numTerms);</pre>
+<img class="image-center" src="images/ExerciseBasics_ExponentialSeriesHint.png" alt="ExerciseBasics_ExponentialSeriesHint.png" />
+
+<h4>Special Series</h4>
+
+<p>Write a method to compute the sum of the series in a class called <code>SpecialSeries</code>.  The signature of the method is:</p>
+<pre class="color-syntax">
+public static double <strong>specialSeries</strong>(double x, int numTerms);</pre>
+<img class="image-left" src="images/ExerciseBasics_Series.png" alt="ExerciseBasics_Series.png" />
+
+<h4><span class="font-code">FactorialInt</span> (Handling Overflow)</h4>
+
+<p>Write a program called <strong><code>FactorialInt</code></strong> to list all the factorials that can be expressed as an <code>int</code> (i.e., 32-bit signed integer in the range of <code>[-2147483648, 2147483647]</code>).  Your output shall look like:</p>
+
+<pre class="output">
+The factorial of 1 is 1
+The factorial of 2 is 2
+...
+The factorial of 12 is 479001600
+The factorial of 13 is out of range</pre>
+
+<h5>Hints</h5>
+<p>The maximum and minimum values of a 32-bit <code>int</code> are kept in constants <code>Integer.MAX_VALUE</code> and <code>Integer.MIN_VALUE</code>, respectively.  Try these statements:</p>
+<pre class="color-example">
+System.out.println(Integer.MAX_VALUE);
+System.out.println(Integer.MIN_VALUE);
+System.out.println(Integer.MAX_VALUE + 1);</pre>
+
+<p>Take note that in the third statement, Java Runtime does not flag out an overflow error, but silently wraps the number around. Hence, you cannot use <code>F(n) * (n+1) &gt; Integer.MAX_VALUE</code> to check for overflow.  Instead, overflow occurs for <code>F(n+1)</code> if <code>(Integer.MAX_VALUE / Factorial(n)) &lt; (n+1)</code>, i.e., no more room for the next number.</p>
+
+<h5>Try</h5>
+<p>Modify your program called <strong><code>FactorialLong</code></strong> to list all the factorial that can be expressed as a <code>long</code> (64-bit signed integer).  The maximum value for <code>long</code> is kept in a constant called <code>Long.MAX_VALUE</code>.</p>
+
+<h4><span class="font-code">FibonacciInt</span> (Handling Overflow)</h4>
+
+<p>Write a program called <code><strong>FibonacciInt</strong></code> to list all the Fibonacci numbers, which can be expressed as an <code>int</code> (i.e., 32-bit signed integer in the range of <code>[-2147483648, 2147483647]</code>). The output shall look like:</p>
+<pre class="output">
+F(0) = 1
+F(1) = 1
+F(2) = 2
+...
+F(45) = 1836311903
+F(46) is out of the range of int</pre>
+
+<h5>Hints</h5>
+
+<p>The maximum and minimum values of a 32-bit <code>int</code> are kept in constants <code>Integer.MAX_VALUE</code> and <code>Integer.MIN_VALUE</code>, respectively. Try these statements:</p>
+<pre class="color-example">
+System.out.println(Integer.MAX_VALUE);
+System.out.println(Integer.MIN_VALUE);
+System.out.println(Integer.MAX_VALUE + 1);</pre>
+
+<p>Take note that in the third statement, Java Runtime does not flag out an overflow error, but silently wraps the number around. Hence, you cannot use <code>F(n) = F(n-1) + F(n-2) &gt; Integer.MAX_VALUE</code> to check for overflow.  Instead, overflow occurs for <code>F(n)</code> if <code>Integer.MAX_VALUE – F(n-1) &lt; F(n-2)</code> (i.e., no more room for the next Fibonacci number).</p>
+
+<h5>Try</h5>
+<p>Write a similar program called <code><strong>TribonacciInt</strong></code> for Tribonacci numbers.</p>
+
+<h4>Number System Conversion</h4>
+
+<p>Write a method call <code><strong>toRadix()</strong></code> which converts a positive integer from one radix into another.  The method has the following header:</p>
+<pre class="color-syntax">
+public static String <strong>toRadix</strong>(String in, int inRadix, int outRadix)  <span class="color-comment">// The input and output are treated as String.</span></pre>
+
+<p>Write a program called <code><strong>NumberConversion</strong></code>, which prompts the user for an input string, an input radix, and an output radix, and display the converted number.  The output shall look like:</p>
+<pre class="output">
+Enter a number and radix: <strong>A1B2</strong>
+Enter the input radix: <strong>16</strong>
+Enter the output radix: <strong>2</strong>
+&quot;A1B2&quot; in radix 16 is &quot;1010000110110010&quot; in radix 2.</pre>
+
+<h4><span class="font-code">NumberGuess</span></h4>
+
+<p>Write a program called <strong><code>NumberGuess</code></strong> to play the number guessing game.  The program shall generate a random number between <code>0</code> and <code>99</code>. The player inputs his/her guess, and the program shall response with &quot;Try higher&quot;, &quot;Try lower&quot; or &quot;You got it in n trials&quot; accordingly. For example:</p>
+<pre class="output">
+<strong>java NumberGuess</strong>
+Key in your guess:
+<strong>50</strong>
+Try higher
+<strong>70</strong>
+Try lower
+<strong>65</strong>
+Try lower
+<strong>61</strong>
+You got it in 4 trials!</pre>
+
+<h5>Hints</h5>
+<p>Use <code>Math.random()</code> to produce a random number in <code>double</code> between <code>0.0</code> (inclusive) and <code>1.0</code> (exclusive).  To produce an int between <code>0</code> and <code>99</code>, use:</p>
+<pre class="color-example">
+final int SECRET_NUMBER = (int)(Math.random()*100);  <span class="color-comment">// truncate to int</span></pre>
+
+<h4><span class="font-code">WordGuess</span></h4>
+
+<p>Write a program called <code><strong>WordGuess</strong></code> to guess a word by trying to guess the individual characters. The word to be guessed shall be provided using the command-line argument.  Your program shall look like:</p>
+<pre class="output">
+<strong>java WordGuess testing</strong>
+Key in one character or your guess word: <strong>t</strong>
+Trial 1: t__t___
+Key in one character or your guess word: <strong>g</strong>
+Trial 2: t__t__g
+Key in one character or your guess word: <strong>e</strong>
+Trial 3: te_t__g
+Key in one character or your guess word: <strong>testing</strong>
+Congratulation!
+You got in 4 trials</pre>
+
+<h5>Hints</h5>
+<ol>
+<li>Set up a <code>boolean</code> array (of the length of the word to be guessed) to indicate the positions of the word that have been guessed correctly.</li>
+<li>Check the length of the input <code>String</code> to determine whether the player enters a single character or a guessed word. If the player enters a single character, check it against the word to be guessed, and update the <code>boolean</code> array that keeping the result so far.</li>
+</ol>
+
+<h5>Try</h5>
+<p>Try retrieving the word to be guessed from a text file (or a dictionary) randomly.</p>
+
+<h4 id="dateutil"><span class="font-code">DateUtil</span></h4>
+
+<p>Complete the following methods in a class called <code><strong>DateUtil</strong></code>:</p>
+
+<ul>
+<li><code>boolean isLeapYear(int year)</code>: returns <code>true</code> if the given <code>year</code> is a leap year. A year is a leap year if it is divisible by 4 but not by 100, or it is divisible by 400.</li>
+
+<li><code>boolean isValidDate(int year, int month, int day)</code>: returns <code>true</code> if the given <code>year</code>, <code>month</code> and <code>day</code> constitute a given date.  Assume that year is between 1 and 9999, month is between 1 (Jan) to 12 (Dec) and day shall be between 1 and 28|29|30|31 depending on the month and whether it is a leap year.</li>
+
+<li><code>int getDayOfWeek(int year, int month, int day)</code>: returns the day of the week, where 0 for SUN, 1 for MON, ..., 6 for SAT, for the given date. Assume that the date is valid.</li>
+
+<li><code>String toString(int year, int month, int day)</code>: prints the given date in the format &quot;<code>xxxday d mmm yyyy</code>&quot;, e.g., &quot;Tuesday 14 Feb 2012&quot;.  Assume that the given date is valid.</li>
+</ul>
+
+<h5>Hints</h5>
+
+<p>To find the day of the week (Reference: Wiki &quot;Determination of the day of the week&quot;):</p>
+<ol>
+<li>Based on the first two digit of the year, get the number from the following &quot;century&quot; table.
+  <table class="table-zebra">
+<tr>
+<th>1700-</th>
+<th>1800-</th>
+<th>1900-</th>
+<th>2000-</th>
+<th>2100-</th>
+<th>2200-</th>
+<th>2300-</th>
+<th>2400-</th>
+</tr>
+
+<tr>
+<td class="text-center">4</td>
+<td class="text-center">2</td>
+<td class="text-center">0</td>
+<td class="text-center">6</td>
+<td class="text-center">4</td>
+<td class="text-center">2</td>
+<td class="text-center">0</td>
+<td class="text-center">6</td>
+</tr>
+</table>
+Take note that the entries 4, 2, 0, 6 repeat.</li>
+<li>Add to the last two digit of the year.</li>
+<li>Add to &quot;the last two digit of the year divide by 4, truncate the fractional part&quot;.</li>
+<li>Add to the number obtained from the following month table:
+
+<table class="table-zebra">
+<tr>
+<th>&nbsp;</th>
+<th>Jan</th>
+<th>Feb</th>
+<th>Mar</th>
+<th>Apr</th>
+<th>May</th>
+<th>Jun</th>
+<th>Jul</th>
+<th>Aug</th>
+<th>Sep</th>
+<th>Oct</th>
+<th>Nov</th>
+<th>Dec</th>
+</tr>
+
+<tr>
+<td>Non-Leap Year</td>
+<td class="text-center">0</td>
+<td class="text-center">3</td>
+<td class="text-center">3</td>
+<td class="text-center">6</td>
+<td class="text-center">1</td>
+<td class="text-center">4</td>
+<td class="text-center">6</td>
+<td class="text-center">2</td>
+<td class="text-center">5</td>
+<td class="text-center">0</td>
+<td class="text-center">3</td>
+<td class="text-center">5</td>
+</tr>
+
+<tr>
+<td>Leap Year</td>
+<td class="text-center">6</td>
+<td class="text-center">2</td>
+<td class="text-center" colspan="10">same as above</td>
+</tr>
+</table></li>
+
+<li>Add to the day.</li>
+<li>The sum modulus 7 gives the day of the week, where 0 for SUN, 1 for MON, ..., 6 for SAT.</li></ol>
+
+<p>For example: 2012, Feb, 17</p>
+<pre class="color-example-light">
+(6 + 12 + 12/4 + 2 + 17) % 7 = 5 (Fri)</pre>
+
+<p>The skeleton of the program is as follows:</p>
+<pre class="color-example">
+<span class="color-comment">/* Utilities for Date Manipulation */</span>
+public class <strong>DateUtil</strong> {
+ 
+   <span class="color-comment">// Month's name – for printing</span>
+   public static String[] strMonths
+      = {&quot;Jan&quot;, &quot;Feb&quot;, &quot;Mar&quot;, &quot;Apr&quot;, &quot;May&quot;, &quot;Jun&quot;,
+         &quot;Jul&quot;, &quot;Aug&quot;, &quot;Sep&quot;, &quot;Oct&quot;, &quot;Nov&quot;, &quot;Dec&quot;};
+ 
+   <span class="color-comment">// Number of days in each month (for non-leap years)</span>
+   public static int[] daysInMonths
+      = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+ 
+   <span class="color-comment">// Returns true if the given year is a leap year</span>
+   public static boolean <strong>isLeapYear</strong>(int year) { ...... }
+ 
+   <span class="color-comment">// Return true if the given year, month, day is a valid date</span>
+   <span class="color-comment">// year: 1-9999</span>
+   <span class="color-comment">// month: 1(Jan)-12(Dec)</span>
+   <span class="color-comment">// day: 1-28|29|30|31. The last day depends on year and month</span>
+   public static boolean <strong>isValidDate</strong>(int year, int month, int day) { ...... }
+ 
+   <span class="color-comment">// Return the day of the week, 0:Sun, 1:Mon, ..., 6:Sat</span>
+   public static int <strong>getDayOfWeek</strong>(int year, int month, int day) { ...... }
+ 
+   <span class="color-comment">// Return String &quot;xxxday d mmm yyyy&quot; (e.g., Wednesday 29 Feb 2012)</span>
+   public static String <strong>printDate</strong>(int year, int month, int day) { ...... }
+ 
+   <span class="color-comment">// Test Driver</span>
+   public static void main(String[] args) {
+      System.out.println(isLeapYear(1900));  <span class="color-comment">// false</span>
+      System.out.println(isLeapYear(2000));  <span class="color-comment">// true</span>
+      System.out.println(isLeapYear(2011));  <span class="color-comment">// false</span>
+      System.out.println(isLeapYear(2012));  <span class="color-comment">// true</span>
+ 
+      System.out.println(isValidDate(2012, 2, 29));  <span class="color-comment">// true</span>
+      System.out.println(isValidDate(2011, 2, 29));  <span class="color-comment">// false</span>
+      System.out.println(isValidDate(2099, 12, 31)); <span class="color-comment">// true</span>
+      System.out.println(isValidDate(2099, 12, 32)); <span class="color-comment">// false</span>
+ 
+      System.out.println(getDayOfWeek(1982, 4, 24));  <span class="color-comment">// 6:Sat</span>
+      System.out.println(getDayOfWeek(2000, 1, 1));   <span class="color-comment">// 6:Sat</span>
+      System.out.println(getDayOfWeek(2054, 6, 19));  <span class="color-comment">// 5:Fri</span>
+      System.out.println(getDayOfWeek(2012, 2, 17));  <span class="color-comment">// 5:Fri</span>
+ 
+      System.out.println(toString(2012, 2, 14)); <span class="color-comment">// Tuesday 14 Feb 2012</span>
+   }
+}</pre>
+
+<h5>Notes</h5>
+<p>You can compare the day obtained with the Java's <code>Calendar</code> class as follows:</p>
+<pre class="color-example">
+<span class="color-comment">// Construct a Calendar instance with the given year, month and day</span>
+Calendar cal = new GregorianCalendar(year, month - 1, day);  <span class="color-comment">// month is 0-based</span>
+<span class="color-comment">// Get the day of the week number: 1 (Sunday) to 7 (Saturday)</span>
+int dayNumber = cal.get(Calendar.DAY_OF_WEEK);
+String[] calendarDays = { &quot;Sunday&quot;, &quot;Monday&quot;, &quot;Tuesday&quot;, &quot;Wednesday&quot;,
+                          &quot;Thursday&quot;, &quot;Friday&quot;, &quot;Saturday&quot; };
+<span class="color-comment">// Print result</span>
+System.out.println(&quot;It is &quot; + calendarDays[dayNumber - 1]);</pre>
+
+<p>The calendar we used today is known as <em>Gregorian calendar</em>, which came into effect in October 15, 1582 in some countries and later in other countries. It replaces the <em>Julian calendar</em>. 10 days were removed from the calendar, i.e., October 4, 1582 (Julian) was followed by October 15, 1582   (Gregorian). The only difference between the Gregorian   and the Julian calendar is the &quot;leap-year rule&quot;. In Julian calendar, every four years is a leap year. In Gregorian calendar, a leap year is a year that is divisible by 4 but not divisible by 100, or it is divisible by 400, i.e., the Gregorian calendar omits   century   years which are not divisible by 400. Furthermore, Julian calendar considers the first day of the year as march 25th, instead of January 1st.</p>
+<p>This above algorithm work for Gregorian dates only. It is difficult to modify the above algorithm to handle pre-Gregorian dates. A better algorithm is to find the number of days from a known date.</p>
+
+<h3>Exercises on Recursion</h3>
+
+<p>In programming, a recursive function (or method) calls itself. The classical example is <code>factorial(n)</code>, which can be defined recursively as <code>f(n)=n*f(n-1)</code>. Nonetheless, it is important to take note that a recursive function should have a terminating condition (or base case), in the case of factorial, <code>f(0)=1</code>. Hence, the full definition is:</p>
+<pre class="color-example">
+factorial(n) = 1, for n = 0
+factorial(n) = n * factorial(n-1), for all n &gt; 1</pre>
+<p>For example, suppose <code>n = 5</code>:</p>
+<pre class="color-example">
+<span class="color-comment">// Recursive call</span>
+factorial(5) = 5 * factorial(4)
+factorial(4) = 4 * factorial(3)
+factorial(3) = 3 * factorial(2)
+factorial(2) = 2 * factorial(1)
+factorial(1) = 1 * factorial(0)
+factorial(0) = 1  <span class="color-comment">// Base case</span>
+<span class="color-comment">// Unwinding</span>
+factorial(1) = 1 * 1 = 1
+factorial(2) = 2 * 1 = 2
+factorial(3) = 3 * 2 = 6
+factorial(4) = 4 * 6 = 24
+factorial(5) = 5 * 24 = 120 (DONE)</pre>
+
+<h4>Factorial Recursive</h4>
+
+<p>Write a <em>recursive</em> method called <code>factorial()</code> to compute the factorial of the given integer.</p>
+<pre class="color-example">
+public static int <strong>factorial</strong>(int n)</pre>
+
+<p>The recursive algorithm is:</p>
+<pre class="color-example">
+factorial(n) = 1, if n = 0
+factorial(n) = n * factorial(n-1), if n &gt; 0</pre>
+
+<p>Compare your code with the <em>iterative</em> version of the <code>factorial()</code>:</p>
+<pre class="color-example">
+factorial(n) = 1*2*3*...*n
+</pre>
+
+<h5>Hints</h5>
+
+<p>Writing recursive function is straight forward.  You simply translate the recursive definition into code with <code>return</code>.</p>
+
+<pre class="color-example">
+<span class="color-comment">// Return the factorial of the given integer, recursively</span>
+public static int factorial(int n) {
+   if (n == 0) {
+      return 1;   <span class="color-comment">// base case</span>
+   } else {
+      return n * factorial(n-1);  <span class="color-comment">// call itself</span>
+   }
+   <span class="color-comment">// or one line</span>r
+   // return (n == 0) ? 1 : n*factorial(n-1);
+}</pre>
+
+<h5>Notes</h5>
+<ol>
+<li>Recursive version is often much shorter.</li>
+<li>The recursive version uses much more computational and storage resources, and it need to save its current states before each successive recursive call, so as to unwind later.</li>
+</ol>
+
+<h4>Fibonacci (Recursive)</h4>
+
+<p>Write a <em>recursive</em> method to compute the Fibonacci number of n, defined as follows:</p>
+
+<pre class="color-example">
+F(0) = 0
+F(1) = 1
+F(n) = F(n-1) + F(n-2)  for n &gt;= 2</pre>
+
+<p>Compare the recursive version with the <em>iterative</em> version written earlier.</p>
+
+<h5>Hints</h5>
+
+<pre class="color-example">
+<span class="color-comment">// Translate the recursive definition into code with return statements</span>
+public static int fibonacci(int n) {
+   if (n == 0) {
+      return 0;
+   } else if (n == 1) {
+      return 1;
+   } else {
+      return fibonacci(n-1) + fibonacci(n-2);
+   }
+}</pre>
+
+<h4>Length of a Running Number Sequence (Recursive)</h4>
+
+<p>A special number sequence is defined as follows:</p>
+
+<pre class="color-example">
+S(1) = 1
+S(2) = 12
+S(3) = 123
+S(4) = 1234
+......
+S(9) = 123456789         <span class="color-comment">// length is 9</span>
+S(10) = 12345678910      <span class="color-comment">// length is 11</span>
+S(11) = 1234567891011    <span class="color-comment">// length is 13</span>
+S(12) = 123456789101112  <span class="color-comment">// length is 15</span>
+......</pre>
+
+<p>Write a <em>recursive</em> method to compute the length of <code>S(n)</code>, defined as follows:</p>
+<pre class="color-syntax">
+len(1) = 1
+len(n) = len(n-1) + numOfDigits(n)</pre>
+
+<p>Also write an <em>iterative</em> version.</p>
+
+<h4>GCD (Recursive)</h4>
+
+<p>Write a recursive method called <code>gcd()</code> to compute the greatest common divisor of two given integers.</p>
+<pre class="color-example">
+public static void int gcd(int a, int b)
+
+gcd(a,b) = a, if b = 0
+gcd(a,b) = gcd(b, remainder(a,b)), if b &gt; 0</pre>
+
+<h4>Tower of Hanoi (Recursive)</h4>
+<p>A classical recursive problem [TODO]</p>
+
+
+<h3 id="ExerciseSortSearch">Exercises on Algorithms - Sorting and Searching</h3>
+
+<p>Efficient sorting and searching are big topics, typically covered in a course called &quot;Data Structures and Algorithms&quot;. There are many searching and sorting algorithms available, with their respective strengths and weaknesses. See Wikipedia &quot;Sorting Algorithms&quot; and &quot;Searching Algorithms&quot; for the algorithms, examples and illustrations.</p>
+<p>JDK provides searching and sorting utilities in the <code>Arrays</code> class (in package <code>java.util</code>), such as <code>Arrays.sort()</code> and <code>Arrays.binarySearch()</code> - you don't have to write your searching and sorting in your production program. These exercises are for academic purpose and for you to gain some understandings and practices on these algorithms.</p>
+
+<h4>Linear Search</h4>
+
+<p>Write the following linear search methods to search for a <code>key</code> value in an <code>array</code>, by comparing each item with the search <code>key</code> in the linear manner. Linear search is applicable to unsorted list. (Reference: Wikipedia &quot;Linear Search&quot;.)  </p>
+
+<pre class="color-example">
+<span class="color-comment">// Return true if the key is found inside the array</span>
+public static boolean <strong>linearSearch</strong>(int[] array, int key)
+
+<span class="color-comment">// Return the array index, if key is found; or 0 otherwise</span>
+public static int <strong>linearSearchIndex</strong>(int[] array, int key)</pre>
+
+<p>Also write a test driver to test the methods.</p>
+
+<h4>Recursive Binary Search</h4>
+
+<p>(Reference: Wikipedia &quot;Binary Search&quot;) Binary search is only applicable to a sorted list. For example, suppose that we want to search for the item <code>18<span class="color-comment"></span></code> in the list <code>[11 14 16 18 20 25 28 30 34 40 45]</code>:</p>
+
+<pre class="color-example">Create two indexes: firstIdx and lastIdx , initially pointing at the first and last elements
+[11 14 16 18 20 25 28 30 34 40 45]
+  F              M              L
+Compute middleIdx = (firstIdx + lastIdx) / 2
+Compare the key (K) with the middle element (M)
+If K = M, return true
+else if K &lt; M, set firstIdx = middleIndex
+else if K &gt; M, set firstIdx = middleIndex
+{11 14 16 18 20 25 28 30 34 40 45}
+  F     M        L
+Recursively repeat the search between the new firstIndex and lastIndex.
+Terminate with not found when firstIndex = lastIndex.
+{11 14 16 18 20 25 28 30 34 40 45}
+        F  M     L</pre>
+
+
+<p>Write a recursive function called <code><strong>binarySearch()</strong></code> as follows:</p>
+<pre class="color-example">
+<span class="color-comment">// Return true if key is found in the array in the range of fromIdx (inclusive) to toIdx (exclusive)</span>
+public boolean <strong>binarySearch</strong>(int[] array, int key, int fromIdx, int toIdx)</pre>
+
+<p>Use the following pseudocode implementation:</p>
+<pre class="color-example">
+If fromIdx = toIdx - 1   <span class="color-comment">// Terminating one-element list</span>
+   if key = array[fromIdx], return true
+   else, return false (not found)
+else
+   middleIdx = (fromIdx + toIdx) / 2
+   if key = array[middleIdx], return true
+   else if key &lt; array[middleIdx], toIdx = middleIdx
+   else firstIdx = middleIdx + 1
+   binarySearch(array, key, fromIdx, toIdx)  <span class="color-comment">// recursive call</span></pre>
+
+<p>Also write an overloaded method which uses the above to search the entire array:</p>
+
+<pre class="color-example">
+<span class="color-comment">// Return true if key is found in the array</span>
+public boolean binarySearch(int[] array, int key)</pre>
+
+<p>Write a test driver to test the methods.</p>
+
+<h4>Bubble Sort</h4>
+
+<p>(Reference: Wikipedia &quot;Bubble Sort&quot;) The principle of bubble sort is to scan the elements from left-to-right, and whenever two adjacent elements are out-of-order, they are swapped. Repeat the passes until no swap are needed.</p>
+<p>For example, given the list <code>[9 2 4 1 5]</code>, to sort in ascending order:</p>
+
+<pre class="color-example">
+Pass 1:
+<span class="color-new">9 2</span> 4 1 5 -&gt; <span class="color-new">2 9</span> 4 1 5
+2 <span class="color-new">9 4</span> 1 5 -&gt; 2 <span class="color-new">4 9</span> 1 5
+2 4 <span class="color-new">9 1</span> 5 -&gt; 2 4 <span class="color-new">1 9</span> 5
+2 4 1 <span class="color-new">9 5</span> -&gt; 2 4 1 <span class="color-new">5 <span class="underline">9</span></span> (After Pass 1, the largest item sorted on the right - bubble to the right)
+Pass 2:
+<span class="color-new">2 4</span> 1 5 9 -&gt; <span class="color-new">2 4</span> 1 5 9
+2 <span class="color-new">4 1</span> 5 9 -&gt; 2 <span class="color-new">1 4</span> 5 9
+2 1 <span class="color-new">4 5</span> 9 -&gt; 2 1 <span class="color-new">4 5</span> 9
+2 1 4 <span class="color-new">5 9</span> -&gt; 2 1 4 <span class="color-new"><span class="underline">5 9</span></span> (After Pass 2, the 2 largest items sorted on the right)
+Pass 3:
+<span class="color-new">2 1</span> 4 5 9 -&gt; <span class="color-new">1 2</span> 4 5 9
+1 <span class="color-new">2 4</span> 5 9 -&gt; 1 <span class="color-new">2 4</span> 5 9
+1 2 <span class="color-new">4 5</span> 9 -&gt; 1 2 <span class="color-new">4 5</span> 9
+1 2 4 <span class="color-new">5 9</span> -&gt; 1 2 <span class="underline">4 <span class="color-new">5 9</span></span> (After Pass 3, the 3 largest items sorted on the right)
+Pass 4:
+<span class="color-new">1 2</span> 4 5 9 -&gt; <span class="color-new">1 2</span> 4 5 9
+1 <span class="color-new">2 4</span> 5 9 -&gt; 1 <span class="color-new">2 4</span> 5 9
+1 2 <span class="color-new">4 5</span> 9 -&gt; 1 2 <span class="color-new">4 5</span> 9
+1 2 4 <span class="color-new">5 9</span> -&gt; 1 <span class="underline">2 4 <span class="color-new">5 9</span></span> (After Pass 4, the 4 largest items sorted on the right)
+No Swap in Pass 4. Done.</pre>
+
+<p>See Wikipedia &quot;Bubble Sort&quot; for more examples and illustration.</p>
+<p>Write a method to sort an <code>int</code> array (in place) with the following signature:</p>
+<pre class="color-example">
+public static void <strong>bubbleSort</strong>(int[] array)</pre>
+
+<p>Use the following pseudocode implementation:</p>
+
+<pre class="color-example">
+function bubbleSort(array)
+   n = length(array)
+   boolean swapped    <span class="color-comment">// boolean flag to indicate swapping occurred during a pass</span>
+   do {
+      swapped = false  <span class="color-comment">// reset for each pass</span>
+      for (i = 1; i &lt; n; ++i) {
+         <span class="color-comment">// Swap if this pair is out of order</span>
+         if array[i-1] &gt; array[i] {
+<span class="color-comment"></span>            swap( A[i-1], A[i] )
+            swapped = true   <span class="color-comment">// update flag</span>
+         }
+      }
+      n = n - 1  <span class="color-comment">// One item sorted after each pass</span>
+   } while (swapped)  <span class="color-comment">// repeat another pass if swapping occurred, otherwise done</span>
+</pre>
+
+<h4>Selection Sort</h4>
+
+<p>(Reference: Wikipedia &quot;Selection Sort&quot;) This algorithm divides the lists into two parts: the left-sublist of items already sorted, and the right-sublist for the remaining items. Initially, the left-sorted-sublist is empty, while the right-unsorted-sublist is the entire list. The algorithm proceeds by finding the smallest (or largest) items from the right-unsorted-sublist, swapping it with the leftmost element of the right-unsorted-sublist, and increase the left-sorted-sublist by one.</p>
+<p>For example, given the list <code>[9 6 4 1 5]</code>, to sort in ascending order:</p>
+
+<pre class="color-example">
+{} {<span class="color-new">9</span> 6 4 <span class="color-new">1</span> 5} -&gt; {} {<span class="color-new">1</span> 6 4 <span class="color-new">9</span> 5}
+{1} {<span class="color-new">6</span> <span class="color-new">4</span> 9 5}  -&gt; {1} {<span class="color-new">4</span> <span class="color-new">6</span> 9 5}
+{1 4} {<span class="color-new">6</span> 9 <span class="color-new">5</span>}  -&gt; {1 4} {<span class="color-new">5</span> 9 <span class="color-new">6</span>}
+{1 4 5} {<span class="color-new">9</span> <span class="color-new">6</span>}  -&gt; {1 4 5} {<span class="color-new">6</span> <span class="color-new">9</span>}
+{1 4 5 6} {<span class="color-new">9</span>}  -&gt; DONE
+{1 4 5 6 9}</pre>
+
+<p>Write a method to sort an <code>int</code> array (in place) with the following signature:</p>
+<pre class="color-example">
+public static void <strong>selectionSort</strong>(int[] array)</pre>
+
+<h4>Insertion Sort</h4>
+
+<p>(Reference: Wikipedia &quot;Insertion Sort&quot;) Similar to the selection sort, but extract the leftmost element from the right-unsorted-sublist, and insert into the correct location of the left-sorted-sublist.</p>
+<p>For example, given <code>[9 6 4 1 5 2 7]</code><code></code>, to sort in ascending order:</p>
+<pre class="color-example">
+{} {<span class="color-new">9</span> 6 4 1 5 2 7} -&gt; {<span class="color-new">9</span>} {6 4 1 5 2 7}
+{9} {<span class="color-new">6</span> 4 1 5 2 7}  -&gt; {<span class="color-new">6</span> 9} {4 1 5 2 7}
+{6 9} {<span class="color-new">4</span> 1 5 2 7}  -&gt; {<span class="color-new">4</span> 6 9} {1 5 2 7}
+{4 6 9} {<span class="color-new">1</span> 5 2 7}  -&gt; {<span class="color-new">1</span> 4 6 9} {5 2 7}
+{1 4 6 9} {<span class="color-new">5</span> 2 7}  -&gt; {1 4 <span class="color-new">5</span> 6 9} {2 7}
+{1 4 5 6 9} {<span class="color-new">2</span> 7}  -&gt; {1 <span class="color-new">2</span> 4 5 6 9} {7}
+{1 2 4 5 6 9} {<span class="color-new">7</span>}  -&gt; {1 2 4 5 6 <span class="color-new">7</span> 9} {}
+{1 2 4 5 6 7 9} {} -&gt; Done</pre>
+
+<p>Write a method to sort an <code>int</code> array (in place) with the following signature:</p>
+<pre class="color-example">
+public static void <strong>insertionSort</strong>(int[] array)</pre>
+
+<h4>Recursive Quick Sort</h4>
+
+<p>(Reference: Wikipedia &quot;Quick Sort&quot;) Quicksort is a <em>recursive divide and conquer</em> algorithm. It divides the list into two sublists - the low elements and the high element, and <em>recursively</em> sort the sublists. The steps are:</p>
+<ol>
+<li>Pick an element, called pivot, from the list.</li>
+<li>Partitioning: reorder the list such that the smaller elements come before the pivot, and the larger elements after the pivot. After the partitioning, the pivot is in its final position.</li>
+<li>Recursively apply the above step to the sub-lists.</li>
+</ol>
+
+<p>For example, given <code>[20 11 18 14 15 9 32 5 26]</code>, to sort in ascending order:</p>
+
+<pre class="color-example">
+Select the middle element as the pivot, place the pivot at the end of the list, by swapping with the last element
+{20 11 18 14 <span class="underline">15</span> 9 32 5 26} -&gt; {20 11 18 14 26 9 32 5} {15}
+Partitioning:
+Initialize a variable swapPos (underlined), initially pointing to the leftmost element.
+Compare each element (in red) with the pivot,
+if the element is smaller than the pivot, swap with the element at the swapPos and increase swapPos by 1.
+otherwise, do nothing.
+{<span class="underline"><span class="color-new">20</span></span> 11 18 14 26 9 32 5} {15} -&gt; larger, do nothing
+{<span class="underline">20</span> <span class="color-new">11</span> 18 14 26 9 32 5} {15} -&gt; smaller, swap and increment swapPos -&gt; {11 <span class="underline">20</span> 18 14 26 9 32 5} {15}
+{11 <span class="underline">20</span> <span class="color-new">18</span> 14 26 9 32 5} {15} -&gt; larger, do nothing
+{11 <span class="underline">20</span> 18 <span class="color-new">14</span> 26 9 32 5} {15} -&gt; smaller, swap and increment swapPos -&gt; {11 14 <span class="underline">18</span> 20 26 9 32 5} {15}
+{11 14 <span class="underline">18</span> 20 <span class="color-new">26</span> 9 32 5} {15} -&gt; larger, do nothing
+{11 14 <span class="underline">18</span> 20 26 <span class="color-new">9</span> 32 5} {15} -&gt; smaller, swap and increment swapPos -&gt; {11 14 9 <span class="underline">20</span> 26 18 32 5} {15}
+{11 14 9 <span class="underline">20</span> 26 18 <span class="color-new">32</span> 5} {15} -&gt; larger, do nothing
+{11 14 9 <span class="underline">20</span> 26 18 32 <span class="color-new">5</span>} {15} -&gt; smaller, swap and increment swapPos -&gt; {11 14 9 5 <span class="underline">26</span> 18 32 20<span class="color-new"></span>} {15}
+Partitioning done. Swap the pivot.
+{11 14 9 5 <span class="underline">15</span> 18 32 20<span class="color-new"></span> 26}
+All elements before the pivot are smaller; all elements after the pivot are larger.
+Pivot is sorted in the correct position.
+
+Recursively repeat the process for sublists {11 14 9 5} and {18 32 20 26}</pre>
+
+<p>Write a recursive function called <code><strong>quickSort()</strong></code> as follows:</p>
+<pre class="color-example">
+<span class="color-comment">// Sort the array in place from the fromIdx (inclusive) to toIdx (exclusive)</span>
+public boolean <strong>quickSort</strong>(int[] array, int fromIdx, int toIdx)
+<span class="color-comment">// Sort the entire array</span>
+public boolean <strong>quickSort</strong>(int[] array)</pre>
+
+<h5>Hints</h5>
+<p>See Binary Search.</p>
+
+<h4>Merge Sort</h4>
+
+<p>(Reference: Wikipedia &quot;Merge Sort&quot;) [TODO]</p>
+
+<h4>Heap Sort</h4>
+
+<p>(Reference: Wikipedia &quot;Heap Sort&quot;) [TODO]</p>
+
+<h3 id="ExerciseNumberTheory">Exercises on Algorithms - Number Theory</h3>
+
+<h4>Perfect and Deficient Numbers</h4>
+
+<p>A positive integer is called a <em>perfect number</em> if the sum of all its factors (excluding the number itself, i.e., proper divisor) is equal to its value. For example, the number <code>6</code> is perfect because its proper divisors are <code>1</code>, <code>2</code>, and <code>3</code>, and <code>6=1+2+3</code>; but the number <code>10</code> is not perfect because its proper divisors are <code>1</code>, <code>2</code>, and <code>5</code>, and <code>10&ne;1+2+5</code>.</p>
+
+<p>A positive integer is called a <em>deficient number</em> if the sum of all its proper divisors is less than its value. For example, <code>10</code> is a deficient number because <code>1+2+5&lt;10</code>; while <code>12</code> is not because <code>1+2+3+4+6&gt;12</code>.</p>
+
+<p>Write a <code>boolean</code> method called <code>isPerfect(int aPosInt)</code> that takes a positive integer, and return true if the number is perfect.  Similarly, write a <code>boolean</code> method called <code>isDeficient(int aPosInt)</code> to check for deficient numbers.</p>
+
+<pre class="color-syntax">
+public static boolean isPerfect(int aPosInt);
+public static boolean isDeficient(int aPosInt);</pre>
+
+<p>Using the methods, write a program called <code>PerfectNumberList</code> that prompts user for an upper bound (a positive integer), and lists all the perfect numbers less than or equal to this upper bound. It shall also list all the numbers that are neither deficient nor perfect.  The output shall look like:</p>
+
+<pre class="output">
+Enter the upper bound: <strong>1000</strong>
+These numbers are perfect:
+6 28 496
+[3 perfect numbers found (0.30%)]
+    
+These numbers are neither deficient nor perfect:
+12 18 20 24 30 36 40 42 48 54 56 60 66 70 72 78 80 ......
+[246 numbers found (24.60%)]</pre>
+
+<h4>Prime Numbers</h4>
+
+<p>A positive integer is a <em>prime</em> if it is divisible by <code>1</code> and itself only. Write a <code>boolean</code> method called <code>isPrime(int aPosInt)</code> that takes a positive integer and returns <code>true</code> if the number is a prime.  Write a program called <code>PrimeList</code> that prompts the user for an upper bound (a positive integer), and lists all the primes less than or equal to it.  Also display the percentage of prime (rounded to 2 decimal places).  The output shall look like:</p>
+
+<pre class="output">
+Please enter the upper bound: <strong>10000</strong>
+1
+2
+3
+......
+......
+9967
+9973
+[1230 primes found (12.30%)]</pre>
+
+<h5>Hints</h5>
+
+<p>To check if a number <code>n</code> is a prime, the simplest way is try dividing <code>n</code> by <code>2</code> to <code>sqrt(n)</code>.</p>
+
+<h4>Prime Factors</h4>
+
+<p>Write a <code>boolean</code> method called <code>isProductOfPrimeFactors(int aPosInt)</code> that takes a positive integer, and return <code>true</code> if the product of all its prime factors (excluding 1 and the number itself) is equal to its value. For example, the method returns true for <code>30</code> (<code>30=2&times;3&times;5</code>) and false for <code>20</code> (<code>20&ne;2&times;5</code>).  You may need to use the <code>isPrime()</code> method in the previous exercise.</p>
+
+<p>Write a program called <code>PerfectPrimeFactorList</code> that prompts user for an upper bound. The program shall display all the numbers (less than or equal to the upper bound) that meets the above criteria.  The output shall look like:</p>
+
+<pre class="output">
+Enter the upper bound: <strong>100</strong>
+These numbers are equal to the product of prime factors: 
+1 6 10 14 15 21 22 26 30 33 34 35 38 39 42 46 51 55 57 58 62 65 66 69 70 74 77 78 82 85 86 87 91 93 94 95 
+[36 numbers found (36.00%)]</pre>
+
+<h4>Greatest Common Divisor (GCD)</h4>
+
+<p>One of the earlier known algorithms is the Euclid algorithm to find the GCD of two integers (developed by the Greek Mathematician Euclid around 300BC). By definition, <code>GCD(a, b)</code> is the greatest factor that divides both <code>a</code> and <code>b</code>.  Assume that <code>a</code> and <code>b</code> are positive integers, and <code>a &gt;= b</code>, the Euclid algorithm is based on these two properties:</p>
+
+<pre class="color-syntax">
+GCD(a, 0) = a
+GCD(a, b) = GCD(b, a mod b), where (a mod b) denotes the remainder of a divides by b.</pre>
+
+<p>For example,</p>
+<pre class="output">
+GCD(15, 5) = GCD(5, 0) = 5
+GCD(99,88) = GCD(88,11) = GCD(11,0) = 11
+GCD(3456,1233) = GCD(1233,990) = GCD(990,243) = GCD(243,18) = GCD(18,9) = GCD(9,0) = 9</pre>
+
+<p>The pseudocode for the Euclid algorithm is as follows:</p>
+<pre class="color-example">
+GCD(a, b)    <span class="color-comment">// assume that a &gt;= b</span>
+   while (b != 0) {
+      <span class="color-comment">// Change the value of a and b: a &larr; b, b &larr; a mod b, and repeat until b is 0</span>
+      temp &larr; b
+      b &larr; a mod b
+      a &larr; temp
+   }
+<span class="color-comment">   // after the loop completes, i.e., b is 0, we have GCD(a, 0)</span>
+   GCD is a</pre>
+
+<p>Write a method called <code>gcd()</code> with the following signature:</p>
+<pre class="color-syntax">
+public static int <strong>gcd</strong>(int a, int b)</pre>
+
+<p>Your methods shall handle arbitrary values of <code>a</code> and <code>b</code>, and check for validity.</p>
+
+<h5>Try</h5>
+<p>Write a <em>recursive</em> version called <code>gcdRecursive()</code> to find the GCD.</p>
+
+<h3>Final Notes</h3>
+
+<p>The only way to learn programming is program, program and program on challenging problems.
+The problems in this tutorial are certainly NOT challenging.  There are tens of thousands of challenging problems available – used in training for various programming contests (such as International Collegiate Programming Contest (ICPC), International Olympiad in Informatics (IOI)).  Check out these sites:</p>
+
+<ul>
+<li>Universidad de Valladolid’s online judge @ <a href="http://uva.onlinejudge.org/"></a><a href="https://uva.onlinejudge.org/">https://uva.onlinejudge.org/</a>.</li>
+<li>Peking University’s online judge @ <a href="http://acm.pku.edu.cn/JudgeOnline/"></a><a href="http://poj.org/">http://poj.org/</a>.</li>
+<li>USA Computing Olympiad (USACO) Training Program @ <a href="http://train.usaco.org/usacogate">http://train.usaco.org/usacogate</a>.</li>
+<li>google “icpc online judge”</li>
+</ul>
+
+
+
+</div> 
+<!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 15.0.2<br />
+Last modified: Feb 2021</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+</body>
+</html>

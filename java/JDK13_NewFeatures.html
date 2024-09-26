@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JDK 13 New Features</title>
+
+<!-- @@ start change in v1 -->
+<link rel="stylesheet" href="../css/programming_notes_v1.css">
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+<script src="../scripts/programming_notes_v1.js"></script>
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="JDK13_NewFeatures.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>JDK 13 (19.9) New Features</h1>
+</div>
+
+<div id="content-main">
+
+<!-- @@ end change in v1 -->
+
+<h5>References:</h5>
+<ol>
+<li>&quot;JDK 13 Release Notes&quot;, including &quot;What's New in JDK 13&quot; @<a href="https://www.oracle.com/technetwork/java/13-relnote-issues-5460548.html">https://www.oracle.com/technetwork/java/13-relnote-issues-5460548.html</a>.</li>
+<li>OpenJDK's JDK 13 @ <a href="https://openjdk.java.net/projects/jdk/12/">https://openjdk.java.net/projects/jdk/13/</a>.</li>
+<li>&quot;81 New Features and APIs in JDK 13&quot; @ <a href="https://www.azul.com/jdk-13-81-new-features-and-apis/">https://www.azul.com/jdk-13-81-new-features-and-apis/</a>.</li>
+</ol>
+
+<p>&nbsp;</p>
+<p>JDK 13 was released on September 17, 2019.</p>
+
+<h3>JDK 13 New Language Features</h3>
+
+<p>JDK 13 introduces 2 new language features:</p>
+<ol>
+<li>JEP 354: Switch Expressions (Preview)</li>
+<li>JEP 355: Text Blocks (Preview)</li>
+</ol>
+
+<h4>Switch Expression (Preview) (<span class="font-code">tools/javac</span>) (JEP 354)</h4>
+
+<p><span class="line-heading">Reference</span>: JEP 354: Switch Expressions (Preview) @ <a href="https://openjdk.java.net/jeps/354">https://openjdk.java.net/jeps/354</a>.</p>
+
+<p><span class="line-heading">Notes</span>: JDK 13's JEP 354 supersedes JDK 12's JEP 325.</p>
+
+<p>JDK 12/13 extends the <code>switch</code> construct so that it can be used as either a <em>statement</em> or an <em>expression</em>. This simplifies everyday coding, and prepares the way for the use of pattern matching (JEP 305) in <code>switch</code>.</p>
+
+<p>The original <code>switch</code> statement (follows the C/C++ language) has several irregularities, such as:</p>
+<ul>
+<li>the default control flow behavior between switch labels (i.e., fall through without a <code>break</code> statement)</li>
+<li>the default scoping in <code>switch</code> block (the whole block is treated as one scope)</li>
+<li><code>switch</code> works only as a statement, not as an expression.</li>
+</ul>
+
+<h5>Arrow Labels (JDK 12 Preview)</h5>
+
+<p>The original <code>switch</code>'s label has the form of &quot;<code>case L:</code>&quot;. JDK 12/13 introduces <em>arrow labels</em>, in the form of &quot;<code>case L -&gt;</code>&quot;, which does not fall thru to the next case and <code>break</code> is not needed.</p>
+
+
+<p>For example:</p>
+
+<pre class="color-example">
+public class <strong>TryJDK13SwitchArrowLabel</strong> {
+   public static void main(String[] args) {
+      String day = &quot;Wednesday&quot;;   <span class="color-comment">// switch on String supported since JDK 7</span>
+      <span class="color-comment">// Original switch statement with label &quot;case: L&quot; and &quot;break&quot;</span>
+      switch (day) {
+         case &quot;Monday&quot;:
+            System.out.println(&quot;1&quot;);
+            break;         <span class="color-comment">// break needed, otherwise fall thru</span>
+         case &quot;Tuesday&quot;:   <span class="color-comment">// fall thru without break</span>
+         case &quot;Wednesday&quot;:
+         case &quot;Thursday&quot;:
+            System.out.println(&quot;2 or 3 or 4&quot;);
+            break;
+         case &quot;Friday&quot;:
+            System.out.println(&quot;5&quot;);
+            break;
+         default:
+            System.out.println(&quot;others&quot;);
+            System.out.println(&quot;try again&quot;);
+      }
+
+      <span class="color-comment">// JDK 13 (Preview) introduces &quot;arrow labels&quot;</span>
+      day = &quot;Sunday&quot;;
+      switch (day) {
+         case &quot;Monday&quot; <span class="color-new">-&gt;</span>
+            System.out.println(&quot;1&quot;);                <span class="color-comment">// use '-&gt;' and no break needed</span>
+         case &quot;Tuesday&quot;<span class="color-new">,</span> &quot;Wednesday&quot;<span class="color-new">,</span> &quot;Thursday&quot; <span class="color-new">-&gt;</span> <span class="color-comment">// multiple labels are commas separated</span>
+            System.out.println(&quot;2 or 3 or 4&quot;);
+         case &quot;Friday&quot; <span class="color-new">-&gt;</span>
+            System.out.println(&quot;5&quot;);
+         default <span class="color-new">-&gt; {</span>                               <span class="color-comment">// braces needed for block</span>
+            System.out.println(&quot;others&quot;);
+            System.out.println(&quot;try again&quot;);
+         <span class="color-new">}</span>
+      }
+   }
+}</pre>
+
+<p>Notes:</p>
+<ul>
+<li>Multiple labels are separated by commas.</li>
+<li>Body blocks must be enclosed in braces.</li>
+</ul>
+
+<p>To compile and run the program with &quot;preview&quot; features, you need to use the <code>--enable-preview</code> flag to unlock the preview features:</p>
+<pre class="color-command">
+<span class="color-comment">// Compile (with preview feature)</span>
+&gt; <strong>javac TryJDK13SwitchArrowLabel.java</strong>
+<span class="color-new">TryJDK13SwitchArrowLabel.java:24: error: switch rules are a preview feature and are disabled by default.
+  (use --enable-preview to enable switch rules)</span>
+&gt; <strong>javac --enable-preview --release 13 TryJDK13SwitchArrowLabel.java</strong>
+<span class="color-comment">
+// Run (with preview feature)</span>
+&gt; <strong>java --enable-preview TryJDK13SwitchArrowLabel</strong></pre>
+
+
+<h5>Switch Expressions (JDK 12 Preview) and <span class="font-code">yield</span> Statement (JDK 13 Preview)</h5>
+
+<p>The original <code>switch</code> works only as a <em>statement</em>. JDK 12/13 proposes to use <code>switch</code> as an <em>expression</em> that <em>yields</em> a value. For example,</p>
+
+<pre class="color-example">
+public class <strong>TryJDK13SwitchExpr</strong> {
+   public static void main(String[] args) {
+      String day = &quot;Sunday&quot;;   <span class="color-comment">// switch on String supported since JDK 7</span>
+
+      <span class="color-comment">// JDK 13 (Preview) switch expression that evaluates to a value</span>
+      int numLetters =     <span class="color-comment">// Assign the switch expression to a variable</span>
+         switch (day) {
+            case &quot;Monday&quot;, &quot;Friday&quot; -&gt; 6;   <span class="color-comment">// single-line expression</span>
+            case &quot;Tuesday&quot; -&gt; 7;
+            case &quot;Thursday&quot; -&gt; 8;
+            case &quot;Wednesday&quot; -&gt; 9;
+            default -&gt; {
+               System.out.println(&quot;error&quot;);
+               <span class="color-new">yield</span> 0;    <span class="color-comment">// use &quot;yield&quot; to return a value in a block</span>
+            }
+         };
+      System.out.println(&quot;Number of letters: &quot; + numLetters);
+
+      <span class="color-comment">// switch expression can also use the traditional &quot;case L:&quot; with yield</span>
+      day = &quot;Wednesday&quot;;
+      numLetters =
+         switch (day) {
+            case &quot;Monday&quot;: case &quot;Friday&quot;: <span class="color-new">yield</span> 6;   <span class="color-comment">// single-line expression</span>
+            case &quot;Tuesday&quot;:   <span class="color-new">yield</span> 7;
+            case &quot;Thursday&quot;:  <span class="color-new">yield</span> 8;
+            case &quot;Wednesday&quot;: <span class="color-new">yield</span> 9;
+            default:
+               System.out.println(&quot;error&quot;);
+               <span class="color-new">yield</span> 0;    <span class="color-comment">// use &quot;yield&quot; to return a value in a block</span>
+         };
+      System.out.println(&quot;Number of letters: &quot; + numLetters);
+   }
+}</pre>
+
+<p>For a single-statement case-block, you can use a single expression to return a value. For blocks, you need to use <code>yield</code> to return a value, as shown in the above example.</p>
+
+<h4>Text Blocks (Preview) (<span class="font-code">tools/javac</span>) (JEP 355)</h4>
+
+<p><span class="line-heading">Reference</span>: JEP 355: Text Blocks (Preview) @ <a href="https://openjdk.java.net/jeps/355">https://openjdk.java.net/jeps/355</a>.</p>
+<p>JDK 13 proposes to support multi-line string literal (or text block) that avoids the need for most escape sequences (such as double quote, newline), and automatically formats the multi-line string in a predictable way. This is a preview language feature.</p>
+<p>A multi-line text block is delimited by a pair of triple double quotes, i.e., <code>&quot;&quot;&quot; ... &quot;&quot;&quot;</code>, which may span over multiple lines.</p>
+
+<pre class="color-example">
+public class <strong>TryJDK13TextBlock</strong> {
+   public static void main(String[] args) {
+      String html = <span class="color-new">&quot;&quot;&quot;
+                    &lt;html&gt;
+                      &lt;head&gt;
+                        &lt;title&gt;Hello&lt;/title&gt;
+                      &lt;/head&gt;
+                      &lt;body&gt;
+                        &lt;p&gt;&quot;Hello, world!&quot;&lt;/p&gt;
+                      &lt;/body&gt;
+                    &lt;/html&gt;
+                    &quot;&quot;&quot;</span>;   <span class="color-comment">// A multi-line text block delimited by &quot;&quot;&quot;......&quot;&quot;&quot;</span>
+
+      System.out.println(html);
+   }
+}</pre>
+
+<pre class="color-command">
+<span class="color-comment">// Compile (with preview feature)</span>
+&gt; <strong>C:\myCodeJava\jdk13_try&gt;javac --release 13 --enable-preview TryJDK13TextBlock.java</strong>
+Note: TryJDK13TextBlock.java uses preview language features.
+Note: Recompile with -Xlint:preview for details.
+
+<span class="color-comment">// Run (with preview feature)</span>
+&gt; <strong>C:\myCodeJava\jdk13_try&gt;java --enable-preview TryJDK13TextBlock</strong>
+<span class="color-output">&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Hello&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;&quot;Hello, world!&quot;&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</span></pre>
+
+<p>Take note that:</p>
+<ul>
+<li>Text block is automatically formatted, by aligning with the opening and closing <code>&quot;&quot;&quot;</code>.</li>
+<li>To do the same thing in the traditional single-line string, you need to embed <code>\n</code>, <code>\&quot;</code>, <code>\t</code>, etc.; or use string concatenation <code>'+'</code>.</li>
+<li>There is no need to use escape sequence for double-quote inside a text block.</li>
+<li>A text block still belongs to the <code>String</code> type.</li>
+</ul>
+
+<h3>JDK 13 Library Changes</h3>
+
+<h5>Reimplement the Legacy Socket API (JEP 353)</h5>
+
+
+<h5>Support for Unicode 12.1 (<span class="font-code">core-libs/java.util:i18n</span>)</h5>
+
+
+<p>JDK 13 supports the Unicode 12.1. It adds 554 new characters (e.g., 61 emoji characters), and 4 new scripts.</p>
+
+<h5>Added <span class="font-code">FileSystems.newFileSystem(Path, Map&lt;String, ?&gt;)</span> Method (<span class="font-code">core-libs/java.nio</span>)</h5>
+
+<h5>New <span class="font-code">java.nio.ByteBuffer</span> Bulk get/put Methods Transfer Bytes Without Regard to Buffer Position (<span class="font-code">core-libs/java.nio</span>)</h5>
+
+<h3>JDK 13 Other New Features</h3>
+
+<h5>ZGC Uncommit Unused Memory (JEP 351) (<span class="font-code">hotspot/gc</span>)</h5>
+
+<h5>Dynamic CDS Archiving (JEP 350) (<span class="font-code">hotspot/runtime</span>)</h5>
+
+
+<!-- @@ start change in v1 -->
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 13.0.1<br>
+Last modified: January, 2020</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+<a href="https://www3.ntu.edu.sg/f61217a453d065015090cd27fd6fb2c2"> </a></body>
+</html>

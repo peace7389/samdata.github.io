@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JDK 9 New Features</title>
+
+<!-- @@ start change in v1 -->
+<link rel="stylesheet" href="../css/programming_notes_v1.css">
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+<script src="../scripts/programming_notes_v1.js"></script>
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="JDK5_NewFeatures.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>JDK 5 New Features</h1>
+</div>
+
+<div id="content-main">
+
+<!-- @@ end change in v1 -->
+
+<p>J2SE 5.0 (or JDK 5), codenamed Tiger, was released on September 30, 2004. It was renumbered to 5.0 instead of 1.5.</p>
+
+
+<h3>JDK 5 New Language Features</h3>
+
+<p>JDK 5 is a major update, which introduces many important new language features.</p>
+
+<h4>Generics (JSR 14)</h4>
+<p>Provide compile-time type-safety for <code>Collection</code> and eliminate the need for most type-cast. See &quot;<a href="JavaGeneric.html">Generics</a>&quot;.</p>
+
+<h4>Annotations (JSR 175)</h4>
+<p>Annotations (or metadata) allow classes and methods to be tagged with additional data, which can then be pre-processed by the compiler. See &quot;<a href="Annotation.html">Annotations</a>&quot;.</p>
+
+<h4>Autoboxing/unboxing (JSR 201)</h4>
+<p>Automatic conversion between primitive types (such as <code>int</code>, <code>double</code>) and primitive wrapper classes (such as <code>Integer</code>, <code>Double</code>). See &quot;<a href="J5c_Collection.html">Java Collection Framework</a>&quot;.</p>
+
+<h4>Enumerations (JSR 201)</h4>
+<p>The new keyword <code>enum</code> creates a type-safe, ordered list of values. See &quot;<a href="JavaEnum.html">Enumerations</a>&quot;.</p>
+
+<h4>Varargs (Variable Arguments)</h4>
+<p>The last method's formal parameter can be declared using a type name followed by three dots (e.g., <code>String... messages</code>), which accepts any numbers of actual parameters packed in an array. For example,</p>
+
+<pre class="color-example">
+public class <strong>JDK5TryVarargs</strong> {
+   public static void main(String[] args) {
+      greets(&quot;Hello&quot;, &quot;Peter&quot;, &quot;Paul&quot;);
+   }
+
+   public static void greets(String greeting, <span class="color-new">String... names</span>) {
+      System.out.print(greeting + &quot;,&quot;);
+      <span class="color-comment">// varargs received as an array</span>
+      for (int i = 0; i &lt; names.length; ++i) {
+         System.out.print(&quot; &quot; + names[i]);
+      }
+      System.out.println();
+   }
+}</pre>
+
+<h4>Enhanced <span class="font-code">for</span>-each loop: <span class="font-code">for ( : )</span></h4>
+<p>New construct for iterating thru a Java <code>Collection</code>. For example,</p>
+<pre class="color-example">
+import java.util.List;
+import java.util.ArrayList;
+public class JDK5TryForEach {
+   public static void main(String[] args) {
+      int[] marks = {11, 22, 33, 44, 55};   <span class="color-comment">// array</span>
+      <span class="color-comment">// JDK 5's new for-each loop</span>
+      <span class="color-new">for (int mark : marks)</span> {
+         System.out.println(mark);
+      }
+
+      List&lt;String&gt; fruits = new ArrayList&lt;&gt;();  <span class="color-comment">// Collection</span>
+      fruits.add(&quot;apple&quot;);
+      fruits.add(&quot;orange&quot;);
+      <span class="color-new">for (String fruit : fruits)</span> {
+         System.out.println(fruit);
+      }
+   }
+}</pre>
+
+<h4><span class="font-code">static import</span> Statement</h4>
+<p>For importing members (fields and methods) as <code>public static</code>. Can be referenced without specifying the class name.</p>
+  <pre class="color-example">
+<span class="color-new">import static</span> java.lang.Math.PI; <span class="color-comment">// import a constant in a class</span>
+public class JDK5TryStaticImport {
+   public static void main(String[] args) {
+      System.out.println(PI);   <span class="color-comment">// No classname needed</span>
+   }
+}</pre>
+
+<h3>JDK 5 Library Changes</h3>
+<p>[TODO]</p>
+
+<h3>JDK 5 Other New Features</h3>
+
+<p>[TODO]</p>
+
+<!-- @@ start change in v1 -->
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 10.0.1<br>
+Last modified: January, 2020</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+</body>
+</html>

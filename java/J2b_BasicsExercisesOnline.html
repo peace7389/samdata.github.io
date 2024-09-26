@@ -1,0 +1,2795 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Java Basics Exercises - Java Programming Tutorial</title>
+<link href="../css/programming_notes_v1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts/programming_notes_v1.js"></script>
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="J2b_BasicsExercisesOnline.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>Java Programming Tutorial</h1>
+<h2>Yet Another Exercises on Java Basics</h2>
+
+</div>
+
+<div id="content-main">
+
+<p>These exercises are meant for submission to my online submission system.</p>
+
+<h3 id="ExerciseGetStarted">Getting Started Exercises</h3>
+
+<h4>Add Two Integers (<span class="font-code">Add2Integer.java</span>) (Getting Started)</h4>
+<p>Write a program called <code>Add2Integers</code> that prompts user to enter two integers. The program shall read the two integers as type <code>int</code>; compute their sum; and print the result.</p>
+	
+<h5>Test Cases</h5>
+
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br />8<br /><br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />The sum is: 13<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>-5<br />-8<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />The sum is: -13<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>8<br />-8<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />The sum is: 0<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>8<br />0<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />The sum is: 8<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>5</pre></td>
+      <td><pre>-8<br />0<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />The sum is: -8<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>6</pre></td>
+      <td><pre>0<br />0<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />The sum is: 0<br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+import java.util.Scanner;   <span class="color-comment">// For keyboard input</span>
+<span class="color-comment">/**
+ * 1. Prompt user for 2 integers
+ * 2. Read inputs as &quot;int&quot;
+ * 3. Compute their sum
+ * 4. Display the result
+ */</span>
+public class Add2Integers {  <span class="color-comment">// Save as &quot;Add2Integers.java&quot;</span>
+   public static void main (String[] args) {
+      <span class="color-comment">// Declare variables</span>
+      int number1, number2, sum;
+      Scanner in = new Scanner(System.in);  <span class="color-comment">// Scan the keyboard for input</span>
+
+      <span class="color-comment">// Put up prompting messages and read inputs as &quot;int&quot;</span>
+      System.out.print(&quot;Enter first integer: &quot;);  <span class="color-comment">// No newline for prompting message</span>
+      number1 = in.nextInt();                     <span class="color-comment">// Read next input as &quot;int&quot;</span>
+      System.out.print(&quot;Enter second integer: &quot;);
+      number2 = in.nextInt();
+
+      <span class="color-comment">// Compute sum</span>
+      sum = number1 + number2;
+
+      <span class="color-comment">// Display result</span>
+      System.out.println(&quot;The sum is: &quot; + sum);   <span class="color-comment">// Print with newline</span>
+      in.close();  <span class="color-comment">// Close Scanner</span>
+   }
+}</pre>
+
+<h4>Odd or Even (<span class="font-code">OddEven.java</span>) (if-else and modulus)</h4>
+<p>Write a program called <code>OddEven</code> that prompts user for an integer. The program shall read the input as an <code>int</code>; and check if the integer is odd or even.</p>
+
+<h5>Test Cases</h5>
+
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>99 <br /></pre></td>
+      <td><pre>Enter an integer:  <br />99 is odd <br />bye <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>88 <br /></pre></td>
+      <td><pre>Enter an integer:  <br />88 is even <br />bye <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>0 <br /></pre></td>
+      <td><pre>Enter an integer:  <br />0 is even <br />bye <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>-1 <br /></pre></td>
+      <td><pre>Enter an integer:  <br />-1 is odd <br />bye <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>5</pre></td>
+      <td><pre>-4 <br /></pre></td>
+      <td><pre>Enter an integer:  <br />-4 is even <br />bye <br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+	
+<h5>Hints:</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int numberIn;   <span class="color-comment">// input integer</span>
+      ......
+      <span class="color-comment">// Prompt and read input as &quot;int&quot;</span>
+      ......
+
+      <span class="color-comment">// Check odd/even and print result</span>
+      <span class="color-comment">// Use % to find the remainder dividing by 2, and compare with 0</span>
+      if (numberIn % 2 == 0) {      <span class="color-comment">// double-equal for comparison</span>
+         System.out.println(......);
+      } else {
+         System.out.println(......);
+      }</pre>
+
+<h4>Multiple (<span class="font-code">Multiple.java</span>) (if-else and modulus)</h4>
+<p>Write a program called <code>Multiple</code> that prompts user for 2 integers. The program shall read the inputs as <code>int</code>; and check if the first integer is a multiple of the second integer.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+	    <tr>
+	      <td><pre>1</pre></td>
+	      <td><pre>99<br />11<br /></pre></td>
+	      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />99 IS a multiple of 11<br /></pre></td>
+	      </tr>
+	    <tr>
+	      <td><pre>2</pre></td>
+	      <td><pre>99<br />12<br /></pre></td>
+	      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />99 IS NOT a multiple of 12<br /></pre></td>
+	      </tr>
+	    <tr>
+	      <td><pre>3</pre></td>
+	      <td><pre>5<br />10<br /></pre></td>
+	      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />5 IS NOT a multiple of 10<br /></pre></td>
+	    </tr>
+	    </tbody>
+	  </table>
+	
+<h5>Hints</h5>
+<ol>
+<li>Use two <code>int</code> variables: <code>number1</code> and <code>number2</code> to store the inputs.</li>
+<li>Use modulus operator <code>%</code> to find the remainder and compare with zero, i.e., <code>if (number1 % number2 == 0) ...</code>. Take note that comparison operator is double-equal.</li>
+</ol>
+
+<h4>Arithmetic and Min/Max of 3 integers (<span class="font-code">SumProductMinMax3.java</span>) (if-else and min/max)</h4>	
+<p>Write a program called <code>SumProductMinMax3</code> that prompts user for three integers. The program shall read the inputs as <code>int</code>; compute the sum, product, minimum and maximum of the three integers; and print the results.</p>
+
+<h5>Test Cases</h5>
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>3<br />2<br />8<br /></pre></td>
+      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />Enter 3rd integer: <br />The sum is: 13<br />The product is: 48<br />The min is: 2<br />The max is: 8<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>44<br />22<br />99<br /></pre></td>
+      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />Enter 3rd integer: <br />The sum is: 165<br />The product is: 95832<br />The min is: 22<br />The max is: 99<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>199<br />-199<br />0<br /></pre></td>
+      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />Enter 3rd integer: <br />The sum is: 0<br />The product is: 0<br />The min is: -199<br />The max is: 199<br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int number1, number2, number3;  <span class="color-comment">// The 3 input integers</span>
+      int sum, product, min, max;     <span class="color-comment">// To compute these</span>
+      Scanner in = new Scanner(System.in);  <span class="color-comment">// Scan the keyboard</span>
+
+      <span class="color-comment">// Prompt and Read inputs as &quot;int&quot;</span>
+      ......
+
+      <span class="color-comment">// Compute sum and product</span>
+      sum = ......
+      product = ......
+
+      <span class="color-comment">// Compute min</span>
+      <span class="color-comment">// The &quot;coding pattern&quot; for computing min is:</span>
+      <span class="color-comment">// 1. Set min to the first item</span>
+      <span class="color-comment">// 2. Compare current min with the second item and update min if second item is smaller</span>
+      <span class="color-comment">// 3. Continue for the next item</span>
+      min = number1;        <span class="color-comment">// Assume min is the 1st item</span>
+      if (number2 &lt; min) {  <span class="color-comment">// Check if the 2nd item is smaller than current min</span>
+         min = number2;     <span class="color-comment">// Update min if so</span>
+      }
+      if (number3 &lt; min) {  <span class="color-comment">// Continue for the next item</span>
+         min = number3;
+      }
+
+      <span class="color-comment">// Compute max - similar to min</span>
+      ......
+
+      <span class="color-comment">// Print results</span>
+      ......</pre>
+	
+<h4>Arithmetic and Min/Max of 5 integers (<span class="font-code">SumProductMinMax5.java</span>) (if-else and min/max)</h4>	
+<p>Write a program called <code>SumProductMinMax5</code> that prompts user for five integers. The program shall read the inputs as <code>int</code>; compute the sum, product, minimum and maximum of the five integers; and print the results.</p>
+
+<h5>Test Cases</h5>
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br />1<br />2<br />4<br />3<br /></pre></td>
+      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />Enter 3rd integer: <br />Enter 4th integer: <br />Enter 5th integer: <br />The sum is: 15<br />The product is: 120<br />The min is: 1<br />The max is: 5<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>-999<br />99<br />88<br />1<br />0<br /></pre></td>
+      <td><pre>Enter 1st integer: <br />Enter 2nd integer: <br />Enter 3rd integer: <br />Enter 4th integer: <br />Enter 5th integer: <br />The sum is: -811<br />The product is: 0<br />The min is: -999<br />The max is: 99<br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+	
+<h5>Hints</h5>
+<p>See previous question. Use five <code>int</code> variables: <code>number1</code>, <code>number2</code>, ..., <code>number5</code> to store the inputs.</p>
+
+<h4>Print Day in Word (<span class="font-code">PrintDayInWord.java</span>) (nested-if)</h4>
+<p>Write a program called <code>PrintDayInWord</code> that prompts user for an integer 0, 1, 2, ..., 6, or other.  The program shall read the input as <code>int</code>; and print "Sunday", "Monday", ..., "Saturday", or "Not a valid day", respectively. You are required to use a "nested-if" statement in this program.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the day number: <br />Sunday<br />bye<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>6<br /></pre></td>
+      <td><pre>Enter the day number: <br />Saturday<br />bye<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>9<br /></pre></td>
+      <td><pre>Enter the day number: <br />Not a valid day<br />bye<br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int dayNumber;   <span class="color-comment">// The input number</span>
+      ......
+      <span class="color-comment">// Prompt and read input as &quot;int&quot;</span>
+      ......
+
+      <span class="color-comment">// Using nested-if to handle the 8 cases (0 to 6 and others)</span>
+      if (dayNumber == 0) {   <span class="color-comment">// double-equal for comparison</span>
+         ......
+      } else if (dayNumber == 1) {
+         ......
+      } else if (......) {
+         ......
+      } else {
+         ......
+      }</pre>
+
+<h4>Print Number in Word (<span class="font-code">PrintNumberInWord.java</span>) (switch-case)</h4>
+<p>Write a program called <code>PrintNumberInWord</code> that prompts user for an integer 0, 1, 2, ..., 9, or other.  The program shall read the input as <code>int</code>; and print "ZERO", "ONE", "TWO", ..., "NINE", or "OTHER", respectively. You are required to use a "switch-case" statement in this program.</p>
+
+<h5>Test Cases</h5>
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter a number: <br />ZERO<br />bye!<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>6<br /></pre></td>
+      <td><pre>Enter a number: <br />SIX<br />bye!<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>-1<br /></pre></td>
+      <td><pre>Enter a number: <br />OTHER<br />bye!<br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+	
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int numberIn;   <span class="color-comment">// The input number</span>
+      ......
+
+      <span class="color-comment">// Using switch-case to handle 11 cases (0 to 9 and others)</span>
+      switch (numberIn) {
+         case 1:
+            System.out.println(...); break;  <span class="color-comment">// &quot;break&quot; needed at the end of every &quot;case&quot;</span>
+         case 2:
+            System.out.println(...); break;
+         ......;
+         ......;
+         default:
+            ......;  <span class="color-comment">// &quot;break&quot; not needed for &quot;default&quot;</span>
+      }</pre>
+
+<h4>Rectangle Computation (<span class="font-code">RectangleComputation.java</span>) (Type <span class="font-code">int</span>)</h4>
+<p>Write a program called <code>RectangleComputation</code> that prompts user for the length and width of a rectangle in integer. The program shall read the inputs as <code>int</code>; compute the perimeter and area of the rectangle; and print the results.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>9 <br />8 <br /></pre></td>
+      <td><pre>Enter the length:  <br />Enter the width:  <br />The perimeter is: 34 <br />The area is: 72 <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>8 <br />9 <br /></pre></td>
+      <td><pre>Enter the length:  <br />Enter the width:  <br />The perimeter is: 34 <br />The area is: 72 <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1 <br />1 <br /></pre></td>
+      <td><pre>Enter the length:  <br />Enter the width:  <br />The perimeter is: 4 <br />The area is: 1 <br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<p>Use <code>int</code> variables <code>length</code>, <code>width</code>, <code>area</code>, <code>perimeter</code> to store the inputs and results.</p>
+
+<h4>Circle Computation (<span class="font-code">CircleComputation.java</span>) (Type <span class="font-code">double</span> and <span class="font-code">printf()</span>)</h4>
+
+<p>Write a program called <code>CircleComputation</code> that prompts user for the radius of a circle in floating point number. The program shall read the input as <code>double</code>; compute the diameter, circumference, and area of the circle in <code>double</code>; and print the values rounded to 2 decimal places. Use System-provided constant <code>Math.PI</code> for pi.</p>
+
+<p>The formulas are:</p>
+<pre class="color-command">
+   area = Math.PI * radius * radius;
+   diameter = 2.0 * radius;
+   circumference = 2.0 * Math.PI * radius;</pre>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>1.2<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 18.10<br />Volume is: 7.24<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 12.57<br />Volume is: 4.19<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>0.12e2<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 1809.56<br />Volume is: 7238.23<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 0.00<br />Volume is: 0.00 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>Use <code>double</code> variables <code>radius</code>, <code>diameter</code>, <code>circumference</code> and <code>area</code> to store the input and results.</li>
+<li>Use <code>in.nextDouble()</code> to read a <code>double</code>.</li>
+<li>Use <code>System.out.printf()</code> with specifier <code>%.2f</code> to print a <code>double</code>, rounded to 2 decimal places; and <code>%n</code> to print a newline. For example,</li>
+<pre class="color-example">
+   System.out.printf("Diameter is: %.2f%n", diameter);</pre>
+</ol>
+
+<h4>Sphere Computation (<span class="font-code">SphereComputation.java</span>) (Type <span class="font-code">double</span> and <span class="font-code">printf()</span>)</h4>
+<p>Write a program called <code>SphereComputation</code> that prompts user for the radius of a sphere in floating point number. The program shall read the input as <code>double</code>; compute the volume and surface area of the sphere in <code>double</code>; and print the values rounded to 2 decimal places. Use System-provided constant <code>Math.PI</code> for pi.</p>
+
+<p>The formulas are:</p>
+<pre class="color-command">
+   surfaceArea = 4 * Math.PI * radius * radius;
+   volume = 4 /3 * Math.PI * radius * radius * radius;   // But this does not work?! Why?</pre>
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>1.2<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 18.10<br />Volume is: 7.24<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 12.57<br />Volume is: 4.19<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>0.12e2<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 1809.56<br />Volume is: 7238.23<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the radius: <br />Surface Area is: 0.00<br />Volume is: 0.00 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>Use <code>double</code> variables <code>radius</code>, <code>volume</code> and <code>surfaceArea</code> to store the input and results.</li>
+<li>Use <code>in.nextDouble()</code> to read a <code>double</code>.</li>
+<li>Use <code>System.out.printf()</code> with specifier <code>%.2f</code> to print a <code>double</code> rounded to 2 decimal places; and <code>%n</code> to print a newline. For example,</li>
+<pre class="color-example">
+   System.out.printf("Volume is: %.2f%n", volume);</pre>
+</ol>
+
+<h4>Cylinder Computation (<span class="font-code">CylinderComputation.java</span>) (Type <span class="font-code">double</span> and <span class="font-code">printf()</span>)</h4>
+<p>Write a program called <code>CylinderComputation</code> that prompts user for the base radius and height of a cylinder in floating point number. The program shall read the inputs as <code>double</code>;  compute the base area, surface area, and volume of the cylinder; and print the values rounded to 2 decimal places. Use System-provided constant <code>Math.PI</code> for pi.</p>
+
+<p>The formulas are:</p>
+<pre class="color-command">
+   baseArea = Math.PI * radius * radius;
+   surfaceArea = 2.0 * Math.PI * radius * height + 2.0 * baseArea;
+   volume = baseArea * height;</pre>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>1<br />1<br /></pre></td>
+      <td><pre>Enter the radius: <br />Enter the height: <br />Base area is: 3.14<br />Surface area is: 12.57<br />Volume is: 3.14<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1.1<br />2.2<br /></pre></td>
+      <td><pre>Enter the radius: <br />Enter the height: <br />Base area is: 3.80<br />Surface area is: 22.81<br />Volume is: 8.36<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>3<br />1.1e2<br /></pre></td>
+      <td><pre>Enter the radius: <br />Enter the height: <br />Base area is: 28.27<br />Surface area is: 2130.00<br />Volume is: 3110.18 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>Use <code>double</code> variables <code>radius</code>, <code>height</code>, <code>baseArea</code>, <code>surfaceArea</code> and <code>volume</code> to store the inputs and results. Take note that spaces are not allowed in names.</li>
+<li>Use <code>in.nextDouble()</code> to read a <code>double</code>.</li>
+<li>Use <code>System.out.printf()</code> with specifier <code>%.2f</code> to print a <code>double</code>, rounded to 2 decimal places; and <code>%n</code> to print a newline. For example,</li>
+<pre class="color-example">
+   System.out.printf("Base Area is: %.2f%n", baseArea);</pre>
+</ol>
+
+<h4>Swap Contents of Two Variables (<span class="font-code">SwapIntegers.java</span>) (swap contents)</h4>
+<p>Write a program called <code>SwapIntegers</code> that prompts user for two integers. The program shall read the inputs as <code>int</code>, save in two variables called <code>number1</code> and <code>number2</code>; swap the contents of the two variables; and print the results.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br />8<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />After the swap, first integer is: 8, second integer is: 5<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>9<br />-9<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />After the swap, first integer is: -9, second integer is: 9<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>11<br />11<br /></pre></td>
+      <td><pre>Enter first integer: <br />Enter second integer: <br />After the swap, first integer is: 11, second integer is: 11</pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<p>To swap the contents of two variables <code>x</code> and <code>y</code>, you need to introduce a temporary storage, say <code>temp</code>, and do:</p>
+<pre class="color-command">
+temp &lt;- x
+x &lt;- y
+y &lt;- temp
+</pre>	
+
+<h3>Decisions and Loops</h3>
+
+<h4>Sum and Average of Running Integers (<span class="font-code">SumAverage.java</span>) (for-loop)</h4>
+<p>Write a program called <code>SumAverage</code> that prompts user for a lowerbound and an upperbound. The program shall read the inputs as <code>int</code>; compute the sum (in <code>int</code>) and average (in <code>double</code>) of the running integers from the lowerbound to the upperbound (both inclusive); and print the sum (<code>int</code>) and average (<code>double</code>) rounded to 2 decimal places.</p>
+
+	
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>1<br />100<br /></pre></td>
+      <td><pre>Enter the lowerbound: <br />Enter the upperbound: <br />The sum is: 5050<br />The average is: 50.50<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1<br />1000<br /></pre></td>
+      <td><pre>Enter the lowerbound: <br />Enter the upperbound: <br />The sum is: 500500<br />The average is: 500.50<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>10<br />999<br /></pre></td>
+      <td><pre>Enter the lowerbound: <br />Enter the upperbound: <br />The sum is: 499455<br />The average is: 504.50<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>-5<br />5<br /></pre></td>
+      <td><pre>Enter the lowerbound: <br />Enter the upperbound: <br />The sum is: 0<br />The average is: 0.00<br /></pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int lowerbound, upperbound, sum = 0;
+      double average;
+      ......
+
+      <span class="color-comment">// Prompt and read inputs as &quot;int&quot;</span>
+      ......
+
+      <span class="color-comment">// Compute sum using a for-loop</span>
+      for (int number = ...; number &lt;= ...; ++number) {
+         sum += number;
+      }
+
+      <span class="color-comment">// Compute average</span>
+      <span class="color-comment">// Take note that int/int gives int. Type casting needed.</span>
+      <span class="color-comment">// The total count is (upperbound - lowerbound + 1)</span>
+      average = ......
+
+      <span class="color-comment">// Display results</span>
+      ......</pre>
+
+<h4>Factorial (<span class="font-code">Factorial.java</span>) (for-loop)</h4>
+<p>Write a program called <code>Factorial</code> that prompts user for an integer <code>n</code> and prints the factorial of <code>n</code>. Use an <code>int</code> to store the factorial. Assume that <code>n &lt;= 12</code> (because factorial of 13 is outside the range of <code>int</code>).</p>
+
+<p>The formula is:</p>
+<pre class="color-command">
+   factorial(n) = 1*2*3*4*...*n   <span class="color-comment">// product of 1 to n</span></pre>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>12<br /></pre></td>
+      <td><pre>Enter an integer: <br />The Factorial of 12 is: 479001600<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter an integer: <br />The Factorial of 5 is: 120<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter an integer: <br />The Factorial of 1 is: 1 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<p>Use an <code>int</code> variable called <code>product</code> initialized to 1; and a for-loop to accumulate into the <code>product</code>.</p>
+
+<h4>Factorial in <span class="font-code">long</span> (<span class="font-code">FactorialLong.java</span>) (for-Loop &amp; Type <span class="font-code">long</span>)</h4>
+<p>Write a program called <code>FactorialLong</code> that prompts user for an integer <code>n</code>. The program shall read the input as an <code>int</code>; compute the factorial of <code>n</code> in <code>long</code>; and print the result.</p>
+
+<p>In this exercise, we use a <code>long</code> to compute and store the factorial.  Take note that with <code>int</code>, you can store factorial upto 12 (9 digits); with <code>long</code>, you can store factorial upto 20 (19 digits).</p>
+
+<p>The formula is:</p>
+<pre class="color-command">
+   factorial(n) = 1*2*3*4*...*n   <span class="color-comment">// product of 1 to n</span></pre>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>13<br /></pre></td>
+      <td><pre>Enter an integer: <br />The Factorial of 13 is: 6227020800<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>20<br /></pre></td>
+      <td><pre>Enter an integer: <br />The Factorial of 20 is: 2432902008176640000<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter an integer: <br />The Factorial of 1 is: 1 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h4>Income Tax Calculator (<span class="font-code">IncomeTaxCalculator.java</span>) (Decision)</h4>
+<p>The <em>progressive</em> income tax rate is mandated as follows: The first $20000 of taxable income is tax exempted; the next $20000 is taxed at 10%; the next $20000 is taxed at 20%; and the rest is taxed at 30%.  For example, suppose that the taxable income is $85000, the income tax payable is $20000*0% + $20000*10% + $20000*20% + $25000*30%.</p>
+
+<p>Write a program called <code>IncomeTaxCalculator</code> that reads the taxable income (in <code>int</code>). The program shall calculate the income tax payable (in <code>double</code>); and print the result rounded to 2 decimal places.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>20000<br /></pre></td>
+      <td><pre>Enter the taxable income: $<br />The income tax payable is: $0.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>20001<br /></pre></td>
+      <td><pre>Enter the taxable income: $<br />The income tax payable is: $0.10<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>25000<br /></pre></td>
+      <td><pre>Enter the taxable income: $<br />The income tax payable is: $500.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>40000<br /></pre></td>
+      <td><pre>Enter the taxable income: $<br />The income tax payable is: $2000.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>5</pre></td>
+      <td><pre>50000<br /></pre></td>
+      <td><pre>Enter the taxable income: $<br />The income tax payable is: $4000.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>6</pre></td>
+      <td><pre>60000<br /></pre></td>
+      <td><pre>Enter the taxable income: $<br />The income tax payable is: $6000.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>7</pre></td>
+      <td><pre>85000<br /></pre></td>
+      <td><pre>Enter the taxable income: $<br />The income tax payable is: $13500.00 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constants first (variables may use these constants)</span>
+      <span class="color-comment">// The keyword &quot;final&quot; marked these as constant (i.e., cannot be changed).</span>
+      <span class="color-comment">// Use uppercase words joined with underscore to name constants</span>
+      final double TAX_RATE_ABOVE_20K = 0.1;
+      final double TAX_RATE_ABOVE_40K = 0.2;
+      final double TAX_RATE_ABOVE_60K = 0.3;
+
+      <span class="color-comment">// Declare variables</span>
+      int taxableIncome;
+      double taxPayable;
+      ......
+
+      <span class="color-comment">// Compute tax payable in &quot;double&quot; using a nested-if to handle 4 cases</span>
+      if (taxableIncome &lt;= 20000) {         <span class="color-comment">// [0, 20000]</span>
+         taxPayable = ......;
+      } else if (taxableIncome &lt;= 40000) {  <span class="color-comment">// [20001, 40000]</span>
+         taxPayable = ......;
+      } else if (taxableIncome &lt;= 60000) {  <span class="color-comment">// [40001, 60000]</span>
+         taxPayable = ......;
+      } else {                              <span class="color-comment">// [60001, ]</span>
+         taxPayable = ......;
+      }
+      ......</pre>
+
+<h4> Pension Contribution Calculator (<span class="font-code">PensionContributionCalculator.java</span>) (Decision)</h4>
+<p>The pension fund contribution of an employee is mandated as follows: For employee aged 55 and below, the employee contributes 20% of the monthly salary (subjected to a ceiling stated below) and the employer contributes 17%. For employee aged above 55 to 60, the employee contributes 13% and the employer contributes 13%. For employee aged above 60 to 65, the employee contributes 7.5% and the employer contributes 9%. For employee aged above 65, the employee contributes 5% and the employer contributes 7.5%. The salary ceiling that attracts contribution is capped at $6000.  In other words, if an employee earns $6800, only $6000 attracts employee's and employer's contributions, the remaining $800 does not.</p>
+
+<p>Write a program called <code>PensionContributionCalculator</code> that reads the monthly salary and the age (in <code>int</code>) of an employee. Your program shall calculate the employee's, employer's and total contributions (in <code>double</code>); and print the results rounded to 2 decimal places.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>3000<br />30<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $600.00<br />The employer's contribution is: $510.00<br />The total contribution is: $1110.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>4123<br />55<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $824.60<br />The employer's contribution is: $700.91<br />The total contribution is: $1525.51<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>4123<br />56<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $535.99<br />The employer's contribution is: $535.99<br />The total contribution is: $1071.98<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>4123<br />60<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $535.99<br />The employer's contribution is: $535.99<br />The total contribution is: $1071.98<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>5</pre></td>
+      <td><pre>4123<br />61<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $309.22<br />The employer's contribution is: $371.07<br />The total contribution is: $680.30<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>6</pre></td>
+      <td><pre>4123<br />65<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $309.22<br />The employer's contribution is: $371.07<br />The total contribution is: $680.30<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>7</pre></td>
+      <td><pre>4123<br />66<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $206.15<br />The employer's contribution is: $309.22<br />The total contribution is: $515.38<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>8</pre></td>
+      <td><pre>6000<br />50<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $1200.00<br />The employer's contribution is: $1020.00<br />The total contribution is: $2220.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>9</pre></td>
+      <td><pre>8899<br />50<br /></pre></td>
+      <td><pre>Enter the monthly salary: $<br />Enter the age: <br />The employee's contribution is: $1200.00<br />The employer's contribution is: $1020.00<br />The total contribution is: $2220.00 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constants</span>
+      final int SALARY_CEILING = 6000;
+      final double EMPLOYEE_RATE_55_AND_BELOW = 0.2;
+      final double EMPLOYER_RATE_55_AND_BELOW = 0.17;
+      final double EMPLOYEE_RATE_55_TO_60 = 0.13;
+      final double EMPLOYER_RATE_55_TO_60 = 0.13;
+      final double EMPLOYEE_RATE_60_TO_65 = 0.075;
+      final double EMPLOYER_RATE_60_TO_65 = 0.09;
+      final double EMPLOYEE_RATE_65_ABOVE = 0.05;
+      final double EMPLOYER_RATE_65_ABOVE = 0.075;
+
+      <span class="color-comment">// Declare variables</span>
+      int salary, age;     <span class="color-comment">// to be input</span>
+      int contributableSalary;
+      double employeeContribution, employerContribution, totalContribution;
+      ......
+
+      <span class="color-comment">// Check the contribution cap</span>
+      contributableSalary = ......
+
+      <span class="color-comment">// Compute various contributions in &quot;double&quot; using a nested-if to handle 4 cases</span>
+      if (age &lt;= 55) {         <span class="color-comment">// 55 and below</span>
+         ......
+      } else if (age &lt;= 60) {  <span class="color-comment">// (60, 65]</span>
+         ......
+      } else if (age &lt;= 65) {  <span class="color-comment">// (55, 60]</span>
+         ......
+      } else {                 <span class="color-comment">// above 65</span>
+         ......
+      }
+      ......</pre>
+
+<h4> Income Tax Calculator with Sentinel (<span class="font-code">IncomeTaxCalculatorSentinel.java</span>) (Decision &amp; Loop)</h4>
+<p>Based on the previous <code>IncomeTaxCalculator</code>, write a program called <code>IncomeTaxCalculatorSentinel</code> which shall repeat the calculations until user enter -1. This -1 is known as the <em>sentinel</em> (or terminating) value in programming.</p>
+
+	
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>12345<br />23456<br />45678<br />61234<br />89123<br />-1<br /></pre></td>
+      <td><pre>Enter the taxable income (or -1 to end): $<br />The income tax payable is: $0.00<br />Enter the taxable income (or -1 to end): $<br />The income tax payable is: $345.60<br />Enter the taxable income (or -1 to end): $<br />The income tax payable is: $3135.60<br />Enter the taxable income (or -1 to end): $<br />The income tax payable is: $6370.20<br />Enter the taxable income (or -1 to end): $<br />The income tax payable is: $14736.90<br />Enter the taxable income (or -1 to end): $<br />bye!<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>98765<br />-1<br /></pre></td>
+      <td><pre>Enter the taxable income (or -1 to end): $<br />The income tax payable is: $17629.50<br />Enter the taxable income (or -1 to end): $<br />bye!<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>-1<br /></pre></td>
+      <td><pre>Enter the taxable income (or -1 to end): $<br />bye! </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constants first</span>
+      final int SENTINEL = -1;    <span class="color-comment">// Terminating value for input</span>
+      ......
+
+      <span class="color-comment">// Declare constants and variables</span>
+      int taxableIncome;
+      double taxPayable;
+      ......
+
+      <span class="color-comment">// Read the first input to &quot;seed&quot; the while loop</span>
+      System.out.print(&quot;Enter the taxable income (or -1 to end): $&quot;);
+      taxableIncome = in.nextInt();
+
+      while (taxableIncome != SENTINEL) {
+         <span class="color-comment">// Compute tax payable in &quot;double&quot; using a nested-if to handle 4 cases</span>
+         ......
+
+         <span class="color-comment">// Print result rounded to 2 decimal places</span>
+         ......
+
+         <span class="color-comment">// Read the next input</span>
+         System.out.print(&quot;Enter the taxable income (or -1 to end): $&quot;);
+         taxableIncome = in.nextInt();
+            <span class="color-comment">// Repeat the loop body, only if the input is not the SENTINEL value.</span>
+            <span class="color-comment">// Take note that you need to repeat these two statements inside/outside the loop!</span>
+      }
+      System.out.println(&quot;bye!&quot;);</pre>
+
+<h4> Pension Contribution Calculator with Sentinel (<span class="font-code">PensionContributionCalculatorSentinel.java</span>) (Decision &amp; Loop)</h4>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5123<br />51<br />5123<br />64<br />-1<br /></pre></td>
+      <td><pre>Enter the monthly salary (or -1 to end): $<br />Enter the age: <br />The employee's contribution is: $1024.60<br />The employer's contribution is: $870.91<br />The total contribution is: $1895.51<br />Enter the monthly salary (or -1 to end): $<br />Enter the age: <br />The employee's contribution is: $384.22<br />The employer's contribution is: $461.07<br />The total contribution is: $845.30<br />Enter the monthly salary (or -1 to end): $<br />bye!<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1234<br />21<br />-1<br /></pre></td>
+      <td><pre>Enter the monthly salary (or -1 to end): $<br />Enter the age: <br />The employee's contribution is: $246.80<br />The employer's contribution is: $209.78<br />The total contribution is: $456.58<br />Enter the monthly salary (or -1 to end): $<br />bye!<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>-1<br /></pre></td>
+      <td><pre>Enter the monthly salary (or -1 to end): $<br />bye! </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Read the first input to &quot;seed&quot; the while loop</span>
+      System.out.print(&quot;Enter the monthly salary (or -1 to end): $&quot;);
+      salary = in.nextInt();
+
+      while (salary != SENTINEL) {
+         <span class="color-comment">// Read the rest of inputs</span>
+         System.out.print(&quot;Enter the age: &quot;);
+         age = in.nextInt();
+
+         ......
+         ......
+
+         <span class="color-comment">// Read the next input and repeat</span>
+         System.out.print(&quot;Enter the monthly salary (or -1 to end): $&quot;);
+         salary = in.nextInt();
+      }</pre>
+
+<h4> Salesperson Salary (<span class="font-code">SalespersonSalary.java</span>) (Decision &amp; Loop)</h4>
+<p>A company pays its salesperson on a base-salary-plus-commission basis. A salesperson receives $1000 base salary  plus 15% of their gross sales as commission. For example, a salesperson with gross sales of $18,000 receives $1000 + $18000*15%.</p>
+
+<p>Write a program to compute the salary of ALL the salespersons in the company.  Your program shall use a loop to continuously input each salesperson's gross sales (as <code>int</code>); compute that salesperson's salary (in <code>double</code>); and display the results rounded to 2 decimal places. The program shall terminate in response to input of -1.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>10000<br />20000<br />30000<br />-1<br /></pre></td>
+      <td><pre>Enter sales in dollars (or -1 to end): <br />Salary is: $2500.00<br /><br />Enter sales in dollars (or -1 to end): <br />Salary is: $4000.00<br /><br />Enter sales in dollars (or -1 to end): <br />Salary is: $5500.00<br /><br />Enter sales in dollars (or -1 to end): <br />bye<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>12345<br />67890<br />-1<br /></pre></td>
+      <td><pre>Enter sales in dollars (or -1 to end): <br />Salary is: $2851.75<br /><br />Enter sales in dollars (or -1 to end): <br />Salary is: $11183.50<br /><br />Enter sales in dollars (or -1 to end): <br />bye<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>0<br />-1<br /></pre></td>
+      <td><pre>Enter sales in dollars (or -1 to end): <br />Salary is: $1000.00<br /><br />Enter sales in dollars (or -1 to end): <br />bye<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>-1<br /></pre></td>
+      <td><pre>Enter sales in dollars (or -1 to end): <br />bye </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constants</span>
+      <span class="color-comment">// The keyword &quot;final&quot; marked these as constant (i.e., cannot changed).</span>
+      <span class="color-comment">// Use uppercase words joined with underscore to name constants</span>
+      final double BASE_SALARY = 1000;
+      final double COMMISSION_RATE = 0.15;
+      final int SENTINEL = -1;        <span class="color-comment">// Terminating value for input</span>
+
+      <span class="color-comment">// Declare variables</span>
+      int sales;       <span class="color-comment">// Input gross sales</span>
+      double salary;   <span class="color-comment">// Salary to be computed</span>
+      ......
+
+      <span class="color-comment">// Read the first input to &quot;seed&quot; the while loop</span>
+      System.out.print(&quot;Enter sales in dollars (or -1 to end): &quot;);
+      sales =  in.nextInt();
+
+      while (sales != SENTINEL) {
+         <span class="color-comment">// Compute the salary in &quot;double&quot;</span>
+         ......
+
+         <span class="color-comment">// Print results rounded to 2 decimal places</span>
+         ......
+
+         <span class="color-comment">// Read the next input</span>
+         System.out.print(&quot;Enter sales in dollars (or -1 to end): &quot;);
+         sales =  in.nextInt();
+         <span class="color-comment">// Repeat the loop body, only if the input is not the SENTINEL value.</span>
+         <span class="color-comment">// Take note that you need to repeat these two statements inside/outside the loop!</span>
+      }
+      ......</pre>
+
+<h4> Sales Tax (<span class="font-code">SalesTax.java</span>) (Decision &amp; Loop)</h4>
+<p>A sales tax of 7% is levied on all goods and services consumed. It is also mandatory that all the price tags should include the sales tax.  For example, if an item has a price tag of $107, the actual price is $100 and $7 goes to the sales tax.</p>
+
+<p>Write a program using a loop to continuously input the tax-inclusive price (as <code>double</code>); compute the actual price and the sales tax (in <code>double</code>); and print the results rounded to 2 decimal places. The program shall terminate in response to input of -1; and print the total price, total actual price, and total sales tax.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>107<br />214<br />321<br />-1<br /></pre></td>
+      <td><pre>Enter the tax-inclusive price in dollars (or -1 to end): <br />Actual Price is: $100.00, Sales Tax is: $7.00<br /><br />Enter the tax-inclusive price in dollars (or -1 to end): <br />Actual Price is: $200.00, Sales Tax is: $14.00<br /><br />Enter the tax-inclusive price in dollars (or -1 to end): <br />Actual Price is: $300.00, Sales Tax is: $21.00<br /><br />Enter the tax-inclusive price in dollars (or -1 to end): <br />Total Price is: $642.00<br />Total Actual Price is: $600.00<br />Total Sales Tax is: $42.00<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>123<br />456<br />-1<br /></pre></td>
+      <td><pre>Enter the tax-inclusive price in dollars (or -1 to end): <br />Actual Price is: $114.95, Sales Tax is: $8.05<br /><br />Enter the tax-inclusive price in dollars (or -1 to end): <br />Actual Price is: $426.17, Sales Tax is: $29.83<br /><br />Enter the tax-inclusive price in dollars (or -1 to end): <br />Total Price is: $579.00<br />Total Actual Price is: $541.12<br />Total Sales Tax is: $37.88<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1234.56<br />-1<br /></pre></td>
+      <td><pre>Enter the tax-inclusive price in dollars (or -1 to end): <br />Actual Price is: $1153.79, Sales Tax is: $80.77<br /><br />Enter the tax-inclusive price in dollars (or -1 to end): <br />Total Price is: $1234.56<br />Total Actual Price is: $1153.79<br />Total Sales Tax is: $80.77<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>-1<br /></pre></td>
+      <td><pre>Enter the tax-inclusive price in dollars (or -1 to end): <br />Total Price is: $0.00<br />Total Actual Price is: $0.00<br />Total Sales Tax is: $0.00 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constants</span>
+      final double SALES_TAX_RATE = 0.07;
+      final int SENTINEL = -1;        <span class="color-comment">// Terminating value for input</span>
+
+      <span class="color-comment">// Declare variables</span>
+      double price, actualPrice, salesTax;  <span class="color-comment">// inputs and results</span>
+      double totalPrice = 0.0, totalActualPrice = 0.0, totalSalesTax = 0.0;  <span class="color-comment">// to accumulate</span>
+      ......
+
+      <span class="color-comment">// Read the first input to &quot;seed&quot; the while loop</span>
+      System.out.print(&quot;Enter the tax-inclusive price in dollars (or -1 to end): &quot;);
+      price =  in.nextDouble();
+
+      while (price != SENTINEL) {
+         <span class="color-comment">// Compute the tax</span>
+         ......
+         <span class="color-comment">// Accumulate into the totals</span>
+         ......
+         <span class="color-comment">// Print results</span>
+         ......
+
+         <span class="color-comment">// Read the next input</span>
+         System.out.print(&quot;Enter the tax-inclusive price in dollars (or -1 to end): &quot;);
+         price =  in.nextDouble();
+         <span class="color-comment">// Repeat the loop body, only if the input is not the sentinel value.</span>
+         <span class="color-comment">// Take note that you need to repeat these two statements inside/outside the loop!</span>
+      }
+      <span class="color-comment">// print totals</span>
+      ......</pre>
+
+
+<h4> Harmonics Sum (<span class="font-code">HarmonicSum.java</span>) (Decision &amp; Loop)</h4>
+<p>Write a program that prompts user for the maximum denominator (<code>n</code>). The program shall read the input as <code>int</code>; compute the sum of the Harmonic series upto <code>n</code>; and print the result (in full precision).</p>
+
+<p>The Harmonic Series is:</p>
+<pre class="color-command">
+   Sum = 1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6 + ..... + 1/n</pre>
+
+<p>You are to compute two sums: from left-to-right and from right-to-left. Also compute their absolute difference.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>10000<br /></pre></td>
+      <td><pre>Enter the max denominator: <br />The sum from left-to-right is: 9.787606036044348<br />The sum from right-to-left is: 9.787606036044386<br />The absolute difference is: 3.730349362740526E-14<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1000<br /></pre></td>
+      <td><pre>Enter the max denominator: <br />The sum from left-to-right is: 7.485470860550343<br />The sum from right-to-left is: 7.485470860550341<br />The absolute difference is: 2.6645352591003757E-15<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the max denominator: <br />The sum from left-to-right is: 1.0<br />The sum from right-to-left is: 1.0<br />The absolute difference is: 0.0 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int maxDenominator;   <span class="color-comment">// to be input</span>
+      double sumL2R = 0.0, sumR2L = 0.0, absDiff;  <span class="color-comment">// to compute these in &quot;double&quot;</span>
+      ......
+
+      <span class="color-comment">// Prompt and read inputs as &quot;int&quot;</span>
+      ......
+
+      <span class="color-comment">// Compute sum from left-to-right in &quot;double&quot;</span>
+      for (int denominator = 1; denominator &lt;= maxDenominator; denominator++) {
+         ......
+         <span class="color-comment">// Take note that int/int gives int.</span>
+      }
+
+      <span class="color-comment">// Compute sum from right-to-left in &quot;double&quot;</span>
+      for (int denominator = maxDenominator; denominator &gt;= 1; denominator--) {
+         ......
+      }
+
+      <span class="color-comment">// Compute the absolute difference in &quot;double&quot;</span>
+      <span class="color-comment">// absDiff = ......</span>
+      <span class="color-comment">// if (absDiff &lt; 0) absDiff = -absDiff;</span>
+
+      <span class="color-comment">// Print results in full precision using println()</span>
+      ......</pre>
+
+
+<h4> Compute PI (A) (<span class="font-code">ComputePIa.java</span>) (Decision &amp; Loop)</h4>
+<p>Write a program to compute the value of PI, using the following series:</p>
+<pre class="color-command">
+   PI = 4 * (1 - 1/3 + 1/5 - 1/7 + 1/9 - 1/11 + 1/13 .....)</pre>
+
+<p>Your program shall prompt the user for the &quot;maximum denominator&quot; used in the computation.</p>
+<p>Display the computed value of PI to 10 decimal places.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>10000<br /></pre></td>
+      <td><pre>Enter the maximum denominator: <br />The PI computed is: 3.1413926536<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1000<br /></pre></td>
+      <td><pre>Enter the maximum denominator: <br />The PI computed is: 3.1395926556<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>100<br /></pre></td>
+      <td><pre>Enter the maximum denominator: <br />The PI computed is: 3.1215946526 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      int maxDenominator;  <span class="color-comment">// to be input</span>
+      double sum = 0.0;
+      ......
+
+      for (int denominator = 1; denominator &lt;= maxDenominator; denominator += 2) {
+         <span class="color-comment">// denominator = 1, 3, 5, 7, ..., maxDenominator</span>
+         if (denominator % 4 == 1) {
+            <span class="color-comment">// add into sum</span>
+            ......
+         } else if (denominator % 4 == 3) {
+            <span class="color-comment">// subtract from sum</span>
+            ......
+         } else {
+            System.out.println(&quot;impossible - error in logic&quot;);
+         }
+      }</pre>
+
+
+<h4> Sum of Digits of an Integer (<span class="font-code">SumOfDigitsInt.java</span>) (Loop &amp; Modulus/Division)</h4>
+<p>Write a program that prompts user for a positive integer. The program shall read the input as <code>int</code>; compute and print the sum of all its digits. No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>12345<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />The sum of all digits is: 15<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>67890<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />The sum of all digits is: 30<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />The sum of all digits is: 1 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int inNumber;   <span class="color-comment">// to be input</span>
+      int inDigit;    <span class="color-comment">// each digit</span>
+      int sum = 0;
+      ......
+
+      <span class="color-comment">// Prompt and read inputs as &quot;int&quot;</span>
+      ......
+
+      <span class="color-comment">// Extract the &quot;last&quot; digit repeatedly using a while-loop with modulus/divide operations</span>
+      while (inNumber &gt; 0) {
+         inDigit = inNumber % 10; <span class="color-comment">// extract the &quot;last&quot; digit</span>
+         inNumber /= 10;          <span class="color-comment">// drop &quot;last&quot; digit</span>
+         sum = ......
+      }
+      ......</pre>
+
+
+<h4> Reverse of an Integer (<span class="font-code">ReverseInt.java</span>) (Loop &amp; Modulus/Division)</h4>
+<p>Write a program that prompts user for a positive integer. The program shall read the input as <code>int</code>; and print the <em>reverse</em> of the input integer. No input validation needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>12345<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />The reverse is: 54321<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>67890<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />The reverse is: 09876<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />The reverse is: 1</pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int inNumber;   <span class="color-comment">// to be input</span>
+      int inDigit;    <span class="color-comment">// each digit</span>
+      ......
+
+      <span class="color-comment">// Extract and drop the &quot;last&quot; digit repeatedly using a while-loop with modulus/divide operations</span>
+      while (inNumber &gt; 0) {
+         inDigit = inNumber % 10; <span class="color-comment">// extract the &quot;last&quot; digit</span>
+         <span class="color-comment">// Print this digit (which is extracted in reverse order)</span>
+         ......
+         inNumber /= 10;          <span class="color-comment">// drop &quot;last&quot; digit and repeat</span>
+      }
+      ......</pre>
+
+
+<h4> Input Validation (<span class="font-code">InputValidation.java</span>) (loop &amp; <span class="font-code">boolean</span> flag)</h4>
+<p>Your program often needs to validate the user's inputs, e.g., marks shall be between 0 and 100.</p>
+
+<p>Write a program that prompts user for an integer between 0-10 or 90-100. The program shall read the input as an <code>int</code>; and repeat until the user enters a valid input.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>-1<br />50<br />101<br />95<br /></pre></td>
+      <td><pre>Enter a number between 0-10 or 90-100: <br />Invalid input, try again...<br />Enter a number between 0-10 or 90-100: <br />Invalid input, try again...<br />Enter a number between 0-10 or 90-100: <br />Invalid input, try again...<br />Enter a number between 0-10 or 90-100: <br />You have entered: 95<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>-1<br />0<br /></pre></td>
+      <td><pre>Enter a number between 0-10 or 90-100: <br />Invalid input, try again...<br />Enter a number between 0-10 or 90-100: <br />You have entered: 0<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter a number between 0-10 or 90-100: <br />You have entered: 5 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int numberIn;      <span class="color-comment">// to be input</span>
+      boolean isValid;   <span class="color-comment">// boolean flag to control the loop</span>
+      ......
+
+      <span class="color-comment">// Use a do-while loop controlled by a boolean flag</span>
+      <span class="color-comment">// to repeatably read the input until a valid input is entered</span>
+      isValid = false;   <span class="color-comment">// default assuming input is not valid</span>
+      do {
+         <span class="color-comment">// Prompt and read input</span>
+         ......
+
+         <span class="color-comment">// Validate input by setting the boolean flag accordingly</span>
+         if (numberIn ......) {
+            isValid = true;   <span class="color-comment">// exit the loop</span>
+         } else {
+            System.out.println(......);  <span class="color-comment">// Print error message and repeat</span>
+         }
+      } while (!isValid);
+      ......</pre>
+
+
+<h4> Average with Input Validation (<span class="font-code">AverageWithInputValidation.java</span>) (Loop &amp; <span class="font-code">boolean</span> flag)</h4>
+<p>Write a program that prompts user for the mark (between 0-100 as <code>int</code>) of 3 students; computes the average (in <code>double</code>); and prints the result rounded to 2 decimal places. Your program needs to perform input validation.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>35<br />87<br />99<br /></pre></td>
+      <td><pre>Enter the mark (0-100) for student 1: <br />Enter the mark (0-100) for student 2: <br />Enter the mark (0-100) for student 3: <br />The average is: 73.67<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>56<br />101<br />-1<br />99<br />45<br /></pre></td>
+      <td><pre>Enter the mark (0-100) for student 1: <br />Enter the mark (0-100) for student 2: <br />Invalid input, try again...<br />Enter the mark (0-100) for student 2: <br />Invalid input, try again...<br />Enter the mark (0-100) for student 2: <br />Enter the mark (0-100) for student 3: <br />The average is: 66.67<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>101<br />100<br />-1<br />0<br />50<br /></pre></td>
+      <td><pre>Enter the mark (0-100) for student 1: <br />Invalid input, try again...<br />Enter the mark (0-100) for student 1: <br />Enter the mark (0-100) for student 2: <br />Invalid input, try again...<br />Enter the mark (0-100) for student 2: <br />Enter the mark (0-100) for student 3: <br />The average is: 50.00 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare constant</span>
+      final int NUM_STUDENTS = 3;
+
+      <span class="color-comment">// Declare variables</span>
+      int numberIn;
+      boolean isValid;   <span class="color-comment">// boolean flag to control the input validation loop</span>
+      int sum = 0;
+      double average;
+      ......
+
+      for (int studentNo = 1; studentNo &lt;= NUM_STUDENTS; ++studentNo) {
+          <span class="color-comment">// Prompt user for mark with input validation</span>
+          ......
+          isValid = false;   <span class="color-comment">// reset for each student assuming input is not valid</span>
+          do {
+             ......
+             <span class="color-comment">// If input is valid, eet isValid = true to exit the loop</span>
+             <span class="color-comment">// Else, print error message and repeat</span>
+             ......
+          } while (!isValid);
+
+          sum += ......;
+      }
+      ......</pre>
+
+<h3>Nested-Loops</h3>
+	
+<h4> Checker Pattern (Nested-Loops)</h4>
+<p>Write a program that prompts user for the size of the pattern (in <code>int</code>); and prints the checker pattern as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter the size: <br /># # # # # <br /> # # # # # <br /># # # # # <br /> # # # # # <br /># # # # # <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>3<br /></pre></td>
+      <td><pre>Enter the size: <br /># # # <br /> # # # <br /># # # <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the size: <br />#  </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Outer loop to print ALL the rows</span>
+      for (int row = 1; row &lt;= size; row++) {
+         <span class="color-comment">// Use print() to print a space, if needed, before printing this row</span>
+         ......
+         <span class="color-comment">// Inner loop to print ALL the columns of ONE row</span>
+         for (int col = 1; col &lt;= size; col++) {
+            <span class="color-comment">// Use print() here</span>
+            ......
+         }
+         <span class="color-comment">// Print a newline after all the columns</span>
+         System.out.println();
+      }</pre>
+
+
+<h4> Triangular Pattern (A) (Nested-Loops)</h4>
+<p>Write a program that prompts user for the size of the pattern; and prints the triangular pattern as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter the size: <br />*<br />**<br />***<br />****<br />*****<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>4<br /></pre></td>
+      <td><pre>Enter the size: <br />*<br />**<br />***<br />****<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the size: <br />* </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      for (int row = 1; row &lt;= size; row++) {
+         for (int col = 1; col &lt;= size; col++) {
+            <span class="color-comment">// if (row &gt;= col) print *</span>
+            ......
+         }
+         <span class="color-comment">// Print a newline after all the columns</span>
+         ......
+      }</pre>
+
+
+<h4>Triangular Pattern (C) (Nested-Loops)</h4>
+<p>Write a program that prompts user for the size of the pattern; and prints the triangular pattern as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter the size: <br />*****<br /> ****<br />  ***<br />   **<br />    *<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>4<br /></pre></td>
+      <td><pre>Enter the size: <br />****<br /> ***<br />  **<br />   *<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the size: <br />* </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      for (int row = 1; row &lt;= size; row++) {
+         for (int col = 1; col &lt;= size; col++) {
+            <span class="color-comment">// if (row &lt;= col) print *</span>
+            <span class="color-comment">// else print a space (needed to push the * to the right)</span>
+            ......
+         }
+         <span class="color-comment">// Print a newline after all the columns</span>
+         ......
+      }</pre>
+
+
+<h4>Z Pattern (Nested-Loops)</h4>
+<p>Write a program that prompts user for the size of the pattern; and print the Z-pattern as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter the size: <br />*****<br />   * <br />  *  <br /> *   <br />*****<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>3<br /></pre></td>
+      <td><pre>Enter the size: <br />***<br /> * <br />***<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the size: <br />* </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<p>The formula for the diagonal is <code>row + col = size + 1</code>, with <code>row</code> and <code>col</code> begin from 1.</p>
+<p>The algorithm is:</p>
+<pre class="color-command">
+if row is 1, or row is n, or row + col = n + 1, print *
+else print a space</pre>
+
+
+<h4>Box with Cross (Nested-Loops)</h4>
+<p>Write a program that prompts user for the size of the pattern; and prints the box-with-cross pattern as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>8<br /></pre></td>
+      <td><pre>Enter the size: <br />********<br />*+    +*<br />* +  + *<br />*  ++  *<br />*  ++  *<br />* +  + *<br />*+    +*<br />********<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>7<br /></pre></td>
+      <td><pre>Enter the size: <br />*******<br />*+   +*<br />* + + *<br />*  +  *<br />* + + *<br />*+   +*<br />*******<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the size: <br />* </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<p>The formula for the main diagonal is <code>row = col</code>; while the opposite diagonal is <code>row + col = n + 1</code>, where <code>row</code> and <code>col</code> begin from 1.</p>
+
+<p>The algorithm is:</p>
+<pre class="color-command">
+if row is 1, or row is n, or col is 1, or col is n, print *
+else if row = col, or row + col = n + 1, print +
+else print a space</pre>
+
+
+<h4>Triangular Number Pattern (Nested-Loops)</h4>
+<p>Write a program that prompts user for the size of the pattern; and prints the triangular number pattern as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>7<br /></pre></td>
+      <td><pre>Enter the size: <br />1234567<br /> 123456<br />  12345<br />   1234<br />    123<br />     12<br />      1<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter the size: <br />12345<br /> 1234<br />  123<br />   12<br />    1<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the size: <br />1 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h4>Multiplication Table (Nested-Loops)</h4>
+<p>Write a program that prompts user for the size; and prints the multiplication table of that size.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>9<br /></pre></td>
+      <td><pre>Enter the size of the table: <br /> * |   1   2   3   4   5   6   7   8   9<br />===+====================================<br /> 1 |   1   2   3   4   5   6   7   8   9<br /> 2 |   2   4   6   8  10  12  14  16  18<br /> 3 |   3   6   9  12  15  18  21  24  27<br /> 4 |   4   8  12  16  20  24  28  32  36<br /> 5 |   5  10  15  20  25  30  35  40  45<br /> 6 |   6  12  18  24  30  36  42  48  54<br /> 7 |   7  14  21  28  35  42  49  56  63<br /> 8 |   8  16  24  32  40  48  56  64  72<br /> 9 |   9  18  27  36  45  54  63  72  81<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>5<br /></pre></td>
+      <td><pre>Enter the size of the table: <br /> * |   1   2   3   4   5<br />===+====================<br /> 1 |   1   2   3   4   5<br /> 2 |   2   4   6   8  10<br /> 3 |   3   6   9  12  15<br /> 4 |   4   8  12  16  20<br /> 5 |   5  10  15  20  25<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter the size of the table: <br /> * |   1<br />===+====<br /> 1 |   1 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+	
+<h4>Hill Pattern (Nested-Loops)</h4>
+<p>Write a program that prompts user for the number of rows; and prints the Hill pattern as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5	 <br /></pre></td>
+      <td><pre>Enter the rows:  <br />    ^     <br />   ^^^    <br />  ^^^^^   <br /> ^^^^^^^  <br />^^^^^^^^^ <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>4 <br /></pre></td>
+      <td><pre>Enter the rows:  <br />   ^    <br />  ^^^   <br /> ^^^^^  <br />^^^^^^^ <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>3 <br /></pre></td>
+      <td><pre>Enter the rows:  <br />  ^   <br /> ^^^  <br />^^^^^ </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      for (int row = 1; ......) {
+         <span class="color-comment">// numCol = 2*numRows - 1</span>
+         for (int col = 1; ......) {
+            if ((row + col &gt;= numRows + 1) &amp;&amp; (row &gt;= col - numRows + 1)) {
+               ......;
+            } else {
+               ......;
+            }
+         }
+         ......;
+      }</pre>
+
+<p>or, use 2 sequential inner loops to print the columns:</p>
+<pre class="color-example">
+      for (int row = 1; row &lt;= rows; row++) {
+         for (int col = 1; col &lt;= rows; col++) {
+            if ((row + col &gt;= rows + 1)) {
+               ......
+            } else {
+               ......
+            }
+         }
+         for (int col = 2; col &lt;= rows; col++) {  <span class="color-comment">// skip col = 1</span>
+            if (row &gt;= col) {
+               ......
+            } else {
+               ......
+            }
+         }
+         ......
+      }</pre>
+
+
+<h3><span class="font-code">String</span> and <span class="font-code">char</span> Operations</h3>	
+
+<h4>Reverse String (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+<p>Write a program that prompts user for a string; and prints the string in the reverse order.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>abcdefg<br /></pre></td>
+      <td><pre>Enter a String: <br />The reverse is: gfedcba<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>12345<br /></pre></td>
+      <td><pre>Enter a String: <br />The reverse is: 54321<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>a<br /></pre></td>
+      <td><pre>Enter a String: <br />The reverse is: a </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>For a <code>String</code> called <code>inStr</code>, you can use <code>inStr.length()</code> to get the <em>length</em> of the <code>String</code>; and <code>inStr.charAt(index)</code> to retrieve the <code>char</code> at the <code>index</code> position, where <code>index</code> begins with 0.</li>
+
+<li>Use a for-loop to extract each <code>char</code> of the input <code>String</code> in the reverse order, and print the extracted <code>char</code>. There is no need to save the result.
+<pre class="color-example">
+      String inStr;   <span class="color-comment">// input String</span>
+      int inStrLen;   <span class="color-comment">// length of the input String</span>
+      ......
+
+      System.out.print(&quot;Enter a String: &quot;);
+      inStr = in.next();   <span class="color-comment">// use next() to read a String</span>
+      inStrLen = inStr.length();
+
+      <span class="color-comment">// Use inStr.charAt(index) in a loop to extract character at &quot;index&quot; from inStr.</span>
+      <span class="color-comment">// The String's index begins at 0 from the left.</span>
+      ......
+      for (int charIdx = inStrLen - 1; charIdx &gt;= 0; --charIdx) {  <span class="color-comment">// Process the String from the right</span>
+         <span class="color-comment">// Print the inStr.charAt(charIdx)</span>
+         ......
+      }</pre>
+	
+</li>
+</ol>
+
+
+<h4>Phone Keypad (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+<p>On your phone's keypad, the alphabets are mapped to digits as follows: <code>ABC(2)</code>, <code>DEF(3)</code>, <code>GHI(4)</code>, <code>JKL(5)</code>, <code>MNO(6)</code>, <code>PQRS(7)</code>, <code>TUV(8)</code>, <code>WXYZ(9)</code>.</p>
+
+<p>Write a program called <code>PhoneKeyPad</code> which prompts user for a <code>String</code> (case insensitive), and converts to a sequence of keypad digits.</p>
+
+<p>You are required to use a "switch-case" statement in this exercise.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>1800flower<br /></pre></td>
+      <td><pre>Enter a String: <br />The phone number is: 1800356937<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>HelloWorld<br /></pre></td>
+      <td><pre>Enter a String: <br />The phone number is: 4355696753 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>You could use <code>in.next().toLowerCase()</code> to read an input <code>String</code> and convert it into lowercase to reduce the number of cases.</li>
+
+<li>In <code>switch-case</code>, you can handle multiple cases as follows:
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      String inStr;   <span class="color-comment">// input String</span>
+      int inStrLen;   <span class="color-comment">// length of the input String</span>
+      char inChar;    <span class="color-comment">// each individual char in the string</span>
+      ......
+
+      for (int inCharIdx = 0; inCharIdx &lt; inStrLength; ++inCharIdx) {
+         inChar = inStr.charAt(inCharIdx);
+         switch (inChar) {
+            case 'a': case 'b': case 'c':   <span class="color-comment">// same as: if (inChar == 'a' || inChar == 'b' || inChar == 'c')</span>
+               System.out.print(2); break;
+            case 'd': case 'e': case 'f':
+               ......
+               ......
+            default:
+               System.out.println(&quot;error in input&quot;);
+         }
+      }</pre>
+</li>
+</ol>
+
+
+<h4>Count Vowels and Digits (<span class="font-code">String</span> &amp; <span class="font-code">char</span>)</h4>
+<p>Write a program that prompts user for a string and counts the number of vowels (a, e, i, o, u, A, E, I, O, U) and digits (0-9) contained in the string. The program shall print the counts and the percentages (rounded to 2 decimal places).</p>
+
+<p>You are required to use a "nested-if" statement in this exercise.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>testing12345<br /></pre></td>
+      <td><pre>Enter a String: <br />Number of vowels is: 2 (16.67%)<br />Number of digits is: 5 (41.67%)<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1string2strings3strings<br /></pre></td>
+      <td><pre>Enter a String: <br />Number of vowels is: 3 (13.04%)<br />Number of digits is: 3 (13.04%)<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>bcdfghjklmn<br /></pre></td>
+      <td><pre>Enter a String: <br />Number of vowels is: 0 (0.00%)<br />Number of digits is: 0 (0.00%) </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>Use <code>in.next().toLowerCase()</code> to read an input string and convert it into lowercase to reduce the number of cases.</li>
+
+<li>To check if a <code>char c</code> is a digit, you can use <code>boolean</code> expression <code>(c &gt;= '0' &amp;&amp; c &lt;= '9')</code>; or use built-in <code>boolean</code> function <code>Character.isDigit(c)</code>.</li>
+
+<li>To print a <code>%</code> using <code>printf()</code>, you need to use <code>%%</code>.  This is because <code>%</code> has a special meaning inside <code>printf()</code>, e.g., <code>%d</code> and <code>%f</code>.</li>
+</ol>
+
+
+
+<h4>Sum of Digits in String (<span class="font-code">String</span>, <span class="font-code">char</span> &amp; <span class="font-code">int</span>)</h4>
+<p>Write a program that prompts user for a string. The program shall compute and print the sum of all the digits (<code>'0'</code> to <code>'9'</code>) found in the string. Ignore all the non-digit characters.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>testing12345<br /></pre></td>
+      <td><pre>Enter a String: <br />The sum of all digits is: 15<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>1800flower<br /></pre></td>
+      <td><pre>Enter a String: <br />The sum of all digits is: 9<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1_2-3@4xyz<br /></pre></td>
+      <td><pre>Enter a String: <br />The sum of all digits is: 10<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>helloworld<br /></pre></td>
+      <td><pre>Enter a String: <br />The sum of all digits is: 0 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<p>To check if a <code>char c</code> is a digit character <code>'0'</code> to <code>'9'</code>, you can use either:</p>
+
+<ol>
+<li><code>boolean</code> expression <code>(c &gt;= '0' &amp;&amp; c &lt;= '9')</code>; or</li>
+<li>built-in <code>boolean</code> function <code>Character.isDigit(c)</code> which returns <code>true</code> if <code>c</code> is a digit.</li>
+</ol>
+
+<p>Take note that <code>char '0'</code> is represented as code number <code>48</code>, ..., <code>char '5'</code> as <code>53</code>.  To convert <code>char '5'</code> to <code>int 5</code>, subtract it by <code>char '0'</code> (which is <code>int 48</code>).</p>
+
+<p>In other words, to convert a <code>char c</code> to an <code>int i</code> (e.g., <code>'0'</code> to <code>0</code>, ..., <code>'5'</code> to <code>5</code> - which is needed to be added into the sum), use <code>i = c - '0'</code>.</p>
+
+
+<h4>Caesar's Code (<span class="font-code">String</span>, <span class="font-code">char</span> &amp; <span class="font-code">int</span>)</h4>
+<p>Caesar's code is one of the simplest encryption techniques.  Each letter in the plaintext is replaced by a letter some fixed number of position (<code>n</code>) down the alphabet cyclically. In this exercise, we shall pick <code>n=3</code>. That is, <code>'A'</code> is replaced by <code>'D'</code>, <code>'B'</code> by <code>'E'</code>, <code>'C'</code> by <code>'F'</code>, ..., <code>'X'</code> by <code>'A'</code>, ..., <code>'Z'</code> by <code>'C'</code>.</p>
+
+<p>Write a program to cipher the caesar's code. The program shall prompt user for a plaintext string consisting of letters only; compute the ciphertext; and print the ciphertext in uppercase. No input validation needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>testing<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: WHVWLQJ<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>HELLOWORLD<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: KHOORZRUOG<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>ASecretText<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: DVHFUHWWHAW<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>AaBbCcXxYyZz<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: DDEEFFAABBCC<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>5</pre></td>
+      <td><pre>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: DEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZABC </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>Use <code>in.next().toUpperCase()</code> to read an input string and convert it into uppercase to reduce the number of cases.</li>
+
+<li>You can use a big nested-if with 26 cases (<code>'A'-'Z'</code>). But it is much better to consider <code>'A'</code> to <code>'W'</code> as one case; <code>'X'</code>, <code>'Y'</code> and <code>'Z'</code> as 3 separate cases.</li>
+
+<li>Take note that <code>char 'A'</code> is represented as code number <code>65</code> and <code>char 'D'</code> as <code>68</code>.  However, <code>'A' + 3 gives 68</code>. This is because <code>char + int</code> is implicitly casted to <code>int + int</code> which returns an <code>int</code> value.  To obtain a <code>char</code> value, you need to perform explicit type casting using <code>(char)('A' + 3)</code>. Try printing <code>('A' + 3)</code> with and without type casting.</li>
+</ol>
+
+
+<h4>An Exchange Cipher (<span class="font-code">String</span>, <span class="font-code">char</span> &amp; <span class="font-code">int</span>)</h4>
+<p>This simple cipher exchanges <code>'A'</code> and <code>'Z'</code>, <code>'B'</code> and <code>'Y'</code>, <code>'C'</code> and <code>'X'</code>, and so on.</p>
+
+<p>Write a program that prompts user for a plaintext string consisting of letters only. You program shall compute the ciphertext; and print the ciphertext in uppercase. No input validation needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>abcXYZ<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: ZYXCBA<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>testing<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: GVHGRMT<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>ASecretText<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: ZHVXIVGGVCG<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>m<br /></pre></td>
+      <td><pre>Enter a plaintext string: <br />The ciphertext string is: N </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<ol>
+<li>Use <code>in.next().toUpperCase()</code> to read an input string and convert it into uppercase to reduce the number of cases.</li>
+
+<li>You can use a big nested-if with 26 cases (<code>'A'-'Z'</code>); or use the following relationship:
+<pre class="color-command">
+'A' + 'Z' == 'B' + 'Y' == 'C' + 'X' == ... == plainTextChar + cipherTextChar
+Hence, cipherTextChar = 'A' + 'Z' - plainTextChar</pre></li>
+</ol>
+
+
+<h4>Bin2Dec (a) (<span class="font-code">String/char</span> &amp; Number Conversion)</h4>
+<p>Write a program to convert a binary string to its decimal equivalent.  The program shall prompt user for a binary number; read the input as <code>String</code>; compute and print its decimal equivalent.  No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>1011<br /></pre></td>
+      <td><pre>Enter a binary string: <br />The decimal equivalent is: 11<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>10000011<br /></pre></td>
+      <td><pre>Enter a binary string: <br />The decimal equivalent is: 131<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter a binary string: <br />The decimal equivalent is: 0<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter a binary string: <br />The decimal equivalent is: 1 </pre></td>
+    </tr>
+  </tbody>
+</table>
+	
+	
+<h4>Oct2Dec (<span class="font-code">String/char</span> &amp; Number Conversion)</h4>
+<p>Write a program to convert a octal (base 8) string to its decimal equivalent.  The program shall prompt user for a octal number; read the input as <code>String</code>; compute and print its decimal equivalent.  No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>12<br /></pre></td>
+      <td><pre>Enter an octal string: <br />The decimal equivalent is: 10<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>7123<br /></pre></td>
+      <td><pre>Enter an octal string: <br />The decimal equivalent is: 3667<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter an octal string: <br />The decimal equivalent is: 0</pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h4>Palindromic Word (<span class="font-code">String/char</span> &amp; Two Loop Indexes)</h4>
+<p>A word that reads the same backward as forward is called a palindrome, e.g., "mom", "dad", "racecar", "madam", and "Radar" (case-insensitive). Write a program called PalindromicWordTest, that prompts user for a word and decides if the input word is a palindrome.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>Radar<br /></pre></td>
+      <td><pre>Enter a String: <br />&quot;Radar&quot; is palindromic<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>RaceCar<br /></pre></td>
+      <td><pre>Enter a String: <br />&quot;RaceCar&quot; is palindromic<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>m<br /></pre></td>
+      <td><pre>Enter a String: <br />&quot;m&quot; is palindromic<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>Hello<br /></pre></td>
+      <td><pre>Enter a String: <br />&quot;Hello&quot; is not palindromic </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      String inStr;           <span class="color-comment">// The input string, need to save for output printing</span>
+      String inStrLowerCase;  <span class="color-comment">// The input string in lowercase to reduce the cases in comparison</span>
+      int inStrLen;           <span class="color-comment">// The length of the input string</span>
+      char forwardChar, backwardChar;   <span class="color-comment">// to compare these two chars, scan forward and backward</span>
+      boolean isPalindromic;  <span class="color-comment">// boolean flag</span>
+      ......
+
+      isPalindromic = true;     <span class="color-comment">// assume it is true, unless our check fails</span>
+      for (int forwardIdx = 0, backwardIdx = inStrLen - 1; forwardIdx &lt; inStrLen/2; ++forwardIdx, --backwardIdx) {
+         forwardChar = ......;
+         backwardChar = ......;
+         if (forwardChar != backwardChar) {
+            isPalindromic = false;
+            break;    <span class="color-comment">// upon the first encounter, no need to go further</span>
+         }
+      }
+      ......</pre>
+
+
+<h3>Arrays</h3>
+
+<h4>Print Array (Array &amp; Loop)</h4>
+<p>Write a program which prompts user for the number of items in an array (a non-negative integer), reads it, and saves it in an <code>int</code> variable called <code>numItems</code>. It then prompts user for the values of all the items and saves them in an <code>int</code> array called <code>items</code>. The program shall then print the contents of the array in the form of <code>[x1, x2, ..., xn]</code>. No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br />3 2 5 6 9<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The values are: [3, 2, 5, 6, 9]<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>2<br />88 99<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The values are: [88, 99]<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />99<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The values are: [99]<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the number of items: <br />The values are: [] </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int numItems;
+      int[] items;  <span class="color-comment">// Declare array name, to be allocated after numItems is known</span>
+      ......
+
+      <span class="color-comment">// Prompt for a non-negative integer for the number of items;</span>
+      <span class="color-comment">// and read the input as &quot;int&quot;. No input validation.</span>
+      ......
+
+      <span class="color-comment">// Allocate the array</span>
+      items = new int[numItems];
+
+      <span class="color-comment">// Prompt and read the items into the &quot;int&quot; array, if array length &gt; 0</span>
+      if (items.length &gt; 0) {
+         ......
+         for (int i = 0; i &lt; items.length; ++i) {
+            ......
+         }
+      }
+
+      <span class="color-comment">// Print array contents, need to handle first item and subsequent items differently</span>
+      ......
+      for (int i = 0; i &lt; items.length; ++i) {
+         if (i == 0) {
+            <span class="color-comment">// Print the first item without a leading commas</span>
+            ......
+         } else {
+            <span class="color-comment">// Print the subsequent items with a leading commas</span>
+            ......
+         }
+         <span class="color-comment">// or, using a one liner</span>
+         <span class="color-comment">//System.out.print((i == 0) ? ...... : ......);</span>
+      }
+      ......</pre>
+
+
+<h4>Print Array in Stars (Array &amp; Loop)</h4>
+<p>Write a program which prompts user for the number of items in an array (a non-negative integer), reads it, and saves it in an <code>int</code> variable called <code>numItems</code>. It then prompts user for the values of all the items (non-negative integers) and saves them in an <code>int</code> array called <code>items</code>.</p>
+
+<p>The program shall then print the contents of the array in a graphical form, with the array index and values represented by number of stars. No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5	 <br />7 4 3 0 7 <br /></pre></td>
+      <td><pre>Enter the number of items:  <br />Enter the value of all items (separated by space):  <br />0: *******(7) <br />1: ****(4) <br />2: ***(3) <br />3: (0) <br />4: *******(7) <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>2 <br />8 4 <br /></pre></td>
+      <td><pre>Enter the number of items:  <br />Enter the value of all items (separated by space):  <br />0: ********(8) <br />1: ****(4) <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1 <br />9 <br /></pre></td>
+      <td><pre>Enter the number of items:  <br />Enter the value of all items (separated by space):  <br />0: *********(9) <br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0 <br /></pre></td>
+      <td><pre>Enter the number of items:  </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int numItems;
+      int[] items;  <span class="color-comment">// Declare array name, to be allocated after numItems is known</span>
+      ......
+      ......
+
+      <span class="color-comment">// Print array contents (in index: number of stars) using a nested-loop</span>
+      for (int idx = 0; idx &lt; items.length; ++idx) {  <span class="color-comment">// row</span>
+         System.out.print(idx + &quot;: &quot;);
+         <span class="color-comment">// Print value as the number of stars</span>
+         for (int starNo = 1; starNo &lt;= items[idx]; ++starNo) {  <span class="color-comment">// col</span>
+            System.out.print(&quot;*&quot;);
+         }
+         ......
+      }
+      ......</pre>
+
+
+<h4>Grades Statistics (Array &amp; Loop)</h4>
+<p>Write a program which prompts user for the number of students in a class (a non-negative integer), reads it, and saves it in an <code>int</code> variable called <code>numStudents</code>. It then prompts user for the grade of each of the students (integer between 0 to 100) and saves them in an <code>int</code> array called <code>grades</code>. The program shall then compute and print the average (in <code>double</code> rounded to 2 decimal places) and minimum/maximum (in <code>int</code>). No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>3<br />90<br />85<br />78<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />The average is: 84.33<br />The minimum is: 78<br />The maximum is: 90<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>5<br />98<br />78<br />78<br />87<br />76<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />Enter the grade for student 4: <br />Enter the grade for student 5: <br />The average is: 83.40<br />The minimum is: 76<br />The maximum is: 98<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />50<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />The average is: 50.00<br />The minimum is: 50<br />The maximum is: 50</pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+	
+<h4>Grades Histogram Bins (Arrays)</h4>
+<p>Write a program that prompts user for the number of students in a class (a non-negative integer), reads it, and saves it in an <code>int</code> variable called <code>numStudents</code>. It then prompts user for the grade of each of the students (integer between 0 to 100) and saves them in an <code>int</code> array called <code>grades</code>.</p>
+
+<p>Assume that the grades are between 0 and 100. The program shall then create 10 histogram bins to contain the counts of grades between 0-9, 10-19, ..., 90-100, respectively, in an <code>int</code> array called <code>bins</code>; and print the contents of the bins as shown in the sample output. No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>7<br />90<br />100<br />89<br />86<br />0<br />5<br />50<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />Enter the grade for student 4: <br />Enter the grade for student 5: <br />Enter the grade for student 6: <br />Enter the grade for student 7: <br /> 0-  9: 2<br />10- 19: 0<br />20- 29: 0<br />30- 39: 0<br />40- 49: 0<br />50- 59: 1<br />60- 69: 0<br />70- 79: 0<br />80- 89: 2<br />90-100: 2<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>8<br />88<br />45<br />89<br />45<br />100<br />0<br />98<br />90<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />Enter the grade for student 4: <br />Enter the grade for student 5: <br />Enter the grade for student 6: <br />Enter the grade for student 7: <br />Enter the grade for student 8: <br /> 0-  9: 1<br />10- 19: 0<br />20- 29: 0<br />30- 39: 0<br />40- 49: 2<br />50- 59: 0<br />60- 69: 0<br />70- 79: 0<br />80- 89: 2<br />90-100: 3<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />100<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br /> 0-  9: 0<br />10- 19: 0<br />20- 29: 0<br />30- 39: 0<br />40- 49: 0<br />50- 59: 0<br />60- 69: 0<br />70- 79: 0<br />80- 89: 0<br />90-100: 1<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the number of students: <br /> 0-  9: 0<br />10- 19: 0<br />20- 29: 0<br />30- 39: 0<br />40- 49: 0<br />50- 59: 0<br />60- 69: 0<br />70- 79: 0<br />80- 89: 0<br />90-100: 0 </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<pre class="color-example">
+      <span class="color-comment">// Declare variables</span>
+      int numStudents;
+      int[] grades;     <span class="color-comment">// Declare array name, to be allocated after numStudents is known</span>
+      int[] bins = new int[10];   <span class="color-comment">// int array of 10 histogram bins for 0-9, 10-19, ..., 90-100</span>
+
+      ......
+
+      <span class="color-comment">// Populate the bins</span>
+      for (int i = 0; i &lt; grades.length; ++i) {
+         if (grades[i] == 100) {   <span class="color-comment">// Need to handle 90-100 separately as it has 11 items.</span>
+            ++bins[9];
+         } else {
+            ++bins[grades[i]/10];
+         }
+      }
+
+      <span class="color-comment">// Print the bins</span>
+      for (int binIdx = 0; binIdx &lt; bins.length; ++binIdx) {
+         if (binIdx != 9) {   <span class="color-comment">// Need to handle 90-100 separately as it has 11 items.</span>
+            System.out.printf(&quot;%2d-%3d: &quot;, binIdx*10, ....);
+         } else {
+            System.out.print(......);
+         }
+         System.out.println(bins[binIdx]);
+      }</pre>
+
+
+<h4>Grades Histogram Horizontal (Array)</h4>
+<p>Write a program that prompts user for the number of students in a class (a non-negative integer), reads it, and saves it in an <code>int</code> variable called <code>numStudents</code>. It then prompts user for the grade of each of the students (integer between 0 to 100) and saves them in an <code>int</code> array called <code>grades</code>.</p>
+
+<p>Assume that the grades are between 0 and 100. The program shall then create 10 histogram bins to contain the counts of grades between 0-9, 10-19, ..., 90-100, respectively, in an <code>int</code> array called <code>bins</code>; and print the histogram horizontally as shown in the sample output. No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>7<br />90<br />100<br />89<br />86<br />0<br />5<br />50<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />Enter the grade for student 4: <br />Enter the grade for student 5: <br />Enter the grade for student 6: <br />Enter the grade for student 7: <br /> 0-  9: **<br />10- 19: <br />20- 29: <br />30- 39: <br />40- 49: <br />50- 59: *<br />60- 69: <br />70- 79: <br />80- 89: **<br />90-100: **<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>8<br />88<br />45<br />89<br />45<br />100<br />0<br />98<br />90<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />Enter the grade for student 4: <br />Enter the grade for student 5: <br />Enter the grade for student 6: <br />Enter the grade for student 7: <br />Enter the grade for student 8: <br /> 0-  9: *<br />10- 19: <br />20- 29: <br />30- 39: <br />40- 49: **<br />50- 59: <br />60- 69: <br />70- 79: <br />80- 89: **<br />90-100: ***<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />100<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br /> 0-  9: <br />10- 19: <br />20- 29: <br />30- 39: <br />40- 49: <br />50- 59: <br />60- 69: <br />70- 79: <br />80- 89: <br />90-100: *<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the number of students: <br /> 0-  9: <br />10- 19: <br />20- 29: <br />30- 39: <br />40- 49: <br />50- 59: <br />60- 69: <br />70- 79: <br />80- 89: <br />90-100: </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h4>Grades Histogram Vertical (Array)</h4>
+<p>Write a program that prompts user for the number of students in a class (a non-negative integer), reads it, and saves it in an <code>int</code> variable called <code>numStudents</code>. It then prompts user for the grade of each of the students (integer between 0 to 100) and saves them in an <code>int</code> array called <code>grades</code>.</p>
+
+<p>Assume that the grades are between 0 and 100. The program shall then create 10 histogram bins to contain the counts of grades between 0-9, 10-19, ..., 90-100, respectively, in an <code>int</code> array called <code>bins</code>; and print the histogram vertically as shown in the sample output. No input validation is needed.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>7<br />90<br />100<br />89<br />86<br />0<br />5<br />50<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />Enter the grade for student 4: <br />Enter the grade for student 5: <br />Enter the grade for student 6: <br />Enter the grade for student 7: <br />   *                                                       *      *   <br />   *                                  *                    *      *   <br />  0-9   10-19  20-29  30-39  40-49  50-59  60-69  70-79  80-89  90-100<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>8<br />88<br />45<br />89<br />45<br />100<br />0<br />98<br />90<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />Enter the grade for student 2: <br />Enter the grade for student 3: <br />Enter the grade for student 4: <br />Enter the grade for student 5: <br />Enter the grade for student 6: <br />Enter the grade for student 7: <br />Enter the grade for student 8: <br />                                                                  *   <br />                               *                           *      *   <br />   *                           *                           *      *   <br />  0-9   10-19  20-29  30-39  40-49  50-59  60-69  70-79  80-89  90-100<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />100<br /></pre></td>
+      <td><pre>Enter the number of students: <br />Enter the grade for student 1: <br />                                                                  *   <br />  0-9   10-19  20-29  30-39  40-49  50-59  60-69  70-79  80-89  90-100<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the number of students: <br />  0-9   10-19  20-29  30-39  40-49  50-59  60-69  70-79  80-89  90-100</pre></td>
+    </tr>
+  </tbody>
+</table>
+
+	
+<h3>Methods</h3>
+
+<h4>Odd or Even (Method)</h4>
+<p>Write a <code>boolean</code> method called <code>isOdd(int number)</code> that returns <code>true</code> if the given <code>int</code> <code>number</code> is an odd number. The signature of the method is:</p>
+<pre class="color-command">
+  public static boolean isOdd(int number)</pre>
+
+<p>Also write the <code>main()</code> method that prompts user for an <code>int</code>  <code>number</code>, and prints the result.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>9<br /></pre></td>
+      <td><pre>Enter a number: <br />9 is an odd number<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>-9<br /></pre></td>
+      <td><pre>Enter a number: <br />-9 is an odd number<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter a number: <br />0 is an even number </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+<h4>Magic Number (Method)</h4>
+<p>Write a <code>boolean</code> method called <code>isMagic(int number)</code> that returns <code>true</code> if the given <code>number</code> (a positive <code>int</code>) contains the digit 8, e.g., 18, 82, 1688. The signature of the method is:</p>
+<pre class="color-command">
+  public static boolean isMagic(int number);</pre>
+
+<p>Also write the <code>main()</code> method that prompts user for a <code>number</code>, and prints the result.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>18<br /></pre></td>
+      <td><pre>Enter a positive integer: 	<br />18 is a magic number<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>7654321<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />7654321 is not a magic number<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>8<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />8 is a magic number<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>1<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />1 is not a magic number<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>5</pre></td>
+      <td><pre>168899<br /></pre></td>
+      <td><pre>Enter a positive integer: <br />168899 is a magic number </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+<h5>Hints</h5>
+<p>You could either convert the <code>int</code> to a <code>String</code> and check each individual <code>char</code>; or use modulus-divide-10 to extract each individual digit of the <code>int</code>.</p>
+
+
+<h4><span class="font-code">int</span> array methods (Array &amp; Method)</h4>
+<p>Write the following methods that take an <code>int</code> array as its argument:</p>
+<pre class="color-command">
+   public static void print(int[] array);      <span class="color-comment">// print [x1, x2, ..., xn]</span>
+   public static int min(int[] array);         <span class="color-comment">// Returns the minimum</span>
+   public static int max(int[] array);         <span class="color-comment">// Returns the maximum</span>
+   public static int sum(int[] array);         <span class="color-comment">// Returns the sum</span>
+   public static double average(int[] array);  <span class="color-comment">// Returns the average in double</span>
+   public static boolean isEmpty(int[] array); <span class="color-comment">// Returns true if array's length is 0</span></pre>
+
+<p>Also write the <code>main()</code> method that prompts user for the size of an <code>int</code> array, followed by the values; and calls these methods as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br />8 6 1 8 5<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The values are: [8, 6, 1, 8, 5]<br />The min is: 1<br />The max is: 8<br />The sum is: 28<br />The average (rounded to 2 decimal places) is: 5.60<br />This array is not empty<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>3<br />87 54 61<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The values are: [87, 54, 61]<br />The min is: 54<br />The max is: 87<br />The sum is: 202<br />The average (rounded to 2 decimal places) is: 67.33<br />This array is not empty<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />55<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The values are: [55]<br />The min is: 55<br />The max is: 55<br />The sum is: 55<br />The average (rounded to 2 decimal places) is: 55.00<br />This array is not empty </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+<h4>Search an Array (Array &amp; Method)</h4>
+<p>Write a method called <code>search()</code>, which takes an array of <code>int</code> and an <code>int</code>; and returns the array index if the array contains the given <code>int</code>; or -1 otherwise. The method's signature is as follows:</p>
+
+<pre class="color-command">
+public static int search(int[] array, int key);</pre>
+
+<p>Also write the <code>main()</code> method that prompts user for the size of an <code>int</code> array, followed by its values and a search key; and calls the method as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br />6 1 8 2 4<br />8<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />Enter the search key: <br />8 is found with index 2<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>4<br />8 2 6 1<br />9<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />Enter the search key: <br />9 is not found<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />9<br />8<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />Enter the search key: <br />8 is not found<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br />9<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the search key: <br />9 is not found </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+
+	
+<h4>Reverse an Array (Array &amp; Method)</h4>
+<p>Write a method called <code>reverse(int[] array)</code> to reverse the contents of the given array; and a method called <code>print(int[] array)</code> to print the array. The signatures are:</p>
+<pre class="color-command">
+  public static void reverse(int[] array);  <span class="color-comment">// Reverse the contents of the given int array, in place</span>
+  public static void print(int[] array);    <span class="color-comment">// Print  [x1, x2, ..., xN]</span></pre>
+
+<p>Also write the <code>main()</code> method that prompts user for the size of an <code>int</code> array, followed by the values; and calls these methods as shown in the sample output.</p>
+
+<h5>Test Cases</h5>
+	
+<table class="table-zebra"  style="width:100%">
+  <tbody>
+    <tr>
+      <th width="6%">No.</th>
+      <th width="40%">Sample Input</th>
+      <th width="54%">Sample Output</th>
+    </tr>
+    <tr>
+      <td><pre>1</pre></td>
+      <td><pre>5<br />1 2 3 4 5<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The original array is: [1, 2, 3, 4, 5]<br />The reverse is: [5, 4, 3, 2, 1]<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>2</pre></td>
+      <td><pre>3<br />87 54 61<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The original array is: [87, 54, 61]<br />The reverse is: [61, 54, 87]<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>3</pre></td>
+      <td><pre>1<br />55<br /></pre></td>
+      <td><pre>Enter the number of items: <br />Enter the value of all items (separated by space): <br />The original array is: [55]<br />The reverse is: [55]<br /></pre></td>
+    </tr>
+    <tr>
+      <td><pre>4</pre></td>
+      <td><pre>0<br /></pre></td>
+      <td><pre>Enter the number of items: <br />The original array is: []<br />The reverse is: [] </pre></td>
+    </tr>
+  </tbody>
+</table>
+
+	
+	
+
+<p>&nbsp;</p>
+
+</div> 
+<!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 15.0.2<br />
+Last modified: March 2021</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+</body>
+</html>

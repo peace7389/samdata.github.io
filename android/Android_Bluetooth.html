@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>How to Install Android SDK and Get Started</title>
+<link href="../css/programming_notes_v1.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scripts/programming_notes_v1.js"></script>
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" /></head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="Android_Bluetooth.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>Android Programming</h1>
+<h2>Networking with Bluetooth</h2>
+</div>
+
+<div id="content-main">
+
+<h3>Introduction</h3>
+<p>Android Bluetooth API supports:</p>
+<ul>
+<li>Scanning for other Bluetooth devices</li>
+<li>Querying the local Bluetooth adapter for paired Bluetooth devices</li>
+<li>Establishing RFCOMM channels</li>
+<li>Connecting to other devices through service discovery</li>
+<li>Transferring data to and from other devices</li>
+<li>Managing multiple connections</li>
+</ul>
+
+<p>In order for Bluetooth devices to transfer data between each other:</p>
+<ol>
+<li>First, they must form a channel of communication using a pairing process. One device, a discoverable device, makes itself available for incoming connection requests. Another device finds the discoverable device using a service discovery process. After the discoverable device accepts the pairing request, the two devices complete a bonding process where they exchange security keys. The devices cache these keys for later use.</li>
+<li>After the pairing and bonding processes are complete, the two devices exchange information.</li>
+<li>When the session is complete, the device that initiated the pairing request releases the channel that had linked it to the discoverable device. The two devices remain bonded, however, so they can reconnect automatically during a future session as long as they're in range of each other and neither device has removed the bond.</li>
+</ol>
+
+<h5>Android Permissions</h5>
+<p>You need to declare these permissions in the &quot;<code>AndroidManifest.xml</code>&quot;:</p>
+<pre class="color-example">&lt;manifest ... &gt;
+   <span class="color-new">&lt;uses-permission android:name=&quot;android.permission.BLUETOOTH&quot; /&gt;
+   &lt;uses-permission android:name=&quot;android.permission.BLUETOOTH_ADMIN&quot; /&gt;
+   &lt;uses-permission android:name=&quot;android.permission.ACCESS_COARSE_LOCATION&quot; /&gt;</span>
+   ......
+&lt;/manifest&gt;</pre>
+
+<ul>
+<li><code>android.permission.BLUETOOTH</code>: for performing Bluetooth communication, such as requesting a connection, accepting a connection, and transferring data.</li>
+<li><code>android.permission.BLUETOOTH_ADMIN</code>: for discovering local Bluetooth devices.</li>
+<li><code>android.permission.ACCESS_COARSE_LOCATION</code> or <code>android.permission.ACCESS_FINE_LOCATION</code>: for gathering information about the location of the user. This information may come from the user's own device, or Bluetooth beacons in use at locations such as shops.</li>
+</ul>
+
+<h3>Android Bluetooth By Examples</h3>
+
+<h4>Example 1</h4>
+
+<p>Start &quot;Android Studio&quot; &rArr; Start a new Android Studio Project &rArr; In &quot;Create Android Project&quot; dialog, enter &quot;Hello Bluetooth&quot; in &quot;Application Name&quot; and &quot;example.com&quot; in &quot;Company Domain&quot;. Set your &quot;Project Location&quot;. Uncheck &quot;Include C++ Support&quot; &rArr; In &quot;Select the form factors and minimum SDK&quot;, check &quot;Phone and Tablet&quot; and choose &quot;API 15&quot; &rArr; In &quot;Add an Activity to Mobile&quot;, select &quot;Empty Activity&quot; &rArr; In &quot;Creates a new empty activity&quot;, enter &quot;MainActivity&quot; to &quot;Activity Name&quot; and &quot;activity_main&quot; to &quot;Layout name&quot; &rArr; Finish.</p>
+
+
+<h5>Setting up Bluetooth</h5>
+
+<p>First, get a <code>BluetoothAdapter</code> via static method <code>BluetoothAdapter.getDefaultAdapter()</code>. It returns the device's Bluetooth adapter; or <code>null</code> if the device does not support Bluetooth.</p>
+
+<pre class="color-example">
+BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+if (bluetoothAdapter == null) {
+   <span class="color-comment">// Device doesn't support Bluetooth</span>
+   Toast.makeText(this, &quot;error: bluetooth not supported&quot;, Toast.LENGTH_LONG).show();
+}</pre>
+
+<p>Next, enable Bluetooth:</p>
+<pre class="color-example">
+private static final int REQUEST_ENABLE_BT = 1;
+......
+
+if (!bluetoothAdapter.isEnabled()) {
+    Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+    startActivityForResult(enableBluetoothIntent, REQUEST_ENABLE_BT);
+}
+
+<span class="color-comment">// Called Back when the started activity returns a result</span>
+public void onActivityResult(int requestCode, int resultCode, Intent result) {
+   if (requestCode == REQUEST_ENABLE_BT) {  <span class="color-comment">// Match the request code</span>
+      if (resultCode == RESULT_OK) {
+         Toast.makeText(this, "Bluetooth Turned on", Toast.LENGTH_LONG).show();
+      } else {   <span class="color-comment">// RESULT_CANCELED</span>
+         Toast.makeText(this, "error: turning on bluetooth", Toast.LENGTH_LONG).show();
+      }
+   }
+}</pre>
+
+<ul>
+<li>The <code>isEnabled()</code> returns <code>false</code> if Bluetooth is disabled.</li>
+<li>To enable Bluetooth, call <code>startActivityForResult()</code> with an intent <code>BluetoothAdapter.ACTION_REQUEST_ENABLE</code>. This call issues a request to enable Bluetooth through the system settings without stopping your application. A dialog appears to request user permission to enable Bluetooth.</li>
+<li>The <code>REQUEST_ENABLE_BT</code> is a constant that must be greater than 0. The system passes this request code back to <code>onActivityResult()</code>; and result code of <code>RESULT_OK</code> or <code>RESULT_CANCELLED</code>.</li>
+<li>You can invoke <code>disable()</code> to disable bluetooth.</li>
+</ul>
+
+<h5>Finding Devices</h5>
+<p>Using the <code>BluetoothAdapter</code>, you can find remote Bluetooth devices either through device discovery or by querying the list of paired devices.</p>
+<p>Device discovery searches Bluetooth-enabled devices and requests some information. A Bluetooth device responds to a discovery request only if it is currently accepting information requests by being discoverable. It responds to the discovery request by sending back information such as device's name, its class and its MAC address. The discovering device can then choose to initiate a connection to the discovered device.</p>
+<p>Once a connection is established, a pairing request is presented to the user. When a device is paired, the basic information about that device (such as device name, class and MAC address) is saved, and connection can be initiated later without performing discovery.</p>
+<p>Before performing device discovery, we shall query the set of paired devices to see if the desired device is already known, via <code>getBondedDevices()</code>. For example,</p>
+
+<pre class="color-example">
+Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
+
+if (pairedDevices.size() &gt; 0) {
+    <span class="color-comment">// There are paired devices. Get the name and address of each paired device.</span>
+    for (BluetoothDevice device : pairedDevices) {
+        String deviceName = device.getName();   <span class="color-comment">// device name</span>
+        String deviceHardwareAddress = device.getAddress(); <span class="color-comment">// MAC address</span>
+    }
+}</pre>
+
+
+<h5 class="float-clear">&nbsp;</h5>
+
+<!-- @@ start change in v1 -->
+<a class="references" href="../howto/References.html#android">Link to Android's References and Resources</a>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: Android 7.1 (Nougat) 8 (Oreo), Android Studio 3.0.1<br />
+Last modified: March, 2018</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<a href="https://www3.ntu.edu.sg/f61217a453d065015090cd27fd6fb2c2"> </a></body>
+</html>

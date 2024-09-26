@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JDK 9 New Features</title>
+
+<!-- @@ start change in v1 -->
+<link rel="stylesheet" href="../css/programming_notes_v1.css">
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+<script src="../scripts/programming_notes_v1.js"></script>
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="JDK9_NewFeatures.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>JDK 9 New Features</h1>
+</div>
+
+<div id="content-main">
+
+<!-- @@ end change in v1 -->
+
+<h5>References:</h5>
+<ol>
+<li>&quot;What's New in Oracle JDK 9&quot; @ <a href="https://docs.oracle.com/javase/9/whatsnew/toc.htm">https://docs.oracle.com/javase/9/whatsnew/toc.htm</a>.</li>
+<li>&quot;JDK 9 release notes&quot; @ <a href="https://www.oracle.com/technetwork/java/javase/9-relnotes-3622618.html">https://www.oracle.com/technetwork/java/javase/9-relnotes-3622618.html</a>.</li>
+<li>OpenJDK's JDK 9 @ <a href="https://openjdk.java.net/projects/jdk8/">https://openjdk.java.net/projects/jdk9/</a>.</li>
+</ol>
+
+
+<p>&nbsp;</p>
+<p>JDK 9 comes with these big new features (plus some minor new features and enhancements):</p>
+<ol>
+<li>Java Module System (Project Jigsaw)</li>
+<li>JDK 9 REPL (Read Evaluate Print Loop) - <code>jshell</code></li>
+<li>Some language changes, e.g., JEP 213: Milling Project Coin.</li>
+</ol>
+
+
+<h3>JDK 9 Java Module System - Project Jigsaw</h3>
+
+<p>See &quot;<a href="JDK9_Module.html">Java Module System</a>&quot;.</p>
+
+
+<h3>JDK 9 REPL - <span class="font-code">jshell</span></h3>
+
+<p>JDK 9 introduces a new tool called <code>jshell</code> to support REPL (Read-Evaluate-Print-Loop). It is used to execute and test any Java constructs like class, interface, enum, object, statements etc. For example,</p>
+
+<pre class="color-command">
+> <strong>jshell</strong>
+|  Welcome to JShell -- Version 10.0.1
+|  For an introduction type: /help intro
+
+jshell> <strong>int i = 123</strong>
+i ==> 123
+
+jshell> <strong>i + 456</strong>
+$2 ==> 579
+
+jshell> <strong>System.out.println("hello")</strong>
+hello
+
+jshell> <strong>for (var i = 0; i < 3; ++i)</strong>
+   ...>    <strong>System.out.println(i*i)</strong>
+0
+1
+4
+
+jshell> <strong>/exit</strong>
+|  Goodbye</pre>
+
+<h3>JDK 9 New Language Features</h3>
+
+<p><span class="line-heading">Reference</span>: Java Language Updates Java SE 9 @ <a href="https://docs.oracle.com/javase/9/language/toc.htm">https://docs.oracle.com/javase/9/language/toc.htm</a>.</p>
+<p>&nbsp;</p>
+<p>JDK 9 introduces a few new language features, under &quot;<a href="http://openjdk.java.net/jeps/213">JEP 213: Milling Project Coin</a>&quot;.</p>
+
+<h4><span class="font-code">private</span> and <span class="font-code">private</span> <span class="font-code">static</span> methods in the interface</h4>
+
+<p>Prior to Java 8, an interface can have only two kinds of entities:</p>
+
+<ol>
+<li><code>public</code> <code>static</code> <code>final</code> variables (constants)</li>
+<li><code>public</code> <code>abstract</code> methods: method signature only without implementation.</li>
+</ol>
+<p>You need to use an <code>abstract</code> class if you have non-<code>abstract</code> methods with implementations.</p>
+
+<p>Java 8 introduces <code>public</code> <code>default</code>  and <code>public</code> <code>static</code> methods into the interface. You could provide implementations in these methods.</p>
+<p>JDK 9 supports <code>private</code> methods and <code>private</code> <code>static</code> methods. In JDK 9, an interface can contains six kinds of entities:</p>
+
+<ol>
+<li><code>public</code> <code>static</code> <code>final</code> variables (constant)</li>
+<li><code>public</code> <code>abstract</code> methods</li>
+<li><code>public</code> <code>default</code> methods</li>
+<li><code>public</code> <code>static</code> methods</li>
+<li><code>private</code> methods: meant for helper method accessible within the current interface only, so as to remove redundant codes. Not inherited by its subclasses and cannot be overridden. </li>
+<li><code>private</code> <code>static</code> methods: class helper method accessible within the current interface only.</li>
+</ol>
+
+<h4><span class="font-code">try</span>-with-resources Improvements</h4>
+
+<p>Before Java 7, you need to use a <code>try-catch-finally</code> construct to manage resource, and manually close all resource in the <code>finally</code>. Java 7 introduces a new <code>try</code>-with-resources construct which automatically closes all resources at the end of the statement. Read <a href="JDK7_NewFeatures.html#try_resource">HERE</a>.</p>
+
+<p>If you already have a resource as a <code>final</code> or &quot;effectively <code>final</code>&quot; variable, you can use that variable in a <code>try(resources)</code> clause without declaring a new variable. An "effectively <code>final</code>" variable is one whose value is never changed after it is initialized. For example,</p>
+
+<pre class="color-example">
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+<span class="color-comment">// Copy from one file to another file line by line.
+// Java 7 has a try-with-resources statement, which ensures that
+//   each resource opened in try(resources) is closed at the end of the statement.</span>
+public class J9FileCopy {
+   public static void main(String[] args) throws IOException {
+      BufferedReader src  = new BufferedReader(new FileReader(&quot;in.txt&quot;));
+      BufferedWriter dest = new BufferedWriter(new FileWriter(&quot;out.txt&quot;));
+
+      try (src; dest) {   <span class="color-comment">// This is permitted in JDK 9</span>
+         String line;
+         while ((line = src.readLine()) != null) {
+            System.out.println(line);
+            dest.write(line);
+            dest.newLine();
+         }
+      } catch (IOException ex) {
+         ex.printStackTrace();
+      }
+      <span class="color-comment">// src and dest automatically close.
+      // No need for finally to explicitly close the resources.</span>
+   }
+}</pre>
+
+<p>Before JDK 9, you need to create new variables:</p>
+<pre class="color-example">
+......
+try (BufferedReader src1 = src;
+     BufferedWriter dest1 = dest) {
+   ......
+}</pre>
+
+<p>[TODO] Write a better example.</p>
+
+<h4>Other Minor Language Changes</h4>
+
+<h5><span class="font-code">@SafeVargs</span> annotation is allowed on private instance methods</h5>
+<p>The <code>@SafeVarargs</code> annotation can be applied only to methods that cannot be overridden. These include <code>static</code> methods, <code>final</code> instance methods, and, new in JDK 9, <code>private</code> instance methods.</p>
+
+<h5>Allow the diamond operator with anonymous inner classes</h5>
+<p>In JDK 9, as long as the inferred type is denotable, you can use the diamond operator <code>&lt;&gt;</code> when you create an anonymous inner class.</p>
+
+<h5>Removal of the underscore from the set of legal identifier names</h5>
+<p>If you use a single underscore character (<code>_</code>) as an identifier, your source code can no longer be compiled.</p>
+
+<h3>JDK 9 Library Changes</h3>
+
+<h4>Convenience Factory Methods for Collections (<a href="http://openjdk.java.net/jeps/269">JEP 269</a>)</h4>
+
+<h5>Motivation</h5>
+<p>Prior to JDK 9, creating a small, unmodifiable collection of <code>List</code>, <code>Set</code>, or <code>Map</code> involves constructing it, storing it in a local variable, and invoking <code>add()</code> on it several times, and then wrapping it. For example,</p>
+
+<pre class="color-example">
+List<String> lst1 = new ArrayList<>();  <span class="color-comment">// construct and store in a local variable</span>
+lst1.add(&quot;apple1&quot;);             <span class="color-comment">// several add()'s</span>
+lst1.add(&quot;orange1&quot;);
+lst1.add(&quot;banana1&quot;);
+lst1 = Collections.unmodifiableList(lst1);  <span class="color-comment">// wrap it</span></pre>
+
+<p>Alternatively, you could populate a collection using a &quot;copy constructor&quot; from another collection, for example,</p>
+
+<pre class="color-example">
+List<String> lst2 = Collections.unmodifiableList(
+   new ArrayList<>(Arrays.asList(&quot;apple2&quot;, &quot;orange2&quot;, &quot;banana2&quot;)));
+   <span class="color-comment">// Using the &quot;copy constructor&quot; of ArrayList</span></pre>
+   
+<p>Another alternative is to use the so-called &quot;double brace&quot; technique, which uses the instance-initializer construct in an anonymous inner class, for example,</p>
+<pre class="color-example">
+List<String> lst3 = Collections.unmodifiableList(new ArrayList<>() {{
+   add(&quot;apple3&quot;); add(&quot;orange3&quot;); add(&quot;banana3&quot;);
+}});</pre>
+
+<p>You could also use the Java 8's Stream API to construct small collections, by combining stream factory methods and collectors, for example,</p>
+
+<pre class="color-example">
+List<String> lst4 = Collections.unmodifiableList(
+   Stream.of(&quot;apple4&quot;, &quot;orange4&quot;, &quot;banana4&quot;).collect(Collectors.toList()));</pre>
+
+<h5>JDK 9 New Features</h5>
+
+<p>JDK 9 provides a <code>static</code> factory method called <code>of()</code> in the <code>List</code>, <code>Set</code>, and <code>Map</code> interfaces to <em>simplify</em> creation of unmodifiable instances of these collections. We can write:</p>
+
+<pre class="color-example">
+List&lt;String&gt;<String> lst = List.of(&quot;apple&quot;, &quot;orange&quot;, &quot;banana&quot;);
+Set&lt;String&gt;<String> set = Set.of(&quot;apple&quot;, &quot;orange&quot;, &quot;banana&quot;);
+Map&lt;Integer, String&gt; map = Map.of(1, &quot;apple&quot;, 2, &quot;orange&quot;, 3, &quot;banana&quot;);</pre>
+
+<p>For <code>List</code> and <code>Set</code>, the factory methods <code>of()</code> are heavily overloaded for zero to ten elements, plus arbitrary number of elements, as follows:</p>
+
+<pre class="color-syntax">
+<span class="color-comment">// List interface's factory method to return an immutable list</span>
+static &lt;E&gt; List&lt;E&gt; <strong>of</strong>​(E... elements)  <span class="color-comment">// an arbitrary number of elements with varargs</span>
+static &lt;E&gt; List&lt;E&gt; <strong>of</strong>​()               <span class="color-comment">// zero elements</span>
+static &lt;E&gt; List&lt;E&gt; <strong>of</strong>​(E e1)           <span class="color-comment">// one element (fixed)</span>
+static &lt;E&gt; List&lt;E&gt; <strong>of</strong>​(E e1, E e2)     <span class="color-comment">// two elements</span>
+static &lt;E&gt; List&lt;E&gt; <strong>of</strong>​(E e1, E e2, E e3)  <span class="color-comment">// three elements</span>
+......
+static &lt;E&gt; List&lt;E&gt; <strong>of</strong>​(E e1, E e2, E e3, E e4, E e5, E e6, E e7, E e8, E e9, E e10)  <span class="color-comment">// ten elements</span>
+
+<span class="color-comment">// Set interface has a similar set of overloaded methods</span>
+</pre>
+
+<p>The <code>of()</code> includes varargs overloads, so that there is no  limit on the size. It is tuned for smaller sizes with fixed-argument overloads for up to ten of elements. While this introduces some clutter in the API, it avoids array allocation, initialization, and garbage collection overhead that is incurred by varargs calls.</p>
+
+<p>For <code>Map</code>, a set of fixed-argument methods are provided for zero to ten elements:</p>
+
+<pre class="color-syntax">
+static &lt;K,V&gt; Map&lt;K,V&gt; <strong>of</strong>​()  <span class="color-comment">// zero elements</span>
+static &lt;K,V&gt; Map&lt;K,V&gt; <strong>of</strong>​(K k1, V v1)  <span class="color-comment">// one element</span>
+static &lt;K,V&gt; Map&lt;K,V&gt; <strong>of</strong>​(K k1, V v1, K k2, V v2)  <span class="color-comment">// two elements</span>
+......
+static &lt;K,V&gt; Map&lt;K,V&gt; <strong>of</strong>​(K k1, V v1, K k2, V v2, 
+      K k3, V v3, K k4, V v4, K k5, V v5, K k6, V v6,
+      K k7, V v7, K k8, V v8, K k9, V v9, K k10, V v10)  <span class="color-comment">// ten elements</span>
+</pre>
+
+<p>To support arbitrary number of elements, the <code>Map</code> interface provides a <code>static</code> method called <code>ofEntries()</code>, which takes argument of <code>Map.Entry</code> objects, as follows:</p>
+<pre class="color-syntax">
+static &lt;K,V&gt; Map&lt;K,V&gt; <strong>ofEntries​</strong>(Map.Entry&lt;? extends K,? extends V&gt;... entries)</pre>
+
+<p>Another <code>static</code> method called <code>entry()</code> is also provided to create a <code>Map.Entry</code> object:</p>
+
+<pre class="color-syntax">
+static &lt;K,V&gt; Map.Entry&lt;K,V&gt; <strong>entry</strong>​(K k, V v)  <span class="color-comment">// Returns an immutable Map.Entry containing the given key and value.</span></pre>
+
+<p>For examples,</p>
+<pre class="color-example">
+Map&lt;Integer, String&gt; m1 = Map.of(1, &quot;apple1&quot;, 2, &quot;orange2&quot;, 3, &quot;banana3&quot;);  <span class="color-comment">// three elements (fixed)</span>
+ 
+Map&lt;Integer, String&gt; m2 = Map.ofEntries(  <span class="color-comment">// arbitrary elements</span>
+      Map.entry(1, &quot;apple2&quot;),
+      Map.entry(2, &quot;orange2&quot;),
+      Map.entry(3, &quot;banana2&quot;));</pre>
+
+<p>Note that interface's <code>static</code> methods are not inherited, so it will not be possible to invoke them via an implementing subclasses, nor via an instance of the interface type.</p>
+
+
+<h4>Others</h4>
+
+<h5><span class="font-code">Process</span> API Improvements</h5>
+
+<p>Added two new interfaces in Process API: <code>java.lang.ProcessHandle</code> and <code>java.lang.ProcessHandle.info</code>.</p>
+
+<h5><span class="font-code">CompletableFuture</span> API Improvements</h5>
+<p>Support delays and timeouts, add some utility methods and better sub-classing.</p>
+
+<h5>Reactive Streams</h5>
+<p>JDK 9 Reactive Streams API is a Publish/Subscribe Framework to implement asynchronous, scalable and parallel applications. JDK 9 introduces: <code>java.util.concurrent.Flow</code>, <code>java.util.concurrent.Flow.Publisher</code>, <code>java.util.concurrent.Flow.Subscriber</code>, <code>java.util.concurrent.Flow.Processor</code>.</p>
+
+<h5><span class="font-code">Optional</span> Class Improvements</h5>
+<p>JDK 9 added some useful new methods to <code>java.util.Optional</code> class, such as <code>stream()</code>.</p>
+
+<h5><span class="font-code">Stream</span> API Improvements</h5>
+<p>JDK 9 added four useful new <code>default</code> methods to <code>java.util.Stream</code> interface: <code>dropWhile()</code>, <code>takeWhile()</code>.</p>
+<p>The <code>takeWhile()</code> takes a predicate as an argument and returns a <code>Stream</code> of subset of the given <code>Stream</code> values until that predicate returns false   for first time. If first value does NOT satisfy that predicate, it just   returns an empty <code>Stream</code>. For example,</p>
+
+<pre class="color-example">
+Stream.of(1,2,3,4,5,6,7,8,9,10).takeWhile(i -> i < 5)</pre>
+
+<h3>JDK 9 Other New Features</h3>
+
+<h5>Enhanced <span class="font-code">@Deprecated</span> annotation</h5>
+<p>Prior to JDK 9, <code>@Deprecated</code> annotation is just a Marker interface without any methods. JDK 9 enhances <code>@Deprecated</code> annotation to provide more information about deprecated API and also provide a tool <code>jdeprscan</code> to analyze an application’s static usage of deprecated APIs. Two methods were added: <code>forRemoval()</code> and <code>since()</code> to serve this information.</p>
+
+<h5>HTTP2 Client</h5>
+
+<p>HTTP/2 is an improvement over HTTP/1.1:</p>
+<ul>
+<li>In HTTP/1.1, we cannot have more than six connections open at a time, so every request has to wait for the others to complete. HTTP/2 can send multiple requests for data in parallel over a single TCP connection, known as &quot;HTTP/2 Multiplexing&quot;.</li>
+<li>In HTTP/1.1, every request sent to the server will have the header's additional data, which increases bandwidth. This can be eliminated in HTTP/2.0 by having headers packed into one compressed block that will be sent as a unit, known as &quot;HTTP/2 Header Compression&quot;.</li>
+<li>In an HTTP/1.1, an HTML page is sent to the browser. The browser has to parse it and decide which assets are required, then request those assets from the server. This can be eliminated by &quot;Server Push&quot; in HTTP/2. It allows servers to push responses proactively to the client instead of waiting for the new request to process.</li>
+<li>Text is replaced by Binary in HTTP/2.</li>
+<li>Domain sharding and asset concatenation are no longer needed with HTTP/2.</li>
+</ul>
+
+
+<p>JDK 9 introduces new HTTP2 Client API (under JEP 110: HTTP/2 Client (Incubator)). It supports both HTTP/1.1 and HTTP/2 protocols. It supports both synchronous (blocking mode) and asynchronous modes (using WebSocket API).</p>
+
+<h5>Multi-Resolution Image API</h5>
+<p>JDK 9 added an interface <code>MultiResolutionImage</code> in <code>java.awt.image</code> package, which encapsulates a set of images with different height and widths.</p>
+
+<h5>Miscellaneous</h5>
+<ul>
+<li>GC (Garbage Collector) Improvements</li>
+<li>Stack-Walking API</li>
+<li>Filter Incoming Serialization Data</li>
+<li>Deprecate the Applet API (<a href="http://openjdk.java.net/jeps/289">JEP 289: Deprecate the Applet API</a>): The Applet API, which is rapidly becoming irrelevant as web-browser vendors remove support for Java browser plug-ins. JDK 9 marked <code>@Deprecated(since=&quot;9&quot;)</code> for applet classes, and removed <code>appletviewer</code> tool. Developer should use alternative technologies such as Java Web Start or installable applications.</li>
+<li>Indify String Concatenation</li>
+<li>Enhanced Method Handles</li>
+<li>Java Platform Logging API and Service</li>
+<li>Compact Strings</li>
+<li>Parser API for Nashorn</li>
+<li>Javadoc Search</li>
+<li>HTML5 Javadoc</li>
+</ul>
+
+<!-- @@ start change in v1 -->
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 10.0.1<br>
+Last modified: April, 2018</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+<a href="https://www3.ntu.edu.sg/f61217a453d065015090cd27fd6fb2c2"> </a></body>
+</html>

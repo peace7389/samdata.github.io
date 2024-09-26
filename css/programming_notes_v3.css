@@ -1,0 +1,563 @@
+/** 
+ * Version 3 created on May 2022
+ * To compile into css:
+ * > lessc programming_notes_v3.less programming_notes_v3.css
+ *
+ * [Changes]
+ *
+ * [TODO]
+ * - follow bootstrap naming convention of text-primary, text-secondary, etc.
+ *   information|warning|critical|success
+ *   primary|secondary|active|inactive|hover
+ * - look for monospace font, consolas only for windows, menlo for macOS.
+ */
+/* Load Google Fonts */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/opensans/v29/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0C4n.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Quicksand';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/quicksand/v29/6xK-dSZaM9iE8KbpRA_LJ3z8mH9BOJvgkM0o18E.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'Roboto Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/robotomono/v21/L0xuDF4xlVMF-BfR8bXMIhJHg45mwgGEFl0_3vqPQw.ttf) format('truetype');
+}
+/*
+ * color and background-color 
+ */
+/* h1, h2, ... */
+/* h6, h5, .... */
+/* code display */
+/* rgb(100,198,67); */
+/* for <pre> code example and display */
+/* Tetradic Colors https://www.colorhexa.com/e8f4f8 */
+/* table color */
+/* Monochromatic Color - https://www.colorhexa.com/c1e1ec */
+/*
+ * fonts
+ */
+/* font-family */
+/* h1, h2,... */
+/* h6, h5,... */
+/* Good Google Fonts: */
+/* Sans-serif: "Open Sans", Roboto, Inter, ...*/
+/* Monospace: Roboto Mono, Ubuntu Mono, Hack, Recursive */
+/* Ddon't use: JetBrains Mono, Fira Code */
+/* Monospace: Menlo for macOS, Consolas for Windows */
+/* base font-size for rem relative measurement defined in <html> */
+/* font-zide (1pt = 1/72inch; 1px = 1/96inch; 12pt = 16px) */
+/* Use the familiar pt here, but recommend to use rem */
+/* 16px or 1rem  */
+/* "Open Sans" does not need to reduce code font size */
+/* font-weight for heading, avoid ugly bold */
+/* line-height */
+/* "Open Sans" need to increase the height */
+/* line-height for the display code */
+/* 
+ * Universal selector - clear all the margin and padding
+ */
+* {
+  margin: 0;
+  padding: 0;
+}
+html {
+  font-size: 16px;
+  /* used for defining other font-size */
+}
+/* 
+ * Set default style for all the tags.
+ * Apply to the main content division as well.
+ */
+body {
+  font-family: "Open Sans", Roboto, Inter, Calibri, Arial, Helvetica, sans-serif;
+  font-size: 11pt;
+  line-height: 1.4;
+  color: #333333;
+  background-color: #d5eaf2;
+  text-align: justify;
+}
+/*
+ * "wrap-outer" wraps "header", "wrap-inner" and "footer" divisions
+ */
+#wrap-outer {
+  margin: 20px;
+  padding: 0;
+}
+/*
+ * "wrap-inner" wraps "content-header", "content-main" and "content-footer" divisions
+ */
+#wrap-inner {
+  margin: 0;
+  padding: 15px 15px 25px 15px;
+  border: 1px solid #ddd;
+  box-shadow: 5px 5px 0 #ddd;
+  background-color: white;
+}
+#content-header {
+  margin: 0;
+  padding: 50px 0 10px 0;
+}
+#content-main {
+  margin: 0;
+  padding: 30px 0 20px 0;
+}
+#content-footer {
+  margin: 30px 0 0 0;
+  padding: 0;
+  font-size: 90%;
+  text-align: right;
+  color: #8a6d3b;
+  border-top: 4px solid #0c9b74;
+}
+/*
+ *  The main "header" & "footer" divisions
+ */
+.header,
+.footer {
+  margin: 10px 0 5px 0;
+  padding: 5px 4px;
+  color: #8a6d3b;
+  font-size: 90%;
+  text-align: right;
+}
+.header a,
+.footer a {
+  color: #8a6d3b;
+  text-decoration: underline;
+}
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #23527c;
+  text-decoration: underline;
+}
+a:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+a.references {
+  display: block;
+  width: 30em;
+  font-size: 13pt;
+  margin: 4em 0 0 0;
+}
+p.references {
+  font-size: 11pt;
+  margin: 4em 0 0 0;
+  color: #4364c6;
+  font-weight: 500 !important;
+}
+/*
+ * Headings h1-h6
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-align: left;
+  color: #4364c6;
+  font-weight: 500 !important;
+}
+h1,
+h2,
+h3,
+h4 {
+  color: #2673b6;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: Quicksand, "Century Gothic", "Trebuchet MS", "Open Sans", Roboto, Segoe, sans-serif;
+}
+h5,
+h6 {
+  font-family: Quicksand, "Open Sans", Roboto, Inter, Calibri, Arial, Helvetica, sans-serif;
+}
+h1 {
+  font-size: 32pt;
+  letter-spacing: 0.5px;
+  margin-top: 1em;
+}
+h2 {
+  font-size: 28pt;
+  letter-spacing: 0.5px;
+  margin-top: 0.4em;
+}
+h3 {
+  font-size: 18pt;
+  padding-bottom: 4px;
+  border-bottom: thin solid #5bc0de;
+  margin-top: 1.8em;
+}
+h4 {
+  font-size: 15pt;
+  padding-bottom: 3px;
+  border-bottom: thin dotted #5bc0de;
+  margin-top: 1em;
+}
+h5 {
+  font-size: 13pt;
+  margin-top: 1em;
+}
+h6 {
+  font-size: 12pt;
+  margin-top: 1em;
+}
+p {
+  margin-top: 10.5px;
+  margin-bottom: 5.25px;
+}
+small,
+.small {
+  font-size: 85%;
+}
+.big {
+  font-size: 115% !important;
+}
+/*
+ * General classes
+ */
+.center-block {
+  margin: 10px auto;
+  /* auto margin-left and margin-right to center the table */
+}
+.side-note {
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  margin-left: 40px;
+  padding: 1px 10px 5px 10px;
+  background-color: #eeeeee;
+  /* background-color: #f8ece8; */
+}
+.side-note h5 {
+  margin-top: 0.3em;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.text-justify {
+  text-align: justify;
+}
+.text-nowrap {
+  white-space: nowrap;
+}
+.text-lowercase {
+  text-transform: lowercase;
+}
+.text-uppercase {
+  text-transform: uppercase;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
+.underline {
+  text-decoration: underline;
+}
+ul,
+ol {
+  padding: 0;
+  margin-top: 0.4em;
+  margin-bottom: 1em;
+  margin-left: 2em;
+  /* show the bullets/numbers */
+}
+ul ul,
+ol ul,
+ul ol,
+ol ol {
+  /* nested list */
+  margin-bottom: 0;
+}
+ul li,
+ol li {
+  margin-top: 0;
+  margin-bottom: 4.2px;
+}
+ul {
+  /* first level ul */
+  list-style-image: url(images/BulletSquare.png);
+}
+ul ul {
+  /* 2nd level ul */
+  list-style-image: url(images/BulletRound.png);
+}
+ul ul u1 {
+  /* 3rd level ul */
+  list-style-type: circle;
+  list-style-image: none;
+}
+ol {
+  /* first level ol */
+  list-style-type: decimal;
+}
+ol ol {
+  /* 2nd level ol */
+  list-style-type: lower-alpha;
+}
+ol ol o1 {
+  /* 3rd level ol */
+  list-style-type: lower-roman;
+}
+/*
+ * For code display
+ */
+code,
+.code,
+kbd,
+pre,
+samp {
+  font-family: Consolas, "Roboto Mono", Menlo, Monaco, 'Lucida Console', 'Courier New', Courier, monospace;
+}
+h1 code,
+h2 code,
+h3 code,
+h4 code,
+h5 code,
+h6 code,
+p code,
+li code,
+th code,
+td code {
+  /*  font-size: 92%;  /* "Open Sans" does not need to reduce code font! */
+  font-weight: normal;
+}
+kbd {
+  padding: 2px 4px;
+  font-size: 90%;
+  color: white;
+  background-color: #333333;
+  border-radius: 3px;
+  box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+pre {
+  font-size: 11pt;
+  /* could be smaller than p */
+  display: block;
+  padding: 4px 8px;
+  margin: 3px 5px;
+  word-break: break-all;
+  word-wrap: break-word;
+  border: solid 2px #f8f8f8;
+  /* slight 3D shape */
+  /*  For mobile android, to fix <pre> displays with smaller font  */
+  /*white-space: pre-wrap !important; */
+  overflow-x: auto;
+  /* scroll bar appears if needed */
+}
+/*
+ * Override prism syntax highlighter 
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  line-height: 1.4 !important;
+  /* default is 1.5 */
+}
+/* background for code display */
+.syntax,
+.command {
+  background-color: #e8f4f8;
+}
+.example {
+  background-color: #e8f8ec;
+}
+/* foreground for code dispaly */
+.output {
+  color: #1F51FF;
+}
+pre.output {
+  /* for program code output */
+  background-color: #eeeeee;
+}
+div.output {
+  /* for rendering html output, same as <pre> other than font */
+  background-color: #eeeeee;
+  font-size: 11pt;
+  display: block;
+  margin: 3px 5px;
+  padding: 2px 15px 8px 15px;
+  word-break: break-all;
+  word-wrap: break-word;
+  border: solid 2px #f8f8f8;
+  /* slight 3D shape */
+}
+/* Character level control for code listing */
+.comment {
+  color: #4fa432;
+  /* green */
+}
+.new {
+  /* for highlight codes in code example, to differentiate from error red and hightlight */
+  color: rgb(254,14,41);
+}
+.highlight {
+  color: #e31b23;
+}
+.highlight-code {
+  font-family: Consolas, "Roboto Mono", Menlo, Monaco, 'Lucida Console', 'Courier New', Courier, monospace;
+  color: #e31b23;
+}
+mark {
+  /* for strong yellow highlighter */
+   background-color: #FBF6A4;
+/*   background-color: #fcf8e3;  */
+  padding: .2em;
+}
+.error {
+  color: rgb(255,20,147);
+}
+/*
+ * Paragraph headers
+ */
+.lead {
+  color: #e31b23;
+  font-size: 12pt;
+  font-weight: normal;
+}
+.lead-code {
+  font-family: Consolas, "Roboto Mono", Menlo, Monaco, 'Lucida Console', 'Courier New', Courier, monospace;
+  color: #e31b23;
+  font-size: 12pt;
+  font-weight: normal;
+}
+/*
+ * for positioning images 
+ */
+.image-center {
+  /* center horizontally an image */
+  display: block;
+  margin: 10px auto;
+}
+.image-left {
+  display: block;
+  margin: 15px 40px;
+  border: #ddd thin solid;
+}
+.image-border {
+  border: #ddd thin solid;
+}
+.image-float-left {
+  float: left;
+  margin-right: 1em;
+  /*  margin: 8px 15px 15px 0; */
+  border: #ddd thin solid;
+}
+.image-float-right {
+  float: right;
+  margin-left: 1em;
+  /*  margin: 8px 0 15px 15px; */
+  border: #ddd thin solid;
+}
+.float-clear {
+  clear: both;
+}
+/*
+ * Tables
+ */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  font-size: inherit;
+}
+td,
+th {
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+table pre {
+  /* reset for <pre> under table */
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+/*
+ * Striped Table  
+ */
+.table-zebra {
+  margin: 10px auto;
+  /* center */
+  width: 90%;
+  /* Default setting for all cells in this table, inherited */
+  background-color: #e8f4f8;
+  text-align: left;
+  /* put here so that it can be override in tr, td */
+}
+.table-zebra tr > th {
+  /* header cells */
+  border: 2px solid white;
+  padding: 5px 12px;
+  color: white;
+  /* white text on dark background */
+  background-color: #86c5da;
+  font-size: 120%;
+  text-align: center;
+  vertical-align: middle;
+}
+.table-zebra tr > td {
+  /* data cells */
+  border: 2px solid white;
+  padding: 5px 12px;
+  vertical-align: top;
+}
+.table-zebra tr:nth-child(odd) > td {
+  /* odd rows including header */
+  background-color: #c1e1ec;
+  /* darker */
+}
+/*
+ * For the "Table of Content" generated by JavaScript
+ * in <div id="toc">
+ */
+#wrap-toc {
+  display: block;
+  background: none repeat scroll 0 0 #e8f4f8;
+  float: right;
+  width: 240px;
+  z-index: 100;
+  margin: 0 0 10px 15px;
+  padding: 8px 8px 8px 8px;
+  text-align: left;
+  white-space: nowrap;
+  /* min-height: 180px;  */
+}
+#toc {
+  overflow: auto;
+}
+#toc a.toc-h3 {
+  margin-left: 0px;
+  font-size: 11pt;
+}
+#toc a.toc-h4 {
+  margin-left: 20px;
+  font-size: 10pt;
+}
+a#show-toc {
+  color: #c66443;
+  /* for hide/show, texts are link color */
+  text-decoration: none;
+}

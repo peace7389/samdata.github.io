@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JDK 9 Module System</title>
+
+<!-- @@ start change in v1 -->
+<link rel="stylesheet" href="../css/programming_notes_v1.css">
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+<script src="../scripts/programming_notes_v1.js"></script>
+</head>
+
+<body>
+
+<div id="wrap-outer">
+
+<!-- header filled by JavaScript -->
+<div id="header" class="header-footer"><p>&nbsp;</p></div>
+
+<div id="wrap-inner">
+
+<div id="wrap-toc">
+<h5>TABLE OF CONTENTS <a id="show-toc" href="JDK9_Module.html#show-toc">(HIDE)</a></h5>
+<div id="toc"></div>  <!-- for showing the "Table of Content" -->
+</div>
+
+<div id="content-header">
+<h1>Java Module System (JDK 9)</h1>
+</div>
+
+<div id="content-main">
+
+<!-- @@ end change in v1 -->
+
+<p>JDK 9 introduces the Java Module System.</p>
+
+<h5>References:</h5>
+<ol>
+<li>Project Jigsaw: Module System Quick-Start Guide @ <a href="http://openjdk.java.net/projects/jigsaw/quick-start">http://openjdk.java.net/projects/jigsaw/quick-start</a>.</li>
+<li>Project Jigsaw @ <a href="http://openjdk.java.net/projects/jigsaw/">http://openjdk.java.net/projects/jigsaw/</a>.</li>
+<li>JSR 376: Java Platform Module System @ <a href="http://openjdk.java.net/projects/jigsaw/spec/">http://openjdk.java.net/projects/jigsaw/spec/</a>.</li>
+<li>JEP 200: The Modular JDK @ <a href="http://openjdk.java.net/jeps/200">http://openjdk.java.net/jeps/200</a>.</li>
+<li>JEP 201: Modular Source Code @ <a href="http://openjdk.java.net/jeps/201">http://openjdk.java.net/jeps/201</a>.</li>
+<li>JEP 220: Modular Run-Time Images @ <a href="http://openjdk.java.net/jeps/220">http://openjdk.java.net/jeps/220</a>.</li>
+<li>JEP 260: Encapsulate Most Internal APIs @ <a href="http://openjdk.java.net/jeps/260">http://openjdk.java.net/jeps/260</a>.</li>
+<li>JEP 261: Modular System @ <a href="http://openjdk.java.net/jeps/261">http://openjdk.java.net/jeps/261</a>.</li>
+<li>JEP 281: jlink: The Java Linker @ <a href="http://openjdk.java.net/jeps/281">http://openjdk.java.net/jeps/281</a>.</li>
+<li>JDK 9 Modules @ <a href="https://www.journaldev.com/13106/java-9-modules">https://www.journaldev.com/13106/java-9-modules</a>.</li>
+
+</ol>
+
+<p>&nbsp;</p>
+<p>The most drastic change in JDK 9 is the <em>Java Module System</em>, which is carried out through the Project Jigsaw @ <a href="http://openjdk.java.net/projects/jigsaw/">http://openjdk.java.net/projects/jigsaw/</a>.</p>
+<p>The current Java System suffers from these problems:</p>
+<ul>
+<li>The JDK is <em>too big</em>, with many legacy codes. This also impedes on the performance, test and maintenance.</li>
+<li>JAR files like <code>rt.jar</code> are <em>too big</em> to be used in small devices.</li>
+<li>There is <em>no strong encapsulation</em>. The <code>public</code> access is too open. Some internal non-critical APIs like <code>sun.*</code>, <code>*.internal.*</code>, are accessible, as they are <code>public</code>, which  poses security issues.</li>
+</ul>
+
+<p>I shall assume that you are familiar with Java package and CLASSPATH. Otherwise, read &quot;<a href="J9c_PackageClasspath.html">Package and CLASSPATH</a>&quot;.</p>
+
+<h3>Why module?</h3>
+
+<p>A <em>module</em> is a set of related packages and resources (code and data) that is designed for reuse. It adds a higher level of aggregation above the package. Each module has a <em>module descriptor</em> called <code>module-info.java</code>, which is to be compiled into <code>module-info.class</code>.</p>
+<p>Before JDK 9, <code>public</code> classes are accessible to ALL, resulted in many APIs got exposed unnecessarily. With modules, you can conceal packages for internal use only; or export packages to be used by other modules. You can further specify which classes within a package are to be shared with which modules, or you can set them to be accessible by any modules. In other words, you can fine-tune the <code>public</code> access restriction of packages and classes to improve security with strong encapsulation and stability with reliable dependencies. &quot;<code>public</code>&quot; on a class declaration no longer means accessible to everyone.</p>
+
+<h3>Module Dependency by Examples</h3>
+
+<h4>Example 1: Hello Module - The <span class="font-code">module</span> Statement</h4>
+
+<p>I shall assume that our project's base directory is <code>&quot;c:\myProject</code>&quot;, with a sub-directory &quot;<code>src</code>&quot; for the source files and a sub-directory &quot;<code>mods</code>&quot; for the compiled modules (instead of &quot;<code>classes</code>&quot; for compiled classes). Create the directory structure.</p>
+<p>Let's write a module called &quot;<code>com.hello</code>&quot;. By convention, the module's directory name is the same as the module's name. Create a sub-directory &quot;<code>com.hello</code>&quot; under &quot;<code>src</code>&quot;.</p>
+<p>Each module has a <em>module descriptor</em> file called &quot;<code>module-info.java</code>&quot; under the top level directory of a module. Create the module descriptor &quot;<code>module-info.java</code>&quot; under &quot;<code>src\com.hello</code>&quot;, as follows:</p>
+
+<pre class="color-example">
+<span class="color-comment">// src\com.hello\module-info.java</span>
+<span class="color-new">module com.hello</span> {
+}</pre>
+
+<p>This module <code>com.hello</code> contains a package <code>com.hellopack</code>, with a class <code>Hello</code> (i.e., <code>com.hellopack.Hello</code>). Recall that the dot in a package corresponds to a sub-directory, i,e, package <code>com.hellopack</code> has a directory structure of &quot;<code>com\hellopack</code>&quot;. Create the directory structure &quot;<code>src\com.hello\com\hellopack</code>&quot; for the package <code>com.hellopack</code> under the module.</p>
+<p>Write the main class <code>com.hellopack.Hello</code> in &quot;<code>src\com.hello\com\hellopack\Hello.java</code>&quot;, as follows:</p>
+
+<pre class="color-example">
+<span class="color-comment">// src\com.hello\com\hellopack\Hello.java</span>
+<span class="color-new">package com.hellopack;</span>
+public class <strong>Hello</strong> {
+   public static void main(String[] args) {
+      System.out.println(&quot;hello, module&quot;);
+   }
+}</pre>
+
+<p>We shall keep our compiled module in a sub-directory called <code>mods</code> under our project base directory (<code>c:\myProject</code>). Our compiled module <code>com.hello</code> shall be kept in directory <code>mods\com.hello</code>.</p>
+<p>Compile the module as follows, where <code>-d</code> option specifies the directory of the generated class file, which will be created automatically.</p>
+
+<pre class="color-command">
+&gt; <strong>c:</strong>
+&gt; <strong>cd \myProject</strong>
+&gt; <strong>javac -d mods/com.hello src/com.hello/module-info.java src/com.hello/com/hellopack/Hello.java</strong>
+   <span class="color-comment">// Note: You can use either forward slash (Unix and macOS) or 
+   //       backward slash (Windows) as path separator in the javac command</span></pre>
+
+<p>The <code>mods\com.hello\module-info.class</code> and <code>mods\com.hello\com\hellopack\Hello.class</code> shall be generated, as shown:</p>
+
+<pre class="color-command">
+&gt; <strong>tree /f /a</strong>
+<span class="color-output">+---mods
+|   +---com.hello
+|       |   module-info.class
+|       |
+|       \---com
+|           \---hellopack
+|                   Hello.class
+\---src
+    +---com.hello
+        |   module-info.java
+        |
+        \---com
+            \---hellopack
+                    Hello.java</span></pre>
+
+<p>You can run the main class as follows, where <code>-p</code> (or <code>--module-path</code>) specifies the module path, <code>-m</code> specifies the main class. Both <code>-p</code> and <code>-m</code> are new options in JDK 9:</p>
+
+<pre class="color-command">
+&gt; <strong>c:</strong>
+&gt; <strong>cd \myProject</strong>
+&gt; <strong>java -p mods -m com.hello/com.hellopack.Hello</strong>
+<span class="color-output">hello, module</span></pre>
+
+<p>Notes:</p>
+<ul>
+<li>JDK 9 introduces <em>module-path</em> for locating module, similar to <em>classpath</em> for locating classes prior to JDK 9.</li>
+<li>In this example, I named the module and package differently for academic purpose. In practice, the module and package could be given the same name.</li>
+</ul>
+
+<h4>Example 2: Module Dependency - Directives &quot;<span class="font-code">exports</span> <span class="font-code">&lt;package&gt;</span>&quot; and &quot;<span class="font-code">requires</span> &lt;<span class="font-code">module&gt;</span>&quot;</h4>
+<p>Let's create two modules: <code>com.hi</code> and <code>com.world</code>, such that <code>com.hi</code> <em>depends on</em> (or <em>reads</em>) <code>com.world</code>.</p>
+<p> We need to start with  the <em>independent</em> module <code>com.world</code>. Create the module directory &quot;<code>com.world</code>&quot; under &quot;<code>src</code>&quot;. Create the module descriptor <code>module-info.java</code> under &quot;<code>src\com.world</code>&quot;, as follows:</p>
+
+<pre class="color-example">
+<span class="color-comment">// src\com.world\module-info.java</span>
+<span class="color-new">module com.world</span> {
+   <span class="color-new">exports com.world</span>;  <span class="color-comment">// This package can be used by ALL other modules</span>
+}</pre>
+
+<p>The <code>com.world</code> module contains a package called <code>com.world</code> (having the same name as the module), which is exported to be used by ALL other modules.</p>
+
+<p>The package <code>com.world</code> contains a class called <code>World</code> (i.e., <code>com.world.World</code>), as follows:</p>
+
+<pre class="color-example">
+<span class="color-comment">// src\com.world\com\world\World.java</span>
+<span class="color-new">package com.world;</span>
+public class <strong>World</strong> {
+   public static String <strong>getWorld</strong>() {
+      return &quot;world&quot;;
+   }
+}</pre>
+
+<p>Compile the module <code>com.world</code> as follows:</p>
+
+<pre class="color-command">
+&gt; <strong>cd &lt;project-base-path&gt;</strong>
+&gt; <strong>javac -d mods/com.world src/com.world/module-info.java src/com.world/com/world/World.java</strong></pre>
+
+<p>Now, let us write the <em>dependent</em> module <code>com.hi</code>,  Create the module directory &quot;<code>com.hi</code>&quot; under &quot;<code>src</code>&quot;. Create the module descriptor <code>module-info.java</code> under &quot;<code>src\com.hi</code>&quot;, as follows:</p>
+
+<pre class="color-example">
+<span class="color-comment">// src\com.hi\module-info.java</span>
+<span class="color-new">module com.hi</span> {
+   <span class="color-new">requires com.world</span>;   <span class="color-comment">// Depends on this module
+                         // &quot;requires&quot; is analogous to &quot;import&quot;</span>
+}</pre>
+
+<p>The module <code>com.hi</code> contains a package <code>com.hi</code> (having the same name as the module), with a class <code>com.hi.Hello</code>. The <code>Hello</code> class invokes method in the <code>World</code> class (of the module <code>com.world</code>):</p>
+
+<pre class="color-example">
+<span class="color-comment">// src\com.hi\com\hi\Hello.java</span>
+<span class="color-new">package com.hi</span>;
+<span class="color-new">import com.world.World</span>;  <span class="color-comment">// from the &quot;requires&quot; module</span>
+public class <strong>Hello</strong> {
+   public static void main(String[] args) {
+      System.out.println(&quot;hello, &quot; + <span class="color-new">World.getWorld()</span>);
+   }
+}</pre>
+
+<p>Compile the module <code>com.hi</code> as follows, where <code>-p</code> (or <code>--module-path</code>) specifies the module-path for locating the dependent module:</p>
+
+<pre class="color-command">
+&gt; <strong>cd &lt;project-base-path&gt;</strong>
+&gt; <strong>javac -p mods -d mods/com.hi src/com.hi/module-info.java src/com.hi/com/hi/Hello.java</strong></pre>
+
+<p>Run the  <code>Hello</code> class:</p>
+
+<pre class="color-command">
+&gt; <strong>java -p mods -m com.hi/com.hi.Hello</strong>
+<span class="color-output">hello, world</span></pre>
+
+<p>The directory/file structure is as follows:</p>
+<pre class="color-command">&gt; <strong>tree /f /a</strong>
+<span class="color-output">+---mods
+|   |<br>|   +---com.hi<br>|   |   |   module-info.class<br>|   |   |<br>|   |   \---com<br>|   |       \---hi<br>|   |               Hello.class<br>|   |<br>|   \---com.world<br>|       |   module-info.class<br>|       |<br>|       \---com<br>|           \---world<br>|                   World.class<br>|<br>\---src
+    |<br>    +---com.hi<br>    |   |   module-info.java<br>    |   |<br>    |   \---com<br>    |       \---hi<br>    |               Hello.java<br>    |<br>    \---com.world<br>        |   module-info.java<br>        |<br>        \---com<br>            \---world<br>                    World.java</span></pre>
+
+<h5>Missing &quot;<span class="font-code">requires</span> <span class="font-code">&lt;module&gt;</span>&quot; Directive</h5>
+
+<p>Comment out the <code>requires</code> directive in <code>com.hi</code>'s module descriptor <code>src\com.hi\module-info.java</code>; and re-compile:</p>
+
+<pre class="color-command">
+&gt; <strong>javac -p mods -d mods/com.hi src/com.hi/module-info.java src/com.hi/com/hi/Hello.java</strong>
+src\com.hi\com\hi\Hello.java:4: <span class="color-new">error: package com.world is not visible
+import com.world.World;
+          ^
+  (package com.world is declared in module com.world, but module com.hi does not read it)</span></pre>
+  
+<h5>Missing &quot;<span class="font-code">exports</span> <span class="font-code">&lt;package&gt;</span>&quot;Directive</h5>
+
+<p>Now comment out the <code>exports</code> directive in <code>com.world</code>'s module descriptor <code>src\com.world\module-info.java</code>; and re-compile:</p>
+
+<pre class="color-command">
+&gt; <strong>javac -d mods/com.world src/com.world/module-info.java src/com.world/com/world/World.java</strong>
+
+&gt; <strong>javac -p mods -d mods/com.hi src/com.hi/module-info.java src/com.hi/com/hi/Hello.java</strong>
+src\com.hi\com\hi\Hello.java:4: <span class="color-new">error: package com.world is not visible
+import com.world.World;
+          ^
+  (package com.world is declared in module com.world, which does not export it)</span></pre>
+
+
+<h4>Example 3: Packaging in Modular JAR Files</h4>
+
+<p>For deployment, we can package a module as a <em>Modular JAR File</em>, which is a regular JAR file with a module descriptor <code>module-info.class</code> in its top-level directory.</p>
+<p>We shall keep our modular JAR files in a sub-directory &quot;<code>mlib</code>&quot;. Create a sub-directory &quot;<code>mlib</code>&quot; under &quot;<code>c:\myProject</code>&quot;.</p>
+
+<p>Create modular JAR file for module <code>com.world</code> as follows, where <code>-c</code> (or <code>--create</code>) for creating new JAR file, <code>-f</code> (or <code>--file</code>) specifies the name of the JAR file, <code>-C</code> to change the directory:</p>
+
+<pre class="color-command">
+&gt; <strong>cd &lt;project-base-path&gt;</strong>
+&gt; <strong>jar -c -f mlib/com.world.jar -C mods/com.world .</strong></pre>
+
+<p>Create modular JAR file for module <code>com.hi</code> as follows, where <code>--main-class</code> specifies the main entry class of the module:</p>
+
+<pre class="color-command">
+&gt; <strong>jar -c -f mlib/com.hi.jar --main-class com.hi.Hello -C mods/com.hi .</strong></pre>
+
+<p>You can run the modular JAR file directly as follows, where <code>-p</code> (or <code>--module-path</code>) specifies the module path, <code>-m</code> (or <code>--module</code>) specifies the module to be executed (both <code>-p</code> and <code>-m</code> are new options in JDK 9).</p>
+
+<pre class="color-command">
+&gt; <strong>java -p mlib -m com.hi</strong>
+<span class="color-output">hello, world</span></pre>
+
+<h5><span class="font-code">CLASSPATH vs MODULEPATH</span></h5>
+
+<p>A <code>CLASSPATH</code> is a sequence of classes' base paths and JAR files for the Java Compiler or JVM to locate the classes used in the application.</p>
+<p>Similarly, in JDK 9, a <code>MODULEPATH</code> is a sequence of modules' base paths and Modular JAR files for the Java Compiler or JVM to locate the modules used in the application.</p>
+
+
+<h3>Module's Directives</h3>
+<p>A <em>module</em> adds a higher level of aggregation above package. It is a set of related packages, as well as resources (such as images and XML files). By convention, a module is kept in a directory with the same name as the module name. Each module contains a <em>module descriptor</em> <code>module-info</code>. The descriptor contains <em>directives</em> (such as <code>requires</code>, <code>exports</code>, <code>uses</code>, <code></code><code>provides...with</code>, <code>opens</code>, <code>to</code> and <code>transitive</code>) to describe:</p>
+
+<ul>
+  <li>the module's name</li>
+<li>the module's dependencies (via &quot;<code>requires &lt;module&gt;</code>&quot;, &quot;<code>requires transitive &lt;module&gt;</code>&quot;)</li>
+<li>the packages it explicitly makes available to other modules (via &quot;<code>exports &lt;package&gt;</code>&quot;, &quot;<code>exports &lt;package&gt; to &lt;modules&gt;</code>&quot;)</li>
+<li>the services it provides (via &quot;<code>provides &lt;service&gt; with &lt;implementationClass&gt;</code>&quot;)</li>
+<li>the services it consumes (via &quot;<code>uses &lt;service&gt;</code>&quot;)</li>
+<li>to what other modules it allows reflection (via &quot;<code>opens &lt;package&gt;</code>&quot;)</li>
+</ul>
+
+<pre class="color-example">
+<span class="color-comment">// moduleName\module-info.java</span>
+module moduleName {
+   ......  <span class="color-comment">// module directives</span>
+}</pre>
+
+<h5><span class="font-code">requires &lt;module&gt;</span></h5>
+<p>A <code>requires</code> directive specifies that this module <em>depends</em> on another module. When module A <code>requires</code> module B, module A is said to <em>read</em> module B; and module B is <em>read by</em> module A.</p>
+
+<h5><span class="font-code">requires transitive &lt;module</span>&gt;</h5>
+<p>Other modules that read this module also read this dependency (known as implied readability). For example, if module A <code>requires transitive</code> module B, and module C <code>requires</code> module A. Module C can read module B without explicitly <code>requires</code> module B.</p>
+
+
+<h5><span class="font-code">exports &lt;package&gt;</span></h5>
+<p>Specify a package (of this module) whose <code>public</code> types are accessible to  ALL other modules.</p>
+
+<h5><span class="font-code">exports &lt;package&gt; to &lt;modules&gt;</span></h5>
+<p>Further specify, in a comma-separated list, which module's code can access the exported package. For example, [TODO]</p>
+
+<h5><span class="font-code">uses &lt;service</span>&gt;</h5>
+<p>Specify a service used by this module - making this module a service consumer. A service is an instance of a class that implements the interface or extends the <code>abstract</code> class specified in the <code>uses</code> directive.</p>
+
+<h5><span class="font-code">provides &lt;service&gt; with &lt;implementationClass&gt;</span></h5>
+<p>Specify that a module provides a service implementation - making this module a service provider.</p>
+
+<h5><span class="font-code">opens &lt;package&gt;</span></h5>
+
+<p>Before JDK 9, <em>reflection</em> could be used to learn about all types in a package and all members of a type - even its private members. In JDK 9, the <code>opens <em>packageName</em></code> specifies that the package’s public types are accessible to code in ALL other modules at runtime only. Also, all the types in the specified package (and all of the types’ members) are accessible via reflection.</p>
+
+<h5><span class="font-code">opens &lt;package&gt; to &lt;modules</span>&gt;</h5>
+<p>To the specified modules (commas-separated list) only.</p>
+
+<h3>Service Consumer and Service Provider Modules By Example</h3>
+
+<p><strong>Reference</strong>: JDK 9 Modules - Creating Services and Service Providers @ <a href="https://www.logicbig.com/tutorials/core-java-tutorial/modules/services.html">https://www.logicbig.com/tutorials/core-java-tutorial/modules/services.html</a>.</p>
+<p>&nbsp;</p>
+
+<p><em>Services</em> allow for loose coupling between <em>service  consumer</em> modules and <em>service provider</em> modules.</p>
+
+<p>A <em>service consumer</em> module declares that it <code>uses</code> one or more interfaces whose implementations will be provided at runtime by some <em>service provider</em> module. A <em>service provider</em> module declares what implementations of service interface it <code>provides...with</code>.</p>
+
+<h5>The Service Consumer Module</h5>
+
+<p>Let's call our service consumer module <code>com.hello.consumer</code>. It contains a package <code>com.hello.consumer</code>, and consume a service defined in interface <code>com.hello.consumer.HelloService</code> (to be provided by a service provider).</p>
+<pre class="color-example">
+<span class="color-comment">// Module &quot;com.hello.consumer&quot; Module Descriptor
+// src\com.hello.consumer\module-info.java</span>
+module <strong>com.hello.consumer</strong> {
+   exports com.hello.consumer;
+   uses com.hello.consumer.HelloService;  <span class="color-comment">// service's interface</span>
+}</pre>
+
+<pre class="color-example">
+<span class="color-comment">// Service Interface
+// src\com.hello.consumer\com\hello\consumer\HelloService.java</span>
+package com.hello.consumer;
+
+import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ServiceLoader;
+
+public interface <strong>HelloService</strong> {
+
+   <span class="color-comment">// Return a List of implementations for this service.</span>
+   public static List&lt;HelloService&gt;<MessageService><MessageService> getInstances() {
+      ServiceLoader&lt;HelloService&gt;<MessageService> services = ServiceLoader.load(HelloService.class);
+      Iterator<NetworkSocketProvider>&lt;HelloService&gt;<MessageService> iter = services.iterator();
+      if (!iter.hasNext()) throw new RuntimeException("No service providers found!");
+      List&lt;HelloService&gt;<MessageService> lst<MessageService> = new ArrayList<>();
+      iter.forEachRemaining(lst::add);
+      return lst;
+   }
+
+   void sayHello(String msg);  <span class="color-comment">// (public abstract) to be provided by the implementation class</span>
+}</pre>
+
+<pre class="color-command">
+<span class="color-comment">// Compile the module from &quot;src&quot; into &quot;mods&quot;</span>
+&gt; <strong>cd &lt;project-base-directory&gt;</strong>
+&gt; <strong>javac -d mods/com.hello.consumer src/com.hello.consumer/module-info.java src/com.hello.consumer/com/hello/consumer/HelloService.java</strong>
+
+<span class="color-comment">// Create Modular JAR file in &quot;mlib&quot;</span>
+&gt; <strong>jar --create --file mlib/com.hello.consumer.jar -C mods/com.hello.consumer .</strong></pre>
+
+<h5>How does <span class="font-code">ServiceLoader</span> find a class?</h5>
+
+<p>The <code>ServiceLoader</code> can find and instantiate classes that implement a specific interface. When we call the <code>static</code> method <code>ServiceLoader.load(interfaceName)</code>, it returns a list of classes that implement this interface. The JDK 9's module declares the services that a <code>ServiceLoader</code> can load, and a module can also declare what services it may need to load via the <code>ServiceLoader</code>.</p>
+
+<h5>The Service Provider Module</h5>
+
+<p>Our service provider module called <code>com.hello.provider</code>, provides an implementation for the service.</p>
+
+<pre class="color-example">
+<span class="color-comment">// Module &quot;com.hello.provider&quot; Module Descriptor
+// src\com.hello.provider\module-info.java</span>
+module com.hello.provider {
+   requires com.hello.consumer;
+   provides com.hello.consumer.HelloService with com.hello.provider.HelloServiceImpl;
+      <span class="color-comment">// provides an implementation for the service.</span>
+}</pre>
+
+<pre class="color-example">
+<span class="color-comment">// Implementation class of the service
+// src\com.hello.provider\com\hello\provider\HelloServiceImpl.java</span>
+package com.hello.provider;
+import com.hello.consumer.HelloService;
+
+public class <strong>HelloServiceImpl</strong> implements HelloService {
+   @Override
+   public void sayHello(String msg) {
+      System.out.println(&quot;hello, &quot; + msg);
+   }
+}</pre>
+
+<pre class="color-command"><span class="color-comment">// Compile the module from &quot;src&quot; into &quot;mods&quot;</span>
+&gt; <strong>cd &lt;project-base-directory&gt;</strong>
+&gt; <strong>javac -p mlib -d mods/com.hello.provider src/com.hello.provider/module-info.java src/com.hello.provider/com/hello/provider/HelloServiceImpl.java</strong>
+
+<span class="color-comment">// Create Modular JAR file in &quot;mlib&quot;</span>
+&gt; <strong>jar --create --file mlib/com.hello.provider.jar -C mods/com.hello.provider .</strong></pre>
+
+<h5>Service Client Module</h5>
+
+<p>Now, write a client module that invokes the service.</p>
+
+<pre class="color-example">
+<span class="color-comment">// Module &quot;com.hello.client&quot; Module Descriptor
+// src\com.hello.client\module-info.java</span>
+module com.hello.client {
+   requires com.hello.consumer;
+}</pre>
+
+<pre class="color-example">
+<span class="color-comment">// src\com.hello.client\com\hello\client\Main.java</span>
+package com.hello.client;
+import com.hello.consumer.HelloService;
+import java.util.List;
+
+public class <strong>Main</strong> {
+   public static void main(String[] args) {
+      List<MessageService>&lt;HelloService&gt; services = HelloService.getInstances();
+      for (HelloService service : services) {
+         System.out.println(service.getClass().getName());  <span class="color-comment">// print the implementation classname</span>
+         service.sayHello("service");
+      }
+   }
+}</pre>
+
+<pre class="color-command">
+<span class="color-comment">// Compile the module</span>
+&gt; <strong>javac -p mlib -d mods/com.hello.client src/com.hello.client/module-info.java src/com.hello.client/com/hello/client/Main.java</strong>
+
+<span class="color-comment">// Create JAR</span>
+&gt; <strong>jar --create --file mlib/com.hello.client.jar --main-class=com.hello.client.Main -C mods/com.hello.client .</strong>
+
+<span class="color-comment">// Run</span>
+&gt; <strong>java -p mlib -m com.hello.client</strong>
+<span class="color-output">com.hello.provider.HelloServiceImpl
+hello, service</span></pre>
+
+<h3>New Tools to Support Modules</h3>
+
+<h4><span class="font-code">jlink</span> - The Java Linker (<a href="https://openjdk.java.net/jeps/282">JEP 282</a>)</h4>
+<p>The goal of JEP 282 is to &quot;create a tool that can assemble and optimize a set of modules and their  dependencies into a custom run-time image&quot;. <code>jlink</code> is the linker tool and can be used to link a set  of modules, along with their transitive dependence, to create a  custom modular run-time image.</p>
+<p>The following example creates a run-time image that contains the module <code>com.hello.client</code> and its transitive dependences:</p>
+
+<pre class="color-command">
+<span class="color-comment">// For Windows</span>
+&gt; <strong>cd &lt;project-base-path&gt;</strong>
+&gt; <strong>jlink --module-path &quot;%JAVA_HOME%/jmods&quot;;mlib --add-modules com.hello.client --output helloapp</strong>
+
+<span class="color-comment">// For Unix and macOS</span>
+$ <strong>cd &lt;project-base-path&gt;</strong>
+$ <strong>jlink --module-path $JAVA_HOME/jmods:mlib --add-modules com.hello.client --output helloapp</strong></pre>
+
+<p>Notes:</p>
+<ul>
+<li>The module path &quot;<code>%JAVA_HOME%/jmod</code>&quot; is the directory containing <code>java.base.jmod</code> and other standard and JDK modules.</li>
+<li>The module path &quot;<code>mlib</code>&quot; is the directory containing our module <code>com.hello.client</code>.</li>
+<li>The module <code>com.hello.client</code> shall be packaged in modular JAR or JMOD format (in the module path).</li>
+</ul>
+
+<p>The output &quot;<code>helloapp</code>&quot; is a directory (36 MB), as follows:</p>
+<pre class="color-command">
+> <strong>tree /a helloapp</strong>
+<span class="color-output">HELLOAPP
++---bin
+|   \---server
++---conf
+|   \---security
+|       \---policy
+|           +---limited
+|           \---unlimited
++---include
+|   \---win32
++---legal
+|   \---java.base
+\---lib
+    +---security
+    \---server</span></pre>
+
+<p>The modules are kept under &quot;<code>helloapp\lib\modules</code>&quot; (22 MB)?!</p>
+<p>To run the <code>Main</code> class:</p>
+
+<pre class="color-command">
+<span class="color-comment">// Run the &quot;Main&quot; class</span>
+&gt; <strong>cd &lt;project-base-path&gt;</strong>
+> <strong>helloapp\bin\java -m com.hello.client/com.hello.client.Main</strong>
+Exception in thread "main" java.lang.RuntimeException: No service providers found!
+
+<span class="color-comment">// Re-link with provider module</span>
+&gt; <strong>jlink --module-path &quot;%JAVA_HOME%/jmods&quot;;mlib --add-modules com.hello.client,com.hello.provider --output helloapp</strong>
+
+<span class="color-comment">// Run the &quot;Main&quot; class again</span>
+&gt; <strong>helloapp\bin\java -m com.hello.client/com.hello.client.Main</strong><br>com.hello.provider.HelloServiceImpl<br>hello, service</pre>
+
+<p>JDK 9 Introduces a new optional phase, link time, which is in-between compile time and run time, during which a set of modules can be assembled and optimized into a custom runtime image.</p>
+
+<h4><span class="font-code">jmod</span> Tool and <span class="font-code">jmod</span> Files</h4>
+<p>JDK 9 Introduces the JMOD format, which is a packaging format similar to JAR except it can include native code and configuration files. It also introduces a <code>jmod</code> tool for creating <code>jmod</code> files.</p>
+<p>[TODO]</p>
+
+<h3>The Modular JDK</h3>
+
+<p>JDK 9 makes the following changes to support modular JDK.</p>
+
+
+<h4>The Modular JDK (<a href="https://openjdk.java.net/jeps/200">JEP 200</a>)</h4>
+
+<p>JDK has grown over the years, with massive amount of legacy codes. But the Java platform has primarily been a monolithic one-size-fits-all solution.</p>
+<p>The goal is to divide the JDK into a set of modules that can be combined at compile time, build time and run time into a variety of configurations.</p>
+<p>The modular JDK implements these design principles:</p>
+
+<ol>
+<li>Standard modules, whose specifications are governed by the JCP (Java Community Process), start with &quot;<code>java.</code>&quot;.
+<ul>
+<li>Base Module <code>java.base</code>: defines the foundational APIs of the Java SE Platform, including core JDK packages such as <code>java.lang</code>, <code>java.util</code>, <code>java.io</code>, <code>java.nio</code>, <code>java.net</code>, <code>javax.net</code>, <code>java.text</code>, <code>java.security</code>, <code>javax.cryptio</code>.<br>
+The Base Module is an independent module and does NOT depends on any other modules. By default, all other modules depends on this module.<br>
+The Base Module is also the default module for all JDK modules and user-defined modules.
+</li>
+<li>Module <code>java.desktop</code>: Defines the AWT and Swing user interface toolkits, plus APIs for accessibility, audio, imaging, printing, and JavaBeans, including packages <code>java.awt</code>, <code>java.awt.event</code>, <code>java.awt.*</code>, <code>java.beans</code>, <code>javax.imageio</code>, <code>javax.print</code>, <code>javax.swing</code>, <code>javax.swing.*</code>, <code>javax.sound.*</code>.</li>
+<li>Module <code>java.sql</code>: defines the JDBC API, including packages <code>java.sql</code>, <code>javax.sql</code>.</li>
+<li>Others</li>
+</ul>
+</li>
+
+<li>All other modules that are part of JDK, start with &quot;<code>jdk.</code>&quot;.</li>
+<li>JavaFX modules, starts with &quot;<code>javafx.</code>&quot;.</li>
+</ol>
+
+<p>A new option <code>--list-modules</code> is provided in <code>java</code> tool to list all the modules, for example,</p>
+<pre class="color-command">
+&gt; <strong>java --list-modules</strong>
+java.activation@10.0.1
+java.base@10.0.1
+......</pre>
+
+<h4>JEP 201: Modular Source Code (<a href="https://openjdk.java.net/jeps/201">JEP 201</a>)</h4>
+
+<p>The current source code JAR files are too big, especially <code>rt.jar</code>. The goal of this JEP is to &quot;reorganize the JDK source code into modules, enhance the build system to  compile modules, and enforce module boundaries at build time&quot;.</p>
+
+<h4>Modular Run-Time Images (<a href="https://openjdk.java.net/jeps/220">JEP 220</a>)</h4>
+<p>The main goal of this JEP is to &quot;restructure the JDK and JRE run-time images to accommodate modules and to improve performance, security, and maintainability&quot;.</p>
+<p>The JDK 9 does not have a &quot;<code>jre</code>&quot; sub-directory. But it has a &quot;<code>jmods</code>&quot; sub-directory, which contains the Java modules (such as <code>java.activation.jmod</code>, <code>java.base.jmod</code>, etc.). In other words, In JDK 9, JRE is separated into a separate distribution <code>jmods</code>.</p>
+<p>JDK 9 removes <code>rt.jar</code> or <code>tools.jar</code>.</p>
+
+<h4>Encapsulate Most Internal APIs (<a href="https://openjdk.java.net/jeps/260">JEP 260</a>)</h4>
+<p>The main goal of this JEP is to &quot;encapsulate most of the JDK's internal APIs by default so that they are  inaccessible at compile time, and prepare for a future release in which  they will be inaccessible at run time&quot;.</p>
+<p>&nbsp;</p>
+
+<!-- @@ start change in v1 -->
+<p class="references">REFERENCES &amp; RESOURCES</p>
+
+</div> <!-- End the content-main division -->
+
+<div id="content-footer">
+<p>Latest version tested: JDK 13.0.1<br>
+Last modified: January, 2020</p>
+</div>
+
+</div>  <!-- End the wrap-inner division -->
+
+<!-- footer filled by JavaScript -->
+<div id="footer" class="header-footer"><p>&nbsp;</p></div>
+
+</div>  <!-- End the wrap-outer division -->
+<!-- @@ end change in v1 -->
+</body>
+</html>
