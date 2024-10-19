@@ -42,7 +42,7 @@
 </head>
 <body>
 
-<table>
+<table id="leagueTable">
     <thead>
         <tr>
             <th>Team</th>
@@ -58,33 +58,33 @@
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>Liverpool</td>
-            <td>7</td>
-            <td>18</td>
-            <td>6</td>
-            <td>0</td>
-            <td>1</td>
-            <td>13</td>
-            <td>2</td>
-            <td>11</td>
-            <td>W L W W W</td>
-        </tr>
-        <tr>
-            <td>Manchester City</td>
-            <td>7</td>
-            <td>17</td>
-            <td>5</td>
-            <td>2</td>
-            <td>0</td>
-            <td>17</td>
-            <td>8</td>
-            <td>9</td>
-            <td>W W D D W</td>
-        </tr>
-        <!-- Add more rows based on your data -->
+        <!-- Data rows will be inserted here by JavaScript -->
     </tbody>
 </table>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('sources/premiere.csv')
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data) {
+        const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
+        const rows = data.split('\n');
+        rows.forEach((row, index) => {
+            if (index === 0) return; // skip the header row
+            const cols = row.split(',');
+            if (cols.length === 10) {
+                const newRow = table.insertRow();
+                for (let i = 0; i < cols.length; i++) {
+                    const newCell = newRow.insertCell();
+                    newCell.textContent = cols[i];
+                }
+            }
+        });
+    });
+});
+</script>
 
 </body>
 </html>
