@@ -34,11 +34,16 @@
         border-bottom: 2px solid #009879;
     }
     .result-circle {
-        display: inline-block;
-        width: 15px;
-        height: 15px;
-        border-radius: 50%;
-        margin-right: 5px;
+        display: inline-flex;   /* Use flexbox for easier centering */
+        align-items: center;    /* Vertical centering */
+        justify-content: center;/* Horizontal centering */
+        width: 20px;            /* Width of the circle */
+        height: 20px;           /* Height of the circle */
+        border-radius: 50%;     /* Make it round */
+        margin-right: 5px;      /* Space between circles */
+        color: white;           /* Text color */
+        font-weight: bold;      /* Make the text bold */
+        font-size: 14px;        /* Text size */
     }
     .win { background-color: #4CAF50; }  /* Green for win */
     .draw { background-color: #FFC107; } /* Yellow for draw */
@@ -81,27 +86,30 @@
                 const cols = row.split(',');
                 if (cols.length >= 10) { // Check we have the right amount of columns
                     const newRow = table.insertRow();
-
+    
                     // Insert the first 9 columns (team details)
                     for (let i = 0; i < 9; i++) {
                         const newCell = newRow.insertCell();
                         newCell.textContent = cols[i].replace(/"/g, '').trim(); // Remove quotes and trim whitespace
                     }
-
+    
                     // Handle "Last 5" matches
                     const lastFiveCell = newRow.insertCell();
                     const results = cols[9].replace(/"/g, '').trim().split(' '); // Split the last 5 results on space
-
+    
                     results.forEach(result => {
                         const resultCircle = document.createElement('span');
                         resultCircle.classList.add('result-circle');
                         result = result.trim();
                         if (result === 'W') {
                             resultCircle.classList.add('win');
+                            resultCircle.textContent = 'W'; // Set text for Win
                         } else if (result === 'D') {
                             resultCircle.classList.add('draw');
+                            resultCircle.textContent = 'D'; // Set text for Draw
                         } else if (result === 'L') {
                             resultCircle.classList.add('loss');
+                            resultCircle.textContent = 'L'; // Set text for Loss
                         }
                         lastFiveCell.appendChild(resultCircle);
                     });
@@ -109,6 +117,7 @@
             });
         });
     });
+    
 </script>
 
 </body>
