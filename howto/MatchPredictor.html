@@ -68,46 +68,47 @@
 </table>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    fetch('sources/premiere.csv')
-    .then(function(response) {
-        return response.text();
-    })
-    .then(function(data) {
-        const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
-        const rows = data.split('\n');
-        rows.forEach((row, index) => {
-            if (index === 0) return; // skip the header row
-            const cols = row.split(',');
-            if (cols.length === 10) {
-                const newRow = table.insertRow();
-                
-                // Insert the first 9 columns (team details)
-                for (let i = 0; i < 9; i++) {
-                    const newCell = newRow.insertCell();
-                    newCell.textContent = cols[i];
-                }
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('sources/premiere.csv')
+        .then(function(response) {
+            return response.text();
+        })
+        .then(function(data) {
+            const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
+            const rows = data.split('\n');
+            rows.forEach((row, index) => {
+                if (index === 0 || !row.trim()) return; // skip the header row and empty rows
+                const cols = row.split(',');
+                if (cols.length >= 10) { // Check we have the right amount of columns
+                    const newRow = table.insertRow();
 
-                // Insert the last column (Last 5 matches)
-                const lastFiveCell = newRow.insertCell();
-                const results = cols[9].split(' '); // Last 5 matches results (e.g. "W L D W D")
-                
-                results.forEach(result => {
-                    const resultCircle = document.createElement('span');
-                    resultCircle.classList.add('result-circle');
-                    if (result === 'W') {
-                        resultCircle.classList.add('win');
-                    } else if (result === 'D') {
-                        resultCircle.classList.add('draw');
-                    } else if (result === 'L') {
-                        resultCircle.classList.add('loss');
+                    // Insert the first 9 columns (team details)
+                    for (let i = 0; i < 9; i++) {
+                        const newCell = newRow.insertCell();
+                        newCell.textContent = cols[i].replace(/"/g, '').trim(); // Remove quotes and trim whitespace
                     }
-                    lastFiveCell.appendChild(resultCircle);
-                });
-            }
+
+                    // Handle "Last 5" matches
+                    const lastFiveCell = newRow.insertCell();
+                    const results = cols[9].replace(/"/g, '').trim().split(' '); // Split the last 5 results on space
+
+                    results.forEach(result => {
+                        const resultCircle = document.createElement('span');
+                        resultCircle.classList.add('result-circle');
+                        result = result.trim();
+                        if (result === 'W') {
+                            resultCircle.classList.add('win');
+                        } else if (result === 'D') {
+                            resultCircle.classList.add('draw');
+                        } else if (result === 'L') {
+                            resultCircle.classList.add('loss');
+                        }
+                        lastFiveCell.appendChild(resultCircle);
+                    });
+                }
+            });
         });
     });
-});
 </script>
 
 </body>

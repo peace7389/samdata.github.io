@@ -6,6 +6,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 import pandas as pd
 import time
+import csv  # Import CSV module for proper CSV handling
 
 def scrape_articles():
     data = []  # Initialize data list here to ensure it's available for DataFrame creation
@@ -44,7 +45,7 @@ def scrape_articles():
         rows = table.find_elements(By.TAG_NAME, 'tr')
         for row in rows:
             cols = row.find_elements(By.TAG_NAME, 'td')
-            cols = [elem.text for elem in cols]
+            cols = [elem.text.replace('\n', ' ') for elem in cols]  # Replace newlines with spaces for CSV compatibility
             data.append(cols)
 
     except NoSuchElementException as e:
@@ -59,7 +60,7 @@ def scrape_articles():
     if data:
         # Check and print the first row of data to see the number of columns
         print("First row of data:", data[0])
-        
+
     # Determine the correct number of columns from the data and set them
     column_names = ['Column1', 'Column2', 'Column3', 'Column4', 'Column5', 'Column6', 'Column7', 'Column8', 'Column9', 'Column10']  # Adjust based on actual data
     df = pd.DataFrame(data, columns=column_names)
@@ -69,7 +70,8 @@ def scrape_articles():
 articles_data = scrape_articles()
 
 if not articles_data.empty:
-    articles_data.to_csv('premiere.csv', index=False)
-    print("Data saved to CSV successfully.")
+    # Save data ensuring CSV will handle newlines properly within fields
+    articles_data.to_csv('howto/sources/premiere.csv', index=False, quoting=csv.QUOTE_NONNUMERIC)
+    print("Data saved to CSV successfully in '../sources/' directory.")
 else:
     print("No data to save.")
