@@ -8,11 +8,10 @@
         font-family: Arial, sans-serif;
     }
     table {
-        width: 25%;
+        width: 80%;
         border-collapse: collapse;
         margin: 25px 0;
         font-size: 0.9em;
-        min-width: 100px;
         border-radius: 5px 5px 0 0;
         overflow: hidden;
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -23,7 +22,7 @@
         text-align: left;
     }
     th, td {
-        padding: 8px 10px;
+        padding: 12px 15px;
     }
     tbody tr {
         border-bottom: 1px solid #dddddd;
@@ -34,10 +33,16 @@
     tbody tr:last-of-type {
         border-bottom: 2px solid #009879;
     }
-    tbody tr.active-row {
-        font-weight: bold;
-        color: #009879;
+    .result-circle {
+        display: inline-block;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-right: 5px;
     }
+    .win { background-color: #4CAF50; }  /* Green for win */
+    .draw { background-color: #FFC107; } /* Yellow for draw */
+    .loss { background-color: #F44336; } /* Red for loss */
 </style>
 </head>
 <body>
@@ -76,10 +81,29 @@ document.addEventListener('DOMContentLoaded', function() {
             const cols = row.split(',');
             if (cols.length === 10) {
                 const newRow = table.insertRow();
-                for (let i = 0; i < cols.length; i++) {
+                
+                // Insert the first 9 columns (team details)
+                for (let i = 0; i < 9; i++) {
                     const newCell = newRow.insertCell();
                     newCell.textContent = cols[i];
                 }
+
+                // Insert the last column (Last 5 matches)
+                const lastFiveCell = newRow.insertCell();
+                const results = cols[9].split(' '); // Last 5 matches results (e.g. "W L D W D")
+                
+                results.forEach(result => {
+                    const resultCircle = document.createElement('span');
+                    resultCircle.classList.add('result-circle');
+                    if (result === 'W') {
+                        resultCircle.classList.add('win');
+                    } else if (result === 'D') {
+                        resultCircle.classList.add('draw');
+                    } else if (result === 'L') {
+                        resultCircle.classList.add('loss');
+                    }
+                    lastFiveCell.appendChild(resultCircle);
+                });
             }
         });
     });
