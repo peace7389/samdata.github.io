@@ -8,7 +8,7 @@
         font-family: Arial, sans-serif;
     }
     table {
-        width: 25%;
+        width: 50%;  /* Increased width to accommodate all data */
         border-collapse: collapse;
         margin: 25px 0;
         font-size: 0.9em;
@@ -24,8 +24,12 @@
     th, td {
         padding: 0px 5px;
     }
+    th:nth-child(1), td:nth-child(1),
+    th:nth-child(2), td:nth-child(2) {
+        width: 50px; /* Fixed width for rank and team columns */
+    }
     th:nth-child(10), td:nth-child(10) {
-        width: 140px;  /* Set a specific width for the 'Last 5' column */
+        width: 140px; /* Specific width for the 'Last 5' column */
     }
     tbody tr {
         border-bottom: 1px solid #dddddd;
@@ -37,20 +41,20 @@
         border-bottom: 2px solid #009879;
     }
     .result-circle {
-        display: inline-flex;   /* Use flexbox for easier centering */
-        align-items: center;    /* Vertical centering */
-        justify-content: center;/* Horizontal centering */
-        width: 20px;            /* Width of the circle */
-        height: 20px;           /* Height of the circle */
-        border-radius: 50%;     /* Make it round */
-        margin-right: 5px;      /* Space between circles */
-        color: white;           /* Text color */
-        font-weight: bold;      /* Make the text bold */
-        font-size: 14px;        /* Text size */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
     }
-    .win { background-color: #4CAF50; }  /* Green for win */
-    .draw { background-color: #FFC107; } /* Yellow for draw */
-    .loss { background-color: #F44336; } /* Red for loss */
+    .win { background-color: #4CAF50; }
+    .draw { background-color: #FFC107; }
+    .loss { background-color: #F44336; }
 </style>
 </head>
 <body>
@@ -58,6 +62,7 @@
 <table id="leagueTable">
     <thead>
         <tr>
+            <th>Rank</th>
             <th>Team</th>
             <th>GP</th>
             <th>PTS</th>
@@ -76,51 +81,59 @@
 </table>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        fetch('sources/premiere.csv')
-        .then(function(response) {
-            return response.text();
-        })
-        .then(function(data) {
-            const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
-            const rows = data.split('\n');
-            rows.forEach((row, index) => {
-                if (index === 0 || !row.trim()) return; // skip the header row and empty rows
-                const cols = row.split(',');
-                if (cols.length >= 10) { // Check we have the right amount of columns
-                    const newRow = table.insertRow();
-    
-                    // Insert the first 9 columns (team details)
-                    for (let i = 0; i < 9; i++) {
-                        const newCell = newRow.insertCell();
-                        newCell.textContent = cols[i].replace(/"/g, '').trim(); // Remove quotes and trim whitespace
-                    }
-    
-                    // Handle "Last 5" matches
-                    const lastFiveCell = newRow.insertCell();
-                    const results = cols[9].replace(/"/g, '').trim().split(' '); // Split the last 5 results on space
-    
-                    results.forEach(result => {
-                        const resultCircle = document.createElement('span');
-                        resultCircle.classList.add('result-circle');
-                        result = result.trim();
-                        if (result === 'W') {
-                            resultCircle.classList.add('win');
-                            resultCircle.textContent = 'W'; // Set text for Win
-                        } else if (result === 'D') {
-                            resultCircle.classList.add('draw');
-                            resultCircle.textContent = 'D'; // Set text for Draw
-                        } else if (result === 'L') {
-                            resultCircle.classList.add('loss');
-                            resultCircle.textContent = 'L'; // Set text for Loss
-                        }
-                        lastFiveCell.appendChild(resultCircle);
-                    });
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('sources/premiere.csv')
+    .then(function(response) {
+        return response.text();
+    })
+    .then(function(data) {
+        const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
+        const rows = data.split('\n');
+        rows.forEach((row, index) => {
+            if (index === 0 || !row.trim()) return; // skip the header row and empty rows
+            const cols = row.split(',');
+            if (cols.length >= 10) { // Ensure sufficient columns
+                const newRow = table.insertRow();
+
+                // Separate rank and team name
+                const rankTeam = cols[0].replace(/"/g, '').trim(); // Clean data
+                const match = rankTeam.match(/^(\d+)\s+(.*)$/); // Regex to extract rank and team
+                if (match) {
+                    const rankCell = newRow.insertCell();
+                    rankCell.textContent = match[1]; // Rank
+                    const teamCell = newRow.insertCell();
+                    teamCell.textContent = match[2]; // Team name
                 }
-            });
+
+                // Insert other columns
+                for (let i = 1; i < 9; i++) {
+                    const newCell = newRow.insertCell();
+                    newCell.textContent = cols[i].replace(/"/g, '').trim();
+                }
+
+                // Handle "Last 5" matches
+                const lastFiveCell = newRow.insertCell();
+                const results = cols[9].replace(/"/g, '').trim().split(' ');
+                results.forEach(result => {
+                    const resultCircle = document.createElement('span');
+                    resultCircle.classList.add('result-circle');
+                    result = result.trim();
+                    if (result === 'W') {
+                        resultCircle.classList.add('win');
+                        resultCircle.textContent = 'W';
+                    } else if (result === 'D') {
+                        resultCircle.classList.add('draw');
+                        resultCircle.textContent = 'D';
+                    } else if (result === 'L') {
+                        resultCircle.classList.add('loss');
+                        resultCircle.textContent = 'L';
+                    }
+                    lastFiveCell.appendChild(resultCircle);
+                });
+            }
         });
     });
-    
+});
 </script>
 
 </body>
