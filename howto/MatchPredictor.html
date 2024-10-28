@@ -21,16 +21,31 @@
         color: #ffffff;
         text-align: left;
     }
+    th {
+        height: 30px; /* Set desired height */
+    }
     th, td {
         padding: 0px 5px;
+        width: 22px;
+        text-align: center;
     }
     th:nth-child(1), td:nth-child(1),
     th:nth-child(2), td:nth-child(2) {
         width: 50px; /* Fixed width for rank and team columns */
     }
-    th:nth-child(10), td:nth-child(10) {
-        width: 140px; /* Specific width for the 'Last 5' column */
+    th:nth-child(12), td:nth-child(12) {
+        width: 120px; /* Specific width for the 'Last 5' column */
+        text-align: center;
     }
+
+    th:nth-child(9), td:nth-child(9) {
+        border-left: 1px solid rgb(110, 107, 107);
+    }
+    th:nth-child(11), td:nth-child(11) {
+        border-right: 1px solid rgb(110, 107, 107);
+    }
+
+
     tbody tr {
         border-bottom: 1px solid #dddddd;
     }
@@ -55,6 +70,26 @@
     .win { background-color: #4CAF50; }
     .draw { background-color: #FFC107; }
     .loss { background-color: #F44336; }
+
+    .result-circle:nth-last-child(1) { /* Most recent */
+    opacity: 1.0; /* Fully opaque */
+}
+
+.result-circle:nth-last-child(2) { /* Second most recent */
+    opacity: 0.85;
+}
+
+.result-circle:nth-last-child(3) { /* Third most recent */
+    opacity: 0.7;
+}
+
+.result-circle:nth-last-child(4) { /* Fourth most recent */
+    opacity: 0.55;
+}
+
+.result-circle:nth-last-child(5) { /* Fifth most recent */
+    opacity: 0.4; /* Most transparent */
+}
 </style>
 </head>
 <body>
@@ -63,6 +98,7 @@
     <thead>
         <tr>
             <th>Rank</th>
+            <th>Logo</th>
             <th>Team</th>
             <th>GP</th>
             <th>PTS</th>
@@ -82,7 +118,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    fetch('sources/premiere.csv')
+    fetch('sources/premiere_JS.csv')
     .then(function(response) {
         return response.text();
     })
@@ -96,13 +132,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 const newRow = table.insertRow();
 
                 // Separate rank and team name
-                const rankTeam = cols[0].replace(/"/g, '').trim(); // Clean data
-                const match = rankTeam.match(/^(\d+)\s+(.*)$/); // Regex to extract rank and team
+                const rankTeam = cols[0]
+                const match = rankTeam.match(/(\d+)([A-Za-z &]+)([A-Z]{3})$/); // Regex to extract rank and team
                 if (match) {
                     const rankCell = newRow.insertCell();
                     rankCell.textContent = match[1]; // Rank
+                    
                     const teamCell = newRow.insertCell();
                     teamCell.textContent = match[2]; // Team name
+                    
                 }
 
                 // Insert other columns
@@ -113,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 // Handle "Last 5" matches
                 const lastFiveCell = newRow.insertCell();
-                const results = cols[9].replace(/"/g, '').trim().split(' ');
+                const results = cols[9].replace(/"/g, '').trim().split('');
                 results.forEach(result => {
                     const resultCircle = document.createElement('span');
                     resultCircle.classList.add('result-circle');
@@ -132,8 +170,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+        addLogosToTable(); // Adds logos after table is populated
+        applyColors();     // Apply colors after all cells are populated
     });
 });
+
+
+function addLogosToTable() {
+    const tableRows = document.querySelectorAll('#leagueTable tbody tr');
+    tableRows.forEach(row => {
+        const teamCell = row.cells[1]; // Assuming team name is in the second cell
+        const teamName = teamCell.textContent.trim();
+        
+        // Create logo cell
+        const logoCell = row.insertCell(1); // Insert logo cell before the team name cell
+        const logoImg = document.createElement('img');
+        logoImg.src = `images/PremiereTeamLogos/${teamName}.webp`;
+        logoImg.alt = `${teamName} logo`;
+        logoImg.width = 30; // Set desired width
+        logoImg.height = 30; // Set desired height
+        logoImg.onerror = () => { logoImg.src = 'images/PremiereTeamLogos/default.webp'; }; // Fallback if logo is missing
+        logoCell.appendChild(logoImg);
+    });
+}
+
+function getColorForValue(value) {
+    const maxIntensity = 300; // Maximum color intensity
+    const minIntensity = 100; // Minimum color intensity for neutrality
+    const absValue = Math.abs(value);
+    const intensity = Math.min(maxIntensity, absValue * 10 + minIntensity);
+
+    if (value < 0) {
+        // Blend red to lighter shades as it approaches zero
+        return `rgb(${intensity}, ${minIntensity}, ${minIntensity})`;
+    } else if (value > 0) {
+        // Blend blue to lighter shades as it approaches zero
+        return `rgb(${minIntensity}, ${minIntensity}, ${intensity})`;
+    } else {
+        // Neutral color for zero
+        return `rgb(${minIntensity}, ${minIntensity}, ${minIntensity})`;
+    }
+}
+
+// Apply colors to numeric cells after table creation
+function applyColors() {
+    const tableRows = document.querySelectorAll('#leagueTable tbody tr');
+    tableRows.forEach(row => {
+        const cell = row.cells[10]; // Targeting the 11th column (index 10)
+        const value = cell.textContent.trim();
+        if (!isNaN(value) && value !== '') { // Check if the content is a number
+            cell.style.color = getColorForValue(value);
+        }
+    });
+}
+
 </script>
 
 </body>

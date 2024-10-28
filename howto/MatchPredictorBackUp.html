@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Soccer League Table</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    table {
+        width: 50%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+    thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+    }
+    th {
+        height: 30px;
+    }
+    th, td {
+        padding: 5px;
+        width: 50px;
+        text-align: center;
+    }
+    .result-circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+    }
+    .win { background-color: #4CAF50; }
+    .draw { background-color: #FFC107; }
+    .loss { background-color: #F44336; }
+</style>
+</head>
+<body>
+
+<table id="leagueTable">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Logo</th>
+            <th>Team</th>
+            <th>GP</th>
+            <th>PTS</th>
+            <th>W</th>
+            <th>D</th>
+            <th>L</th>
+            <th>GF</th>
+            <th>GA</th>
+            <th>GD</th>
+            <th>Last 5</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data rows will be inserted here by JavaScript -->
+    </tbody>
+</table>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('sources/premiere_JS.csv')
+    .then(response => response.text())
+    .then(data => {
+        const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
+        const rows = data.split('\n');
+        rows.forEach((row, index) => {
+            if (index === 0 || !row.trim()) return; // skip the header row and empty rows
+            const cols = row.split(',');
+            if (cols.length >= 10) {
+                const newRow = table.insertRow();
+                
+                // Rank and Team extraction
+                const rankTeam = cols[0];
+                const match = rankTeam.match(/(\d+)([A-Za-z &]+)([A-Z]{3})$/);
+                if (match) {
+                    const rankCell = newRow.insertCell();
+                    rankCell.textContent = match[1];
+                    
+                    const teamCell = newRow.insertCell();
+                    teamCell.textContent = match[2];
+                }
+
+                // Insert other columns and add "Last 5" results
+                for (let i = 1; i < 9; i++) {
+                    const newCell = newRow.insertCell();
+                    newCell.textContent = cols[i].replace(/"/g, '').trim();
+                }
+
+                const lastFiveCell = newRow.insertCell();
+                const results = cols[9].replace(/"/g, '').trim().split('');
+                results.forEach(result => {
+                    const resultCircle = document.createElement('span');
+                    resultCircle.classList.add('result-circle');
+                    result = result.trim();
+                    if (result === 'W') {
+                        resultCircle.classList.add('win');
+                        resultCircle.textContent = 'W';
+                    } else if (result === 'D') {
+                        resultCircle.classList.add('draw');
+                        resultCircle.textContent = 'D';
+                    } else if (result === 'L') {
+                        resultCircle.classList.add('loss');
+                        resultCircle.textContent = 'L';
+                    }
+                    lastFiveCell.appendChild(resultCircle);
+                });
+            }
+        });
+
+        addLogosToTable(); // Adds logos after table is populated
+        applyColors();     // Apply colors after all cells are populated
+    });
+});
+
+// Function to add team logos
+function addLogosToTable() {
+    const tableRows = document.querySelectorAll('#leagueTable tbody tr');
+    tableRows.forEach(row => {
+        const teamCell = row.cells[1];
+        const teamName = teamCell.textContent.trim();
+        
+        // Create logo cell
+        const logoCell = row.insertCell(1);
+        const logoImg = document.createElement('img');
+        logoImg.src = `images/PremiereTeamLogos/${teamName}.webp`;
+        logoImg.alt = `${teamName} logo`;
+        logoImg.width = 30;
+        logoImg.height = 30;
+        logoImg.onerror = () => { logoImg.src = 'images/PremiereTeamLogos/default.webp'; };
+        logoCell.appendChild(logoImg);
+    });
+}
+
+function getColorForValue(value) {
+    const maxIntensity = 220; // Maximum color intensity
+    const minIntensity = 128; // Minimum color intensity for neutrality
+    const absValue = Math.abs(value);
+    const intensity = Math.min(maxIntensity, absValue * 10 + minIntensity);
+
+    if (value < 0) {
+        // Blend red to lighter shades as it approaches zero
+        return `rgb(${intensity}, ${minIntensity}, ${minIntensity})`;
+    } else if (value > 0) {
+        // Blend blue to lighter shades as it approaches zero
+        return `rgb(${minIntensity}, ${minIntensity}, ${intensity})`;
+    } else {
+        // Neutral color for zero
+        return `rgb(${minIntensity}, ${minIntensity}, ${minIntensity})`;
+    }
+}
+
+// Apply colors to numeric cells after table creation
+function applyColors() {
+    const tableRows = document.querySelectorAll('#leagueTable tbody tr');
+    tableRows.forEach(row => {
+        const cell = row.cells[10]; // Targeting the 11th column (index 10)
+        const value = cell.textContent.trim();
+        if (!isNaN(value) && value !== '') { // Check if the content is a number
+            cell.style.color = getColorForValue(value);
+        }
+    });
+}
+</script>
+
+</body>
+</html>

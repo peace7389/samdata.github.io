@@ -1,0 +1,17 @@
+{
+  "name": "samdata.github.io",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "csv-write-stream": "^2.0.0",
+    "playwright": "^1.48.2",
+    "r-script": "^0.0.4"
+  }
+}
