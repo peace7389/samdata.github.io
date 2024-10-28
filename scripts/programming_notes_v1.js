@@ -1,20 +1,20 @@
-window.onload = init;
+// window.onload = init;
 
-function init() {
-   // Print Header
-   document.getElementById("header").innerHTML = '<p>yet another insignificant programming notes... &nbsp;&nbsp;| &nbsp;&nbsp;<a href="../index.html">HOME</a></p>';
+// function init() {
+//    // Print Header
+//    document.getElementById("header").innerHTML = '<p>yet another insignificant programming notes... &nbsp;&nbsp;| &nbsp;&nbsp;<a href="../index.html">HOME</a></p>';
 
-   // Print Footer
-   document.getElementById("footer").innerHTML = '<p>Feedback, comments, corrections, and errata can be sent to Chua Hock-Chuan (ehchua@ntu.edu.sg) &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../index.html">HOME</a></p>';
+//    // Print Footer
+//    document.getElementById("footer").innerHTML = '<p>Feedback, comments, corrections, and errata can be sent to Chua Hock-Chuan (ehchua@ntu.edu.sg) &nbsp;&nbsp;|&nbsp;&nbsp; <a href="../index.html">HOME</a></p>';
 
-   // Generate Table of Content
-   if (document.getElementById("toc") != null) {
-      // Generate TOC on <div id="toc">
-      generateTOC();
-      // Attach onclick handler to <a id="show-toc">
-      document.getElementById("show-toc").onclick = toggleTOC;
-   }
-}
+//    // Generate Table of Content
+//    if (document.getElementById("toc") != null) {
+//       // Generate TOC on <div id="toc">
+//       generateTOC();
+//       // Attach onclick handler to <a id="show-toc">
+//       document.getElementById("show-toc").onclick = toggleTOC;
+//    }
+// }
 
 /*
  * Generate Table of Content (TOC)
