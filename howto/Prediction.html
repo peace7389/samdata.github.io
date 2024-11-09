@@ -153,9 +153,24 @@
 <!-- Load content dynamically -->
 <script>
   $(function() {
-      $('#matchPredictor').load('MatchPredictor.html');
-      $('#matchSchedule').load('MatchSchedule.html');
-  });
+    $('#matchPredictor').load('MatchPredictor.html', function(responseText, textStatus, XMLHttpRequest) {
+        if (textStatus == "success") {
+            var scripts = $("<div>").append($.parseHTML(responseText, document, true)).find("script");
+            scripts.each(function() {
+                $.globalEval(this.text || this.textContent || this.innerHTML || '');
+            });
+        }
+    });
+
+    $('#matchSchedule').load('MatchSchedule.html', function(responseText, textStatus, XMLHttpRequest) {
+        if (textStatus == "success") {
+            var scripts = $("<div>").append($.parseHTML(responseText, document, true)).find("script");
+            scripts.each(function() {
+                $.globalEval(this.text || this.textContent || this.innerHTML || '');
+            });
+        }
+    });
+});
 </script>
 
 <!-- Other scripts -->
