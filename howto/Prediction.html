@@ -129,46 +129,100 @@
 <h1>Automating Traffic Data Reports Using Google Tools</h1>
 <h2></h2>
 </div>
+<div class="container">
+    <table id="leagueTable">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Logo</th>
+                <th>Team</th>
+                <th>GP</th>
+                <th>PTS</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Last 5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows for the league table will be inserted here -->
+        </tbody>
+    </table>
 
-<div id="content-main">
-<!-- @@ v3 header changes ends here before <h3> -->
+    <table id="scheduleTable">
+        <thead>
+            <tr>
+                <th>Match Date</th>
+                <th>Time</th>
+                <th>Days Until Match</th>
+                <th>Home Team</th>
+                <th>Home Logo</th>
+                <th>Away Team</th>
+                <th>Away Logo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows for the schedule table will be inserted here -->
+        </tbody>
+    </table>
+</div>
 
-	
-
-
-  <div id="matchPredictor"></div>
-  <div id="matchSchedule"></div>
-
-
-
-
-<!-- @@ v3 footer changes starts here, before "footer", to end of document -->
-<!-- footer filled by JavaScript -->
-<div id="footer" class="footer"><p>&nbsp;</p></div>
-
-</div>  <!-- End the wrap-outer division -->
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-
-<!-- Load content dynamically -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <script>
-  $(function() {
-    $('#matchPredictor').load('./MatchPredictor.html', function(responseText, textStatus, XMLHttpRequest) {
-        if (textStatus == "success") {
-            var scripts = $("<div>").append($.parseHTML(responseText, document, true)).find("script");
-            scripts.each(function() {
-                $.globalEval(this.text || this.textContent || this.innerHTML || '');
+document.addEventListener('DOMContentLoaded', function() {
+    // Load league data
+    fetch('sources/premiere_JS.csv').then(function(response) {
+        return response.text();
+    }).then(function(data) {
+        const rows = data.split('\n');
+        const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
+        rows.forEach((row, index) => {
+            if (index === 0 || !row.trim()) return;
+            const cols = row.split(',');
+            const newRow = table.insertRow();
+            cols.forEach(text => {
+                const cell = newRow.insertCell();
+                cell.textContent = text;
             });
-        }
+        });
     });
 
-    $('#matchSchedule').load('./MatchSchedule.html', function(responseText, textStatus, XMLHttpRequest) {
-        if (textStatus == "success") {
-            var scripts = $("<div>").append($.parseHTML(responseText, document, true)).find("script");
-            scripts.each(function() {
-                $.globalEval(this.text || this.textContent || this.innerHTML || '');
-            });
-        }
+    // Load schedule data
+    fetch('sources/schedule.csv').then(function(response) {
+        return response.text();
+    }).then(function(data) {
+        Papa.parse(data, {
+            header: true,
+            complete: function(results) {
+                const tbody = document.getElementById('scheduleTable').getElementsByTagName('tbody')[0];
+                results.data.forEach(item => {
+                    const tr = tbody.insertRow();
+                    tr.insertCell().textContent = item['Match Date'];
+                    tr.insertCell().textContent = item['Time of Match'];
+                    const daysCell = tr.insertCell();
+                    const matchDate = new Date(item['Match Date']);
+                    const today = new Date();
+                    const timeDiff = matchDate - today;
+                    const daysUntilMatch = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                    daysCell.textContent = daysUntilMatch > 0 ? daysUntilMatch + ' days left' : 'Today';
+                    tr.insertCell().textContent = item['Home Team'];
+                    const homeLogoCell = tr.insertCell();
+                    const homeLogo = document.createElement('img');
+                    homeLogo.src = 'images/PremiereTeamLogos/' + item['Home Team'] + '.webp';
+                    homeLogo.alt = item['Home Team'];
+                    homeLogoCell.appendChild(homeLogo);
+                    tr.insertCell().textContent = item['Away Team'];
+                    const awayLogoCell = tr.insertCell();
+                    const awayLogo = document.createElement('img');
+                    awayLogo.src = 'images/PremiereTeamLogos/' + item['Away Team'] + '.webp';
+                    awayLogo.alt = item['Away Team'];
+                    awayLogoCell.appendChild(awayLogo);
+                });
+            }
+        });
     });
 });
 </script>
