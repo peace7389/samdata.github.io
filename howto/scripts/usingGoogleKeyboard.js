@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 
 async function searchPremierLeagueSchedule() {
     const browser = await puppeteer.launch({ headless: false }); // Set headless: false to see the browser in action
@@ -65,9 +66,20 @@ async function searchPremierLeagueSchedule() {
         return matchList;
     });
 
+    const csvContent = convertToCSV(matches);
+    fs.writeFileSync('../sources/schedule.csv', csvContent);
+
     console.log(matches);
 
     await browser.close();
+}
+
+function convertToCSV(data) {
+    const csvHeaders = 'Match Date,Time of Match,Home Team,Away Team\n';
+    const csvRows = data.map(({ matchDate, timeOfMatch, homeTeam, awayTeam }) => 
+        `"${matchDate}","${timeOfMatch}","${homeTeam}","${awayTeam}"`
+    );
+    return csvHeaders + csvRows.join('\n');
 }
 
 searchPremierLeagueSchedule();

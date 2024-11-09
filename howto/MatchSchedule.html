@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Soccer League Table</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+    table {
+        width: 80%;
+        border-collapse: collapse;
+        margin: 25px 0;
+        font-size: 0.9em;
+        border-radius: 5px 5px 0 0;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    }
+    thead tr {
+        background-color: #009879;
+        color: #ffffff;
+        text-align: left;
+    }
+    th, td {
+        padding: 12px 15px;
+    }
+    img {
+        width: 50px; /* Larger to be more visible */
+        height: auto;
+    }
+    .logo-cell {
+        text-align: center; /* Center the logos */
+    }
+        .holiday {
+        color: red; /* Style for holidays */
+    }
+</style>
+</head>
+<body>
+<h1>Match Schedule</h1>
+<table id="scheduleTable">
+    <thead>
+        <tr>
+            <th>Match Date</th>
+            <th>Time</th>
+            <th>Days Until Match</th>
+            <th>Home Team</th>
+            <th>Home Logo</th>
+            <th>Away Team</th>
+            <th>Away Logo</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Data rows will be inserted here by JavaScript -->
+    </tbody>
+</table>
+
+<script>
+
+    const teamLogoMapping = {
+        "Brentford BRE": "Brentford.webp",
+        "Bournemouth BOU": "Bournemouth.webp",
+        "Crystal Palace CRY": "Crystal Palace.webp",
+        "Fulham FUL": "Fulham.webp",
+        "West Ham WHU": "West Ham United.webp",
+        "Everton EVE": "Everton.webp",
+        "Wolves WOL": "Wolverhampton Wanderers.webp",
+        "Southampton SOU": "Southampton.webp",
+        "Brighton BHA": "Brighton & Hove Albion.webp",
+        "Man City MCI": "Manchester City.webp",
+        "Liverpool LIV": "Liverpool.webp",
+        "Aston Villa AVL": "Aston Villa.webp",
+        "Man Utd MUN": "Manchester United.webp",
+        "Leicester LEI": "Leicester City.webp",
+        "Nott'm Forest NFO": "Nottingham Forest.webp",
+        "Newcastle NEW": "Newcastle United.webp",
+        "Spurs TOT": "Tottenham Hotspur.webp",
+        "Ipswich IPS": "Ipswich.webp",
+        "Chelsea CHE": "Chelsea.webp",
+        "Arsenal ARS": "Arsenal.webp"
+    };
+    
+    function getLogoPath(teamName) {
+        return `images/PremiereTeamLogos/${teamLogoMapping[teamName] || 'default.webp'}`;
+    }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('sources/schedule.csv')  // Adjust the CSV file path as necessary
+    .then(response => response.text())
+    .then(csv => Papa.parse(csv, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const data = results.data;
+            const tbody = document.getElementById('scheduleTable').getElementsByTagName('tbody')[0];
+            const today = new Date();
+            data.forEach(item => {
+                const tr = tbody.insertRow();
+
+                const matchDate = new Date(item['Match Date']);
+                const timeDiff = matchDate - today;
+                const daysUntilMatch = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+
+                // Match Date
+                tr.insertCell().textContent = item['Match Date'];
+                
+
+                // Time of Match
+                tr.insertCell().textContent = item['Time of Match'];
+
+                let daysText = '';
+                if (daysUntilMatch < 0) {
+                    daysText = 'Match passed';
+                } else if (daysUntilMatch === 0) {
+                    daysText = 'Match today';
+                } else if (daysUntilMatch === 1) {
+                    daysText = '1 day left';
+                } else {
+                    daysText = `${daysUntilMatch} days left`;
+                }
+                tr.insertCell().textContent = daysText;
+
+                // Home Team and Logo
+                const homeTeam = item['Home Team']; // Assign home team name from item
+                tr.insertCell().textContent = homeTeam;
+                const homeLogoCell = tr.insertCell();
+                const homeLogo = document.createElement('img');
+                homeLogo.src = getLogoPath(homeTeam);
+                homeLogo.alt = `${homeTeam} logo`;
+                homeLogo.onerror = () => { homeLogo.src = 'images/PremiereTeamLogos/default.webp'; };
+                homeLogoCell.appendChild(homeLogo);
+
+                // Away Team and Logo
+                const awayTeam = item['Away Team']; // Assign away team name from item
+                tr.insertCell().textContent = awayTeam;
+                const awayLogoCell = tr.insertCell();
+                const awayLogo = document.createElement('img');
+                awayLogo.src = getLogoPath(awayTeam);
+                awayLogo.alt = `${awayTeam} logo`;
+                awayLogo.onerror = () => { awayLogo.src = 'images/PremiereTeamLogos/default.webp'; };
+                awayLogoCell.appendChild(awayLogo);
+            });
+        }
+    }))
+    .catch(error => console.error('Error loading or parsing the CSV file:', error));
+});
+
+
+
+
+function getLogoPath(teamName) {
+    return `images/PremiereTeamLogos/${teamLogoMapping[teamName] || 'default.webp'}`;
+}
+</script>
+
+</body>
+</html>
