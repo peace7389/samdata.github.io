@@ -153,7 +153,7 @@
 <!-- Load content dynamically -->
 <script>
   $(function() {
-    $('#matchPredictor').load('MatchPredictor.html', function(responseText, textStatus, XMLHttpRequest) {
+    $('#matchPredictor').load('./MatchPredictor.html', function(responseText, textStatus, XMLHttpRequest) {
         if (textStatus == "success") {
             var scripts = $("<div>").append($.parseHTML(responseText, document, true)).find("script");
             scripts.each(function() {
@@ -162,7 +162,7 @@
         }
     });
 
-    $('#matchSchedule').load('MatchSchedule.html', function(responseText, textStatus, XMLHttpRequest) {
+    $('#matchSchedule').load('./MatchSchedule.html', function(responseText, textStatus, XMLHttpRequest) {
         if (textStatus == "success") {
             var scripts = $("<div>").append($.parseHTML(responseText, document, true)).find("script");
             scripts.each(function() {
