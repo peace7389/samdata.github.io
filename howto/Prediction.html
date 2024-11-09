@@ -134,28 +134,26 @@
 <!-- @@ v3 header changes ends here before <h3> -->
 
 	
-<h3>Introduction</h3>
 
-<p> Working as a data analyst, I observed many colleagues wanting to automate routine tasks but hesitant assuming technical barrier might be too high for them.</p>
 
-<p>To show that it isnt that hard, I’ll break down the process of automating traffic data reports for a website,</p>
-
-<p>using real-world examples from my own work as a data analyst for demonstration.</p>
-
-<p>Let’s get down to business! </p>
-
-<iframe src="MatchPredictor.html" style="float:right;width:30%;height:280px;margin:10px 0 0 10px;padding:0"></iframe>
-
-<iframe src="MatchSchedule.html" style="float:right;width:30%;height:280px;margin:10px 0 0 10px;padding:0"></iframe>
+  <div id="matchPredictor"></div>
+  <div id="matchSchedule"></div>
 
 
 
-<h4>HTML Template</h4>
+
 <!-- @@ v3 footer changes starts here, before "footer", to end of document -->
 <!-- footer filled by JavaScript -->
 <div id="footer" class="footer"><p>&nbsp;</p></div>
 
 </div>  <!-- End the wrap-outer division -->
+
+<script>
+  $(function() {
+      $('#matchPredictor').load('MatchPredictor.html');
+      $('#matchSchedule').load('MatchSchedule.html');
+  });
+</script>
 
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
