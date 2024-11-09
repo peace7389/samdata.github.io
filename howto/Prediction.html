@@ -216,59 +216,100 @@ tbody tr:nth-of-type(even) {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Load league data
-    fetch('sources/premiere_JS.csv').then(function(response) {
-        return response.text();
-    }).then(function(data) {
-        const rows = data.split('\n');
-        const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
-        rows.forEach((row, index) => {
-            if (index === 0 || !row.trim()) return;
-            const cols = row.split(',');
-            const newRow = table.insertRow();
-            cols.forEach(text => {
-                const cell = newRow.insertCell();
-                cell.textContent = text;
+    const teamLogoMapping = {
+        "Brentford BRE": "Brentford.webp",
+        "Bournemouth BOU": "Bournemouth.webp",
+        "Crystal Palace CRY": "Crystal Palace.webp",
+        "Fulham FUL": "Fulham.webp",
+        "West Ham WHU": "West Ham United.webp",
+        "Everton EVE": "Everton.webp",
+        "Wolves WOL": "Wolverhampton Wanderers.webp",
+        "Southampton SOU": "Southampton.webp",
+        "Brighton BHA": "Brighton & Hove Albion.webp",
+        "Man City MCI": "Manchester City.webp",
+        "Liverpool LIV": "Liverpool.webp",
+        "Aston Villa AVL": "Aston Villa.webp",
+        "Man Utd MUN": "Manchester United.webp",
+        "Leicester LEI": "Leicester City.webp",
+        "Nott'm Forest NFO": "Nottingham Forest.webp",
+        "Newcastle NEW": "Newcastle United.webp",
+        "Spurs TOT": "Tottenham Hotspur.webp",
+        "Ipswich IPS": "Ipswich.webp",
+        "Chelsea CHE": "Chelsea.webp",
+        "Arsenal ARS": "Arsenal.webp"
+    };
+
+    function getLogoPath(teamName) {
+        return `images/PremiereTeamLogos/${teamLogoMapping[teamName] || 'default.webp'}`;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetch('sources/leagueData.csv')  // Adjust the CSV file path as necessary
+        .then(response => response.text())
+        .then(data => {
+            const rows = data.split('\n');
+            const table = document.getElementById('leagueTable').getElementsByTagName('tbody')[0];
+            rows.forEach((row, index) => {
+                if (index === 0 || !row.trim()) return; // skip the header row and empty rows
+                const cols = row.split(',');
+                const newRow = table.insertRow();
+                cols.forEach((text, i) => {
+                    const cell = newRow.insertCell();
+                    if (i === 1) { // Assuming second column is for logos
+                        const img = document.createElement('img');
+                        img.src = getLogoPath(text);
+                        img.alt = text + " logo";
+                        cell.appendChild(img);
+                    } else {
+                        cell.textContent = text;
+                    }
+                });
             });
         });
-    });
 
-    // Load schedule data
-    fetch('sources/schedule.csv').then(function(response) {
-        return response.text();
-    }).then(function(data) {
-        Papa.parse(data, {
+        fetch('sources/schedule.csv')  // Adjust the CSV file path for schedule data
+        .then(response => response.text())
+        .then(csv => Papa.parse(csv, {
             header: true,
             complete: function(results) {
                 const tbody = document.getElementById('scheduleTable').getElementsByTagName('tbody')[0];
                 results.data.forEach(item => {
                     const tr = tbody.insertRow();
-                    tr.insertCell().textContent = item['Match Date'];
-                    tr.insertCell().textContent = item['Time of Match'];
-                    const daysCell = tr.insertCell();
+
                     const matchDate = new Date(item['Match Date']);
                     const today = new Date();
                     const timeDiff = matchDate - today;
                     const daysUntilMatch = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                    tr.insertCell().textContent = item['Match Date'];
+                    tr.insertCell().textContent = item['Time of Match'];
+
+                    const daysCell = tr.insertCell();
                     daysCell.textContent = daysUntilMatch > 0 ? daysUntilMatch + ' days left' : 'Today';
-                    tr.insertCell().textContent = item['Home Team'];
+
+                    const homeTeamCell = tr.insertCell();
+                    homeTeamCell.textContent = item['Home Team'];
+
                     const homeLogoCell = tr.insertCell();
                     const homeLogo = document.createElement('img');
-                    homeLogo.src = 'images/PremiereTeamLogos/' + item['Home Team'] + '.webp';
-                    homeLogo.alt = item['Home Team'];
+                    homeLogo.src = getLogoPath(item['Home Team']);
+                    homeLogo.alt = item['Home Team'] + " logo";
+                    homeLogo.onerror = () => homeLogo.src = 'images/PremiereTeamLogos/default.webp';
                     homeLogoCell.appendChild(homeLogo);
-                    tr.insertCell().textContent = item['Away Team'];
+
+                    const awayTeamCell = tr.insertCell();
+                    awayTeamCell.textContent = item['Away Team'];
+
                     const awayLogoCell = tr.insertCell();
                     const awayLogo = document.createElement('img');
-                    awayLogo.src = 'images/PremiereTeamLogos/' + item['Away Team'] + '.webp';
-                    awayLogo.alt = item['Away Team'];
+                    awayLogo.src = getLogoPath(item['Away Team']);
+                    awayLogo.alt = item['Away Team'] + " logo";
+                    awayLogo.onerror = () => awayLogo.src = 'images/PremiereTeamLogos/default.webp';
                     awayLogoCell.appendChild(awayLogo);
                 });
             }
-        });
+        }));
     });
-});
 </script>
 
 <!-- Other scripts -->
