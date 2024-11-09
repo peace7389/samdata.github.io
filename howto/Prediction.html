@@ -98,7 +98,51 @@
     text-decoration: none;
     border-radius: 5px;
 }
-
+body {
+    font-family: Arial, sans-serif;
+}
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 20px;
+}
+table {
+    width: 45%;  
+    border-collapse: collapse;
+    margin: 10px;
+    font-size: 0.9em;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+th, td {
+    padding: 8px;
+    text-align: center;
+}
+thead tr {
+    background-color: #009879;
+    color: #ffffff;
+}
+tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+.logo-cell img {
+    width: 30px;
+    height: 30px;
+}
+.result-circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-right: 5px;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+.win { background-color: #4CAF50; }
+.draw { background-color: #FFC107; }
+.loss { background-color: #F44336; }
 
 </style>
 
