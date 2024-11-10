@@ -21,84 +21,78 @@
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
 
 <style>
-    .table-eg {   /* table styling */
-        border: 1px solid black;
-        border-spacing: 5px;      /* replaces cellspacing */
-        border-collapse: separate;
-    }
-    
-    .table-eg th, .table-eg td {   /* cell styling */
-        border: 1px solid #aaa;
-        padding: 5px 10px;    /* replaces cellpadding */
-    }
-    
-    pre {  /* styling for code blocks */
-        background-color: #282c34;
-        color: #abb2bf;
-        padding: 20px;
-        overflow-x: auto;
-    }
-    
-    .keyword { /* styling for keywords in code */
-        color: #c678dd; /* purple */
-    }
-    
-    .api { /* styling for API calls in code */
-        color: #e5c07b; /* yellow */
-    }
-    
-    .variable { /* styling for variables in code */
-        color: #e06c75; /* red */
-    }
+  .table-eg {   /* table styling */
+      border: 1px solid black;
+      border-spacing: 5px;      /* replaces cellspacing */
+      border-collapse: separate;
+  }
+  
+  .table-eg th, .table-eg td {   /* cell styling */
+      border: 1px solid #aaa;
+      padding: 5px 10px;    /* replaces cellpadding */
+  }
+  
+  
+  .keyword { /* styling for keywords in code */
+      color: #c678dd; /* purple */
+  }
+  
+  .api { /* styling for API calls in code */
+      color: #e5c07b; /* yellow */
+  }
+  
+  .variable { /* styling for variables in code */
+      color: #e06c75; /* red */
+  }
 
-    /* Hide the actual radio buttons */
-    .query-option {
-        display: none;
-    }
-    
-    /* Style the labels to look like a dropdown */
-    label.query-label {
-        display: block;
-        border: 1px solid #ccc;
-        padding: 8px;
-        margin-top: -1px; /* Remove gaps between labels */
-        background: white;
-        cursor: pointer;
-    }
-    
-    /* Hide all query displays initially */
-    .query-display {
-        display: none;
-        background-color: #f4f4f4;
-        padding: 10px;
-        border: 1px solid #ddd;
-        margin-top: 10px;
-    }
-    
-    /* Only display the query content when its corresponding radio button is checked */
-    .query-option:checked + label + .query-content {
-        display: block;
-    }
-  .query-content {
-            display: none;
-            margin-top: 20px;
-            padding: 20px;
-            background-color: #ffffff;
-            border: 1px solid #dddddd;
-            border-radius: 5px;
-        }
+  /* Hide the actual radio buttons */
+  .query-option {
+      display: none;
+  }
+  
+  /* Style the labels to look like a dropdown */
+  label.query-label {
+      display: block;
+      border: 1px solid #ccc;
+      padding: 8px;
+      margin-top: -1px; /* Remove gaps between labels */
+      background: white;
+      cursor: pointer;
+  }
 
   .home-button {
-    display: inline-block;
-    padding: 10px 20px;
-    margin: 10px;
-    background-color: #76a2cd; /* Green background */
-    color: white; /* White text */
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px;
-}
+      display: inline-block;
+      padding: 10px 20px;
+      margin: 10px;
+      background-color: #76a2cd; /* Green background */
+      color: white; /* White text */
+      text-align: center;
+      text-decoration: none;
+      border-radius: 5px;
+  }
+  
+  /* Hide all query displays initially */
 
+  
+  /* Only display the query content when its corresponding radio button is checked */
+  .query-option:checked + label + .query-content {
+      display: block;
+  }
+.pre-container pre {
+          display: none;
+          border: 5px;
+          background-color: #282c34;
+          color: #abb2bf;
+          padding: 20px;
+          overflow-x: auto;
+          width : 990px;
+      }
+
+
+.pre-container pre.active {
+        display: block; /* Make the active <pre> visible */
+      }
+  
 
 </style>
 
