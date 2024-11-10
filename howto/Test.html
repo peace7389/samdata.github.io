@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Soccer League Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f4f4f4;
+    }
+    header {
+        background: #009879;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        font-size: 24px;
+        font-weight: bold;
+    }
+    #tabs {
+        overflow: hidden;
+        background: #333;
+        font-family: Arial;
+    }
+    #tabs li {
+        list-style: none;
+        display: inline-block; /* Changed from float to inline-block for better control */
+    }
+    #tabs a {
+        display: block;
+        padding: 10px 20px;
+        color: white;
+        text-decoration: none;
+        text-transform: uppercase;
+        transition: background-color 0.3s;
+    }
+    #tabs a:hover, #tabs a.active {
+        background-color: #009879;
+    }
+    table {
+        width: 80%;
+        margin: 20px auto;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+        padding: 8px;
+        text-align: center;
+        border-bottom: 1px solid #ddd;
+    }
+    th {
+        height: 40px;
+        background: #f3f3f3;
+    }
+    .logo-cell img {
+        width: 30px;
+        height: auto;
+    }
+    .content {
+        display: none;
+    }
+    .content.active {
+        display: block;
+    }
+</style>
+</head>
+<body>
+<header>Soccer League Dashboard</header>
+<div id="tabs">
+    <ul>
+        <li><a href="#" class="tablinks active" onclick="openTab(event, 'standing')">Standing</a></li>
+        <li><a href="#" class="tablinks" onclick="openTab(event, 'schedule')">Schedule & Prediction</a></li>
+    </ul>
+</div>
+
+<div id="standing" class="content active">
+    <h1>League Standing</h1>
+    <table id="leagueTable">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Logo</th>
+                <th>Team</th>
+                <th>GP</th>
+                <th>PTS</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>GF</th>
+                <th>GA</th>
+                <th>GD</th>
+                <th>Last 5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- League data rows will be dynamically inserted here -->
+        </tbody>
+    </table>
+</div>
+
+<div id="schedule" class="content">
+    <h1>Match Schedule</h1>
+    <table id="scheduleTable">
+        <thead>
+            <tr>
+                <th>Match Date</th>
+                <th>Time</th>
+                <th>Days Until Match</th>
+                <th>Home Team</th>
+                <th>Home Logo</th>
+                <th>Away Team</th>
+                <th>Away Logo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Schedule data rows will be dynamically inserted here -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+function openTab(evt, tabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("content");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+// Ensuring the first tab is active if JS is running
+document.addEventListener('DOMContentLoaded', function() {
+    openTab(new Event('click'), 'standing'); // Automatically open the 'standing' tab
+});
+</script>
+
+<script>
+
+    const teamLogoMapping = {
+        "Brentford BRE": "Brentford.webp",
+        "Bournemouth BOU": "Bournemouth.webp",
+        "Crystal Palace CRY": "Crystal Palace.webp",
+        "Fulham FUL": "Fulham.webp",
+        "West Ham WHU": "West Ham United.webp",
+        "Everton EVE": "Everton.webp",
+        "Wolves WOL": "Wolverhampton Wanderers.webp",
+        "Southampton SOU": "Southampton.webp",
+        "Brighton BHA": "Brighton & Hove Albion.webp",
+        "Man City MCI": "Manchester City.webp",
+        "Liverpool LIV": "Liverpool.webp",
+        "Aston Villa AVL": "Aston Villa.webp",
+        "Man Utd MUN": "Manchester United.webp",
+        "Leicester LEI": "Leicester City.webp",
+        "Nott'm Forest NFO": "Nottingham Forest.webp",
+        "Newcastle NEW": "Newcastle United.webp",
+        "Spurs TOT": "Tottenham Hotspur.webp",
+        "Ipswich IPS": "Ipswich.webp",
+        "Chelsea CHE": "Chelsea.webp",
+        "Arsenal ARS": "Arsenal.webp"
+    };
+    
+    function getLogoPath(teamName) {
+        return `images/PremiereTeamLogos/${teamLogoMapping[teamName] || 'default.webp'}`;
+    }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('sources/schedule.csv')  // Adjust the CSV file path as necessary
+    .then(response => response.text())
+    .then(csv => Papa.parse(csv, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+            const data = results.data;
+            const tbody = document.getElementById('scheduleTable').getElementsByTagName('tbody')[0];
+            const today = new Date();
+            data.forEach(item => {
+                const tr = tbody.insertRow();
+
+                const matchDate = new Date(item['Match Date']);
+                const timeDiff = matchDate - today;
+                const daysUntilMatch = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+
+                // Match Date
+                tr.insertCell().textContent = item['Match Date'];
+                
+
+                // Time of Match
+                tr.insertCell().textContent = item['Time of Match'];
+
+                let daysText = '';
+                if (daysUntilMatch < 0) {
+                    daysText = 'Match passed';
+                } else if (daysUntilMatch === 0) {
+                    daysText = 'Match today';
+                } else if (daysUntilMatch === 1) {
+                    daysText = '1 day left';
+                } else {
+                    daysText = `${daysUntilMatch} days left`;
+                }
+                tr.insertCell().textContent = daysText;
+
+                // Home Team and Logo
+                const homeTeam = item['Home Team']; // Assign home team name from item
+                tr.insertCell().textContent = homeTeam;
+                const homeLogoCell = tr.insertCell();
+                const homeLogo = document.createElement('img');
+                homeLogo.src = getLogoPath(homeTeam);
+                homeLogo.alt = `${homeTeam} logo`;
+                homeLogo.onerror = () => { homeLogo.src = 'images/PremiereTeamLogos/default.webp'; };
+                homeLogoCell.appendChild(homeLogo);
+
+                // Away Team and Logo
+                const awayTeam = item['Away Team']; // Assign away team name from item
+                tr.insertCell().textContent = awayTeam;
+                const awayLogoCell = tr.insertCell();
+                const awayLogo = document.createElement('img');
+                awayLogo.src = getLogoPath(awayTeam);
+                awayLogo.alt = `${awayTeam} logo`;
+                awayLogo.onerror = () => { awayLogo.src = 'images/PremiereTeamLogos/default.webp'; };
+                awayLogoCell.appendChild(awayLogo);
+            });
+        }
+    }))
+    .catch(error => console.error('Error loading or parsing the CSV file:', error));
+});
+
+
+
+
+function getLogoPath(teamName) {
+    return `images/PremiereTeamLogos/${teamLogoMapping[teamName] || 'default.webp'}`;
+}
+</script>
+
+</body>
+</html>
