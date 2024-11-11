@@ -1,16 +1,8 @@
 {
-  "name": "scripts",
-  "version": "1.0.0",
-  "main": "Premiere.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^4.21.1",
-    "puppeteer": "^23.6.1"
+    "@mozilla/readability": "^0.5.0",
+    "csv-parser": "^3.0.0",
+    "jsdom": "^25.0.1",
+    "puppeteer": "^23.7.1"
   }
 }
