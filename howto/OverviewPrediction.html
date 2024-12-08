@@ -58,84 +58,9 @@
 <h3>기술 구조 </h3>
 <img class="image-center" src="./images/Common/OverviewPrediction.png" alt="overview.png" width="1024" />
 
+<h3>서비스 화면 예시 </h3>
+<img class="image-center" src="./images/Common/Service.png" alt="overview.png" width="1024" />
 
-<h3>현재 데이터 트래킹 구조의 취약점</h3>
-
-<h4 id="sublime">커스텀 이벤트 설정의 제약</h4>
-
-
-<ul>
-<li> 현재 자사 사이트에 내장되어 있는 Google Analytics Tag는 사이트에서 발생하는 데이터를 Google Analytics로만 전송할 수 있음. </li>
-<li> 따라서 특정 배너 클릭 등의 커스텀 이벤트를 인식하려면 Google Analytics에서 설정해야 하는데, Google Analytics는 커스텀 이벤트를 만드는 기능에 제약이 있음 </li>
-</ul>
-
-
-<h4 id="atom">구글 애널리틱스 외의 분석 도구 이용에 제한</h4>
-
-<ul>
-        <li>Google Analytics Tag는 Google Analytics 에만 데이터를 전송할 수 있으므로, Google Ad 혹은 자체 개발 어플리케이션으로 데이터를 받기가 어려움</li>
-</ul>
-
-
-
-<h4 id="textpad"> 개발 외주사에 잦은 협력 요청이 불가피</h4>
-<ul>
-        <li>배너 클릭 등의 특수한 이용자의 행동을 추적하려면 서버를 관리하는 외주사 측에 일일이 관련 요청을 해야 함  ex) 사이트 소스에 이벤트 트래킹 코드 삽입 등</li>
-</ul>
-
-
-
-<h3>개선 방안</h3>
-
-<img class="image-center" src="https://documents.lucid.app/documents/e8a07d67-ea09-47ea-b19f-a4eb3e01362f/pages/0_0?a=6636&x=-717&y=1912&w=3413&h=1369&store=1&accept=image%2F*&auth=LCA%20404a7f38c078a375d47b2ead1fc57eb4d76204a18e23ac8a3a720561328d4add-ts%3D1712808548" alt="TextpadJava.png" width="1536"/> 
-
-<div class="green-square" style="position: relative; background-color: #d7ecd3; padding: 20px;">
-  <div style="display: flex; align-items: center; margin-bottom: 20px;">
-    <img src="./images/Common/light-bulb.png" alt="Lightbulb Icon" style="height: 22px; margin-right: 5px;">
-    <h5 class="font-code" style="color: #39a04f; margin: 0;">Tag에 대한 기본 지식</h5>
-  </div>
-  <span class="color-comment" style="display: block; margin-top: 20px;">▶ 형태</span>
-  <img class="image-left" style="display: block; width: 512px; margin-top: 20px; margin-bottom: 20px;" src="./images/Common/gtm.png" alt="TextpadJava.png">
-  <p>- 사이트 안에 삽입되는 javascript 코드</p>
-
-
-  <span class="color-comment" style="display: block; margin-top: 20px;">▶ 기능</span>
-
-  <p>- 이용자들이 사이트에서 활동하면서 발생하는 데이터를 지정된 서버(서비스)에 자동으로 전송함</p>
-
-<span class="color-comment" style="display: block; margin-top: 20px;">▶ Tag 종류별 차이</span>
-
-<style>
-  .fixed-position {
-    position: fixed; /* Keeps the table in a fixed position on the page */
-    top: 50px; /* Adjusts the vertical position from the top of the viewport */
-    left: 50px; /* Adjusts the horizontal position from the left of the viewport */
-    width: auto; /* Allows the table width to adjust based on content */
-    max-width: 90%; /* Prevents the table from being too wide */
-  }
-</style>
-
-<table style="width: auto; max-width: 90%; margin: 20px 0 20px 20px; border-collapse: collapse; border: 2px solid #ccc;">
-    <thead>
-        <tr style="background-color: #f0f0f0;">
-            <th style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">Tag 종류</th>
-            <th style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">Examples</th>
-            <th style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">설명</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr style="background-color: transparent;">
-            <td style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">특정 서비스 전용 Tag</td>
-            <td style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">GA Tag (현재)</td>
-            <td style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">통계 서비스에서 데이터를 전송함</td> 
-        </tr>
-        <tr style="background-color: transparent;">
-            <td style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">범용 Tag</td>
-            <td style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">GTM Container Tag (계획)</td>
-            <td style="padding: 10px; border-bottom: 2px solid #ccc; border-right: 2px solid #ccc;">범용 Tag 밀에 통계 서비스 전용의 Tag를 연결하여 다양한 서비스에 데이터 전송 가능</td>  
-        </tr>
-    </tbody>
-</table>
 
 
 
